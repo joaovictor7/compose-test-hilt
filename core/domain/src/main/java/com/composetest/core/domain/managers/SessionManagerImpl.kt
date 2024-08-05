@@ -4,7 +4,6 @@ import com.composetest.core.data.data.repositories.local.WorkManagerRepository
 import com.composetest.core.data.workmanagers.workes.SessionWorker
 import com.composetest.core.data.data.repositories.local.SessionRepository
 import com.composetest.core.data.data.repositories.local.UserRepository
-import com.composetest.core.database.entities.partialupdate.FinishedSessionEntityUpdate
 import com.composetest.core.domain.mappers.SessionEntityMapper
 import com.composetest.core.domain.mappers.SessionModelMapper
 import com.composetest.core.domain.mappers.UserEntityMapper
@@ -28,15 +27,12 @@ internal class SessionManagerImpl @Inject constructor(
         createSessionSchedule(sessionWithUser.startDate, sessionWithUser.endDate)
     }
 
-    override suspend fun needsLogin() = sessionRepository
-        .getCurrentSession(sessionModelMapper::invoke).let { currentSession ->
-            currentSession == null
-        }
+    override suspend fun needsLogin() = sessionRepository.getCurrentSession() == null
 
     override suspend fun isSessionValid(): Boolean {
-        val currentSession = sessionRepository.getCurrentSession(
-            sessionModelMapper::invoke
-        ) ?: return false
+        val currentSession = sessionRepository.getCurrentSession()
+            ?.let(sessionModelMapper::invoke)
+            ?: return false
         return !currentSession.isFinished
     }
 

@@ -17,7 +17,5 @@ internal class SessionRepositoryImpl @Inject constructor(
         sessionDataSource.update(FinishedSessionEntityUpdate(sessionId, true))
     }
 
-    override suspend fun <T> getCurrentSession(
-        mapper: (SessionEntity?) -> T
-    ) = sessionDataSource.getCurrentSession().let(mapper)
+    override suspend fun getCurrentSession() = sessionDataSource.getCurrentSession()
 }

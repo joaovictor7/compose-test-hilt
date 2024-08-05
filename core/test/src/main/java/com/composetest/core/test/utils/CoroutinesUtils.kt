@@ -10,7 +10,7 @@ import kotlinx.coroutines.test.runTest
 fun <T> runStateFlowTest(
     testDispatcher: TestDispatcher,
     stateFlow: StateFlow<T>,
-    onRunTest: (Job, List<T>) -> Unit
+    onRunTest: (job: Job, collectedUiStates: List<T>) -> Unit
 ) = runTest(testDispatcher) {
     val collectedStates = mutableListOf<T>()
     val job = launch {

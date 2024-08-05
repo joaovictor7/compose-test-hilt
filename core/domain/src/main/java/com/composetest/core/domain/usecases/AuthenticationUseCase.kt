@@ -16,16 +16,14 @@ class AuthenticationUseCase @Inject constructor(
 
     suspend operator fun invoke(email: String, password: String) {
         val response = runCatching {
-            authenticationRepository.authentication(
-                AuthenticationRequest(email, password),
-                sessionModelMapper::invoke
-            )
+            authenticationRepository.authentication(AuthenticationRequest(email, password))
         }.getOrElse {
             when (it) {
                 is UnauthorizedRequestThrowable -> throw InvalidCredentialsThrowable()
                 else -> throw it
             }
         }
-        sessionManager.createSession(response)
+        val sessionWithUser = sessionModelMapper(response)
+        sessionManager.createSession(sessionWithUser)
     }
 }

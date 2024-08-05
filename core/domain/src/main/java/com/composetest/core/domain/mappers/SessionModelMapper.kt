@@ -17,13 +17,11 @@ class SessionModelMapper @Inject constructor(private val userModelMapper: UserMo
         user = userModelMapper(response.user)
     )
 
-    operator fun invoke(entity: SessionEntity?) = entity?.let {
-        SessionModel(
-            id = it.id,
-            token = it.token,
-            initialDate = it.startDate,
-            endDate = it.endDate,
-            isFinished = it.isFinished
-        )
-    }
+    operator fun invoke(entity: SessionEntity) = SessionModel(
+        id = entity.id,
+        token = entity.token,
+        initialDate = entity.startDate,
+        endDate = entity.endDate,
+        isFinished = entity.isFinished
+    )
 }

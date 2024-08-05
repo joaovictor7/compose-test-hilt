@@ -27,9 +27,8 @@ class SessionWorker @AssistedInject constructor(
 ) : CoroutineWorker(context, workerParams) {
 
     override suspend fun doWork() = runCatching {
-        val sessionId = sessionRepository.getCurrentSession {
-            it?.id
-        } ?: throw NotFoundException("Session not initialized")
+        val sessionId = sessionRepository.getCurrentSession()?.id
+            ?: throw NotFoundException("Session not initialized")
         sessionRepository.finishSession(sessionId)
         Result.success()
     }.getOrElse {

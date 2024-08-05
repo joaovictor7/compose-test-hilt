@@ -28,7 +28,7 @@ internal class AnalyticsRepositoryImpl @Inject constructor(
     }
 
     private suspend fun createBundle(event: AnalyticEvent): Bundle {
-        val user = userRepository.getCurrentUser { it }
+        val user = userRepository.getCurrentUser()
         return bundleOf(
             USER_ID to user?.id.orEmpty(),
             LOGGED_SESSION to (user != null).toString(),
