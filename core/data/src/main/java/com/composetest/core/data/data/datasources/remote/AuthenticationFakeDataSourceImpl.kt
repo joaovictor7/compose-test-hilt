@@ -2,10 +2,10 @@ package com.composetest.core.data.data.datasources.remote
 
 import com.composetest.common.providers.DateTimeProvider
 import com.composetest.core.data.managers.RemoteCallManager
-import com.composetest.core.data.network.requests.AuthenticationRequest
-import com.composetest.core.data.network.responses.AuthenticationResponse
-import com.composetest.core.data.network.responses.SessionResponse
-import com.composetest.core.data.network.responses.UserResponse
+import com.composetest.core.data.data.network.requests.AuthenticationRequest
+import com.composetest.core.data.data.network.responses.AuthenticationResponse
+import com.composetest.core.data.data.network.responses.SessionResponse
+import com.composetest.core.data.data.network.responses.UserResponse
 
 internal class AuthenticationFakeDataSourceImpl(
     private val dateTimeProvider: DateTimeProvider,

@@ -1,8 +1,10 @@
 package com.composetest.core.data.di
 
-import com.composetest.common.providers.fields.buildtypes.BuildTypeFieldsProvider
+import com.composetest.common.providers.BuildConfigProvider
 import com.composetest.common.throwables.UnauthorizedRequestThrowable
-import com.composetest.core.data.constants.ktor.KtorConfig
+import com.composetest.core.data.di.qualifiers.Api
+import com.composetest.core.data.enums.NetworkApi
+import com.composetest.core.data.extensions.setHost
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -26,22 +28,18 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import javax.inject.Singleton
 
+private const val TIMEOUT = 20000L
+
 @Module
 @InstallIn(SingletonComponent::class)
 internal object KtorModule {
 
     @Provides
     @Singleton
-    fun ktorClient(
-        buildTypeFieldsProvider: BuildTypeFieldsProvider
-    ): HttpClient = HttpClient(Android) {
+    fun ktorClient(): HttpClient = HttpClient(Android) {
         expectSuccess = true
         defaultRequest {
             header(HttpHeaders.ContentType, ContentType.Application.Json)
-            url {
-                url(buildTypeFieldsProvider.get.baseApiUrl)
-                port = buildTypeFieldsProvider.get.baseApiPort
-            }
         }
         HttpResponseValidator {
             handleResponseExceptionWithRequest { exception, _ ->
@@ -54,7 +52,7 @@ internal object KtorModule {
             }
         }
         install(HttpTimeout) {
-            requestTimeoutMillis = KtorConfig.TIMEOUT
+            requestTimeoutMillis = TIMEOUT
         }
         install(ContentNegotiation) {
             json(Json {
@@ -69,4 +67,15 @@ internal object KtorModule {
             sanitizeHeader { header -> header == HttpHeaders.Authorization }
         }
     }
+
+    @Provides
+    @Api(NetworkApi.BFF)
+    fun bffApi(
+        httpClient: HttpClient,
+        buildConfigProvider: BuildConfigProvider
+    ): HttpClient = httpClient.setHost(
+        buildConfigProvider.get.buildConfigFieldsModel.bffApiHost,
+        buildConfigProvider.get.buildConfigFieldsModel.bffApiPort,
+        NetworkApi.BFF
+    )
 }

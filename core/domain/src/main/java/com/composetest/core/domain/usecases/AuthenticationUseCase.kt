@@ -2,7 +2,7 @@ package com.composetest.core.domain.usecases
 
 import com.composetest.common.throwables.UnauthorizedRequestThrowable
 import com.composetest.core.data.data.repositories.remote.AuthenticationRepository
-import com.composetest.core.data.network.requests.AuthenticationRequest
+import com.composetest.core.data.data.network.requests.AuthenticationRequest
 import com.composetest.core.domain.managers.SessionManager
 import com.composetest.core.domain.mappers.SessionModelMapper
 import com.composetest.core.domain.throwables.InvalidCredentialsThrowable

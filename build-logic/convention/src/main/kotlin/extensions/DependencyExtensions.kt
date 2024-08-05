@@ -8,6 +8,9 @@ internal fun DependencyHandlerScope.implementation(dependencyNotation: Any) =
 internal fun DependencyHandlerScope.debugImplementation(dependencyNotation: Any) =
     implement("debugImplementation", dependencyNotation)
 
+internal fun DependencyHandlerScope.stagingImplementation(dependencyNotation: Any) =
+    implement("stagingImplementation", dependencyNotation)
+
 internal fun DependencyHandlerScope.testImplementation(dependencyNotation: Any) =
     implement("testImplementation", dependencyNotation)
 

@@ -16,6 +16,7 @@ internal fun ApplicationExtension.setApplicationBuildTypes() {
                 setSigning(buildType, this@setApplicationBuildTypes)
                 setApplicationIdSuffix(buildType)
                 setManifestPlaceholders(buildType)
+                setBuildConfigFields(buildType)
             }
         }
     }

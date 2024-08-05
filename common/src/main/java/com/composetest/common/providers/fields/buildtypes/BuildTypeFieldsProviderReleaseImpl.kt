@@ -1,3 +1,0 @@
-package com.composetest.common.providers.fields.buildtypes
-
-internal class BuildTypeFieldsProviderReleaseImpl : BuildTypeFieldsProvider

@@ -1,6 +1,6 @@
 package com.composetest.core.domain.mappers
 
-import com.composetest.core.data.network.responses.AuthenticationResponse
+import com.composetest.core.data.data.network.responses.AuthenticationResponse
 import com.composetest.core.database.entities.SessionEntity
 import com.composetest.core.domain.models.session.SessionModel
 import com.composetest.core.domain.models.session.SessionWithUserModel

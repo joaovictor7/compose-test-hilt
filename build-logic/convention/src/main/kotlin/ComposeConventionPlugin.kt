@@ -2,6 +2,7 @@ import com.android.build.gradle.BaseExtension
 import extensions.debugImplementation
 import extensions.getLibrary
 import extensions.implementation
+import extensions.stagingImplementation
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
@@ -26,6 +27,7 @@ internal class ComposeConventionPlugin : Plugin<Project> {
                 implementation(getLibrary("androidx.lifecycle.runtime.compose"))
                 implementation(getLibrary("androidx.hilt.navigation.compose"))
                 debugImplementation(getLibrary("compose.ui.tooling"))
+                stagingImplementation(getLibrary("compose.ui.tooling"))
             }
         }
     }

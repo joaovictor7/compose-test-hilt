@@ -37,8 +37,8 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setEdgeToEdge()
         setSplashScreen()
+        setEdgeToEdge()
         setContent {
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
             LifecycleHandle(viewModel::executeCommand)

@@ -27,12 +27,8 @@ internal object HomeScreen : Screen<HomeUiState, HomeCommandReceiver> {
         uiState: HomeUiState,
         onExecuteCommand: (Command<HomeCommandReceiver>) -> Unit
     ) {
-        var expanded by remember { mutableStateOf(true) }
         Scaffold { paddingValues ->
             Column(modifier = Modifier.padding(paddingValues)) {
-                ExposedDropdownMenuBox(expanded = expanded, onExpandedChange = { expanded = !expanded }) {
-
-                }
                 Button(onClick = { onExecuteCommand(NavigateToHome2) }) {
                     Text(text = uiState.t)
                 }

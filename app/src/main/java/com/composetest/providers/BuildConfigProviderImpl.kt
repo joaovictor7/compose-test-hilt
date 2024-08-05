@@ -4,6 +4,7 @@ import android.os.Build
 import com.composetest.BuildConfig
 import com.composetest.common.enums.BuildType.Companion.getBuildType
 import com.composetest.common.enums.Flavor.Companion.getFlavor
+import com.composetest.common.models.BuildConfigFieldsModel
 import com.composetest.common.models.BuildConfigModel
 import com.composetest.common.providers.BuildConfigProvider
 import javax.inject.Inject
@@ -15,6 +16,10 @@ internal class BuildConfigProviderImpl @Inject constructor() : BuildConfigProvid
         versionCode = BuildConfig.VERSION_CODE,
         buildType = BuildConfig.BUILD_TYPE.getBuildType(),
         flavor = BuildConfig.FLAVOR.getFlavor(),
-        androidSdkVersion = Build.VERSION.SDK_INT
+        androidSdkVersion = Build.VERSION.SDK_INT,
+        buildConfigFieldsModel = BuildConfigFieldsModel(
+            bffApiHost = BuildConfig.BFF_API_HOST,
+            bffApiPort = BuildConfig.BFF_API_PORT
+        )
     )
 }

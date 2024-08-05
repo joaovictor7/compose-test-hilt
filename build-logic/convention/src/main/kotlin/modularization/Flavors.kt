@@ -11,6 +11,7 @@ internal fun ApplicationExtension.setFlavors() {
             create(flavor.flavorName) {
                 dimension = flavor.dimension
                 isDefault = flavor.isDefault
+                setBuildConfigFields(flavor)
             }
         }
     }
