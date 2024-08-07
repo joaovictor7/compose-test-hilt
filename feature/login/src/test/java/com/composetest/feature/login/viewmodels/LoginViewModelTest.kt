@@ -2,6 +2,7 @@ package com.composetest.feature.login.viewmodels
 
 import com.composetest.common.enums.BuildType
 import com.composetest.common.enums.Flavor
+import com.composetest.common.models.BuildConfigFieldsModel
 import com.composetest.common.models.BuildConfigModel
 import com.composetest.common.providers.BuildConfigProvider
 import com.composetest.common.throwables.NetworkThrowable
@@ -16,10 +17,9 @@ import com.composetest.core.router.managers.NavigationManager
 import com.composetest.core.test.interfaces.CoroutinesTest
 import com.composetest.core.test.utils.runStateFlowTest
 import com.composetest.feature.login.models.LoginFormModel
-import com.composetest.feature.login.ui.login.Login
+import com.composetest.feature.login.ui.login.LoginCommands
 import com.composetest.feature.login.ui.login.LoginUiState
 import com.composetest.feature.login.ui.login.LoginViewModel
-import com.composetest.feature.login.ui.login.WriteData
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -39,7 +39,11 @@ class LoginViewModelTest : CoroutinesTest {
         versionCode = 0,
         buildType = BuildType.DEBUG,
         flavor = Flavor.FULL,
-        androidSdkVersion = 34
+        androidSdkVersion = 34,
+        buildConfigFieldsModel = BuildConfigFieldsModel(
+            bffApiHost = String(),
+            bffApiPort = 0
+        )
     )
     private val navigationManager: NavigationManager = mockk(relaxed = true)
     private val buildConfigProvider: BuildConfigProvider = object : BuildConfigProvider {
@@ -102,8 +106,8 @@ class LoginViewModelTest : CoroutinesTest {
                 authenticationUseCase.invoke(any(), any())
             } coAnswers { withContext(testDispatcher) { throw InvalidCredentialsThrowable() } }
 
-            viewModel.executeCommand(WriteData("teste@teste.com", "password"))
-            viewModel.executeCommand(Login)
+            viewModel.executeCommand(LoginCommands.WriteData("teste@teste.com", "password"))
+            viewModel.executeCommand(LoginCommands.Login)
             job.cancel()
 
             assertEquals(
@@ -154,8 +158,8 @@ class LoginViewModelTest : CoroutinesTest {
                 withContext(testDispatcher) { authenticationUseCase(any(), any()) }
             } coAnswers { withContext(testDispatcher) {} }
 
-            viewModel.executeCommand(WriteData("teste@teste.com", "password"))
-            viewModel.executeCommand(Login)
+            viewModel.executeCommand(LoginCommands.WriteData("teste@teste.com", "password"))
+            viewModel.executeCommand(LoginCommands.Login)
             job.cancel()
 
             assertEquals(
@@ -211,8 +215,8 @@ class LoginViewModelTest : CoroutinesTest {
                 authenticationUseCase.invoke(any(), any())
             } coAnswers { withContext(testDispatcher) { throw NetworkThrowable() } }
 
-            viewModel.executeCommand(WriteData("teste@teste.com", "password"))
-            viewModel.executeCommand(Login)
+            viewModel.executeCommand(LoginCommands.WriteData("teste@teste.com", "password"))
+            viewModel.executeCommand(LoginCommands.Login)
             job.cancel()
 
             assertEquals(

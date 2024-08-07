@@ -23,7 +23,6 @@ workManager = "2.9.0"
 ktor = "2.3.12"
 slf4j = "2.0.13"
 splashScreen = "1.0.1"
-permissions = "0.34.0"
 unspecified = "unspecified"
 
 [libraries]
@@ -37,9 +36,6 @@ kotlin-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coro
 
 # Android
 android-tools-build-gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
-
-# Accompanist
-accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "permissions" }
 
 # AndroidX
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntime" }

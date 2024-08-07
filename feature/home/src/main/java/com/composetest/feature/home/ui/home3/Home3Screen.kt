@@ -25,13 +25,13 @@ internal object Home3Screen : Screen<Home3UiState, Home3CommandReceiver> {
                 .safeDrawingPadding()
                 .fillMaxSize()
         ) {
-            Button(onClick = { onExecuteCommand(ReturnLogin) }) {
+            Button(onClick = { onExecuteCommand(Home3Commands.ReturnLogin) }) {
                 Text(text = uiState.t)
             }
             Text(text = "Home3")
         }
         BackHandler {
-            onExecuteCommand(ReturnLogin)
+            onExecuteCommand(Home3Commands.ReturnLogin)
         }
     }
 }

@@ -3,38 +3,40 @@ package com.composetest.feature.login.ui.login
 import com.composetest.common.enums.Theme
 import com.composetest.core.ui.interfaces.Command
 
-internal data class WriteData(
-    val email: String? = null,
-    val password: String? = null
-) : Command<LoginCommandReceiver> {
-    override fun execute(receiver: LoginCommandReceiver) {
-        receiver.writeData(email, password)
+internal sealed interface LoginCommands : Command<LoginCommandReceiver> {
+    data class WriteData(
+        val email: String? = null,
+        val password: String? = null
+    ) : LoginCommands {
+        override fun execute(receiver: LoginCommandReceiver) {
+            receiver.writeData(email, password)
+        }
     }
-}
 
-internal data class SetCustomTheme(
-    val enterScreen: Boolean,
-    val currentAppTheme: Theme
-) : Command<LoginCommandReceiver> {
-    override fun execute(receiver: LoginCommandReceiver) {
-        receiver.setCustomTheme(enterScreen, currentAppTheme)
+    data class SetCustomTheme(
+        val enterScreen: Boolean,
+        val currentAppTheme: Theme
+    ) : LoginCommands {
+        override fun execute(receiver: LoginCommandReceiver) {
+            receiver.setCustomTheme(enterScreen, currentAppTheme)
+        }
     }
-}
 
-internal data object CheckShowInvalidEmailMsg : Command<LoginCommandReceiver> {
-    override fun execute(receiver: LoginCommandReceiver) {
-        receiver.checkShowInvalidEmailMsg()
+    data object CheckShowInvalidEmailMsg : LoginCommands {
+        override fun execute(receiver: LoginCommandReceiver) {
+            receiver.checkShowInvalidEmailMsg()
+        }
     }
-}
 
-internal data object Login : Command<LoginCommandReceiver> {
-    override fun execute(receiver: LoginCommandReceiver) {
-        receiver.login()
+    data object Login : LoginCommands {
+        override fun execute(receiver: LoginCommandReceiver) {
+            receiver.login()
+        }
     }
-}
 
-internal data object HandleLoginError : Command<LoginCommandReceiver> {
-    override fun execute(receiver: LoginCommandReceiver) {
-        receiver.handleLoginError()
+    data object HandleLoginError : LoginCommands {
+        override fun execute(receiver: LoginCommandReceiver) {
+            receiver.handleLoginError()
+        }
     }
 }

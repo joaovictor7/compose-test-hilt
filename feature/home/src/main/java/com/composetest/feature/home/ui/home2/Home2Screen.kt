@@ -24,7 +24,7 @@ internal object Home2Screen : Screen<Home2UiState, Home2CommandReceiver> {
                 .safeDrawingPadding()
                 .fillMaxSize()
         ) {
-            Button(onClick = { onExecuteCommand(ReturnHome) }) {
+            Button(onClick = { onExecuteCommand(Home2Commands.ReturnHome) }) {
                 Text(text = uiState.t)
             }
             Text(text = "Home2")
