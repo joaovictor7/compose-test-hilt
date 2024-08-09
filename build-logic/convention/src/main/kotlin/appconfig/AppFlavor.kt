@@ -5,9 +5,10 @@ internal enum class AppFlavor(val flavorName: String) {
     FREE("free");
 
     val isDefault get() = this == FULL
-    val dimension get() = Dimension.values().find { dimension ->
-        dimension.flavors.any { it == this }
-    }?.toString() ?: DEFAULT_DIMENSION
+    val dimension
+        get() = Dimension.values().find { dimension ->
+            dimension.flavors.any { it == this }
+        }?.toString() ?: DEFAULT_DIMENSION
 
     companion object {
         private const val DEFAULT_DIMENSION = "default"

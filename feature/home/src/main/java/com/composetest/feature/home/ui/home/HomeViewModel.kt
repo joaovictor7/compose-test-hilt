@@ -1,16 +1,16 @@
 package com.composetest.feature.home.ui.home
 
-import com.composetest.core.ui.bases.BaseViewModel
-import com.composetest.common.enums.Theme
 import com.composetest.core.domain.managers.AppThemeManager
+import com.composetest.core.domain.enums.Theme
 import com.composetest.core.domain.usecases.AnalyticsUseCase
-import com.composetest.core.router.extensions.getParam
 import com.composetest.core.router.destinations.home.Home2Destination
 import com.composetest.core.router.destinations.home.HomeDestination
+import com.composetest.core.router.extensions.getParam
 import com.composetest.core.router.extensions.getResultFlow
 import com.composetest.core.router.managers.NavigationManager
 import com.composetest.core.router.providers.NavHostControllerProvider
 import com.composetest.core.router.results.home.Home2Result
+import com.composetest.core.ui.bases.BaseViewModel
 import com.composetest.feature.home.ui.home.analytics.HomeAnalytic
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

@@ -18,9 +18,9 @@ import com.composetest.core.router.providers.NavHostControllerProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.transform
-import com.composetest.core.router.interfaces.NavType as NavTypes
 import kotlin.reflect.KType
 import kotlin.reflect.full.companionObjectInstance
+import com.composetest.core.router.interfaces.NavType as NavTypes
 
 inline fun <reified Destination : Any> NavigationManager.getParam(): Destination {
     val navTypes = getNavTypes(Destination::class.companionObjectInstance)

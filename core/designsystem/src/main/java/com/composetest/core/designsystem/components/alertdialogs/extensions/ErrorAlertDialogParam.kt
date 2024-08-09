@@ -1,7 +1,7 @@
 package com.composetest.core.designsystem.components.alertdialogs.extensions
 
-import com.composetest.common.throwables.NetworkThrowable
 import com.composetest.core.designsystem.components.alertdialogs.params.ErrorAlertDialogParam
+import com.composetest.core.domain.throwables.network.NetworkThrowable
 
 val Throwable?.errorAlertDialogParam
     get() = this?.let {

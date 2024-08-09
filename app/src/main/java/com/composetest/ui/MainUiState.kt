@@ -1,6 +1,6 @@
 package com.composetest.ui
 
-import com.composetest.common.models.AppThemeModel
+import com.composetest.core.domain.models.AppThemeModel
 import com.composetest.core.ui.interfaces.BaseUiState
 
 data class MainUiState(

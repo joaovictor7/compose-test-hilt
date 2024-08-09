@@ -1,10 +1,10 @@
 package com.composetest.core.data.di
 
 import com.composetest.common.providers.BuildConfigProvider
-import com.composetest.common.throwables.UnauthorizedRequestThrowable
 import com.composetest.core.data.di.qualifiers.Api
 import com.composetest.core.data.enums.NetworkApi
 import com.composetest.core.data.extensions.setHost
+import com.composetest.core.domain.throwables.network.UnauthorizedRequestThrowable
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

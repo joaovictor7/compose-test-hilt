@@ -3,8 +3,8 @@ package com.composetest.core.data.managers
 import com.composetest.common.di.qualifiers.Dispatcher
 import com.composetest.common.enums.Dispatchers
 import com.composetest.common.providers.BuildConfigProvider
-import com.composetest.common.providers.NetworkProvider
-import com.composetest.common.throwables.NetworkThrowable
+import com.composetest.core.data.providers.NetworkProvider
+import com.composetest.core.domain.throwables.network.NetworkThrowable
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext

@@ -1,10 +1,11 @@
 package com.composetest.feature.login.ui.login
 
-import com.composetest.common.enums.Theme
 import com.composetest.common.providers.BuildConfigProvider
-import com.composetest.core.designsystem.components.alertdialogs.extensions.errorAlertDialogParam
 import com.composetest.core.domain.managers.AppThemeManager
+import com.composetest.core.designsystem.components.alertdialogs.extensions.errorAlertDialogParam
+import com.composetest.core.domain.enums.Theme
 import com.composetest.core.domain.managers.SessionManager
+import com.composetest.core.domain.models.AuthenticationCredentialsModel
 import com.composetest.core.domain.throwables.InvalidCredentialsThrowable
 import com.composetest.core.domain.usecases.AnalyticsUseCase
 import com.composetest.core.domain.usecases.AuthenticationUseCase
@@ -51,7 +52,9 @@ internal class LoginViewModel @Inject constructor(
                 updateUiState { it.setLoading(true).setShowInvalidCredentialsMsg(false) }
             }
         ) {
-            authenticationUseCase(loginFormModel.email, loginFormModel.password)
+            authenticationUseCase(
+                AuthenticationCredentialsModel(loginFormModel.email, loginFormModel.password)
+            )
             navigateToHome()
         }
     }

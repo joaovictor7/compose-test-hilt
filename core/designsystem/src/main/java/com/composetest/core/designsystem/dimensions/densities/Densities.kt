@@ -20,10 +20,11 @@ internal enum class Densities(private val density: Int = 0) {
         }
 
         @Composable
-        fun <T> getDensity(default: T, sw360: T? = null, sw600: T? = null) = when (getCurrentDensity()) {
-            SW_360 -> sw360
-            SW_600 -> sw600
-            DEFAULT -> default
-        } ?: default
+        fun <T> getDensity(default: T, sw360: T? = null, sw600: T? = null) =
+            when (getCurrentDensity()) {
+                SW_360 -> sw360
+                SW_600 -> sw600
+                DEFAULT -> default
+            } ?: default
     }
 }

@@ -4,5 +4,5 @@ import com.composetest.core.designsystem.components.alertdialogs.params.ErrorAle
 
 interface BaseUiState {
     val isLoading: Boolean get() = false
-    val errorAlertDialogParam: ErrorAlertDialogParam? get() =  null
+    val errorAlertDialogParam: ErrorAlertDialogParam? get() = null
 }

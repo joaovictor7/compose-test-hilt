@@ -9,10 +9,11 @@ internal enum class AppBuildType(val buildTypeName: String) {
     val isInternal get() = this in listOf(RELEASE, DEBUG)
     val isDebuggable get() = this in listOf(DEBUG, STAGING)
     val buildTypeNameUpperCase get() = buildTypeName.uppercase()
-    val applicationIdSuffix get() = when(this) {
-        DEBUG -> DEV_APP_ID_SUFFIX
-        else -> buildTypeName
-    }
+    val applicationIdSuffix
+        get() = when (this) {
+            DEBUG -> DEV_APP_ID_SUFFIX
+            else -> buildTypeName
+        }
 
     private companion object {
         const val DEV_APP_ID_SUFFIX = "dev"

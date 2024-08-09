@@ -2,7 +2,7 @@ package com.composetest.core.domain.usecases
 
 import com.composetest.common.analytics.ErrorAnalyticEvent
 import com.composetest.common.analytics.interfaces.AnalyticEvent
-import com.composetest.core.data.data.repositories.remote.AnalyticsRepository
+import com.composetest.core.domain.repositories.AnalyticsRepository
 import javax.inject.Inject
 
 class AnalyticsUseCase @Inject constructor(

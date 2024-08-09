@@ -13,7 +13,8 @@ import dagger.hilt.components.SingletonComponent
 internal object DaoModule {
 
     @Provides
-    fun sessionEntityDao(appDatabase: AppDatabase): SessionEntityDao = appDatabase.sessionEntityDao()
+    fun sessionEntityDao(appDatabase: AppDatabase): SessionEntityDao =
+        appDatabase.sessionEntityDao()
 
     @Provides
     fun userEntityDao(appDatabase: AppDatabase): UserEntityDao = appDatabase.userEntityDao()

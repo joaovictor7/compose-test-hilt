@@ -1,6 +1,6 @@
 package com.composetest.feature.login.ui.login
 
-import com.composetest.common.enums.Theme
+import com.composetest.core.domain.enums.Theme
 import com.composetest.core.ui.interfaces.CommandReceiver
 
 internal interface LoginCommandReceiver : CommandReceiver<LoginCommandReceiver> {

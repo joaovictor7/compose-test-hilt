@@ -5,10 +5,10 @@ import com.composetest.common.enums.Flavor
 import com.composetest.common.models.BuildConfigFieldsModel
 import com.composetest.common.models.BuildConfigModel
 import com.composetest.common.providers.BuildConfigProvider
-import com.composetest.common.throwables.NetworkThrowable
 import com.composetest.core.designsystem.components.alertdialogs.params.ErrorAlertDialogParam
 import com.composetest.core.domain.managers.SessionManager
 import com.composetest.core.domain.throwables.InvalidCredentialsThrowable
+import com.composetest.core.domain.throwables.network.NetworkThrowable
 import com.composetest.core.domain.usecases.AuthenticationUseCase
 import com.composetest.core.router.destinations.home.HomeDestination
 import com.composetest.core.router.destinations.home.navtypes.InnerHome
@@ -103,7 +103,7 @@ class LoginViewModelTest : CoroutinesTest {
     fun `misleanding credentials login`() =
         runStateFlowTest(testDispatcher, viewModel.uiState) { job, collectedStates ->
             coEvery {
-                authenticationUseCase.invoke(any(), any())
+                authenticationUseCase.invoke(any())
             } coAnswers { withContext(testDispatcher) { throw InvalidCredentialsThrowable() } }
 
             viewModel.executeCommand(LoginCommands.WriteData("teste@teste.com", "password"))
@@ -141,6 +141,17 @@ class LoginViewModelTest : CoroutinesTest {
                         versionName = buildConfigModelMock.versionNameForView,
                         enableLoginButton = true,
                         invalidCredentials = true,
+                        isLoading = true,
+                        loginFormModel = LoginFormModel(
+                            email = "teste@teste.com",
+                            password = "password"
+                        )
+                    ),
+                    LoginUiState(
+                        needsLogin = true,
+                        versionName = buildConfigModelMock.versionNameForView,
+                        enableLoginButton = true,
+                        invalidCredentials = true,
                         loginFormModel = LoginFormModel(
                             email = "teste@teste.com",
                             password = "password"
@@ -155,7 +166,7 @@ class LoginViewModelTest : CoroutinesTest {
     fun `success login`() =
         runStateFlowTest(testDispatcher, viewModel.uiState) { job, collectedStates ->
             coEvery {
-                withContext(testDispatcher) { authenticationUseCase(any(), any()) }
+                withContext(testDispatcher) { authenticationUseCase(any()) }
             } coAnswers { withContext(testDispatcher) {} }
 
             viewModel.executeCommand(LoginCommands.WriteData("teste@teste.com", "password"))
@@ -212,7 +223,7 @@ class LoginViewModelTest : CoroutinesTest {
     fun `error network`() =
         runStateFlowTest(testDispatcher, viewModel.uiState) { job, collectedStates ->
             coEvery {
-                authenticationUseCase.invoke(any(), any())
+                authenticationUseCase(any())
             } coAnswers { withContext(testDispatcher) { throw NetworkThrowable() } }
 
             viewModel.executeCommand(LoginCommands.WriteData("teste@teste.com", "password"))
@@ -240,6 +251,17 @@ class LoginViewModelTest : CoroutinesTest {
                         versionName = buildConfigModelMock.versionNameForView,
                         enableLoginButton = true,
                         isLoading = true,
+                        loginFormModel = LoginFormModel(
+                            email = "teste@teste.com",
+                            password = "password"
+                        )
+                    ),
+                    LoginUiState(
+                        needsLogin = true,
+                        versionName = buildConfigModelMock.versionNameForView,
+                        enableLoginButton = true,
+                        isLoading = true,
+                        errorAlertDialogParam = ErrorAlertDialogParam.networkErrorAlertDialogParam,
                         loginFormModel = LoginFormModel(
                             email = "teste@teste.com",
                             password = "password"

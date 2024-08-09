@@ -17,11 +17,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.designsystem.utils.lifecycleEvent
-import com.composetest.feature.login.navigation.loginNavGraph
-import com.composetest.feature.home.navigation.homeNavGraph
 import com.composetest.core.router.destinations.login.LoginDestination
 import com.composetest.core.router.providers.NavHostControllerProvider
 import com.composetest.core.ui.interfaces.Command
+import com.composetest.feature.home.navigation.homeNavGraph
+import com.composetest.feature.login.navigation.loginNavGraph
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject

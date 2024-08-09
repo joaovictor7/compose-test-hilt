@@ -23,7 +23,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import com.composetest.common.extensions.isDarkMode
 import com.composetest.core.designsystem.components.alertdialogs.ErrorAlertDialog
 import com.composetest.core.designsystem.components.alertdialogs.params.ErrorAlertDialogParam
 import com.composetest.core.designsystem.components.buttons.Button
@@ -32,7 +31,8 @@ import com.composetest.core.designsystem.components.textfields.enums.TextFieldIc
 import com.composetest.core.designsystem.components.textfields.params.TextFieldTrailingIconParam
 import com.composetest.core.designsystem.compositions.LocalThemeProvider
 import com.composetest.core.designsystem.dimensions.spacings
-import com.composetest.core.designsystem.extensions.modifiers.verticalTopBackgroundBrush
+import com.composetest.core.designsystem.extensions.isDarkMode
+import com.composetest.core.designsystem.extensions.verticalTopBackgroundBrush
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.interfaces.Screen

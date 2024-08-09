@@ -1,7 +1,7 @@
 package com.composetest.core.domain.managers
 
-import com.composetest.common.enums.Theme
-import com.composetest.common.models.AppThemeModel
+import com.composetest.core.domain.enums.Theme
+import com.composetest.core.domain.models.AppThemeModel
 import kotlinx.coroutines.flow.Flow
 
 interface AppThemeManager {

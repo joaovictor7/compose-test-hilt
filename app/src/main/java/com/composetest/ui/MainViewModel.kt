@@ -2,12 +2,12 @@ package com.composetest.ui
 
 import com.composetest.core.domain.managers.AppThemeManager
 import com.composetest.core.domain.managers.SessionManager
-import com.composetest.core.ui.bases.BaseViewModel
 import com.composetest.core.domain.usecases.AnalyticsUseCase
 import com.composetest.core.router.destinations.login.LoginDestination
 import com.composetest.core.router.enums.NavigationMode
-import com.composetest.core.router.providers.NavHostControllerProvider
 import com.composetest.core.router.managers.NavigationManager
+import com.composetest.core.router.providers.NavHostControllerProvider
+import com.composetest.core.ui.bases.BaseViewModel
 import com.composetest.ui.analytics.MainAnalytic
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -33,7 +33,10 @@ class MainViewModel @Inject constructor(
             val validSession = sessionManager.isSessionValid()
             val currentScreenIsLogin = navHostControllerProvider.isCurrentScreen(LoginDestination)
             if (!validSession && !currentScreenIsLogin) {
-                navigationManager.navigate(LoginDestination, NavigationMode.REMOVE_ALL_SCREENS_STACK)
+                navigationManager.navigate(
+                    LoginDestination,
+                    NavigationMode.REMOVE_ALL_SCREENS_STACK
+                )
             }
         }
     }

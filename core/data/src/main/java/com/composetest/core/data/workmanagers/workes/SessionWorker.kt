@@ -10,10 +10,10 @@ import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkerParameters
 import com.composetest.common.analytics.WorkerErrorAnalyticEvent
-import com.composetest.core.data.data.repositories.local.SessionRepository
-import com.composetest.core.data.data.repositories.remote.AnalyticsRepository
 import com.composetest.core.data.enums.WorkManagerName
 import com.composetest.core.data.workmanagers.WorkManager
+import com.composetest.core.domain.repositories.AnalyticsRepository
+import com.composetest.core.domain.repositories.SessionRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import java.time.Duration

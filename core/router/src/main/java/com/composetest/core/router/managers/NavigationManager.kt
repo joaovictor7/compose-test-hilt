@@ -11,12 +11,14 @@ interface NavigationManager {
         destination: Destination,
         navigationMode: NavigationMode? = null
     )
+
     fun navigateBack()
     fun <Result : ResultParam> navigateBack(result: Result)
     suspend fun <Destination : Any> asyncNavigate(
         destination: Destination,
         navigationMode: NavigationMode? = null
     )
+
     suspend fun asyncNavigateBack()
     suspend fun <Result : ResultParam> asyncNavigateBack(result: Result)
 }

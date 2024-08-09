@@ -1,17 +1,15 @@
 package com.composetest.core.data.di
 
-import com.composetest.core.data.data.repositories.local.AppThemeRepository
-import com.composetest.core.data.data.repositories.local.AppThemeRepositoryImpl
-import com.composetest.core.data.data.repositories.local.SessionRepository
-import com.composetest.core.data.data.repositories.local.SessionRepositoryImpl
-import com.composetest.core.data.data.repositories.local.UserRepository
-import com.composetest.core.data.data.repositories.local.UserRepositoryImpl
-import com.composetest.core.data.data.repositories.local.WorkManagerRepository
-import com.composetest.core.data.data.repositories.local.WorkManagerRepositoryImpl
-import com.composetest.core.data.data.repositories.remote.AnalyticsRepository
-import com.composetest.core.data.data.repositories.remote.AnalyticsRepositoryImpl
-import com.composetest.core.data.data.repositories.remote.AuthenticationRepository
-import com.composetest.core.data.data.repositories.remote.AuthenticationRepositoryImpl
+import com.composetest.core.data.repositories.AnalyticsRepositoryImpl
+import com.composetest.core.data.repositories.AppThemeRepositoryImpl
+import com.composetest.core.data.repositories.AuthenticationRepositoryImpl
+import com.composetest.core.data.repositories.SessionRepositoryImpl
+import com.composetest.core.data.repositories.UserRepositoryImpl
+import com.composetest.core.domain.repositories.AnalyticsRepository
+import com.composetest.core.domain.repositories.AppThemeRepository
+import com.composetest.core.domain.repositories.AuthenticationRepository
+import com.composetest.core.domain.repositories.SessionRepository
+import com.composetest.core.domain.repositories.UserRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -28,11 +26,6 @@ internal abstract class RepositoryModule {
     abstract fun appThemeRepository(
         appThemeRepositoryImpl: AppThemeRepositoryImpl
     ): AppThemeRepository
-
-    @Binds
-    abstract fun workManagerRepository(
-        workManagerRepositoryImpl: WorkManagerRepositoryImpl
-    ): WorkManagerRepository
 
     @Binds
     abstract fun analyticsRepository(

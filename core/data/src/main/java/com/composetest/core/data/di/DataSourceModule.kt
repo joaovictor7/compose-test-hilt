@@ -1,17 +1,16 @@
 package com.composetest.core.data.di
 
-import com.composetest.common.providers.DateTimeProvider
-import com.composetest.core.data.data.datasources.local.PreferenceDataSource
-import com.composetest.core.data.data.datasources.local.PreferenceDataSourceImpl
-import com.composetest.core.data.data.datasources.local.SessionDataSource
-import com.composetest.core.data.data.datasources.local.SessionDataSourceImpl
-import com.composetest.core.data.data.datasources.local.UserDataSource
-import com.composetest.core.data.data.datasources.local.UserDataSourceImpl
-import com.composetest.core.data.data.datasources.remote.AuthenticationDataSource
-import com.composetest.core.data.data.datasources.remote.AuthenticationDataSourceImpl
-import com.composetest.core.data.data.datasources.remote.AuthenticationFakeDataSourceImpl
-import com.composetest.core.data.data.datasources.remote.FirebaseAnalyticsDataSource
-import com.composetest.core.data.data.datasources.remote.FirebaseAnalyticsDataSourceImpl
+import com.composetest.core.data.datasources.local.PreferenceDataSource
+import com.composetest.core.data.datasources.local.PreferenceDataSourceImpl
+import com.composetest.core.data.datasources.local.SessionDataSource
+import com.composetest.core.data.datasources.local.SessionDataSourceImpl
+import com.composetest.core.data.datasources.local.UserDataSource
+import com.composetest.core.data.datasources.local.UserDataSourceImpl
+import com.composetest.core.data.datasources.remote.AuthenticationDataSource
+import com.composetest.core.data.datasources.remote.AuthenticationDataSourceImpl
+import com.composetest.core.data.datasources.remote.AuthenticationFakeDataSourceImpl
+import com.composetest.core.data.datasources.remote.FirebaseAnalyticsDataSource
+import com.composetest.core.data.datasources.remote.FirebaseAnalyticsDataSourceImpl
 import com.composetest.core.data.di.qualifiers.Api
 import com.composetest.core.data.enums.NetworkApi
 import com.composetest.core.data.managers.RemoteCallManager
@@ -52,7 +51,6 @@ internal object DataSourceProvidesModule {
     fun authenticationDataSource(
         fakeInstanceProvider: FakeInstanceProvider,
         @Api(NetworkApi.BFF) bffApi: HttpClient,
-        dateTimeProvider: DateTimeProvider,
         safeRemoteCallManager: RemoteCallManager
     ): AuthenticationDataSource = fakeInstanceProvider.getInstance(
         instance = AuthenticationDataSourceImpl(
@@ -60,7 +58,6 @@ internal object DataSourceProvidesModule {
             safeRemoteCallManager = safeRemoteCallManager
         ),
         fakeInstance = AuthenticationFakeDataSourceImpl(
-            dateTimeProvider = dateTimeProvider,
             safeRemoteCallManager = safeRemoteCallManager
         )
     )

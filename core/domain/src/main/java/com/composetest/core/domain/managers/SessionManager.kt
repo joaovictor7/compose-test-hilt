@@ -1,10 +1,11 @@
 package com.composetest.core.domain.managers
 
-import com.composetest.core.domain.models.session.SessionWithUserModel
+import com.composetest.core.domain.models.UserModel
+import com.composetest.core.domain.models.session.SessionModel
 
 interface SessionManager {
 
-    suspend fun createSession(sessionWithUser: SessionWithUserModel)
+    suspend fun createSession(session: SessionModel, user: UserModel)
 
     suspend fun needsLogin(): Boolean
 
