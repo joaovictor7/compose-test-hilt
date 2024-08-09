@@ -11,5 +11,5 @@ dependencies {
     implementation(projects.common)
     implementation(libs.androidx.dataStore)
     implementation(libs.room)
-    ksp(libs.roomCompile)
+    ksp(libs.room.compile)
 }

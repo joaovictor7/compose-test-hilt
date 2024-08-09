@@ -1,11 +1,8 @@
 package com.composetest.core.designsystem.extensions
 
+import androidx.annotation.FloatRange
 import androidx.compose.ui.graphics.Color
 
-fun Color.opacity(value: Float) = this.copy(
-    alpha = when {
-        value >= 1f -> 1f
-        value <= 0f -> 0f
-        else -> value
-    }
-)
+fun Color.opacity(
+    @FloatRange(from = 0.0, to = 1.0) value: Float
+) = this.copy(alpha = value)

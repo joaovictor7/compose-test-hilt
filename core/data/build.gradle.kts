@@ -18,7 +18,7 @@ dependencies {
     implementation(libs.ktor.client.negotiation)
     implementation(libs.ktor.client.serialization)
     implementation(libs.ktor.client.logging)
-    implementation(libs.androidx.workManager)
+    implementation(libs.androidx.work.manager)
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.crashlytics)
     implementation(libs.slf4j.api)

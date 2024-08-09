@@ -1,13 +1,13 @@
 [versions]
-agp = "8.5.1"
-kotlin = "2.0.0"
+agp = "8.5.2"
+kotlin = "2.0.10"
 kotlinJsonSerialization = "1.7.1"
 kotlinCoroutine = "1.8.1"
 junit5 = "5.10.3"
 lifecycleRuntime = "2.8.4"
 activityCompose = "1.9.1"
 androidDataStore = "1.1.1"
-androidHilt = "2.51.1"
+androidHilt = "2.52"
 androidXHilt = "1.2.0"
 composeBom = "2024.06.00"
 composeNavigation = "2.8.0-beta07"
@@ -15,7 +15,7 @@ googleServices = "4.4.2"
 firebaseBom = "33.1.2"
 firebaseCrashlytics = "3.0.2"
 mockK = "1.13.12"
-ksp = "2.0.0-1.0.24"
+ksp = "2.0.10-1.0.24"
 room = "2.6.1"
 sqlCipher = "4.6.0"
 sqLite = "2.4.0"
@@ -41,14 +41,14 @@ android-tools-build-gradle = { group = "com.android.tools.build", name = "gradle
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntime" }
 androidx-lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycleRuntime" }
 androidx-dataStore = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "androidDataStore" }
-androidx-workManager = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "workManager" }
-androidx-splashScreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "splashScreen" }
+androidx-work-manager = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "workManager" }
+androidx-splash-screen = { group = "androidx.core", name = "core-splashscreen", version.ref = "splashScreen" }
 
 # Room
 room = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
-roomCompile = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
-sqlCipher = { group = "net.zetetic", name = "sqlcipher-android", version.ref = "sqlCipher" }
-sqLite = { group = "androidx.sqlite", name = "sqlite-ktx", version.ref = "sqLite" }
+room-compile = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+sql-cipher = { group = "net.zetetic", name = "sqlcipher-android", version.ref = "sqlCipher" }
+sqlite = { group = "androidx.sqlite", name = "sqlite-ktx", version.ref = "sqLite" }
 
 # Hilt
 android-hilt = { group = "com.google.dagger", name = "hilt-android", version.ref = "androidHilt" }
