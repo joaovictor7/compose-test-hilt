@@ -62,7 +62,7 @@ internal class ApplicationConventionPlugin : Plugin<Project> {
         if (propertyFile.exists()) {
             val property = Properties().apply { propertyFile.inputStream().use { load(it) } }
             apkSigningConfig.create(name.signingName) {
-                storeFile = file("../key/${name.signingName}/key-chain")
+                storeFile = file("../keys/${name.signingName}/key-chain")
                 storePassword = property.getProperty("key.store.password")
                 keyAlias = property.getProperty("key.alias")
                 keyPassword = property.getProperty("key.alias.password")
