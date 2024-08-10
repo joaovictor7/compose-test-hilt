@@ -5,7 +5,8 @@ import com.composetest.common.enums.Flavor
 import com.composetest.common.models.BuildConfigFieldsModel
 import com.composetest.common.models.BuildConfigModel
 import com.composetest.common.providers.BuildConfigProvider
-import com.composetest.core.designsystem.components.alertdialogs.params.ErrorAlertDialogParam
+import com.composetest.core.designsystem.components.alertdialogs.params.DefaultAlertDialogParam
+import com.composetest.core.designsystem.utils.AlertDialogUtils
 import com.composetest.core.domain.managers.SessionManager
 import com.composetest.core.domain.throwables.InvalidCredentialsThrowable
 import com.composetest.core.domain.throwables.network.NetworkThrowable
@@ -22,6 +23,7 @@ import com.composetest.feature.login.ui.login.LoginUiState
 import com.composetest.feature.login.ui.login.LoginViewModel
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.test.TestDispatcher
 import kotlinx.coroutines.withContext
@@ -52,6 +54,12 @@ class LoginViewModelTest : CoroutinesTest {
     private val authenticationUseCase: AuthenticationUseCase = mockk()
     private val sessionManager: SessionManager = mockk {
         coEvery { needsLogin() } returns true
+    }
+    private val networkAlertDialogParam = DefaultAlertDialogParam.getNetworkAlertDialogParam { }
+    private val alertDialogUtils: AlertDialogUtils = mockk {
+        every {
+            getErrorAlertDialogParam(any<NetworkThrowable>(), any())
+        } returns networkAlertDialogParam
     }
 
     private lateinit var viewModel: LoginViewModel
@@ -261,7 +269,7 @@ class LoginViewModelTest : CoroutinesTest {
                         versionName = buildConfigModelMock.versionNameForView,
                         enableLoginButton = true,
                         isLoading = true,
-                        errorAlertDialogParam = ErrorAlertDialogParam.networkErrorAlertDialogParam,
+                        defaultAlertDialogParam = networkAlertDialogParam,
                         loginFormModel = LoginFormModel(
                             email = "teste@teste.com",
                             password = "password"
@@ -271,7 +279,7 @@ class LoginViewModelTest : CoroutinesTest {
                         needsLogin = true,
                         versionName = buildConfigModelMock.versionNameForView,
                         enableLoginButton = true,
-                        errorAlertDialogParam = ErrorAlertDialogParam.networkErrorAlertDialogParam,
+                        defaultAlertDialogParam = networkAlertDialogParam,
                         loginFormModel = LoginFormModel(
                             email = "teste@teste.com",
                             password = "password"
@@ -286,6 +294,7 @@ class LoginViewModelTest : CoroutinesTest {
         navigationManager = navigationManager,
         buildConfigProvider = buildConfigProvider,
         appThemeManager = mockk(),
+        alertDialogUtils = alertDialogUtils,
         authenticationUseCase = authenticationUseCase,
         analyticsUseCase = mockk(relaxed = true),
         sessionManager = sessionManager

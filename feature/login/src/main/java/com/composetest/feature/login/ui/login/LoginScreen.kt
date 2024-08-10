@@ -23,8 +23,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import com.composetest.core.designsystem.components.alertdialogs.ErrorAlertDialog
-import com.composetest.core.designsystem.components.alertdialogs.params.ErrorAlertDialogParam
+import com.composetest.core.designsystem.components.alertdialogs.DefaultAlertDialog
+import com.composetest.core.designsystem.components.alertdialogs.params.DefaultAlertDialogParam
 import com.composetest.core.designsystem.components.buttons.Button
 import com.composetest.core.designsystem.components.textfields.OutlinedTextField
 import com.composetest.core.designsystem.components.textfields.enums.TextFieldIcons
@@ -70,9 +70,7 @@ internal object LoginScreen : Screen<LoginUiState, LoginCommandReceiver> {
             )
         }
         HandleEffects(onExecuteCommand = onExecuteCommand)
-        HandleErrorAlert(errorAlertDialogParam = uiState.errorAlertDialogParam) {
-            onExecuteCommand(LoginCommands.HandleLoginError)
-        }
+        HandleAlertDialog(defaultAlertDialogParam = uiState.defaultAlertDialogParam)
     }
 }
 
@@ -150,12 +148,10 @@ private fun HandleEffects(onExecuteCommand: (Command<LoginCommandReceiver>) -> U
 }
 
 @Composable
-private fun HandleErrorAlert(
-    errorAlertDialogParam: ErrorAlertDialogParam?,
-    onDismiss: () -> Unit
-) = errorAlertDialogParam?.let {
-    ErrorAlertDialog(errorParam = it, onClickDismiss = onDismiss)
-}
+private fun HandleAlertDialog(defaultAlertDialogParam: DefaultAlertDialogParam?) =
+    defaultAlertDialogParam?.let {
+        DefaultAlertDialog(param = it)
+    }
 
 @Composable
 @Preview

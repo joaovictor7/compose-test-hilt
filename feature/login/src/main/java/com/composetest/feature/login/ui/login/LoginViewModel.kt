@@ -1,8 +1,8 @@
 package com.composetest.feature.login.ui.login
 
 import com.composetest.common.providers.BuildConfigProvider
+import com.composetest.core.designsystem.utils.AlertDialogUtils
 import com.composetest.core.domain.managers.AppThemeManager
-import com.composetest.core.designsystem.components.alertdialogs.extensions.errorAlertDialogParam
 import com.composetest.core.domain.enums.Theme
 import com.composetest.core.domain.managers.SessionManager
 import com.composetest.core.domain.models.AuthenticationCredentialsModel
@@ -26,6 +26,7 @@ internal class LoginViewModel @Inject constructor(
     private val appThemeManager: AppThemeManager,
     private val authenticationUseCase: AuthenticationUseCase,
     private val sessionManager: SessionManager,
+    private val alertDialogUtils: AlertDialogUtils,
     override val analyticsUseCase: AnalyticsUseCase
 ) : BaseViewModel<LoginUiState>(LoginScreenAnalytic, LoginUiState()), LoginCommandReceiver {
 
@@ -71,12 +72,16 @@ internal class LoginViewModel @Inject constructor(
         appThemeManager.setCustomTheme(theme)
     }
 
-    override fun handleLoginError(throwable: Throwable?) {
-        updateUiState {
+    private fun handleLoginError(throwable: Throwable?) {
+        updateUiState { uiState ->
             if (throwable is InvalidCredentialsThrowable) {
-                it.setShowInvalidCredentialsMsg(true)
+                uiState.setShowInvalidCredentialsMsg(true)
             } else {
-                it.setAlertDialogError(throwable.errorAlertDialogParam)
+                uiState.setDefaultAlertDialog(
+                    alertDialogUtils.getErrorAlertDialogParam(throwable) {
+                        updateUiState { it.setDefaultAlertDialog(null) }
+                    }
+                )
             }
         }
     }

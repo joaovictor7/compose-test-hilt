@@ -1,6 +1,6 @@
 package com.composetest.feature.login.ui.login
 
-import com.composetest.core.designsystem.components.alertdialogs.params.ErrorAlertDialogParam
+import com.composetest.core.designsystem.components.alertdialogs.params.DefaultAlertDialogParam
 import com.composetest.core.designsystem.components.textfields.enums.TextFieldIcons
 import com.composetest.core.designsystem.components.textfields.params.TextFieldTrailingIconParam
 import com.composetest.core.ui.interfaces.BaseUiState
@@ -14,8 +14,8 @@ internal data class LoginUiState(
     val invalidEmail: Boolean = false,
     val enableLoginButton: Boolean = false,
     val invalidCredentials: Boolean = false,
-    override var isLoading: Boolean = false,
-    override val errorAlertDialogParam: ErrorAlertDialogParam? = null
+    val defaultAlertDialogParam: DefaultAlertDialogParam? = null,
+    override var isLoading: Boolean = false
 ) : BaseUiState {
     val emailTrailingIconTextField
         get() = if (invalidEmail)
@@ -52,7 +52,7 @@ internal data class LoginUiState(
 
     fun setLoading(isLoading: Boolean) = copy(isLoading = isLoading)
 
-    fun setAlertDialogError(errorAlertDialogParam: ErrorAlertDialogParam?) = copy(
-        errorAlertDialogParam = errorAlertDialogParam
+    fun setDefaultAlertDialog(defaultAlertDialogParam: DefaultAlertDialogParam?) = copy(
+        defaultAlertDialogParam = defaultAlertDialogParam
     )
 }

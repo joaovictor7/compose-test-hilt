@@ -33,10 +33,4 @@ internal sealed interface LoginCommands : Command<LoginCommandReceiver> {
             receiver.login()
         }
     }
-
-    data object HandleLoginError : LoginCommands {
-        override fun execute(receiver: LoginCommandReceiver) {
-            receiver.handleLoginError()
-        }
-    }
 }

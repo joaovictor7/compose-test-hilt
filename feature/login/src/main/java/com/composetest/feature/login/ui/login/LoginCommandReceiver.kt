@@ -8,5 +8,4 @@ internal interface LoginCommandReceiver : CommandReceiver<LoginCommandReceiver> 
     fun setCustomTheme(enterScreen: Boolean, currentAppTheme: Theme)
     fun checkShowInvalidEmailMsg()
     fun login()
-    fun handleLoginError(throwable: Throwable? = null)
 }

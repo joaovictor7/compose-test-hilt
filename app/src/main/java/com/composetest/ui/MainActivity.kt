@@ -15,6 +15,7 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import com.composetest.core.designsystem.components.alertdialogs.DefaultAlertDialog
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.designsystem.utils.lifecycleEvent
 import com.composetest.core.router.destinations.login.LoginDestination
@@ -46,6 +47,9 @@ class MainActivity : ComponentActivity() {
                 dynamicColor = uiState.appTheme.dynamicColors,
                 theme = uiState.appTheme.theme
             ) {
+                uiState.defaultAlertDialogParam?.let {
+                    DefaultAlertDialog(param = it)
+                }
                 Navigation(
                     navHostControllerProvider = navHostControllerProvider,
                     firstScreenDestination = LoginDestination::class
