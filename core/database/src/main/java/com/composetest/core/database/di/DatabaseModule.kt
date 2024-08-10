@@ -7,7 +7,7 @@ import com.composetest.common.providers.BuildConfigProvider
 import com.composetest.core.database.constants.DatabaseConfig
 import com.composetest.core.database.converters.LocalDateTimeConverter
 import com.composetest.core.database.database.AppDatabase
-import com.composetest.core.database.usecases.GetSecretKeyUseCase
+import com.composetest.core.database.providers.SecretKeyProvider
 import com.composetest.core.security.providers.SqliteCipherProvider
 import dagger.Module
 import dagger.Provides
@@ -27,13 +27,15 @@ internal object DatabaseModule {
         @ApplicationContext context: Context,
         buildConfigProvider: BuildConfigProvider,
         sqliteCipherProvider: SqliteCipherProvider,
-        getSecretKeyUseCase: GetSecretKeyUseCase
+        secretKeyProvider: SecretKeyProvider
     ): AppDatabase = Room.databaseBuilder(
         context,
         AppDatabase::class.java,
         DatabaseConfig.DATABASE_NAME
     )
-        .openHelperFactory(getSecretKeyUseCase()?.let { sqliteCipherProvider.getFactory(it) })
+        .openHelperFactory(
+            secretKeyProvider.getDatabaseSecretKey()?.let { sqliteCipherProvider.getFactory(it) }
+        )
         .addTypeConverter(LocalDateTimeConverter())
         .apply {
             if (!buildConfigProvider.get.isRelease) {
