@@ -51,7 +51,7 @@ abstract class BaseViewModel<UiState : BaseUiState>(
                     analyticsUseCase(ErrorAnalyticEvent(it, analyticScreen))
                     onError?.invoke(it)
                 }
-                .collect { onCollect(it) }
+                .collect(onCollect)
         }
     }
 
@@ -61,22 +61,20 @@ abstract class BaseViewModel<UiState : BaseUiState>(
         onError: (suspend (Throwable) -> Unit)? = null,
         onAsyncTask: suspend CoroutineScope.() -> Unit
     ) {
-        viewModelScope.launch {
-            launch {
-                safeRunAsyncTask(onError = onError) {
-                    onStart?.invoke()
-                    onAsyncTask()
-                }
+        with(viewModelScope) {
+            safeRunAsyncTask(onError = onError) {
+                onStart?.invoke()
+                onAsyncTask()
             }.invokeOnCompletion {
-                launch { safeRunAsyncTask { onCompletion?.invoke() } }
+                safeRunAsyncTask { onCompletion?.invoke() }
             }
         }
     }
 
-    private suspend fun safeRunAsyncTask(
+    private fun CoroutineScope.safeRunAsyncTask(
         onError: (suspend (Throwable) -> Unit)? = null,
         onAsyncTask: suspend () -> Unit
-    ) {
+    ) = launch {
         runCatching {
             onAsyncTask()
         }.onFailure {
