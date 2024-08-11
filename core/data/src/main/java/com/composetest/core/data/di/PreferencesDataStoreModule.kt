@@ -8,13 +8,14 @@ import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.preferencesDataStoreFile
-import com.composetest.core.data.constants.preferencesdatastore.PreferencesDataSettings.APP_PREFERENCES_DATA_STORE
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
+
+private const val APP_PREFERENCES_DATA_STORE = "app_preferences_data_store"
 
 @Module
 @InstallIn(SingletonComponent::class)

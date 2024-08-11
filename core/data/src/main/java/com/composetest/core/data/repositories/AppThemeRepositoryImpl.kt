@@ -1,6 +1,6 @@
 package com.composetest.core.data.repositories
 
-import com.composetest.core.data.constants.preferencesdatastore.PreferencesDataKeys
+import com.composetest.core.data.preferencesdatastore.PreferencesDataKeys
 import com.composetest.core.data.datasources.local.PreferenceDataSource
 import com.composetest.core.data.mappers.AppThemeMapper
 import com.composetest.core.domain.enums.Theme

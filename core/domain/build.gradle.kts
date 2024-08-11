@@ -7,5 +7,6 @@ android {
 }
 
 dependencies {
+    implementation(projects.core.security)
     implementation(projects.common)
 }
