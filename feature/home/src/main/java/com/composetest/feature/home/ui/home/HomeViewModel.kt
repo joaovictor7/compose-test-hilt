@@ -2,7 +2,7 @@ package com.composetest.feature.home.ui.home
 
 import com.composetest.core.domain.managers.AppThemeManager
 import com.composetest.core.domain.enums.Theme
-import com.composetest.core.domain.usecases.AnalyticsUseCase
+import com.composetest.core.domain.usecases.SendAnalyticsUseCase
 import com.composetest.core.router.destinations.home.Home2Destination
 import com.composetest.core.router.destinations.home.HomeDestination
 import com.composetest.core.router.extensions.getParam
@@ -20,7 +20,7 @@ internal class HomeViewModel @Inject constructor(
     private val navigationManager: NavigationManager,
     private val navHostControllerProvider: NavHostControllerProvider,
     private val appThemeManager: AppThemeManager,
-    override val analyticsUseCase: AnalyticsUseCase
+    override val sendAnalyticsUseCase: SendAnalyticsUseCase
 ) : BaseViewModel<HomeUiState>(HomeAnalytic, HomeUiState()), HomeCommandReceiver {
 
     override val commandReceiver = this

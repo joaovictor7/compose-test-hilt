@@ -7,7 +7,7 @@ import com.composetest.core.domain.enums.Theme
 import com.composetest.core.domain.managers.SessionManager
 import com.composetest.core.domain.models.AuthenticationCredentialsModel
 import com.composetest.core.domain.throwables.InvalidCredentialsThrowable
-import com.composetest.core.domain.usecases.AnalyticsUseCase
+import com.composetest.core.domain.usecases.SendAnalyticsUseCase
 import com.composetest.core.domain.usecases.AuthenticationUseCase
 import com.composetest.core.router.destinations.home.HomeDestination
 import com.composetest.core.router.destinations.home.navtypes.InnerHome
@@ -27,7 +27,7 @@ internal class LoginViewModel @Inject constructor(
     private val authenticationUseCase: AuthenticationUseCase,
     private val sessionManager: SessionManager,
     private val alertDialogUtils: AlertDialogUtils,
-    override val analyticsUseCase: AnalyticsUseCase
+    override val sendAnalyticsUseCase: SendAnalyticsUseCase
 ) : BaseViewModel<LoginUiState>(LoginScreenAnalytic, LoginUiState()), LoginCommandReceiver {
 
     override val commandReceiver = this
@@ -49,7 +49,7 @@ internal class LoginViewModel @Inject constructor(
             onError = ::handleLoginError,
             onCompletion = { updateUiState { it.setLoading(false) } },
             onStart = {
-                analyticsUseCase(LoginClickEventAnalytic)
+                sendAnalyticsUseCase(LoginClickEventAnalytic)
                 updateUiState { it.setLoading(true).setShowInvalidCredentialsMsg(false) }
             }
         ) {

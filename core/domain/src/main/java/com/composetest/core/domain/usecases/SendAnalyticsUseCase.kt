@@ -5,7 +5,7 @@ import com.composetest.common.analytics.interfaces.AnalyticEvent
 import com.composetest.core.domain.repositories.AnalyticsRepository
 import javax.inject.Inject
 
-class AnalyticsUseCase @Inject constructor(
+class SendAnalyticsUseCase @Inject constructor(
     private val analyticsRepository: AnalyticsRepository
 ) {
 

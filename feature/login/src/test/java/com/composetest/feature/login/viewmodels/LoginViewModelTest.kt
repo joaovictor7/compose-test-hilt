@@ -296,7 +296,7 @@ class LoginViewModelTest : CoroutinesTest {
         appThemeManager = mockk(),
         alertDialogUtils = alertDialogUtils,
         authenticationUseCase = authenticationUseCase,
-        analyticsUseCase = mockk(relaxed = true),
+        sendAnalyticsUseCase = mockk(relaxed = true),
         sessionManager = sessionManager
     )
 }

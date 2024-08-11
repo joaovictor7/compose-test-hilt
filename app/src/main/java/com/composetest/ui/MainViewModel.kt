@@ -4,7 +4,7 @@ import com.composetest.core.designsystem.components.alertdialogs.params.ButtonAl
 import com.composetest.core.designsystem.components.alertdialogs.params.DefaultAlertDialogParam
 import com.composetest.core.domain.managers.AppThemeManager
 import com.composetest.core.domain.managers.SessionManager
-import com.composetest.core.domain.usecases.AnalyticsUseCase
+import com.composetest.core.domain.usecases.SendAnalyticsUseCase
 import com.composetest.core.router.destinations.login.LoginDestination
 import com.composetest.core.router.enums.NavigationMode
 import com.composetest.core.router.managers.NavigationManager
@@ -22,7 +22,7 @@ class MainViewModel @Inject constructor(
     private val sessionManager: SessionManager,
     private val navigationManager: NavigationManager,
     private val navHostControllerProvider: NavHostControllerProvider,
-    override val analyticsUseCase: AnalyticsUseCase
+    override val sendAnalyticsUseCase: SendAnalyticsUseCase
 ) : BaseViewModel<MainUiState>(MainAnalytic, MainUiState()), MainCommandReceiver {
 
     override val commandReceiver = this

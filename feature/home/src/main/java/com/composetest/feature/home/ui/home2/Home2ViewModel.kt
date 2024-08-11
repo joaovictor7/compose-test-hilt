@@ -1,6 +1,6 @@
 package com.composetest.feature.home.ui.home2
 
-import com.composetest.core.domain.usecases.AnalyticsUseCase
+import com.composetest.core.domain.usecases.SendAnalyticsUseCase
 import com.composetest.core.router.destinations.home.Home2Destination
 import com.composetest.core.router.destinations.home.Home3Destination
 import com.composetest.core.router.enums.NavigationMode
@@ -14,7 +14,7 @@ import javax.inject.Inject
 @HiltViewModel
 internal class Home2ViewModel @Inject constructor(
     private val navigationManager: NavigationManager,
-    override val analyticsUseCase: AnalyticsUseCase
+    override val sendAnalyticsUseCase: SendAnalyticsUseCase
 ) : BaseViewModel<Home2UiState>(Home2Analytic, Home2UiState()), Home2CommandReceiver {
 
     override val commandReceiver = this
