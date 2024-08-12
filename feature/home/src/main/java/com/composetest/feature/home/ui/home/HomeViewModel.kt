@@ -28,7 +28,7 @@ internal class HomeViewModel @Inject constructor(
     init {
         openScreenAnalytic()
         val e = navigationManager.getParam<HomeDestination>()
-        updateUiState { it.copy(t = e.innerHome.teste) }
+//        updateUiState { it.copy(t = e.innerHome.teste) }
         teste()
     }
 

@@ -21,8 +21,8 @@ import com.composetest.core.designsystem.utils.lifecycleEvent
 import com.composetest.core.router.destinations.login.LoginDestination
 import com.composetest.core.router.providers.NavHostControllerProvider
 import com.composetest.core.ui.interfaces.Command
-import com.composetest.feature.home.navigation.homeNavGraph
 import com.composetest.feature.login.navigation.loginNavGraph
+import com.composetest.feature.root.navigation.rootNavGraph
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -84,7 +84,7 @@ private fun Navigation(
         startDestination = firstScreenDestination
     ) {
         loginNavGraph()
-        homeNavGraph()
+        rootNavGraph()
     }
 }
 

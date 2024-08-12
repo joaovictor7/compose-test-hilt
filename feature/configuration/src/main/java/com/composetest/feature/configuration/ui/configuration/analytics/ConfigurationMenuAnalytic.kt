@@ -1,4 +1,4 @@
-package com.composetest.feature.configuration.ui.menu.analytics
+package com.composetest.feature.configuration.ui.configuration.analytics
 
 import com.composetest.common.analytics.interfaces.AnalyticScreen
 

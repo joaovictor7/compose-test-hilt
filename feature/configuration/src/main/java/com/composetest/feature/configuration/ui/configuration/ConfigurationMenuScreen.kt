@@ -1,4 +1,4 @@
-package com.composetest.feature.configuration.ui.menu
+package com.composetest.feature.configuration.ui.configuration
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
@@ -6,13 +6,13 @@ import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.interfaces.Screen
 
-internal object ConfigurationsMenuScreen :
-    Screen<ConfigurationsMenuUiState, ConfigurationsMenuCommandReceiver> {
+internal object ConfigurationMenuScreen :
+    Screen<ConfigurationMenuUiState, ConfigurationMenuCommandReceiver> {
 
     @Composable
     override operator fun invoke(
-        uiState: ConfigurationsMenuUiState,
-        onExecuteCommand: (Command<ConfigurationsMenuCommandReceiver>) -> Unit
+        uiState: ConfigurationMenuUiState,
+        onExecuteCommand: (Command<ConfigurationMenuCommandReceiver>) -> Unit
     ) {
         TODO("Not yet implemented")
     }
@@ -22,6 +22,6 @@ internal object ConfigurationsMenuScreen :
 @Preview
 private fun Preview() {
     ComposeTestTheme {
-        ConfigurationsMenuScreen(uiState = ConfigurationsMenuUiState()) { }
+        ConfigurationMenuScreen(uiState = ConfigurationMenuUiState()) { }
     }
 }

@@ -1,18 +1,18 @@
-package com.composetest.feature.configuration.ui.menu
+package com.composetest.feature.configuration.ui.configuration
 
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
 import com.composetest.core.ui.bases.BaseViewModel
-import com.composetest.feature.configuration.ui.menu.analytics.ConfigurationMenuAnalytic
+import com.composetest.feature.configuration.ui.configuration.analytics.ConfigurationMenuAnalytic
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-internal class ConfigurationsMenuViewModel @Inject constructor(
+internal class ConfigurationMenuViewModel @Inject constructor(
     override val sendAnalyticsUseCase: SendAnalyticsUseCase
-) : BaseViewModel<ConfigurationsMenuUiState>(
+) : BaseViewModel<ConfigurationMenuUiState>(
     ConfigurationMenuAnalytic,
-    ConfigurationsMenuUiState()
-), ConfigurationsMenuCommandReceiver {
+    ConfigurationMenuUiState()
+), ConfigurationMenuCommandReceiver {
 
     override val commandReceiver = this
 

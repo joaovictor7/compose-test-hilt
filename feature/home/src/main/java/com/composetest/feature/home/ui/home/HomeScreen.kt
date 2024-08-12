@@ -22,23 +22,23 @@ internal object HomeScreen : Screen<HomeUiState, HomeCommandReceiver> {
     ) {
         Scaffold { paddingValues ->
             Column(modifier = Modifier.padding(paddingValues)) {
-                Button(onClick = { onExecuteCommand(HomeCommands.NavigateToHome2) }) {
-                    Text(text = uiState.t)
+                Button(onClick = { onExecuteCommand(HomeCommand.NavigateToHome2) }) {
+//                    Text(text = uiState.t)
                 }
                 Text(text = "Home1")
-                Button(onClick = { onExecuteCommand(HomeCommands.ChangeAppTheme(theme = Theme.AUTO)) }) {
+                Button(onClick = { onExecuteCommand(HomeCommand.ChangeAppTheme(theme = Theme.AUTO)) }) {
                     Text(text = "Auto")
                 }
-                Button(onClick = { onExecuteCommand(HomeCommands.ChangeAppTheme(theme = Theme.LIGHT)) }) {
+                Button(onClick = { onExecuteCommand(HomeCommand.ChangeAppTheme(theme = Theme.LIGHT)) }) {
                     Text(text = "Light")
                 }
-                Button(onClick = { onExecuteCommand(HomeCommands.ChangeAppTheme(theme = Theme.DARK)) }) {
+                Button(onClick = { onExecuteCommand(HomeCommand.ChangeAppTheme(theme = Theme.DARK)) }) {
                     Text(text = "Dark")
                 }
-                Button(onClick = { onExecuteCommand(HomeCommands.ChangeAppTheme(dynamicColors = true)) }) {
+                Button(onClick = { onExecuteCommand(HomeCommand.ChangeAppTheme(dynamicColors = true)) }) {
                     Text(text = "Dynamic on")
                 }
-                Button(onClick = { onExecuteCommand(HomeCommands.ChangeAppTheme(dynamicColors = false)) }) {
+                Button(onClick = { onExecuteCommand(HomeCommand.ChangeAppTheme(dynamicColors = false)) }) {
                     Text(text = "Dynamic off")
                 }
             }

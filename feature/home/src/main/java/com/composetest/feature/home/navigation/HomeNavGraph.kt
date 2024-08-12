@@ -21,14 +21,14 @@ fun NavGraphBuilder.homeNavGraph() {
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
         HomeScreen(uiState = uiState, onExecuteCommand = viewModel::executeCommand)
     }
-    composable<Home2Destination> {
-        val viewModel = hiltViewModel<Home2ViewModel>()
-        val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-        Home2Screen(uiState = uiState, onExecuteCommand = viewModel::executeCommand)
-    }
-    composable<Home3Destination> {
-        val viewModel = hiltViewModel<Home3ViewModel>()
-        val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-        Home3Screen(uiState = uiState, onExecuteCommand = viewModel::executeCommand)
-    }
+//    composable<Home2Destination> {
+//        val viewModel = hiltViewModel<Home2ViewModel>()
+//        val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+//        Home2Screen(uiState = uiState, onExecuteCommand = viewModel::executeCommand)
+//    }
+//    composable<Home3Destination> {
+//        val viewModel = hiltViewModel<Home3ViewModel>()
+//        val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+//        Home3Screen(uiState = uiState, onExecuteCommand = viewModel::executeCommand)
+//    }
 }

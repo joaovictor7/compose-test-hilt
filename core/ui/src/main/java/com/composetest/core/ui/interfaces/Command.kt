@@ -1,5 +1,5 @@
 package com.composetest.core.ui.interfaces
 
-interface Command<Receiver> {
-    fun execute(receiver: Receiver)
+interface Command<CommandReceiver> {
+    fun execute(commandReceiver: CommandReceiver)
 }

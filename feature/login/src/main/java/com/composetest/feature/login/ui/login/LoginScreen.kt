@@ -95,10 +95,10 @@ private fun ColumnScope.LoginForm(
         trailingIconParam = uiState.emailTrailingIconTextField,
         modifier = Modifier.fillMaxWidth(),
         onFocusChanged = {
-            if (!it.hasFocus) onExecuteCommand.invoke(LoginCommands.CheckShowInvalidEmailMsg)
+            if (!it.hasFocus) onExecuteCommand.invoke(LoginCommand.CheckShowInvalidEmailMsg)
         }
     ) { email ->
-        onExecuteCommand(LoginCommands.WriteData(email = email))
+        onExecuteCommand(LoginCommand.WriteData(email = email))
     }
     Spacer(Modifier.height(spacings.fourteen))
     OutlinedTextField(
@@ -110,7 +110,7 @@ private fun ColumnScope.LoginForm(
         ),
         modifier = Modifier.fillMaxWidth()
     ) { password ->
-        onExecuteCommand(LoginCommands.WriteData(password = password))
+        onExecuteCommand(LoginCommand.WriteData(password = password))
     }
     Spacer(Modifier.height(spacings.eighteen))
     if (uiState.invalidCredentials) {
@@ -126,7 +126,7 @@ private fun ColumnScope.LoginForm(
             text = stringResource(R.string.feature_login_enter),
             modifier = Modifier.fillMaxWidth(),
             enabled = uiState.enableLoginButton
-        ) { onExecuteCommand(LoginCommands.Login) }
+        ) { onExecuteCommand(LoginCommand.Login) }
     } else {
         CircularProgressIndicator(
             modifier = Modifier.align(alignment = Alignment.CenterHorizontally)
@@ -138,11 +138,11 @@ private fun ColumnScope.LoginForm(
 private fun HandleEffects(onExecuteCommand: (Command<LoginCommandReceiver>) -> Unit) {
     val currentAppTheme = LocalThemeProvider.current
     LaunchedEffect(Unit) {
-        onExecuteCommand(LoginCommands.SetCustomTheme(true, currentAppTheme))
+        onExecuteCommand(LoginCommand.SetCustomTheme(true, currentAppTheme))
     }
     DisposableEffect(Unit) {
         onDispose {
-            onExecuteCommand(LoginCommands.SetCustomTheme(false, currentAppTheme))
+            onExecuteCommand(LoginCommand.SetCustomTheme(false, currentAppTheme))
         }
     }
 }

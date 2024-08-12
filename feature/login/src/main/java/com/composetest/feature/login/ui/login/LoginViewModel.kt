@@ -9,8 +9,7 @@ import com.composetest.core.domain.models.AuthenticationCredentialsModel
 import com.composetest.core.domain.throwables.InvalidCredentialsThrowable
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
 import com.composetest.core.domain.usecases.AuthenticationUseCase
-import com.composetest.core.router.destinations.home.HomeDestination
-import com.composetest.core.router.destinations.home.navtypes.InnerHome
+import com.composetest.core.router.destinations.root.RootDestination
 import com.composetest.core.router.enums.NavigationMode
 import com.composetest.core.router.managers.NavigationManager
 import com.composetest.core.ui.bases.BaseViewModel
@@ -56,7 +55,7 @@ internal class LoginViewModel @Inject constructor(
             authenticationUseCase(
                 AuthenticationCredentialsModel(loginFormModel.email, loginFormModel.password)
             )
-            navigateToHome()
+            navigateToRoot()
         }
     }
 
@@ -91,7 +90,7 @@ internal class LoginViewModel @Inject constructor(
             openScreenAnalytic()
             initState()
         } else {
-            navigateToHome()
+            navigateToRoot()
         }
     }
 
@@ -104,9 +103,9 @@ internal class LoginViewModel @Inject constructor(
         }
     }
 
-    private suspend fun navigateToHome() {
+    private suspend fun navigateToRoot() {
         navigationManager.asyncNavigate(
-            HomeDestination("teste", InnerHome("te", "23232")),
+            RootDestination,
             NavigationMode.REMOVE_ALL_SCREENS_STACK
         )
     }

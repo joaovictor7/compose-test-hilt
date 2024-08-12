@@ -18,7 +18,7 @@ import com.composetest.core.router.managers.NavigationManager
 import com.composetest.core.test.interfaces.CoroutinesTest
 import com.composetest.core.test.utils.runStateFlowTest
 import com.composetest.feature.login.models.LoginFormModel
-import com.composetest.feature.login.ui.login.LoginCommands
+import com.composetest.feature.login.ui.login.LoginCommand
 import com.composetest.feature.login.ui.login.LoginUiState
 import com.composetest.feature.login.ui.login.LoginViewModel
 import io.mockk.coEvery
@@ -114,8 +114,8 @@ class LoginViewModelTest : CoroutinesTest {
                 authenticationUseCase.invoke(any())
             } coAnswers { withContext(testDispatcher) { throw InvalidCredentialsThrowable() } }
 
-            viewModel.executeCommand(LoginCommands.WriteData("teste@teste.com", "password"))
-            viewModel.executeCommand(LoginCommands.Login)
+            viewModel.executeCommand(LoginCommand.WriteData("teste@teste.com", "password"))
+            viewModel.executeCommand(LoginCommand.Login)
             job.cancel()
 
             assertEquals(
@@ -177,8 +177,8 @@ class LoginViewModelTest : CoroutinesTest {
                 withContext(testDispatcher) { authenticationUseCase(any()) }
             } coAnswers { withContext(testDispatcher) {} }
 
-            viewModel.executeCommand(LoginCommands.WriteData("teste@teste.com", "password"))
-            viewModel.executeCommand(LoginCommands.Login)
+            viewModel.executeCommand(LoginCommand.WriteData("teste@teste.com", "password"))
+            viewModel.executeCommand(LoginCommand.Login)
             job.cancel()
 
             assertEquals(
@@ -234,8 +234,8 @@ class LoginViewModelTest : CoroutinesTest {
                 authenticationUseCase(any())
             } coAnswers { withContext(testDispatcher) { throw NetworkThrowable() } }
 
-            viewModel.executeCommand(LoginCommands.WriteData("teste@teste.com", "password"))
-            viewModel.executeCommand(LoginCommands.Login)
+            viewModel.executeCommand(LoginCommand.WriteData("teste@teste.com", "password"))
+            viewModel.executeCommand(LoginCommand.Login)
             job.cancel()
 
             assertEquals(
