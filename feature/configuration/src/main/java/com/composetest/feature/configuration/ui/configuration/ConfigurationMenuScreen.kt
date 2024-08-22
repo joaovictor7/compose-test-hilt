@@ -1,5 +1,6 @@
 package com.composetest.feature.configuration.ui.configuration
 
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.composetest.core.designsystem.theme.ComposeTestTheme
@@ -14,7 +15,7 @@ internal object ConfigurationMenuScreen :
         uiState: ConfigurationMenuUiState,
         onExecuteCommand: (Command<ConfigurationMenuCommandReceiver>) -> Unit
     ) {
-        TODO("Not yet implemented")
+        Text(text = "Teste")
     }
 }
 

@@ -14,7 +14,7 @@ internal class AuthenticationFakeDataSourceImpl(
     override suspend fun authentication(request: AuthenticationRequest) =
         safeRemoteCallManager.safeRemoteCall {
             val sessionStartDate = LocalDateTime.now()
-            val sessionEndDate = sessionStartDate.plusSeconds(PLUS_FAKE_SESSION_DURATION)
+            val sessionEndDate = sessionStartDate.plusMinutes(PLUS_FAKE_SESSION_DURATION)
             AuthenticationResponse(
                 user = UserResponse(
                     id = "123",
@@ -30,6 +30,6 @@ internal class AuthenticationFakeDataSourceImpl(
         }
 
     private companion object {
-        const val PLUS_FAKE_SESSION_DURATION = 5L
+        const val PLUS_FAKE_SESSION_DURATION = 50L
     }
 }

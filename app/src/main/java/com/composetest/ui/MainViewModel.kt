@@ -1,28 +1,31 @@
 package com.composetest.ui
 
+import androidx.navigation.NavHostController
+import com.composetest.R
 import com.composetest.core.designsystem.components.alertdialogs.params.ButtonAlertDialogParam
 import com.composetest.core.designsystem.components.alertdialogs.params.DefaultAlertDialogParam
 import com.composetest.core.domain.managers.AppThemeManager
 import com.composetest.core.domain.managers.SessionManager
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
 import com.composetest.core.router.destinations.login.LoginDestination
+import com.composetest.core.router.di.qualifiers.NavGraphQualifier
+import com.composetest.core.router.enums.NavGraph
 import com.composetest.core.router.enums.NavigationMode
 import com.composetest.core.router.managers.NavigationManager
-import com.composetest.core.router.providers.NavHostControllerProvider
+import com.composetest.core.router.providers.NavControllerProvider
 import com.composetest.core.ui.bases.BaseViewModel
 import com.composetest.ui.analytics.MainAnalytic
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import com.composetest.R as AppResources
-import com.composetest.core.designsystem.R as DesignSystemResource
+import com.composetest.core.designsystem.R as DesignSystemResources
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val appThemeManager: AppThemeManager,
     private val sessionManager: SessionManager,
-    private val navigationManager: NavigationManager,
-    private val navHostControllerProvider: NavHostControllerProvider,
-    override val sendAnalyticsUseCase: SendAnalyticsUseCase
+    private val navControllerProvider: NavControllerProvider,
+    @NavGraphQualifier(NavGraph.MAIN) private val navigationManager: NavigationManager,
+    override val sendAnalyticsUseCase: SendAnalyticsUseCase,
 ) : BaseViewModel<MainUiState>(MainAnalytic, MainUiState()), MainCommandReceiver {
 
     override val commandReceiver = this
@@ -35,7 +38,7 @@ class MainViewModel @Inject constructor(
     override fun verifySession() {
         runAsyncTask {
             val validSession = sessionManager.isSessionValid()
-            val currentScreenIsLogin = navHostControllerProvider.isCurrentScreen(LoginDestination)
+            val currentScreenIsLogin = navigationManager.isCurrentScreen(LoginDestination)
             if (!validSession && !currentScreenIsLogin) {
                 showAlertDialogSession()
                 navigationManager.navigate(
@@ -44,6 +47,10 @@ class MainViewModel @Inject constructor(
                 )
             }
         }
+    }
+
+    override fun setMainNavGraph(navController: NavHostController) {
+        navControllerProvider.setNavController(NavGraph.MAIN, navController)
     }
 
     private fun iniState() {
@@ -60,11 +67,11 @@ class MainViewModel @Inject constructor(
         updateUiState { uiState ->
             uiState.setDefaultAlertDialogParam(
                 DefaultAlertDialogParam(
-                    iconId = AppResources.drawable.ic_person_off,
-                    title = AppResources.string.alert_dialog_session_invalid_title,
-                    text = AppResources.string.alert_dialog_session_invalid_text,
+                    iconId = DesignSystemResources.drawable.ic_person_off,
+                    title = R.string.alert_dialog_session_invalid_title,
+                    text = R.string.alert_dialog_session_invalid_text,
                     onDismiss = ButtonAlertDialogParam(
-                        textId = DesignSystemResource.string.global_word_close,
+                        textId = DesignSystemResources.string.global_word_close,
                         onClick = { updateUiState { it.setDefaultAlertDialogParam(null) } }
                     )
                 )

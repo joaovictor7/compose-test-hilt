@@ -1,3 +1,7 @@
 package com.composetest.core.designsystem.dimensions.densities.defaults
 
-open class Component
+import androidx.compose.ui.unit.dp
+
+open class Component {
+    open val rootDockHeight = 50.dp
+}

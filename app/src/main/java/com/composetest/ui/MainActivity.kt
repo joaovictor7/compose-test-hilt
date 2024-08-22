@@ -19,20 +19,15 @@ import com.composetest.core.designsystem.components.alertdialogs.DefaultAlertDia
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.designsystem.utils.lifecycleEvent
 import com.composetest.core.router.destinations.login.LoginDestination
-import com.composetest.core.router.providers.NavHostControllerProvider
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.feature.login.navigation.loginNavGraph
 import com.composetest.feature.root.navigation.rootNavGraph
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 import kotlin.reflect.KClass
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-
-    @Inject
-    lateinit var navHostControllerProvider: NavHostControllerProvider
 
     private val viewModel: MainViewModel by viewModels()
 
@@ -51,11 +46,10 @@ class MainActivity : ComponentActivity() {
                     DefaultAlertDialog(param = it)
                 }
                 Navigation(
-                    navHostControllerProvider = navHostControllerProvider,
-                    firstScreenDestination = LoginDestination::class
+                    firstScreenDestination = LoginDestination::class,
+                    onExecuteCommand = viewModel::executeCommand
                 )
             }
-
         }
     }
 
@@ -74,11 +68,11 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 private fun Navigation(
-    navHostControllerProvider: NavHostControllerProvider,
-    firstScreenDestination: KClass<*>
+    firstScreenDestination: KClass<*>,
+    onExecuteCommand: (Command<MainCommandReceiver>) -> Unit
 ) {
     val navController = rememberNavController()
-    navHostControllerProvider.setNavController(navController)
+    onExecuteCommand(MainCommand.SetNavigationGraph(navController))
     NavHost(
         navController = navController,
         startDestination = firstScreenDestination
@@ -93,7 +87,7 @@ private fun LifecycleHandle(onExecuteCommand: (Command<MainCommandReceiver>) -> 
     val event = lifecycleEvent()
     LaunchedEffect(event) {
         if (event == Lifecycle.Event.ON_RESUME) {
-            onExecuteCommand(VerifySession())
+            onExecuteCommand(MainCommand.VerifySession)
         }
     }
 }

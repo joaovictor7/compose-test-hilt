@@ -19,5 +19,5 @@ open class FontSize {
     open val thirtyFour = 34.sp
     open val thirtySix = 36.sp
     open val thirtyEight = 38.sp
-    open val fourty = 40.sp
+    open val forty = 40.sp
 }

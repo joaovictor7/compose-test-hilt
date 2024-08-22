@@ -4,7 +4,6 @@ import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
-import com.composetest.core.router.destinations.home.HomeDestination
 import com.composetest.core.router.destinations.root.RootDestination
 import com.composetest.core.router.extensions.composable
 import com.composetest.feature.root.ui.RootScreen

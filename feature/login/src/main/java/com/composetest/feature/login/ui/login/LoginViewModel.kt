@@ -2,14 +2,16 @@ package com.composetest.feature.login.ui.login
 
 import com.composetest.common.providers.BuildConfigProvider
 import com.composetest.core.designsystem.utils.AlertDialogUtils
-import com.composetest.core.domain.managers.AppThemeManager
 import com.composetest.core.domain.enums.Theme
+import com.composetest.core.domain.managers.AppThemeManager
 import com.composetest.core.domain.managers.SessionManager
 import com.composetest.core.domain.models.AuthenticationCredentialsModel
 import com.composetest.core.domain.throwables.InvalidCredentialsThrowable
-import com.composetest.core.domain.usecases.SendAnalyticsUseCase
 import com.composetest.core.domain.usecases.AuthenticationUseCase
+import com.composetest.core.domain.usecases.SendAnalyticsUseCase
 import com.composetest.core.router.destinations.root.RootDestination
+import com.composetest.core.router.di.qualifiers.NavGraphQualifier
+import com.composetest.core.router.enums.NavGraph
 import com.composetest.core.router.enums.NavigationMode
 import com.composetest.core.router.managers.NavigationManager
 import com.composetest.core.ui.bases.BaseViewModel
@@ -20,12 +22,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class LoginViewModel @Inject constructor(
-    private val navigationManager: NavigationManager,
     private val buildConfigProvider: BuildConfigProvider,
     private val appThemeManager: AppThemeManager,
     private val authenticationUseCase: AuthenticationUseCase,
     private val sessionManager: SessionManager,
     private val alertDialogUtils: AlertDialogUtils,
+    @NavGraphQualifier(NavGraph.MAIN) private val navigationManager: NavigationManager,
     override val sendAnalyticsUseCase: SendAnalyticsUseCase
 ) : BaseViewModel<LoginUiState>(LoginScreenAnalytic, LoginUiState()), LoginCommandReceiver {
 
