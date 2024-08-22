@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class Home2ViewModel @Inject constructor(
-    @NavGraphQualifier(NavGraph.MAIN) private val navigationManager: NavigationManager,
+    @NavGraphQualifier(NavGraph.ROOT) private val navigationManager: NavigationManager,
     override val sendAnalyticsUseCase: SendAnalyticsUseCase
 ) : BaseViewModel<Home2UiState>(Home2Analytic, Home2UiState()), Home2CommandReceiver {
 

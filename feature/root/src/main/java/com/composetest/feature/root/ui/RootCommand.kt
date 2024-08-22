@@ -10,9 +10,9 @@ internal sealed interface RootCommand : Command<RootCommandReceiver> {
         }
     }
 
-//    data class SetRootNavGraph(private val navController: NavHostController) : RootCommand {
-//        override fun execute(commandReceiver: RootCommandReceiver) {
-//            commandReceiver.setRootNavGraph(navController)
-//        }
-//    }
+    data class SetRootNavGraph(private val navController: NavHostController) : RootCommand {
+        override fun execute(commandReceiver: RootCommandReceiver) {
+            commandReceiver.setRootNavGraph(navController)
+        }
+    }
 }

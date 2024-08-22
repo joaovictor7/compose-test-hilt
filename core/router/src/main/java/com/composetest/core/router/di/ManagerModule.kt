@@ -1,8 +1,8 @@
 package com.composetest.core.router.di
 
 import androidx.lifecycle.SavedStateHandle
-import com.composetest.common.di.qualifiers.Dispatcher
-import com.composetest.common.enums.Dispatchers
+import com.composetest.common.di.qualifiers.DispatcherQualifier
+import com.composetest.common.enums.Dispatcher
 import com.composetest.core.router.di.qualifiers.NavGraphQualifier
 import com.composetest.core.router.enums.NavGraph
 import com.composetest.core.router.managers.NavigationManager
@@ -25,25 +25,25 @@ internal object ManagerModule {
     fun navigationMainManager(
         navControllerProvider: NavControllerProvider,
         savedStateHandle: SavedStateHandle,
-        @Dispatcher(Dispatchers.Main) mainDispatcher: CoroutineDispatcher
+        @DispatcherQualifier(Dispatcher.Main) mainDispatcherQualifier: CoroutineDispatcher
     ): NavigationManager = NavigationManagerImpl(
         navControllerProvider = navControllerProvider,
         navGraph = NavGraph.MAIN,
-        mainDispatcher = mainDispatcher,
+        mainDispatcher = mainDispatcherQualifier,
         savedStateHandle = savedStateHandle
     )
 
-//    @Provides
-//    @ViewModelScoped
-//    @NavGraphQualifier(NavGraph.ROOT)
-//    fun navigationRootManager(
-//        navControllerProvider: NavControllerProvider,
-//        savedStateHandle: SavedStateHandle,
-//        @Dispatcher(Dispatchers.Main) mainDispatcher: CoroutineDispatcher
-//    ): NavigationManager = NavigationManagerImpl(
-//        navControllerProvider = navControllerProvider,
-//        navGraph = NavGraph.ROOT,
-//        mainDispatcher = mainDispatcher,
-//        savedStateHandle = savedStateHandle
-//    )
+    @Provides
+    @ViewModelScoped
+    @NavGraphQualifier(NavGraph.ROOT)
+    fun navigationRootManager(
+        navControllerProvider: NavControllerProvider,
+        savedStateHandle: SavedStateHandle,
+        @DispatcherQualifier(Dispatcher.Main) mainDispatcherQualifier: CoroutineDispatcher
+    ): NavigationManager = NavigationManagerImpl(
+        navControllerProvider = navControllerProvider,
+        navGraph = NavGraph.ROOT,
+        mainDispatcher = mainDispatcherQualifier,
+        savedStateHandle = savedStateHandle
+    )
 }

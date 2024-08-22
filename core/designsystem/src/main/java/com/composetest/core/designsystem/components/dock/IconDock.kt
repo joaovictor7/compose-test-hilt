@@ -121,14 +121,14 @@ private fun DockItems(
     dockItems: List<IconDockParam>,
     selectedIndex: Int,
     onSelectionChange: (selectedIndex: Int) -> Unit
-) = dockItems.forEachIndexed { index, dockItem ->
+) = dockItems.forEach { dockItem ->
     Tab(
         modifier = Modifier
             .height(height)
             .padding(internalPadding)
             .clip(shape),
-        selected = selectedIndex == index,
-        onClick = { onSelectionChange(index) },
+        selected = selectedIndex == dockItem.index,
+        onClick = { onSelectionChange(dockItem.index) },
         unselectedContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
     ) {
         Icon(
@@ -151,10 +151,10 @@ private fun Preview() {
                 shape = MaterialTheme.shapes.extraLarge,
                 selectedIndex = selectedIndex,
                 dockItems = listOf(
-                    IconDockParam(R.drawable.ic_house_filled),
-                    IconDockParam(R.drawable.ic_cancel),
-                    IconDockParam(R.drawable.ic_search),
-                    IconDockParam(R.drawable.ic_visibility_off),
+                    IconDockParam(0, R.drawable.ic_house_filled),
+                    IconDockParam(1, R.drawable.ic_cancel),
+                    IconDockParam(2, R.drawable.ic_search),
+                    IconDockParam(3, R.drawable.ic_visibility_off),
                 )
             ) {
                 selectedIndex = it

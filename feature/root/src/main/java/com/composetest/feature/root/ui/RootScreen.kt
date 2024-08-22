@@ -39,7 +39,7 @@ internal object RootScreen : Screen<RootUiState, RootCommandReceiver> {
             ) {
                 Navigation(
                     firstScreenDestination = HomeRootDestination::class,
-                    uiState = uiState
+                    onExecuteCommand = onExecuteCommand
                 )
                 IconDock(
                     modifier = Modifier
@@ -61,18 +61,16 @@ internal object RootScreen : Screen<RootUiState, RootCommandReceiver> {
 @Composable
 private fun Navigation(
     firstScreenDestination: KClass<*>,
-    uiState: RootUiState
+    onExecuteCommand: (Command<RootCommandReceiver>) -> Unit
 ) {
-//    val navHostController = rememberNavController()
-//    onExecuteCommand(RootCommand.SetRootNavGraph(navHostController))
-    uiState.navHostController?.let {
-        NavHost(
-            navController = it,
-            startDestination = firstScreenDestination
-        ) {
-            homeNavGraph()
-            configurationNavGraph()
-        }
+    val navController = rememberNavController()
+    onExecuteCommand(RootCommand.SetRootNavGraph(navController))
+    NavHost(
+        navController = navController,
+        startDestination = firstScreenDestination
+    ) {
+        homeNavGraph()
+        configurationNavGraph()
     }
 }
 

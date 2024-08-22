@@ -19,42 +19,44 @@ import javax.inject.Inject
 @HiltViewModel
 internal class RootViewModel @Inject constructor(
     private val navControllerProvider: NavControllerProvider,
-    @NavGraphQualifier(NavGraph.MAIN) private val navigationManager: NavigationManager,
+    @NavGraphQualifier(NavGraph.ROOT) private val navigationManager: NavigationManager,
     override val sendAnalyticsUseCase: SendAnalyticsUseCase
 ) : BaseViewModel<RootUiState>(RootAnalytic, RootUiState()), RootCommandReceiver {
+
+    private val iconDockParam = DockItem.entries.mapIndexed { index, value ->
+        IconDockParam(
+            index = index,
+            iconId = value.iconId
+        )
+    }
 
     override val commandReceiver = this
 
     init {
         setDockItems()
-        updateUiState {
-            it.copy(navHostController = navControllerProvider.getNavController(NavGraph.MAIN))
-        }
     }
 
     override fun changeDockItemSelected(selectedIndex: Int) {
-        updateUiState {
-            it.setSelectedDockItem(selectedIndex)
-        }
-        when (selectedIndex) {
-            0 -> navigationManager.navigate(
-                HomeRootDestination,
-                NavigationMode.NESTED_NAVIGATION
-            )
-            1 -> navigationManager.navigate(
-                ConfigurationMenuRootDestination,
-                NavigationMode.NESTED_NAVIGATION
-            )
-        }
+        updateUiState { it.setSelectedDockItem(selectedIndex) }
+        navigateToDockItem(DockItem.getItemDock(selectedIndex))
     }
 
-//    override fun setRootNavGraph(navController: NavHostController) {
-//        navControllerProvider.setNavController(NavGraph.ROOT, navController)
-//    }
+    override fun setRootNavGraph(navController: NavHostController) {
+        navControllerProvider.setNavController(NavGraph.ROOT, navController)
+    }
+
+    private fun navigateToDockItem(dockItem: DockItem) = when (dockItem) {
+        DockItem.HOME -> navigationManager.navigate(
+            HomeRootDestination,
+            NavigationMode.NESTED_NAVIGATION
+        )
+        DockItem.CONFIGURATION -> navigationManager.navigate(
+            ConfigurationMenuRootDestination,
+            NavigationMode.NESTED_NAVIGATION
+        )
+    }
 
     private fun setDockItems() {
-        updateUiState {
-            it.setDockItems(DockItem.entries.map { IconDockParam(iconId = it.iconId) })
-        }
+        updateUiState { it.setDockItems(iconDockParam) }
     }
 }

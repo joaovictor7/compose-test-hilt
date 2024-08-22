@@ -1,7 +1,7 @@
 package com.composetest.core.data.managers
 
-import com.composetest.common.di.qualifiers.Dispatcher
-import com.composetest.common.enums.Dispatchers
+import com.composetest.common.di.qualifiers.DispatcherQualifier
+import com.composetest.common.enums.Dispatcher
 import com.composetest.common.providers.BuildConfigProvider
 import com.composetest.core.data.providers.NetworkProvider
 import com.composetest.core.domain.throwables.network.NetworkThrowable
@@ -13,7 +13,7 @@ import javax.inject.Inject
 internal class RemoteCallManagerImpl @Inject constructor(
     private val networkProvider: NetworkProvider,
     private val buildConfigProvider: BuildConfigProvider,
-    @Dispatcher(Dispatchers.IO) private val ioDispatcher: CoroutineDispatcher
+    @DispatcherQualifier(Dispatcher.IO) private val ioDispatcher: CoroutineDispatcher
 ) : RemoteCallManager {
 
     override suspend fun <T> safeRemoteCall(onRemoteCall: suspend () -> T): T = when {

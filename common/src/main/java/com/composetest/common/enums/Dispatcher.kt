@@ -1,5 +1,5 @@
 package com.composetest.common.enums
 
-enum class Dispatchers {
+enum class Dispatcher {
     IO, Main, Default
 }

@@ -3,8 +3,6 @@ package com.composetest.core.router.providers
 import androidx.navigation.NavHostController
 import com.composetest.core.router.enums.NavGraph
 import javax.inject.Inject
-import kotlin.collections.MutableMap
-import kotlin.collections.mutableMapOf
 import kotlin.collections.set
 
 internal class NavControllerProviderImpl @Inject constructor() : NavControllerProvider {
@@ -15,6 +13,5 @@ internal class NavControllerProviderImpl @Inject constructor() : NavControllerPr
         navControllers[navGraph] = navController
     }
 
-    override fun getNavController(navGraph: NavGraph) =
-        checkNotNull(navControllers[navGraph])
+    override fun getNavController(navGraph: NavGraph) = navControllers.getValue(navGraph)
 }

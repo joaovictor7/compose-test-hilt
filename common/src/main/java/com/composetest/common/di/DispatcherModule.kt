@@ -1,7 +1,7 @@
 package com.composetest.common.di
 
-import com.composetest.common.di.qualifiers.Dispatcher
-import com.composetest.common.enums.Dispatchers
+import com.composetest.common.di.qualifiers.DispatcherQualifier
+import com.composetest.common.enums.Dispatcher
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,14 +13,14 @@ import kotlinx.coroutines.Dispatchers as Coroutine
 @InstallIn(SingletonComponent::class)
 internal object DispatcherModule {
     @Provides
-    @Dispatcher(Dispatchers.Default)
+    @DispatcherQualifier(Dispatcher.Default)
     fun defaultDispatcher(): CoroutineDispatcher = Coroutine.Default
 
     @Provides
-    @Dispatcher(Dispatchers.IO)
+    @DispatcherQualifier(Dispatcher.IO)
     fun ioDispatcher(): CoroutineDispatcher = Coroutine.IO
 
     @Provides
-    @Dispatcher(Dispatchers.Main)
+    @DispatcherQualifier(Dispatcher.Main)
     fun mainDispatcher(): CoroutineDispatcher = Coroutine.Main
 }

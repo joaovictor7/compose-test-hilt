@@ -1,8 +1,8 @@
 package com.composetest.common.di.qualifiers
 
-import com.composetest.common.enums.Dispatchers
+import com.composetest.common.enums.Dispatcher
 import javax.inject.Qualifier
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
-annotation class Dispatcher(val dispatcher: Dispatchers)
+annotation class DispatcherQualifier(val dispatcher: Dispatcher)

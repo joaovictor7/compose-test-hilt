@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class Home3ViewModel @Inject constructor(
-    @NavGraphQualifier(NavGraph.MAIN) private val navigationManager: NavigationManager,
+    @NavGraphQualifier(NavGraph.ROOT) private val navigationManager: NavigationManager,
     override val sendAnalyticsUseCase: SendAnalyticsUseCase
 ) : BaseViewModel<Home3UiState>(Home3Analytic, Home3UiState()), Home3CommandReceiver {
 

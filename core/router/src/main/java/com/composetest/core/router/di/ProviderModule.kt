@@ -14,7 +14,7 @@ internal abstract class ProviderModule {
 
     @Binds
     @Singleton
-    abstract fun navHostControllerProvider(
+    abstract fun navControllerProvider(
         navControllerProviderImpl: NavControllerProviderImpl
     ): NavControllerProvider
 }
