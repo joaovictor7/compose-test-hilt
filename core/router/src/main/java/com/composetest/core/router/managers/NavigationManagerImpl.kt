@@ -11,7 +11,10 @@ import com.composetest.core.router.interfaces.ResultParam
 import com.composetest.core.router.providers.NavControllerProvider
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.transform
 import kotlinx.coroutines.withContext
+import kotlin.reflect.KClass
 
 internal class NavigationManagerImpl(
     private val navControllerProvider: NavControllerProvider,
@@ -23,8 +26,7 @@ internal class NavigationManagerImpl(
     private val navController get() = navControllerProvider.getNavController(navGraph)
     private val navigateBackAvailable
         get() = navController.currentBackStackEntry?.lifecycle?.currentState == Lifecycle.State.RESUMED
-
-    override val navBackStackEntryFlow: Flow<NavBackStackEntry>
+    private val navBackStackEntryFlow: Flow<NavBackStackEntry>
         get() = navController.currentBackStackEntryFlow
 
     override fun <Destination : Any> navigate(
@@ -50,6 +52,21 @@ internal class NavigationManagerImpl(
         navController.popBackStack()
     }
 
+    override fun <Result : ResultParam> getResultFlow(resultClass: KClass<Result>) =
+        navBackStackEntryFlow.transform {
+            with(it.savedStateHandle) {
+                val key = resultClass.simpleName.orEmpty()
+                get<Result>(key)?.let { result ->
+                    emit(result)
+                    remove<Result>(key)
+                }
+            }
+        }.flowOn(mainDispatcher)
+
+    override fun isCurrentScreen(destination: Any): Boolean {
+        return navController == navController.currentDestination
+    }
+
     override suspend fun <Destination : Any> asyncNavigate(
         destination: Destination,
         navigationMode: NavigationMode?
@@ -65,10 +82,6 @@ internal class NavigationManagerImpl(
         withContext(mainDispatcher) {
             navigateBack(result)
         }
-
-    override fun isCurrentScreen(destination: Any): Boolean {
-        return navController == navController.currentDestination
-    }
 
     private fun getNavigateOptions(mode: NavigationMode?) = NavOptions.Builder().apply {
         mode?.let { mode ->

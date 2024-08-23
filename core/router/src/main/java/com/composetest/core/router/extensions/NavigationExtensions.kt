@@ -1,6 +1,5 @@
 package com.composetest.core.router.extensions
 
-import android.os.Parcelable
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.EnterTransition
@@ -14,9 +13,6 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.composetest.core.router.managers.NavigationManager
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.transform
 import kotlin.reflect.KType
 import kotlin.reflect.full.companionObjectInstance
 import com.composetest.core.router.interfaces.NavType as NavTypes
@@ -25,17 +21,6 @@ inline fun <reified Destination : Any> NavigationManager.getParam(): Destination
     val navTypes = getNavTypes(Destination::class.companionObjectInstance)
     return savedStateHandle.toRoute<Destination>(navTypes)
 }
-
-inline fun <reified Result : Parcelable> NavigationManager.getResultFlow() =
-    navBackStackEntryFlow.transform {
-        with(it.savedStateHandle) {
-            val key = Result::class.simpleName.orEmpty()
-            get<Result>(key)?.let { result ->
-                emit(result)
-                remove<Result>(key)
-            }
-        }
-    }.flowOn(Dispatchers.Main)
 
 inline fun <reified Destination : Any> NavGraphBuilder.composable(
     deepLinks: List<NavDeepLink> = emptyList(),
