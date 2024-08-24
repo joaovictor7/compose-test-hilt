@@ -9,7 +9,7 @@ import com.composetest.core.router.di.qualifiers.NavGraphQualifier
 import com.composetest.core.router.enums.NavGraph
 import com.composetest.core.router.enums.NavigationMode
 import com.composetest.core.router.managers.NavigationManager
-import com.composetest.core.router.providers.NavControllerProvider
+import com.composetest.core.router.managers.NavControllerManager
 import com.composetest.core.ui.bases.BaseViewModel
 import com.composetest.feature.root.enums.DockItem
 import com.composetest.feature.root.ui.analytics.RootAnalytic
@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class RootViewModel @Inject constructor(
-    private val navControllerProvider: NavControllerProvider,
+    private val navControllerManager: NavControllerManager,
     @NavGraphQualifier(NavGraph.ROOT) private val navigationManager: NavigationManager,
     override val sendAnalyticsUseCase: SendAnalyticsUseCase
 ) : BaseViewModel<RootUiState>(RootAnalytic, RootUiState()), RootCommandReceiver {
@@ -42,7 +42,7 @@ internal class RootViewModel @Inject constructor(
     }
 
     override fun setRootNavGraph(navController: NavHostController) {
-        navControllerProvider.setNavController(NavGraph.ROOT, navController)
+        navControllerManager.setNavController(NavGraph.ROOT, navController)
     }
 
     private fun navigateToDockItem(dockItem: DockItem) = when (dockItem) {

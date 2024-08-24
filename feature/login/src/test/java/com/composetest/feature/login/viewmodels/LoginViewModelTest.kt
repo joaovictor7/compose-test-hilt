@@ -11,8 +11,7 @@ import com.composetest.core.domain.managers.SessionManager
 import com.composetest.core.domain.throwables.InvalidCredentialsThrowable
 import com.composetest.core.domain.throwables.network.NetworkThrowable
 import com.composetest.core.domain.usecases.AuthenticationUseCase
-import com.composetest.core.router.destinations.home.HomeDestination
-import com.composetest.core.router.destinations.home.navtypes.InnerHome
+import com.composetest.core.router.destinations.root.RootDestination
 import com.composetest.core.router.enums.NavigationMode
 import com.composetest.core.router.managers.NavigationManager
 import com.composetest.core.test.interfaces.CoroutinesTest
@@ -70,28 +69,27 @@ class LoginViewModelTest : CoroutinesTest {
     }
 
     @Test
-    fun `initial uiState`() =
-        runStateFlowTest(testDispatcher, viewModel.uiState) { job, collectedStates ->
-            coEvery { sessionManager.needsLogin() } returns false
-            job.cancel()
+    fun `initial uiState`() = runStateFlowTest(viewModel.uiState) { job, collectedStates ->
+        coEvery { sessionManager.needsLogin() } returns false
+        job.cancel()
 
-            assertEquals(
-                listOf(
-                    LoginUiState(
-                        needsLogin = true,
-                        versionName = buildConfigModelMock.versionNameForView,
-                        enableLoginButton = true
-                    )
-                ),
-                collectedStates
-            )
-        }
+        assertEquals(
+            listOf(
+                LoginUiState(
+                    needsLogin = true,
+                    versionName = buildConfigModelMock.versionNameForView,
+                    enableLoginButton = true
+                )
+            ),
+            collectedStates
+        )
+    }
 
     @Test
     fun `initial uiState when not need login`() {
         coEvery { sessionManager.needsLogin() } returns false
         val viewModel = initViewModel()
-        runStateFlowTest(testDispatcher, viewModel.uiState) { job, collectedStates ->
+        runStateFlowTest(viewModel.uiState) { job, collectedStates ->
             job.cancel()
 
             assertEquals(
@@ -100,7 +98,7 @@ class LoginViewModelTest : CoroutinesTest {
             )
             coVerify {
                 navigationManager.asyncNavigate(
-                    HomeDestination("teste", InnerHome("te", "23232")),
+                    RootDestination,
                     NavigationMode.REMOVE_ALL_SCREENS_STACK
                 )
             }
@@ -109,7 +107,7 @@ class LoginViewModelTest : CoroutinesTest {
 
     @Test
     fun `misleanding credentials login`() =
-        runStateFlowTest(testDispatcher, viewModel.uiState) { job, collectedStates ->
+        runStateFlowTest(viewModel.uiState) { job, collectedStates ->
             coEvery {
                 authenticationUseCase.invoke(any())
             } coAnswers { withContext(testDispatcher) { throw InvalidCredentialsThrowable() } }
@@ -172,9 +170,9 @@ class LoginViewModelTest : CoroutinesTest {
 
     @Test
     fun `success login`() =
-        runStateFlowTest(testDispatcher, viewModel.uiState) { job, collectedStates ->
+        runStateFlowTest(viewModel.uiState) { job, collectedStates ->
             coEvery {
-                withContext(testDispatcher) { authenticationUseCase(any()) }
+                authenticationUseCase(any())
             } coAnswers { withContext(testDispatcher) {} }
 
             viewModel.executeCommand(LoginCommand.WriteData("teste@teste.com", "password"))
@@ -221,7 +219,7 @@ class LoginViewModelTest : CoroutinesTest {
             )
             coVerify {
                 navigationManager.asyncNavigate(
-                    HomeDestination("teste", InnerHome("te", "23232")),
+                    RootDestination,
                     NavigationMode.REMOVE_ALL_SCREENS_STACK
                 )
             }
@@ -229,7 +227,7 @@ class LoginViewModelTest : CoroutinesTest {
 
     @Test
     fun `error network`() =
-        runStateFlowTest(testDispatcher, viewModel.uiState) { job, collectedStates ->
+        runStateFlowTest(viewModel.uiState) { job, collectedStates ->
             coEvery {
                 authenticationUseCase(any())
             } coAnswers { withContext(testDispatcher) { throw NetworkThrowable() } }

@@ -5,6 +5,7 @@ import com.composetest.core.domain.managers.AppThemeManager
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
 import com.composetest.core.router.destinations.home.Home2Destination
 import com.composetest.core.router.destinations.home.HomeDestination
+import com.composetest.core.router.destinations.home.InnerHome2
 import com.composetest.core.router.di.qualifiers.NavGraphQualifier
 import com.composetest.core.router.enums.NavGraph
 import com.composetest.core.router.extensions.getParam
@@ -31,7 +32,13 @@ internal class HomeViewModel @Inject constructor(
     }
 
     override fun navigateToHome2() {
-        navigationManager.navigate(Home2Destination("tessfdf", "rer"))
+        navigationManager.navigate(
+            Home2Destination(
+                "tessfdf",
+                "rer",
+                InnerHome2("teste", "te")
+            )
+        )
     }
 
     override fun changeAppTheme(

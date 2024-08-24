@@ -12,7 +12,7 @@ import com.composetest.core.router.di.qualifiers.NavGraphQualifier
 import com.composetest.core.router.enums.NavGraph
 import com.composetest.core.router.enums.NavigationMode
 import com.composetest.core.router.managers.NavigationManager
-import com.composetest.core.router.providers.NavControllerProvider
+import com.composetest.core.router.managers.NavControllerManager
 import com.composetest.core.ui.bases.BaseViewModel
 import com.composetest.ui.analytics.MainAnalytic
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,7 +23,7 @@ import com.composetest.core.designsystem.R as DesignSystemResources
 class MainViewModel @Inject constructor(
     private val appThemeManager: AppThemeManager,
     private val sessionManager: SessionManager,
-    private val navControllerProvider: NavControllerProvider,
+    private val navControllerManager: NavControllerManager,
     @NavGraphQualifier(NavGraph.MAIN) private val navigationManager: NavigationManager,
     override val sendAnalyticsUseCase: SendAnalyticsUseCase,
 ) : BaseViewModel<MainUiState>(MainAnalytic, MainUiState()), MainCommandReceiver {
@@ -50,7 +50,7 @@ class MainViewModel @Inject constructor(
     }
 
     override fun setMainNavGraph(navController: NavHostController) {
-        navControllerProvider.setNavController(NavGraph.MAIN, navController)
+        navControllerManager.setNavController(NavGraph.MAIN, navController)
     }
 
     private fun iniState() {

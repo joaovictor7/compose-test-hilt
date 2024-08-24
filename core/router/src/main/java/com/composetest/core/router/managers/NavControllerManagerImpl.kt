@@ -1,13 +1,13 @@
-package com.composetest.core.router.providers
+package com.composetest.core.router.managers
 
 import androidx.navigation.NavHostController
 import com.composetest.core.router.enums.NavGraph
 import javax.inject.Inject
 import kotlin.collections.set
 
-internal class NavControllerProviderImpl @Inject constructor() : NavControllerProvider {
+internal class NavControllerManagerImpl @Inject constructor() : NavControllerManager {
 
-    private var navControllers: MutableMap<NavGraph, NavHostController> = mutableMapOf()
+    private val navControllers: MutableMap<NavGraph, NavHostController> = mutableMapOf()
 
     override fun setNavController(navGraph: NavGraph, navController: NavHostController) {
         navControllers[navGraph] = navController
