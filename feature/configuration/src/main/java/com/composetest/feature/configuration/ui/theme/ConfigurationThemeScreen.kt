@@ -24,13 +24,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.composetest.core.designsystem.components.switches.ThumbCheckSwitch
-import com.composetest.feature.configuration.dimensions.components
 import com.composetest.core.designsystem.dimensions.spacings
 import com.composetest.core.designsystem.extensions.opacity
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.interfaces.Screen
 import com.composetest.feature.configuration.R
+import com.composetest.feature.configuration.dimensions.components
 import com.composetest.feature.configuration.enums.ThemeConfiguration
 
 internal object ConfigurationThemeScreen :
@@ -50,7 +50,6 @@ internal object ConfigurationThemeScreen :
             Section(titleId = R.string.configuration_theme_mode_title) {
                 Theme(uiState = uiState, onExecuteCommand = onExecuteCommand)
             }
-            Spacer(Modifier.height(spacings.thirty))
             Section(titleId = R.string.configuration_theme_colors_title) {
                 DynamicColor(uiState = uiState, onExecuteCommand = onExecuteCommand)
             }
@@ -69,6 +68,7 @@ private fun Section(
     )
     Spacer(Modifier.height(spacings.sixteen))
     content()
+    Spacer(Modifier.height(spacings.thirty))
 }
 
 @Composable
@@ -88,7 +88,7 @@ private fun Theme(
                     .padding(horizontal = spacings.six)
                     .clip(MaterialTheme.shapes.medium)
                     .setBackgroundColor(selectedTheme = theme == uiState.selectedTheme)
-                    .size(components.configurationThemeOptionSize)
+                    .size(components.themeButtonSize)
                     .clickable {
                         onExecuteCommand(ConfigurationThemeCommand.ChangeTheme(theme))
                     }
@@ -137,7 +137,8 @@ private fun Preview() {
         ConfigurationThemeScreen(
             uiState = ConfigurationThemeUiState(
                 themes = ThemeConfiguration.entries,
-                selectedTheme = ThemeConfiguration.AUTO
+                selectedTheme = ThemeConfiguration.AUTO,
+                dynamicColors = true
             )
         ) { }
     }

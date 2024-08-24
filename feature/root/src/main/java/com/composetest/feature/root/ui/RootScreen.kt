@@ -10,18 +10,16 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.composetest.core.designsystem.components.dock.IconDock
-import com.composetest.core.designsystem.dimensions.components
 import com.composetest.core.designsystem.dimensions.spacings
-import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.router.destinations.home.HomeRootDestination
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.interfaces.Screen
 import com.composetest.feature.configuration.navigation.configurationRootNavGraph
-import com.composetest.feature.home.navigation.homeNavGraph
+import com.composetest.feature.home.navigation.homeRootNavGraph
+import com.composetest.feature.root.dimensions.components
 import kotlin.reflect.KClass
 
 internal object RootScreen : Screen<RootUiState, RootCommandReceiver> {
@@ -44,10 +42,9 @@ internal object RootScreen : Screen<RootUiState, RootCommandReceiver> {
                 )
                 IconDock(
                     modifier = Modifier
-                        .padding(bottom = spacings.eighteen)
                         .align(Alignment.BottomCenter)
-                        .fillMaxWidth(0.35f)
-                        .height(components.rootDockHeight),
+                        .fillMaxWidth(0.50f)
+                        .height(components.dockHeight),
                     shape = MaterialTheme.shapes.extraLarge,
                     selectedIndex = uiState.selectedDockItem,
                     dockItems = uiState.dockItems
@@ -70,15 +67,7 @@ private fun Navigation(
         navController = navController,
         startDestination = firstScreenDestination
     ) {
-        homeNavGraph()
+        homeRootNavGraph()
         configurationRootNavGraph()
-    }
-}
-
-@Composable
-@Preview
-private fun Preview() {
-    ComposeTestTheme {
-        RootScreen(uiState = RootUiState()) { }
     }
 }

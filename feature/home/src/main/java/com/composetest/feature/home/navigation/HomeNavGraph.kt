@@ -17,7 +17,7 @@ import com.composetest.feature.home.ui.home2.Home2ViewModel
 import com.composetest.feature.home.ui.home3.Home3Screen
 import com.composetest.feature.home.ui.home3.Home3ViewModel
 
-fun NavGraphBuilder.homeNavGraph() {
+fun NavGraphBuilder.homeRootNavGraph() {
     navigation<HomeRootDestination>(startDestination = HomeDestination) {
         composable<HomeDestination> {
             val viewModel = hiltViewModel<HomeViewModel>()

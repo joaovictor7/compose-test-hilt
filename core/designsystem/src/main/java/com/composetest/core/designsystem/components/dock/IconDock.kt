@@ -22,7 +22,6 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -36,6 +35,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.composetest.core.designsystem.R
 import com.composetest.core.designsystem.components.dock.params.IconDockParam
+import com.composetest.core.designsystem.dimensions.components
 import com.composetest.core.designsystem.dimensions.spacings
 import com.composetest.core.designsystem.extensions.opacity
 import com.composetest.core.designsystem.theme.ComposeTestTheme
@@ -55,13 +55,14 @@ fun IconDock(
     val currentDensity = LocalDensity.current
     val internalPadding = spacings.two
     val containerColor = TabRowDefaults.primaryContainerColor
-    var componentHeight by remember { mutableStateOf(0.dp) }
+    val zeroSpacing = spacings.zero
+    var componentHeight by remember { mutableStateOf(zeroSpacing) }
     Row(
         modifier = modifier
             .background(color = containerColor, shape = shape)
             .border(
                 border = BorderStroke(
-                    width = 1.dp,
+                    width = components.strokeWidthDock,
                     color = MaterialTheme.colorScheme.outlineVariant
                 ),
                 shape = shape
@@ -80,24 +81,16 @@ fun IconDock(
             divider = {},
             indicator = { tabPositions ->
                 if (selectedIndex < tabPositions.size) {
-                    Box {
-                        Spacer(
-                            modifier = Modifier
-                                .tabIndicatorOffset(tabPositions[selectedIndex])
-                                .padding(internalPadding)
-                                .background(
-                                    color = MaterialTheme.colorScheme.onSurface.opacity(0.12f),
-                                    shape = shape
-                                )
-                                .fillMaxHeight()
-                        )
-                        TabRowDefaults.PrimaryIndicator(
-                            modifier = Modifier
-                                .tabIndicatorOffset(tabPositions[selectedIndex])
-                                .align(Alignment.BottomCenter)
-                        )
-                    }
-
+                    Spacer(
+                        modifier = Modifier
+                            .tabIndicatorOffset(tabPositions[selectedIndex])
+                            .padding(internalPadding)
+                            .background(
+                                color = MaterialTheme.colorScheme.onSurface.opacity(0.12f),
+                                shape = shape
+                            )
+                            .fillMaxHeight()
+                    )
                 }
             }
         ) {
