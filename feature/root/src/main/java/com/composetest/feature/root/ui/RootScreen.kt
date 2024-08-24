@@ -20,7 +20,7 @@ import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.router.destinations.home.HomeRootDestination
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.interfaces.Screen
-import com.composetest.feature.configuration.navigation.configurationNavGraph
+import com.composetest.feature.configuration.navigation.configurationRootNavGraph
 import com.composetest.feature.home.navigation.homeNavGraph
 import kotlin.reflect.KClass
 
@@ -36,6 +36,7 @@ internal object RootScreen : Screen<RootUiState, RootCommandReceiver> {
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(paddingValues)
+                    .padding(spacings.eighteen)
             ) {
                 Navigation(
                     firstScreenDestination = HomeRootDestination::class,
@@ -70,7 +71,7 @@ private fun Navigation(
         startDestination = firstScreenDestination
     ) {
         homeNavGraph()
-        configurationNavGraph()
+        configurationRootNavGraph()
     }
 }
 

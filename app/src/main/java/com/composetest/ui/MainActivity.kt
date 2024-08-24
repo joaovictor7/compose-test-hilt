@@ -20,6 +20,7 @@ import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.designsystem.utils.lifecycleEvent
 import com.composetest.core.router.destinations.login.LoginDestination
 import com.composetest.core.ui.interfaces.Command
+import com.composetest.feature.configuration.navigation.configurationNavGraph
 import com.composetest.feature.login.navigation.loginNavGraph
 import com.composetest.feature.root.navigation.rootNavGraph
 import dagger.hilt.android.AndroidEntryPoint
@@ -79,6 +80,7 @@ private fun Navigation(
     ) {
         loginNavGraph()
         rootNavGraph()
+        configurationNavGraph()
     }
 }
 

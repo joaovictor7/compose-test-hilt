@@ -2,7 +2,6 @@ package com.composetest.feature.configuration.ui.configuration
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
@@ -24,6 +23,8 @@ import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.interfaces.Screen
 import com.composetest.feature.configuration.enums.Configuration
 
+private const val LIMIT_CONFIGURATIONS_PER_LINE = 2
+
 internal object ConfigurationScreen : Screen<ConfigurationUiState, ConfigurationCommandReceiver> {
 
     @Composable
@@ -31,18 +32,16 @@ internal object ConfigurationScreen : Screen<ConfigurationUiState, Configuration
         uiState: ConfigurationUiState,
         onExecuteCommand: (Command<ConfigurationCommandReceiver>) -> Unit
     ) {
-        Column(modifier = Modifier.padding(spacings.eighteen)) {
-            LazyVerticalStaggeredGrid(
-                columns = StaggeredGridCells.Fixed(2),
-                verticalItemSpacing = spacings.sixteen,
-                horizontalArrangement = Arrangement.spacedBy(spacings.sixteen)
-            ) {
-                items(uiState.configurations) { item ->
-                    ConfigurationCard(
-                        onExecuteCommand = onExecuteCommand,
-                        configuration = item
-                    )
-                }
+        LazyVerticalStaggeredGrid(
+            columns = StaggeredGridCells.Fixed(LIMIT_CONFIGURATIONS_PER_LINE),
+            verticalItemSpacing = spacings.sixteen,
+            horizontalArrangement = Arrangement.spacedBy(spacings.sixteen)
+        ) {
+            items(uiState.configurations) { item ->
+                ConfigurationCard(
+                    onExecuteCommand = onExecuteCommand,
+                    configuration = item
+                )
             }
         }
     }
@@ -58,8 +57,8 @@ private fun ConfigurationCard(
     ) {
         Box(
             modifier = Modifier
-                .fillMaxSize()
                 .padding(spacings.eighteen)
+                .fillMaxSize()
         ) {
             Icon(painter = painterResource(configuration.iconId), contentDescription = null)
             Text(

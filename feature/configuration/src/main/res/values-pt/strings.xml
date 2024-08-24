@@ -4,4 +4,12 @@
     <!-- Configurations -->
     <string name="configuration_theme_text">Tema</string>
 
+    <!-- Theme Configurations -->
+    <string name="configuration_theme_mode_title">Modo</string>
+    <string name="configuration_theme_dark_text">Escuro</string>
+    <string name="configuration_theme_light_text">Claro</string>
+    <string name="configuration_theme_auto_text">Automático</string>
+    <string name="configuration_theme_colors_title">Cores</string>
+    <string name="configuration_theme_dynamic_colors">Cores dinâmicas</string>
+
 </resources>

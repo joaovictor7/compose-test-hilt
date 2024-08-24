@@ -4,4 +4,12 @@
     <!-- Configurations -->
     <string name="configuration_theme_text">Theme</string>
 
+    <!-- Theme Configurations -->
+    <string name="configuration_theme_mode_title">Mode</string>
+    <string name="configuration_theme_dark_text">Dark</string>
+    <string name="configuration_theme_light_text">Light</string>
+    <string name="configuration_theme_auto_text">Auto</string>
+    <string name="configuration_theme_colors_title">Colors</string>
+    <string name="configuration_theme_dynamic_colors">Dynamic colors</string>
+
 </resources>
