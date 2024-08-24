@@ -3,13 +3,13 @@ package com.composetest.feature.root.ui
 import androidx.navigation.NavHostController
 import com.composetest.core.designsystem.components.dock.params.IconDockParam
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
-import com.composetest.core.router.destinations.configuration.ConfigurationMenuRootDestination
+import com.composetest.core.router.destinations.configuration.ConfigurationRootDestination
 import com.composetest.core.router.destinations.home.HomeRootDestination
 import com.composetest.core.router.di.qualifiers.NavGraphQualifier
 import com.composetest.core.router.enums.NavGraph
 import com.composetest.core.router.enums.NavigationMode
-import com.composetest.core.router.managers.NavigationManager
 import com.composetest.core.router.managers.NavControllerManager
+import com.composetest.core.router.managers.NavigationManager
 import com.composetest.core.ui.bases.BaseViewModel
 import com.composetest.feature.root.enums.DockItem
 import com.composetest.feature.root.ui.analytics.RootAnalytic
@@ -51,7 +51,7 @@ internal class RootViewModel @Inject constructor(
             NavigationMode.NESTED_NAVIGATION
         )
         DockItem.CONFIGURATION -> navigationManager.navigate(
-            ConfigurationMenuRootDestination,
+            ConfigurationRootDestination,
             NavigationMode.NESTED_NAVIGATION
         )
     }
