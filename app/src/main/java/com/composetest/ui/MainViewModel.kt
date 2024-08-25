@@ -25,7 +25,7 @@ class MainViewModel @Inject constructor(
     private val sessionManager: SessionManager,
     private val navControllerManager: NavControllerManager,
     @NavGraphQualifier(NavGraph.MAIN) private val navigationManager: NavigationManager,
-    override val sendAnalyticsUseCase: SendAnalyticsUseCase,
+    override val sendAnalyticsUseCase: SendAnalyticsUseCase
 ) : BaseViewModel<MainUiState>(MainAnalytic, MainUiState()), MainCommandReceiver {
 
     override val commandReceiver = this
@@ -54,7 +54,7 @@ class MainViewModel @Inject constructor(
     }
 
     private fun iniState() {
-        runFlowTask(flow = appThemeManager.getAppTheme()) { appTheme ->
+        runFlowTask(flow = appThemeManager.appThemeFlow) { appTheme ->
             updateUiState { it.setAppTheme(appTheme) }
         }
     }

@@ -4,17 +4,19 @@ import com.composetest.core.domain.enums.Theme
 import com.composetest.core.domain.managers.AppThemeManager
 import com.composetest.core.domain.repositories.AppThemeRepository
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.firstOrNull
 import javax.inject.Inject
 
 internal class AppThemeManagerImpl @Inject constructor(
     private val appThemeRepository: AppThemeRepository
 ) : AppThemeManager {
 
-    override fun getAppTheme() = appThemeRepository
-        .getAppTheme()
-        .combine(appThemeRepository.customAppTheme) { appTheme, customTheme ->
-            appTheme.copy(customTheme = customTheme)
-        }
+    override val appThemeFlow
+        get() = appThemeRepository
+            .getAppTheme()
+            .combine(appThemeRepository.customAppTheme) { appTheme, customTheme ->
+                appTheme.copy(customTheme = customTheme)
+            }
 
     override suspend fun setTheme(theme: Theme) = appThemeRepository.setTheme(theme)
 
@@ -23,4 +25,6 @@ internal class AppThemeManagerImpl @Inject constructor(
 
     override fun setCustomTheme(customTheme: Theme?) =
         appThemeRepository.setCustomTheme(customTheme)
+
+    override suspend fun getAppTheme() = appThemeFlow.firstOrNull()
 }

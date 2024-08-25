@@ -4,4 +4,5 @@ import com.composetest.core.ui.interfaces.CommandReceiver
 
 internal interface HomeCommandReceiver : CommandReceiver<HomeCommandReceiver> {
     fun navigateToHome2()
+    fun rootDockVisibility(visible: Boolean)
 }

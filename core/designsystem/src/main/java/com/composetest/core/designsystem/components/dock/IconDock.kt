@@ -54,7 +54,7 @@ fun IconDock(
     if (dockItems.isEmpty()) return
     val currentDensity = LocalDensity.current
     val internalPadding = spacings.two
-    val containerColor = TabRowDefaults.primaryContainerColor
+    val containerColor = TabRowDefaults.primaryContainerColor.opacity(0.7f)
     val zeroSpacing = spacings.zero
     var componentHeight by remember { mutableStateOf(zeroSpacing) }
     Row(

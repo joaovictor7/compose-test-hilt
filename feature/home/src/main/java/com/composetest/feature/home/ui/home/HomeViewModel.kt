@@ -1,5 +1,6 @@
 package com.composetest.feature.home.ui.home
 
+import com.composetest.core.domain.managers.RootDockManager
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
 import com.composetest.core.router.destinations.home.Home2Destination
 import com.composetest.core.router.destinations.home.HomeDestination
@@ -16,6 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class HomeViewModel @Inject constructor(
+    private val rootDockManager: RootDockManager,
     @NavGraphQualifier(NavGraph.ROOT) private val navigationManager: NavigationManager,
     override val sendAnalyticsUseCase: SendAnalyticsUseCase
 ) : BaseViewModel<HomeUiState>(HomeAnalytic, HomeUiState()), HomeCommandReceiver {
@@ -36,6 +38,10 @@ internal class HomeViewModel @Inject constructor(
                 InnerHome2("teste", "te")
             )
         )
+    }
+
+    override fun rootDockVisibility(visible: Boolean) {
+        rootDockManager.setRootDockVisibility(visible)
     }
 
     private fun teste() {

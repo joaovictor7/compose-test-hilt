@@ -8,4 +8,10 @@ internal sealed interface HomeCommand : Command<HomeCommandReceiver> {
             commandReceiver.navigateToHome2()
         }
     }
+
+    data class RootDockVisibility(private val visible: Boolean): HomeCommand {
+        override fun execute(commandReceiver: HomeCommandReceiver) {
+            commandReceiver.rootDockVisibility(visible)
+        }
+    }
 }

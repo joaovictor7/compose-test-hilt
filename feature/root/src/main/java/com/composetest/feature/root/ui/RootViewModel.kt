@@ -2,6 +2,7 @@ package com.composetest.feature.root.ui
 
 import androidx.navigation.NavHostController
 import com.composetest.core.designsystem.components.dock.params.IconDockParam
+import com.composetest.core.domain.managers.RootDockManager
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
 import com.composetest.core.router.destinations.configuration.ConfigurationRootDestination
 import com.composetest.core.router.destinations.home.HomeRootDestination
@@ -19,6 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 internal class RootViewModel @Inject constructor(
     private val navControllerManager: NavControllerManager,
+    private val rootDockManager: RootDockManager,
     @NavGraphQualifier(NavGraph.ROOT) private val navigationManager: NavigationManager,
     override val sendAnalyticsUseCase: SendAnalyticsUseCase
 ) : BaseViewModel<RootUiState>(RootAnalytic, RootUiState()), RootCommandReceiver {
@@ -58,5 +60,8 @@ internal class RootViewModel @Inject constructor(
 
     private fun setDockItems() {
         updateUiState { it.setDockItems(iconDockParam) }
+        runFlowTask(rootDockManager.dockVisibilityFlow) { visible ->
+            updateUiState { it.copy(dockVisible = visible) }
+        }
     }
 }

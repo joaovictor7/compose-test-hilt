@@ -8,7 +8,6 @@ import com.composetest.feature.configuration.ui.theme.analytics.ChangeDynamicCol
 import com.composetest.feature.configuration.ui.theme.analytics.ChangeThemeEvent
 import com.composetest.feature.configuration.ui.theme.analytics.ConfigurationThemeAnalytic
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.firstOrNull
 import javax.inject.Inject
 
 @HiltViewModel
@@ -44,7 +43,7 @@ internal class ConfigurationThemeViewModel @Inject constructor(
 
     private fun initState() {
         runAsyncTask {
-            appThemeManager.getAppTheme().firstOrNull()?.let { appTheme ->
+            appThemeManager.getAppTheme()?.let { appTheme ->
                 updateUiState {
                     it.initUiState(
                         ThemeConfiguration.entries,
