@@ -137,7 +137,7 @@ private fun Int.convertToDp(density: Density) = with(density) { this@convertToDp
 @PreviewLightDark
 private fun Preview() {
     ComposeTestTheme {
-        var selectedIndex by remember { mutableIntStateOf(0) }
+        var selectedIndex by remember { mutableIntStateOf(2) }
         Box(modifier = Modifier.background(color = Color.Red)) {
             IconDock(
                 modifier = Modifier.height(50.dp),

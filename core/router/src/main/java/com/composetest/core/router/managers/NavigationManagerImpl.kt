@@ -4,11 +4,14 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavOptions
+import androidx.navigation.get
 import com.composetest.common.providers.DispatcherProvider
 import com.composetest.core.router.enums.NavGraph
 import com.composetest.core.router.enums.NavigationMode
 import com.composetest.core.router.interfaces.ResultParam
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.transform
 import kotlinx.coroutines.withContext
 import kotlin.reflect.KClass
@@ -23,6 +26,11 @@ internal class NavigationManagerImpl(
     private val navController get() = navControllerManager.getNavController(navGraph)
     private val navigateBackAvailable
         get() = navController.currentBackStackEntry?.lifecycle?.currentState == Lifecycle.State.RESUMED
+
+    override val currentScreenFlow
+        get() = navController.currentBackStackEntryFlow
+            .map { it.destination }
+            .flowOn(dispatcherProvider.io)
 
     override fun <Destination : Any> navigate(
         destination: Destination,
@@ -47,21 +55,6 @@ internal class NavigationManagerImpl(
         navController.popBackStack()
     }
 
-    override fun <Result : ResultParam> getResultFlow(resultClass: KClass<Result>) =
-        navController.currentBackStackEntryFlow.transform {
-            with(it.savedStateHandle) {
-                val key = resultClass.simpleName.orEmpty()
-                get<Result>(key)?.let { result ->
-                    emit(result)
-                    remove<Result>(key)
-                }
-            }
-        }.flowOn(dispatcherProvider.main)
-
-    override fun isCurrentScreen(destination: Any): Boolean {
-        return navController == navController.currentDestination
-    }
-
     override suspend fun <Destination : Any> asyncNavigate(
         destination: Destination,
         navigationMode: NavigationMode?
@@ -77,6 +70,22 @@ internal class NavigationManagerImpl(
         withContext(dispatcherProvider.main) {
             navigateBack(result)
         }
+
+    override fun <Result : ResultParam> getResultFlow(resultClass: KClass<Result>) =
+        navController.currentBackStackEntryFlow.transform {
+            with(it.savedStateHandle) {
+                val key = resultClass.simpleName.orEmpty()
+                get<Result>(key)?.let { result ->
+                    emit(result)
+                    remove<Result>(key)
+                }
+            }
+        }.flowOn(dispatcherProvider.main)
+
+    override suspend fun getCurrentScreen() = currentScreenFlow.firstOrNull()
+
+    override fun getNavDestination(destination: Any) =
+        runCatching { navController.graph[destination] }.getOrNull()
 
     private fun getNavigateOptions(mode: NavigationMode?) = NavOptions.Builder().apply {
         mode?.let { mode ->

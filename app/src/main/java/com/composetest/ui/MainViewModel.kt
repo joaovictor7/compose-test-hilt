@@ -11,8 +11,8 @@ import com.composetest.core.router.destinations.login.LoginDestination
 import com.composetest.core.router.di.qualifiers.NavGraphQualifier
 import com.composetest.core.router.enums.NavGraph
 import com.composetest.core.router.enums.NavigationMode
-import com.composetest.core.router.managers.NavigationManager
 import com.composetest.core.router.managers.NavControllerManager
+import com.composetest.core.router.managers.NavigationManager
 import com.composetest.core.ui.bases.BaseViewModel
 import com.composetest.ui.analytics.MainAnalytic
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -36,15 +36,17 @@ class MainViewModel @Inject constructor(
     }
 
     override fun verifySession() {
-        runAsyncTask {
-            val validSession = sessionManager.isSessionValid()
-            val currentScreenIsLogin = navigationManager.isCurrentScreen(LoginDestination)
-            if (!validSession && !currentScreenIsLogin) {
-                showAlertDialogSession()
-                navigationManager.navigate(
-                    LoginDestination,
-                    NavigationMode.REMOVE_ALL_SCREENS_STACK
-                )
+        with(navigationManager) {
+            runAsyncTask {
+                val validSession = sessionManager.isSessionValid()
+                val currentScreenIsLogin = getCurrentScreen() == getNavDestination(LoginDestination)
+                if (!validSession && !currentScreenIsLogin) {
+                    showAlertDialogSession()
+                    navigationManager.navigate(
+                        LoginDestination,
+                        NavigationMode.REMOVE_ALL_SCREENS_STACK
+                    )
+                }
             }
         }
     }

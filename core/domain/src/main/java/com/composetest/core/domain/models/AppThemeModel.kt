@@ -14,11 +14,13 @@ data class AppThemeModel(
     val systemBarStyles
         get() = when (customTheme ?: theme) {
             Theme.AUTO -> SystemBarStyle.auto(Color.TRANSPARENT, Color.TRANSPARENT) to
-                SystemBarStyle.auto(defaultLightScrim, defaultDarkScrim)
+                    SystemBarStyle.auto(defaultLightScrim, defaultDarkScrim)
+
             Theme.DARK -> SystemBarStyle.dark(Color.TRANSPARENT) to
-                SystemBarStyle.auto(defaultLightScrim, defaultDarkScrim) { true }
+                    SystemBarStyle.auto(defaultLightScrim, defaultDarkScrim) { true }
+
             Theme.LIGHT -> SystemBarStyle.light(Color.TRANSPARENT, Color.TRANSPARENT) to
-                SystemBarStyle.auto(defaultLightScrim, defaultLightScrim) { false }
+                    SystemBarStyle.auto(defaultLightScrim, defaultLightScrim) { false }
         }
 
     private object DefaultThemeColors {

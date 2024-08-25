@@ -4,9 +4,9 @@ import androidx.navigation.NavHostController
 import com.composetest.core.ui.interfaces.Command
 
 internal sealed interface RootCommand : Command<RootCommandReceiver> {
-    data class ChangeDockItemSelected(private val selectedIndex: Int) : RootCommand {
+    data class ChangeSelectedDockItem(private val selectedIndex: Int) : RootCommand {
         override fun execute(commandReceiver: RootCommandReceiver) {
-            commandReceiver.changeDockItemSelected(selectedIndex)
+            commandReceiver.changeSelectedDockItem(selectedIndex)
         }
     }
 

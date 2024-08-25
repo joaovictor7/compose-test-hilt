@@ -1,6 +1,7 @@
 package com.composetest.core.designsystem.components.dock
 
 import androidx.compose.foundation.ScrollState
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -18,7 +19,7 @@ fun DockVisibilityManager(
     var lastScrollOffset by rememberSaveable { mutableIntStateOf(0) }
     val visible by remember {
         derivedStateOf {
-            (scrollState.value <= lastScrollOffset).also {
+            checkScrollStateDirection(scrollState, lastScrollOffset).also {
                 lastScrollOffset = scrollState.value
             }
         }
@@ -26,4 +27,37 @@ fun DockVisibilityManager(
     LaunchedEffect(visible) {
         onVisibilityChange(visible)
     }
+}
+
+@Composable
+fun DockVisibilityManager(
+    lazyListState: LazyListState,
+    onVisibilityChange: (Boolean) -> Unit
+) {
+    var previousIndex by rememberSaveable { mutableIntStateOf(0) }
+    var previousScrollOffset by rememberSaveable { mutableIntStateOf(0) }
+    val visible by remember {
+        derivedStateOf {
+            checkLazyListDirection(lazyListState, previousIndex, previousScrollOffset).also {
+                previousIndex = lazyListState.firstVisibleItemIndex
+                previousScrollOffset = lazyListState.firstVisibleItemScrollOffset
+            }
+        }
+    }
+    LaunchedEffect(visible) {
+        onVisibilityChange(visible)
+    }
+}
+
+private fun checkScrollStateDirection(scrollState: ScrollState, lastScrollOffset: Int) =
+    scrollState.value <= lastScrollOffset
+
+private fun checkLazyListDirection(
+    lazyListState: LazyListState,
+    previousIndex: Int,
+    previousScrollOffset: Int
+) = if (lazyListState.firstVisibleItemIndex == previousIndex) {
+    lazyListState.firstVisibleItemScrollOffset <= previousScrollOffset
+} else {
+    lazyListState.firstVisibleItemIndex <= previousIndex
 }

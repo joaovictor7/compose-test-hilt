@@ -1,7 +1,9 @@
 package com.composetest.feature.root.ui
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -42,7 +44,10 @@ internal object RootScreen : Screen<RootUiState, RootCommandReceiver> {
                     firstScreenDestination = HomeRootDestination::class,
                     onExecuteCommand = onExecuteCommand
                 )
-                Dock(uiState = uiState, onExecuteCommand = onExecuteCommand)
+                Dock(
+                    uiState = uiState,
+                    onExecuteCommand = onExecuteCommand
+                )
             }
         }
     }
@@ -71,21 +76,23 @@ private fun BoxScope.Dock(
     uiState: RootUiState,
     onExecuteCommand: (Command<RootCommandReceiver>) -> Unit
 ) {
-    SlideInOutAnimation(
+    Row(
         modifier = Modifier.align(Alignment.BottomCenter),
-        visible = uiState.dockVisible
+        horizontalArrangement = Arrangement.Center
     ) {
-        IconDock(
-            modifier = Modifier
-                .fillMaxWidth(0.5f)
-                .navigationBarsPadding()
-                .padding(bottom = spacings.ten)
-                .height(components.dockHeight),
-            shape = MaterialTheme.shapes.extraLarge,
-            selectedIndex = uiState.selectedDockItem,
-            dockItems = uiState.dockItems
-        ) {
-            onExecuteCommand(RootCommand.ChangeDockItemSelected(it))
+        SlideInOutAnimation(visible = uiState.dockVisible) {
+            IconDock(
+                modifier = Modifier
+                    .fillMaxWidth(0.5f)
+                    .navigationBarsPadding()
+                    .padding(bottom = spacings.ten)
+                    .height(components.dockHeight),
+                shape = MaterialTheme.shapes.extraLarge,
+                selectedIndex = uiState.selectedDockItem,
+                dockItems = uiState.dockItems
+            ) {
+                onExecuteCommand(RootCommand.ChangeSelectedDockItem(it))
+            }
         }
     }
 }

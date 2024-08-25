@@ -1,5 +1,6 @@
 package com.composetest.feature.root.ui
 
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import com.composetest.core.designsystem.components.dock.params.IconDockParam
 import com.composetest.core.domain.managers.RootDockManager
@@ -15,6 +16,8 @@ import com.composetest.core.ui.bases.BaseViewModel
 import com.composetest.feature.root.enums.DockItem
 import com.composetest.feature.root.ui.analytics.RootAnalytic
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,41 +28,71 @@ internal class RootViewModel @Inject constructor(
     override val sendAnalyticsUseCase: SendAnalyticsUseCase
 ) : BaseViewModel<RootUiState>(RootAnalytic, RootUiState()), RootCommandReceiver {
 
-    private val iconDockParam = DockItem.entries.mapIndexed { index, value ->
-        IconDockParam(
-            index = index,
-            iconId = value.iconId
-        )
-    }
+    private val selectedDockItem = MutableStateFlow(DockItem.HOME)
 
     override val commandReceiver = this
 
     init {
         setDockItems()
+        dockVisibilityObservable()
+        dockChangesObservable()
     }
 
-    override fun changeDockItemSelected(selectedIndex: Int) {
-        updateUiState { it.setSelectedDockItem(selectedIndex) }
-        navigateToDockItem(DockItem.getItemDock(selectedIndex))
+    override fun changeSelectedDockItem(selectedIndex: Int) {
+        selectedDockItem.update { DockItem.getItemDock(selectedIndex) }
     }
 
     override fun setRootNavGraph(navController: NavHostController) {
         navControllerManager.setNavController(NavGraph.ROOT, navController)
+        currentScreenObservable()
     }
 
-    private fun navigateToDockItem(dockItem: DockItem) = when (dockItem) {
-        DockItem.HOME -> navigationManager.navigate(
+    private fun dockChangesObservable() {
+        runFlowTask(selectedDockItem) { dockItem ->
+            updateUiState { it.setSelectedDockItem(DockItem.entries.indexOf(dockItem)) }
+            navigateToDockItem(dockItem)
+        }
+    }
+
+    private suspend fun navigateToDockItem(dockItem: DockItem) = when (dockItem) {
+        DockItem.HOME -> navigationManager.asyncNavigate(
             HomeRootDestination,
             NavigationMode.NESTED_NAVIGATION
         )
-        DockItem.CONFIGURATION -> navigationManager.navigate(
+
+        DockItem.CONFIGURATION -> navigationManager.asyncNavigate(
             ConfigurationRootDestination,
             NavigationMode.NESTED_NAVIGATION
         )
     }
 
     private fun setDockItems() {
+        val iconDockParam = DockItem.entries.mapIndexed { index, value ->
+            IconDockParam(
+                index = index,
+                iconId = value.iconId
+            )
+        }
         updateUiState { it.setDockItems(iconDockParam) }
+    }
+
+    private fun currentScreenObservable() = with(navigationManager) {
+        runFlowTask(currentScreenFlow) { currentScreen ->
+            currentScreen.hierarchy.forEach {
+                val dockItem = when (it) {
+                    getNavDestination(HomeRootDestination) -> DockItem.HOME
+                    getNavDestination(ConfigurationRootDestination) -> DockItem.CONFIGURATION
+                    else -> null
+                }
+                if (dockItem != null) {
+                    selectedDockItem.update { dockItem }
+                    return@forEach
+                }
+            }
+        }
+    }
+
+    private fun dockVisibilityObservable() {
         runFlowTask(rootDockManager.dockVisibilityFlow) { visible ->
             updateUiState { it.copy(dockVisible = visible) }
         }
