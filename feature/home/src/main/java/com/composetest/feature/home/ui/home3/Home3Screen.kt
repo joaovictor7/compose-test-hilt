@@ -1,6 +1,5 @@
 package com.composetest.feature.home.ui.home3
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.safeDrawingPadding
@@ -29,9 +28,6 @@ internal object Home3Screen : Screen<Home3UiState, Home3CommandReceiver> {
                 Text(text = uiState.t)
             }
             Text(text = "Home3")
-        }
-        BackHandler {
-            onExecuteCommand(Home3Commands.ReturnLogin)
         }
     }
 }

@@ -6,4 +6,5 @@ import com.composetest.core.ui.interfaces.CommandReceiver
 internal interface RootCommandReceiver : CommandReceiver<RootCommandReceiver> {
     fun changeSelectedDockItem(selectedIndex: Int)
     fun setRootNavGraph(navController: NavHostController)
+    fun backHandler()
 }

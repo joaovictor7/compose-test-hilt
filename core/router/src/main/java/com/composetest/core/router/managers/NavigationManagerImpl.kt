@@ -4,12 +4,10 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavOptions
-import androidx.navigation.get
 import com.composetest.common.providers.DispatcherProvider
 import com.composetest.core.router.enums.NavGraph
 import com.composetest.core.router.enums.NavigationMode
 import com.composetest.core.router.interfaces.ResultParam
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.transform
@@ -27,18 +25,17 @@ internal class NavigationManagerImpl(
     private val navigateBackAvailable
         get() = navController.currentBackStackEntry?.lifecycle?.currentState == Lifecycle.State.RESUMED
 
-    override val currentScreenFlow
+    override val currentRoute get() = navController.currentDestination?.route
+    override val currentRouteFlow
         get() = navController.currentBackStackEntryFlow
-            .map { it.destination }
+            .map { it.destination.route.orEmpty() }
             .flowOn(dispatcherProvider.io)
 
     override fun <Destination : Any> navigate(
-        destination: Destination,
-        navigationMode: NavigationMode?
+        destination: Destination, navigationMode: NavigationMode?
     ) {
         navController.navigate(
-            route = destination,
-            navOptions = getNavigateOptions(navigationMode)
+            route = destination, navOptions = getNavigateOptions(navigationMode)
         )
     }
 
@@ -49,15 +46,13 @@ internal class NavigationManagerImpl(
     override fun <Result : ResultParam> navigateBack(result: Result) {
         if (!navigateBackAvailable) return
         navController.previousBackStackEntry?.savedStateHandle?.set(
-            result::class.simpleName.orEmpty(),
-            result
+            result::class.simpleName.orEmpty(), result
         )
         navController.popBackStack()
     }
 
     override suspend fun <Destination : Any> asyncNavigate(
-        destination: Destination,
-        navigationMode: NavigationMode?
+        destination: Destination, navigationMode: NavigationMode?
     ) = withContext(dispatcherProvider.main) {
         navigate(destination, navigationMode)
     }
@@ -82,29 +77,26 @@ internal class NavigationManagerImpl(
             }
         }.flowOn(dispatcherProvider.main)
 
-    override suspend fun getCurrentScreen() = currentScreenFlow.firstOrNull()
-
-    override fun getNavDestination(destination: Any) =
-        runCatching { navController.graph[destination] }.getOrNull()
-
     private fun getNavigateOptions(mode: NavigationMode?) = NavOptions.Builder().apply {
-        mode?.let { mode ->
-            when (mode) {
-                NavigationMode.REMOVE_CURRENT_SCREEN -> navController.currentDestination?.id?.let {
-                    setPopUpTo(destinationId = it, inclusive = true)
-                }
-                NavigationMode.REMOVE_ALL_SCREENS_STACK -> {
-                    setPopUpTo(destinationId = 0, inclusive = true)
-                }
-                NavigationMode.NESTED_NAVIGATION -> {
-                    setPopUpTo(
-                        destinationId = navController.graph.findStartDestination().id,
-                        inclusive = false,
-                        saveState = true
-                    )
-                    setRestoreState(true)
-                }
+        when (mode) {
+            NavigationMode.REMOVE_CURRENT_SCREEN -> navController.currentDestination?.id?.let {
+                setPopUpTo(destinationId = it, inclusive = true)
             }
+
+            NavigationMode.REMOVE_ALL_SCREENS_STACK -> {
+                setPopUpTo(destinationId = 0, inclusive = true)
+            }
+
+            NavigationMode.SAVE_SCREEN_STATE -> runCatching {
+                setPopUpTo(
+                    destinationId = navController.graph.findStartDestination().id,
+                    inclusive = false,
+                    saveState = true
+                )
+                setRestoreState(true)
+            }
+
+            else -> Unit
         }
         setLaunchSingleTop(true)
     }.build()

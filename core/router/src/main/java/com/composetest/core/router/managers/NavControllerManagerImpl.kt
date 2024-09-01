@@ -9,7 +9,10 @@ internal class NavControllerManagerImpl @Inject constructor() : NavControllerMan
 
     private val navControllers: MutableMap<NavGraph, NavHostController> = mutableMapOf()
 
-    override fun setNavController(navGraph: NavGraph, navController: NavHostController) {
+    override fun setNavController(
+        navGraph: NavGraph,
+        navController: NavHostController
+    ) = (navControllers.remove(navGraph) != null).also {
         navControllers[navGraph] = navController
     }
 

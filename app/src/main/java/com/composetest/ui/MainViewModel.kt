@@ -39,8 +39,7 @@ class MainViewModel @Inject constructor(
         with(navigationManager) {
             runAsyncTask {
                 val validSession = sessionManager.isSessionValid()
-                val currentScreenIsLogin = getCurrentScreen() == getNavDestination(LoginDestination)
-                if (!validSession && !currentScreenIsLogin) {
+                if (!validSession && currentRoute != LoginDestination.asRoute) {
                     showAlertDialogSession()
                     navigationManager.navigate(
                         LoginDestination,

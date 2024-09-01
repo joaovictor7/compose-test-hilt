@@ -1,9 +1,8 @@
 package com.composetest.feature.root.ui
 
-import androidx.compose.foundation.layout.Arrangement
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -12,14 +11,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.composetest.core.designsystem.components.animations.SlideInOutAnimation
 import com.composetest.core.designsystem.components.dock.IconDock
 import com.composetest.core.designsystem.dimensions.spacings
-import com.composetest.core.router.destinations.home.HomeRootDestination
+import com.composetest.core.designsystem.extensions.asActivity
+import com.composetest.core.router.destinations.home.HomeDestination
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.interfaces.Screen
 import com.composetest.feature.configuration.navigation.configurationRootNavGraph
@@ -34,6 +36,7 @@ internal object RootScreen : Screen<RootUiState, RootCommandReceiver> {
         uiState: RootUiState,
         onExecuteCommand: (Command<RootCommandReceiver>) -> Unit
     ) {
+        val context = LocalContext.current
         Scaffold { paddingValues ->
             Box(modifier = Modifier.fillMaxSize()) {
                 Navigation(
@@ -41,7 +44,7 @@ internal object RootScreen : Screen<RootUiState, RootCommandReceiver> {
                         .padding(paddingValues)
                         .padding(horizontal = spacings.eighteen)
                         .padding(top = spacings.eighteen),
-                    firstScreenDestination = HomeRootDestination::class,
+                    firstScreenDestination = HomeDestination::class,
                     onExecuteCommand = onExecuteCommand
                 )
                 Dock(
@@ -49,6 +52,12 @@ internal object RootScreen : Screen<RootUiState, RootCommandReceiver> {
                     onExecuteCommand = onExecuteCommand
                 )
             }
+            BackHandler {
+                onExecuteCommand(RootCommand.BackHandler)
+            }
+        }
+        LaunchedEffect(uiState.finishApp) {
+            if (uiState.finishApp) context.asActivity?.finish()
         }
     }
 }
@@ -76,23 +85,40 @@ private fun BoxScope.Dock(
     uiState: RootUiState,
     onExecuteCommand: (Command<RootCommandReceiver>) -> Unit
 ) {
-    Row(
+    SlideInOutAnimation(
         modifier = Modifier.align(Alignment.BottomCenter),
-        horizontalArrangement = Arrangement.Center
+        visible = uiState.dockVisible
     ) {
-        SlideInOutAnimation(visible = uiState.dockVisible) {
-            IconDock(
-                modifier = Modifier
-                    .fillMaxWidth(0.5f)
-                    .navigationBarsPadding()
-                    .padding(bottom = spacings.ten)
-                    .height(components.dockHeight),
-                shape = MaterialTheme.shapes.extraLarge,
-                selectedIndex = uiState.selectedDockItem,
-                dockItems = uiState.dockItems
-            ) {
-                onExecuteCommand(RootCommand.ChangeSelectedDockItem(it))
-            }
+        IconDock(
+            modifier = Modifier
+                .fillMaxWidth(0.5f)
+                .navigationBarsPadding()
+                .padding(bottom = spacings.ten)
+                .height(components.dockHeight),
+            shape = MaterialTheme.shapes.extraLarge,
+            selectedIndex = uiState.selectedDockItem,
+            dockItems = uiState.dockItems
+        ) {
+            onExecuteCommand(RootCommand.ChangeSelectedDockItem(it))
         }
     }
+//    Row(
+//        modifier = Modifier.align(Alignment.BottomCenter),
+//        horizontalArrangement = Arrangement.Center
+//    ) {
+//        SlideInOutAnimation(visible = uiState.dockVisible) {
+//            IconDock(
+//                modifier = Modifier
+//                    .fillMaxWidth(0.5f)
+//                    .navigationBarsPadding()
+//                    .padding(bottom = spacings.ten)
+//                    .height(components.dockHeight),
+//                shape = MaterialTheme.shapes.extraLarge,
+//                selectedIndex = uiState.selectedDockItem,
+//                dockItems = uiState.dockItems
+//            ) {
+//                onExecuteCommand(RootCommand.ChangeSelectedDockItem(it))
+//            }
+//        }
+//    }
 }

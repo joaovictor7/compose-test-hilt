@@ -17,6 +17,7 @@ internal data class ConfigurationThemeUiState(
         selectedTheme = theme,
         dynamicColors = dynamicColors
     )
+
     fun setSelectedTheme(selectedTheme: ThemeConfiguration) = copy(selectedTheme = selectedTheme)
     fun setDynamicColors(active: Boolean) = copy(dynamicColors = active)
 }

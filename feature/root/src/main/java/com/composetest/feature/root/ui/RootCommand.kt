@@ -15,4 +15,10 @@ internal sealed interface RootCommand : Command<RootCommandReceiver> {
             commandReceiver.setRootNavGraph(navController)
         }
     }
+
+    data object BackHandler : RootCommand {
+        override fun execute(commandReceiver: RootCommandReceiver) {
+            commandReceiver.backHandler()
+        }
+    }
 }
