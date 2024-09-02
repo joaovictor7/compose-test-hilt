@@ -87,7 +87,7 @@ private fun Theme(
                 modifier = Modifier
                     .padding(horizontal = spacings.six)
                     .clip(MaterialTheme.shapes.medium)
-                    .setBackgroundColor(selectedTheme = theme == uiState.selectedTheme)
+                    .setSelectedBackgroundColor(selectedTheme = theme == uiState.selectedTheme)
                     .size(components.themeButtonSize)
                     .clickable {
                         onExecuteCommand(ConfigurationThemeCommand.ChangeTheme(theme))
@@ -126,9 +126,11 @@ private fun DynamicColor(
 }
 
 @Composable
-private fun Modifier.setBackgroundColor(selectedTheme: Boolean) = if (selectedTheme)
-    background(color = MaterialTheme.colorScheme.primary.opacity(0.12f))
-else this
+private fun Modifier.setSelectedBackgroundColor(selectedTheme: Boolean) = apply {
+    if (selectedTheme) {
+        return background(color = MaterialTheme.colorScheme.primary.opacity(0.12f))
+    }
+}
 
 @Composable
 @PreviewLightDark

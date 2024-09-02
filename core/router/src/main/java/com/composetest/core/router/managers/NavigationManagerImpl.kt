@@ -2,12 +2,14 @@ package com.composetest.core.router.managers
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.SavedStateHandle
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavOptions
 import com.composetest.common.providers.DispatcherProvider
 import com.composetest.core.router.enums.NavGraph
 import com.composetest.core.router.enums.NavigationMode
 import com.composetest.core.router.interfaces.ResultParam
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.transform
@@ -26,16 +28,18 @@ internal class NavigationManagerImpl(
         get() = navController.currentBackStackEntry?.lifecycle?.currentState == Lifecycle.State.RESUMED
 
     override val currentRoute get() = navController.currentDestination?.route
-    override val currentRouteFlow
+    override val currentRouteChangesFlow
         get() = navController.currentBackStackEntryFlow
-            .map { it.destination.route.orEmpty() }
+            .mapperToRoute()
             .flowOn(dispatcherProvider.io)
 
     override fun <Destination : Any> navigate(
-        destination: Destination, navigationMode: NavigationMode?
+        destination: Destination,
+        navigationMode: NavigationMode?
     ) {
         navController.navigate(
-            route = destination, navOptions = getNavigateOptions(navigationMode)
+            route = destination,
+            navOptions = getNavigateOptions(navigationMode)
         )
     }
 
@@ -46,13 +50,15 @@ internal class NavigationManagerImpl(
     override fun <Result : ResultParam> navigateBack(result: Result) {
         if (!navigateBackAvailable) return
         navController.previousBackStackEntry?.savedStateHandle?.set(
-            result::class.simpleName.orEmpty(), result
+            result::class.simpleName.orEmpty(),
+            result
         )
         navController.popBackStack()
     }
 
     override suspend fun <Destination : Any> asyncNavigate(
-        destination: Destination, navigationMode: NavigationMode?
+        destination: Destination,
+        navigationMode: NavigationMode?
     ) = withContext(dispatcherProvider.main) {
         navigate(destination, navigationMode)
     }
@@ -76,6 +82,10 @@ internal class NavigationManagerImpl(
                 }
             }
         }.flowOn(dispatcherProvider.main)
+
+    private fun Flow<NavBackStackEntry>.mapperToRoute(): Flow<String> = map {
+        it.destination.route.orEmpty()
+    }
 
     private fun getNavigateOptions(mode: NavigationMode?) = NavOptions.Builder().apply {
         when (mode) {

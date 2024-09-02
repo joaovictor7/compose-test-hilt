@@ -4,5 +4,4 @@ import com.composetest.core.ui.interfaces.CommandReceiver
 
 internal interface Home2CommandReceiver : CommandReceiver<Home2CommandReceiver> {
     fun returnHome()
-    fun dockVisibility(visible: Boolean)
 }

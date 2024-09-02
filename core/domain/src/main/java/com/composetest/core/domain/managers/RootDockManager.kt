@@ -1,9 +1,9 @@
 package com.composetest.core.domain.managers
 
-import kotlinx.coroutines.flow.Flow
+import com.composetest.core.domain.enums.DockItem
 
 interface RootDockManager {
-    val dockVisibilityFlow: Flow<Boolean>
+    fun changeSelectedDockItem(selectedDockItemIndex: Int): DockItem
 
-    fun setRootDockVisibility(visible: Boolean)
+    fun getNextDockItem(): DockItem?
 }

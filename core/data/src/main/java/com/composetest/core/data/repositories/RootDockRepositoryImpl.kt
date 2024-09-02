@@ -8,10 +8,10 @@ import javax.inject.Inject
 
 internal class RootDockRepositoryImpl @Inject constructor() : RootDockRepository {
 
-    private val _dockVisibleState = MutableStateFlow(true)
-    override val dockVisibilityFlow = _dockVisibleState.asStateFlow()
+    private val _dockHeightFlow = MutableStateFlow(0)
+    override val dockHeightFlow = _dockHeightFlow.asStateFlow()
 
-    override fun setVisible(visible: Boolean) {
-        _dockVisibleState.update { visible }
+    override fun setHeight(height: Int) {
+        _dockHeightFlow.update { height }
     }
 }

@@ -8,7 +8,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Brush
 
 @Composable
-fun Modifier.componentVisibility(isVisible: Boolean) = alpha(if (isVisible) 1f else 0f)
+fun Modifier.visibility(isVisible: Boolean) = alpha(if (isVisible) 1f else 0f)
 
 @Composable
 fun Modifier.verticalTopBackgroundBrush(isDarkMode: Boolean) = apply {

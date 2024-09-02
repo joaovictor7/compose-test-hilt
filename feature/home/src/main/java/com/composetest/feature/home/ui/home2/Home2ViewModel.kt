@@ -1,6 +1,6 @@
 package com.composetest.feature.home.ui.home2
 
-import com.composetest.core.domain.managers.RootDockManager
+import com.composetest.core.domain.usecases.rootdock.GetRootDockHeightUseCase
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
 import com.composetest.core.router.di.qualifiers.NavGraphQualifier
 import com.composetest.core.router.enums.NavGraph
@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class Home2ViewModel @Inject constructor(
-    private val rootDockManager: RootDockManager,
+    private val getRootDockHeightUseCase: GetRootDockHeightUseCase,
     @NavGraphQualifier(NavGraph.ROOT) private val navigationManager: NavigationManager,
     override val sendAnalyticsUseCase: SendAnalyticsUseCase
 ) : BaseViewModel<Home2UiState>(Home2Analytic, Home2UiState()), Home2CommandReceiver {
@@ -22,21 +22,16 @@ internal class Home2ViewModel @Inject constructor(
 
     init {
         openScreenAnalytic()
-//        val e = navigationManager.getParam<Home2Destination>()
-//        updateUiState { it.copy(t = e.teste) }
+        dockHeightObservable()
     }
 
     override fun returnHome() {
-//        navigationManager.navigate(
-//            Home3Destination("teste", "teste"),
-//            NavigationMode.REMOVE_CURRENT_SCREEN
-//        )
         navigationManager.navigateBack(Home2Result("teste"))
         count++
     }
 
-    override fun dockVisibility(visible: Boolean) {
-        rootDockManager.setRootDockVisibility(visible)
+    private fun dockHeightObservable() = runFlowTask(getRootDockHeightUseCase()) { dockHeight ->
+        updateUiState { it.setDockHeight(dockHeight) }
     }
 
     private companion object {

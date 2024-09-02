@@ -7,8 +7,10 @@ import kotlinx.serialization.json.Json
 import kotlin.reflect.KType
 import kotlin.reflect.typeOf
 
-internal inline fun <reified T> navType(isNullableAllowed: Boolean = false): Pair<KType, NavType<T>> =
-    typeOf<T>() to object : NavType<T>(isNullableAllowed = isNullableAllowed) {
+internal inline fun <reified T> navType(
+    isNullableAllowed: Boolean = false
+): Pair<KType, NavType<T>> =
+    typeOf<T>() to object : NavType<T>(isNullableAllowed) {
         override fun get(bundle: Bundle, key: String): T? =
             bundle.getString(key)?.let { Json.decodeFromString<T>(it) }
 

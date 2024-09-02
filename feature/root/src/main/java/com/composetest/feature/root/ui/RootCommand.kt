@@ -16,6 +16,12 @@ internal sealed interface RootCommand : Command<RootCommandReceiver> {
         }
     }
 
+    data class SetDockHeight(private val height: Int) : RootCommand {
+        override fun execute(commandReceiver: RootCommandReceiver) {
+            commandReceiver.setDockHeight(height)
+        }
+    }
+
     data object BackHandler : RootCommand {
         override fun execute(commandReceiver: RootCommandReceiver) {
             commandReceiver.backHandler()

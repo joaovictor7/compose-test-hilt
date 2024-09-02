@@ -1,12 +1,11 @@
 package com.composetest.feature.root.ui
 
-import android.util.Log
 import androidx.navigation.NavHostController
 import com.composetest.core.designsystem.components.dock.params.IconDockParam
 import com.composetest.core.domain.enums.DockItem
 import com.composetest.core.domain.managers.RootDockManager
-import com.composetest.core.domain.usecases.ChangeDockItemSelectionUseCase
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
+import com.composetest.core.domain.usecases.rootdock.SetRootDockHeightUseCase
 import com.composetest.core.router.destinations.configuration.ConfigurationDestination
 import com.composetest.core.router.destinations.home.Home2Destination
 import com.composetest.core.router.destinations.home.HomeDestination
@@ -25,7 +24,7 @@ import javax.inject.Inject
 internal class RootViewModel @Inject constructor(
     private val navControllerManager: NavControllerManager,
     private val rootDockManager: RootDockManager,
-    private val changeDockItemSelectionUseCase: ChangeDockItemSelectionUseCase,
+    private val setRootDockHeightUseCase: SetRootDockHeightUseCase,
     @NavGraphQualifier(NavGraph.ROOT) private val navigationManager: NavigationManager,
     override val sendAnalyticsUseCase: SendAnalyticsUseCase
 ) : BaseViewModel<RootUiState>(RootAnalytic, RootUiState()), RootCommandReceiver {
@@ -34,11 +33,10 @@ internal class RootViewModel @Inject constructor(
 
     init {
         setDockItems()
-        dockVisibilityObservable()
     }
 
     override fun backHandler() {
-        changeDockItemSelectionUseCase()?.let {
+        rootDockManager.getNextDockItem()?.let {
             navigateToDockItem(it)
         } ?: run {
             updateUiState { it.copy(finishApp = true) }
@@ -46,7 +44,11 @@ internal class RootViewModel @Inject constructor(
     }
 
     override fun changeSelectedDockItem(selectedIndex: Int) {
-        navigateToDockItem(changeDockItemSelectionUseCase(selectedIndex))
+        navigateToDockItem(rootDockManager.changeSelectedDockItem(selectedIndex))
+    }
+
+    override fun setDockHeight(height: Int) {
+        setRootDockHeightUseCase(height)
     }
 
     override fun setRootNavGraph(navController: NavHostController) {
@@ -78,7 +80,7 @@ internal class RootViewModel @Inject constructor(
     }
 
     private fun currentScreenObservable() = with(navigationManager) {
-        runFlowTask(currentRouteFlow) { currentRoute ->
+        runFlowTask(currentRouteChangesFlow) { currentRoute ->
             val dockItem = when (currentRoute) {
                 HomeDestination.asRoute -> DockItem.HOME
                 ConfigurationDestination.asRoute -> DockItem.CONFIGURATION
@@ -89,12 +91,6 @@ internal class RootViewModel @Inject constructor(
                 updateUiState { s -> s.setSelectedDockItem(DockItem.getItemDockIndex(dockItem)) }
                 return@runFlowTask
             }
-        }
-    }
-
-    private fun dockVisibilityObservable() {
-        runFlowTask(rootDockManager.dockVisibilityFlow) { visible ->
-            updateUiState { it.copy(dockVisible = visible) }
         }
     }
 }

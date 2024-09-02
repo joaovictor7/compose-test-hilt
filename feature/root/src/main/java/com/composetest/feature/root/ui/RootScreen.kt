@@ -97,28 +97,10 @@ private fun BoxScope.Dock(
                 .height(components.dockHeight),
             shape = MaterialTheme.shapes.extraLarge,
             selectedIndex = uiState.selectedDockItem,
-            dockItems = uiState.dockItems
+            dockItems = uiState.dockItems,
+            onChangeDockHeight = { onExecuteCommand(RootCommand.SetDockHeight(it)) }
         ) {
             onExecuteCommand(RootCommand.ChangeSelectedDockItem(it))
         }
     }
-//    Row(
-//        modifier = Modifier.align(Alignment.BottomCenter),
-//        horizontalArrangement = Arrangement.Center
-//    ) {
-//        SlideInOutAnimation(visible = uiState.dockVisible) {
-//            IconDock(
-//                modifier = Modifier
-//                    .fillMaxWidth(0.5f)
-//                    .navigationBarsPadding()
-//                    .padding(bottom = spacings.ten)
-//                    .height(components.dockHeight),
-//                shape = MaterialTheme.shapes.extraLarge,
-//                selectedIndex = uiState.selectedDockItem,
-//                dockItems = uiState.dockItems
-//            ) {
-//                onExecuteCommand(RootCommand.ChangeSelectedDockItem(it))
-//            }
-//        }
-//    }
 }

@@ -1,13 +1,10 @@
 package com.composetest.feature.home.ui.home
 
-import com.composetest.core.domain.managers.RootDockManager
+import com.composetest.core.domain.usecases.rootdock.GetRootDockHeightUseCase
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
-import com.composetest.core.router.destinations.home.HomeDestination
 import com.composetest.core.router.di.qualifiers.NavGraphQualifier
 import com.composetest.core.router.enums.NavGraph
-import com.composetest.core.router.extensions.getParam
 import com.composetest.core.router.managers.NavigationManager
-import com.composetest.core.router.results.home.Home2Result
 import com.composetest.core.ui.bases.BaseViewModel
 import com.composetest.feature.home.ui.home.analytics.HomeAnalytic
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,7 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class HomeViewModel @Inject constructor(
-    private val rootDockManager: RootDockManager,
+    private val getRootDockHeightUseCase: GetRootDockHeightUseCase,
     @NavGraphQualifier(NavGraph.ROOT) private val navigationManager: NavigationManager,
     override val sendAnalyticsUseCase: SendAnalyticsUseCase
 ) : BaseViewModel<HomeUiState>(HomeAnalytic, HomeUiState()), HomeCommandReceiver {
@@ -24,8 +21,7 @@ internal class HomeViewModel @Inject constructor(
 
     init {
         openScreenAnalytic()
-        val e = navigationManager.getParam<HomeDestination>()
-        teste()
+        dockHeightObservable()
     }
 
     override fun navigateToHome2() {
@@ -38,13 +34,7 @@ internal class HomeViewModel @Inject constructor(
 //        )
     }
 
-    override fun rootDockVisibility(visible: Boolean) {
-        rootDockManager.setRootDockVisibility(visible)
-    }
-
-    private fun teste() {
-        runFlowTask(flow = navigationManager.getResultFlow(Home2Result::class)) {
-            val e = it
-        }
+    private fun dockHeightObservable() = runFlowTask(getRootDockHeightUseCase()) { dockHeight ->
+        updateUiState { it.setDockHeight(dockHeight) }
     }
 }

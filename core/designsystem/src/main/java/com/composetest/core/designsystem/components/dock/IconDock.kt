@@ -49,6 +49,7 @@ fun IconDock(
     shape: Shape,
     selectedIndex: Int,
     dockItems: List<IconDockParam>,
+    onChangeDockHeight: ((Int) -> Unit)? = null,
     onSelectionChange: (selectedIndex: Int) -> Unit
 ) {
     if (dockItems.isEmpty()) return
@@ -67,14 +68,15 @@ fun IconDock(
                 ),
                 shape = shape
             )
+            .onGloballyPositioned { onChangeDockHeight?.invoke(it.size.height) }
     ) {
         TabRow(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(internalPadding)
                 .clip(shape)
-                .onGloballyPositioned { layoutCoordinates ->
-                    componentHeight = layoutCoordinates.size.height.convertToDp(currentDensity)
+                .onGloballyPositioned {
+                    componentHeight = it.size.height.convertToDp(currentDensity)
                 },
             containerColor = containerColor,
             selectedTabIndex = selectedIndex,
@@ -148,7 +150,8 @@ private fun Preview() {
                     IconDockParam(1, R.drawable.ic_cancel),
                     IconDockParam(2, R.drawable.ic_search),
                     IconDockParam(3, R.drawable.ic_visibility_off),
-                )
+                ),
+                onChangeDockHeight = { }
             ) {
                 selectedIndex = it
             }

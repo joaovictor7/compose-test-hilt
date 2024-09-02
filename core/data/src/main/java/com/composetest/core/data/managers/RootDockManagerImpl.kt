@@ -1,15 +1,29 @@
 package com.composetest.core.data.managers
 
+import com.composetest.core.domain.enums.DockItem
 import com.composetest.core.domain.managers.RootDockManager
-import com.composetest.core.domain.repositories.RootDockRepository
 import javax.inject.Inject
 
-internal class RootDockManagerImpl @Inject constructor(
-    private val rootDockRepository: RootDockRepository
-) : RootDockManager {
-    override val dockVisibilityFlow = rootDockRepository.dockVisibilityFlow
+internal class RootDockManagerImpl @Inject constructor() : RootDockManager {
 
-    override fun setRootDockVisibility(visible: Boolean) {
-        rootDockRepository.setVisible(visible)
+    private val dockItemsOrder = mutableListOf(firstSelectedDockItem)
+
+    override fun changeSelectedDockItem(selectedDockItemIndex: Int) =
+        DockItem.getItemDock(selectedDockItemIndex).also {
+            if (it == firstSelectedDockItem) {
+                dockItemsOrder.clear()
+            } else {
+                dockItemsOrder.remove(it)
+            }
+            dockItemsOrder.add(it)
+        }
+
+    override fun getNextDockItem() =
+        if (dockItemsOrder.size > 1) dockItemsOrder[dockItemsOrder.lastIndex - 1].also {
+            dockItemsOrder.removeLastOrNull()
+        } else null
+
+    private companion object {
+        val firstSelectedDockItem = DockItem.HOME
     }
 }
