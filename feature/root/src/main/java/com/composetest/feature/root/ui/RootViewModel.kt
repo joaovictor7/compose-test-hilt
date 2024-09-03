@@ -58,7 +58,7 @@ internal class RootViewModel @Inject constructor(
     }
 
     private fun navigateToDockItem(dockItem: DockItem) {
-        val destination: Any = when (dockItem) {
+        val destination = when (dockItem) {
             DockItem.HOME -> HomeDestination
             DockItem.CONFIGURATION -> ConfigurationDestination
             DockItem.HOME2 -> Home2Destination

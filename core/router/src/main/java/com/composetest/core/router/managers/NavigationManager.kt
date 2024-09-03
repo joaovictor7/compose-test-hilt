@@ -2,6 +2,7 @@ package com.composetest.core.router.managers
 
 import androidx.lifecycle.SavedStateHandle
 import com.composetest.core.router.enums.NavigationMode
+import com.composetest.core.router.interfaces.Destination
 import com.composetest.core.router.interfaces.ResultParam
 import kotlinx.coroutines.flow.Flow
 import kotlin.reflect.KClass
@@ -11,14 +12,14 @@ interface NavigationManager {
     val currentRoute: String?
     val currentRouteChangesFlow: Flow<String>
 
-    fun <Destination : Any> navigate(
-        destination: Destination,
+    fun <T : Destination> navigate(
+        destination: T,
         navigationMode: NavigationMode? = null
     )
     fun navigateBack()
     fun <Result : ResultParam> navigateBack(result: Result)
-    suspend fun <Destination : Any> asyncNavigate(
-        destination: Destination,
+    suspend fun <T : Destination> asyncNavigate(
+        destination: T,
         navigationMode: NavigationMode? = null
     )
     suspend fun asyncNavigateBack()

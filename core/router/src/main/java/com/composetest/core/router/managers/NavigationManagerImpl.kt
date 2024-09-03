@@ -8,6 +8,7 @@ import androidx.navigation.NavOptions
 import com.composetest.common.providers.DispatcherProvider
 import com.composetest.core.router.enums.NavGraph
 import com.composetest.core.router.enums.NavigationMode
+import com.composetest.core.router.interfaces.Destination
 import com.composetest.core.router.interfaces.ResultParam
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
@@ -33,8 +34,8 @@ internal class NavigationManagerImpl(
             .mapperToRoute()
             .flowOn(dispatcherProvider.io)
 
-    override fun <Destination : Any> navigate(
-        destination: Destination,
+    override fun <T : Destination> navigate(
+        destination: T,
         navigationMode: NavigationMode?
     ) {
         navController.navigate(
@@ -56,8 +57,8 @@ internal class NavigationManagerImpl(
         navController.popBackStack()
     }
 
-    override suspend fun <Destination : Any> asyncNavigate(
-        destination: Destination,
+    override suspend fun <T : Destination> asyncNavigate(
+        destination: T,
         navigationMode: NavigationMode?
     ) = withContext(dispatcherProvider.main) {
         navigate(destination, navigationMode)
