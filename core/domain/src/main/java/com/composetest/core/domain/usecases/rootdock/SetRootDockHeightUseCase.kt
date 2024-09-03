@@ -10,5 +10,9 @@ class SetRootDockHeightUseCase @Inject constructor(
         rootDockRepository.setHeight(height.addExtraPadding())
     }
 
-    private fun Int.addExtraPadding() = ((this * 0.3) + this).toInt()
+    private fun Int.addExtraPadding() = ((this * EXTRA_PADDING_PERCENTAGE) + this).toInt()
+
+    private companion object {
+        const val EXTRA_PADDING_PERCENTAGE = 0.3
+    }
 }

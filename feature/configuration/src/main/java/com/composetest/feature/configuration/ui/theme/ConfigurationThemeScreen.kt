@@ -23,7 +23,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
-import com.composetest.core.designsystem.components.switches.ThumbCheckSwitch
+import com.composetest.core.designsystem.components.switches.ThumbSwitch
+import com.composetest.core.designsystem.components.switches.params.SwitchType
 import com.composetest.core.designsystem.dimensions.spacings
 import com.composetest.core.designsystem.extensions.opacity
 import com.composetest.core.designsystem.theme.ComposeTestTheme
@@ -118,8 +119,9 @@ private fun DynamicColor(
             text = stringResource(R.string.configuration_theme_dynamic_colors),
             style = MaterialTheme.typography.bodyLarge
         )
-        ThumbCheckSwitch(
+        ThumbSwitch(
             checked = uiState.dynamicColors,
+            type = SwitchType.CHECK,
             onCheckedChange = { onExecuteCommand(ConfigurationThemeCommand.ChangeDynamicColor(it)) }
         )
     }
