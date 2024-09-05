@@ -88,7 +88,7 @@ internal class RootViewModel @Inject constructor(
                 else -> null
             }
             if (dockItem != null) {
-                updateUiState { s -> s.setSelectedDockItem(DockItem.getItemDockIndex(dockItem)) }
+                updateUiState { it.setSelectedDockItem(DockItem.getItemDockIndex(dockItem)) }
                 return@runFlowTask
             }
         }
