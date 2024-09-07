@@ -11,6 +11,7 @@ android {
 
 dependencies {
     implementation(projects.common)
+    implementation(projects.core.ui)
     implementation(libs.kotlin.json.serializable)
     implementation(libs.kotlin.reflect)
 }
