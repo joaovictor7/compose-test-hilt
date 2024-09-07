@@ -7,8 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.composetest.core.designsystem.components.dock.DockExtraPadding
-import com.composetest.core.designsystem.extensions.defaultHorizontalPadding
-import com.composetest.core.designsystem.extensions.defaultTopPadding
+import com.composetest.core.designsystem.extensions.defaultTopHorizontalPaddings
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.interfaces.Screen
@@ -20,11 +19,10 @@ internal object HomeScreen : Screen<HomeUiState, HomeCommandReceiver> {
         uiState: HomeUiState,
         onExecuteCommand: (Command<HomeCommandReceiver>) -> Unit
     ) {
-        LazyColumn(modifier = Modifier.defaultHorizontalPadding()) {
+        LazyColumn(modifier = Modifier.defaultTopHorizontalPaddings()) {
             item {
                 Text(
                     text = "Home11111111111111111111",
-                    modifier = Modifier.defaultTopPadding()
                 )
             }
             items(17) {
@@ -33,7 +31,7 @@ internal object HomeScreen : Screen<HomeUiState, HomeCommandReceiver> {
                 }
             }
             item {
-                DockExtraPadding(dockHeight = uiState.dockHeight)
+                DockExtraPadding()
             }
         }
     }

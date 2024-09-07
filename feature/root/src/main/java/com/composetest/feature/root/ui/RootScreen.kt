@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,6 +20,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.composetest.core.designsystem.components.dock.IconDock
+import com.composetest.core.designsystem.compositions.LocalRootDockProvider
 import com.composetest.core.designsystem.dimensions.spacings
 import com.composetest.core.designsystem.extensions.asActivity
 import com.composetest.core.router.destinations.home.HomeDestination
@@ -37,21 +39,23 @@ internal object RootScreen : Screen<RootUiState, RootCommandReceiver> {
         onExecuteCommand: (Command<RootCommandReceiver>) -> Unit
     ) {
         val context = LocalContext.current
-        Box(modifier = Modifier.fillMaxSize()) {
-            Navigation(
-                firstScreenDestination = HomeDestination::class,
-                onExecuteCommand = onExecuteCommand
-            )
-            Dock(
-                uiState = uiState,
-                onExecuteCommand = onExecuteCommand
-            )
-        }
-        BackHandler {
-            onExecuteCommand(RootCommand.BackHandler)
-        }
-        LaunchedEffect(uiState.finishApp) {
-            if (uiState.finishApp) context.asActivity?.finish()
+        CompositionLocalProvider(LocalRootDockProvider provides uiState.dockHeight) {
+            Box(modifier = Modifier.fillMaxSize()) {
+                Navigation(
+                    firstScreenDestination = HomeDestination::class,
+                    onExecuteCommand = onExecuteCommand
+                )
+                Dock(
+                    uiState = uiState,
+                    onExecuteCommand = onExecuteCommand
+                )
+            }
+            BackHandler {
+                onExecuteCommand(RootCommand.BackHandler)
+            }
+            LaunchedEffect(uiState.finishApp) {
+                if (uiState.finishApp) context.asActivity?.finish()
+            }
         }
     }
 }

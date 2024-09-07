@@ -5,7 +5,6 @@ import com.composetest.core.designsystem.components.dock.params.IconDockParam
 import com.composetest.core.domain.enums.DockItem
 import com.composetest.core.domain.managers.RootDockManager
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
-import com.composetest.core.domain.usecases.rootdock.SetRootDockHeightUseCase
 import com.composetest.core.router.destinations.configuration.ConfigurationDestination
 import com.composetest.core.router.destinations.home.Home2Destination
 import com.composetest.core.router.destinations.home.HomeDestination
@@ -24,7 +23,6 @@ import javax.inject.Inject
 internal class RootViewModel @Inject constructor(
     private val navControllerManager: NavControllerManager,
     private val rootDockManager: RootDockManager,
-    private val setRootDockHeightUseCase: SetRootDockHeightUseCase,
     @NavGraphQualifier(NavGraph.ROOT) private val navigationManager: NavigationManager,
     override val sendAnalyticsUseCase: SendAnalyticsUseCase
 ) : BaseViewModel<RootUiState>(RootAnalytic, RootUiState()), RootCommandReceiver {
@@ -48,7 +46,7 @@ internal class RootViewModel @Inject constructor(
     }
 
     override fun setDockHeight(height: Int) {
-        setRootDockHeightUseCase(height)
+        updateUiState { it.setDockHeight(height) }
     }
 
     override fun setRootNavGraph(navController: NavHostController) {

@@ -3,14 +3,12 @@ package com.composetest.core.data.di
 import com.composetest.core.data.repositories.AnalyticsRepositoryImpl
 import com.composetest.core.data.repositories.AppThemeRepositoryImpl
 import com.composetest.core.data.repositories.AuthenticationRepositoryImpl
-import com.composetest.core.data.repositories.RootDockRepositoryImpl
 import com.composetest.core.data.repositories.SecretKeyRepositoryImpl
 import com.composetest.core.data.repositories.SessionRepositoryImpl
 import com.composetest.core.data.repositories.UserRepositoryImpl
 import com.composetest.core.domain.repositories.AnalyticsRepository
 import com.composetest.core.domain.repositories.AppThemeRepository
 import com.composetest.core.domain.repositories.AuthenticationRepository
-import com.composetest.core.domain.repositories.RootDockRepository
 import com.composetest.core.domain.repositories.SecretKeyRepository
 import com.composetest.core.domain.repositories.SessionRepository
 import com.composetest.core.domain.repositories.UserRepository
@@ -30,12 +28,6 @@ internal abstract class RepositoryModule {
     abstract fun appThemeRepository(
         appThemeRepositoryImpl: AppThemeRepositoryImpl
     ): AppThemeRepository
-
-    @Binds
-    @Singleton
-    abstract fun rootDockRepository(
-        rootDockRepositoryImpl: RootDockRepositoryImpl
-    ): RootDockRepository
 
     @Binds
     abstract fun analyticsRepository(

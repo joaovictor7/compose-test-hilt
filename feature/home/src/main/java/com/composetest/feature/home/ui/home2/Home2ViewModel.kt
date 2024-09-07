@@ -1,6 +1,5 @@
 package com.composetest.feature.home.ui.home2
 
-import com.composetest.core.domain.usecases.rootdock.GetRootDockHeightUseCase
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
 import com.composetest.core.router.di.qualifiers.NavGraphQualifier
 import com.composetest.core.router.enums.NavGraph
@@ -13,7 +12,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class Home2ViewModel @Inject constructor(
-    private val getRootDockHeightUseCase: GetRootDockHeightUseCase,
     @NavGraphQualifier(NavGraph.ROOT) private val navigationManager: NavigationManager,
     override val sendAnalyticsUseCase: SendAnalyticsUseCase
 ) : BaseViewModel<Home2UiState>(Home2Analytic, Home2UiState()), Home2CommandReceiver {
@@ -22,16 +20,11 @@ internal class Home2ViewModel @Inject constructor(
 
     init {
         openScreenAnalytic()
-        dockHeightObservable()
     }
 
     override fun returnHome() {
         navigationManager.navigateBack(Home2Result("teste"))
         count++
-    }
-
-    private fun dockHeightObservable() = runFlowTask(getRootDockHeightUseCase()) { dockHeight ->
-        updateUiState { it.setDockHeight(dockHeight) }
     }
 
     private companion object {

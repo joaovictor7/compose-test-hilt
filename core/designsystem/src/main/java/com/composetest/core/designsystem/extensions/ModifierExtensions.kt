@@ -32,10 +32,11 @@ fun Modifier.verticalTopBackgroundBrush(isDarkMode: Boolean) = also {
 fun Modifier.defaultPaddings() = safeDrawingPadding().padding(defaultPadding)
 
 @Composable
-fun Modifier.defaultHorizontalPadding() = padding(horizontal = defaultPadding)
-
-@Composable
 fun Modifier.defaultTopPadding() = statusBarsPadding().padding(top = defaultPadding)
 
 @Composable
 fun Modifier.defaultBottomPadding() = navigationBarsPadding().padding(bottom = defaultPadding)
+
+@Composable
+fun Modifier.defaultTopHorizontalPaddings() =
+    defaultTopPadding().padding(horizontal = defaultPadding)
