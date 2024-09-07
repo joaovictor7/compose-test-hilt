@@ -12,14 +12,14 @@ interface NavigationManager {
     val currentRoute: String?
     val currentRouteChangesFlow: Flow<String?>
 
-    fun <T : Destination> navigate(
-        destination: T,
+    fun <D : Destination> navigate(
+        destination: D,
         navigationMode: NavigationMode? = null
     )
     fun navigateBack()
     fun <Result : ResultParam> navigateBack(result: Result)
-    suspend fun <T : Destination> asyncNavigate(
-        destination: T,
+    suspend fun <D : Destination> asyncNavigate(
+        destination: D,
         navigationMode: NavigationMode? = null
     )
     suspend fun asyncNavigateBack()

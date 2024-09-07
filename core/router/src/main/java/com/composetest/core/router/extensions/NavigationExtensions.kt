@@ -23,9 +23,9 @@ import kotlin.reflect.KType
 import kotlin.reflect.full.companionObjectInstance
 import com.composetest.core.router.interfaces.NavType as NavTypes
 
-inline fun <reified Destination : Any> NavigationManager.getParam(): Destination {
-    val navTypes = getNavTypes(Destination::class.companionObjectInstance)
-    return savedStateHandle.toRoute<Destination>(navTypes)
+inline fun <reified D : Destination> NavigationManager.getParam(): D {
+    val navTypes = getNavTypes(D::class.companionObjectInstance)
+    return savedStateHandle.toRoute<D>(navTypes)
 }
 
 inline fun <reified D, reified VM, US, CR> NavGraphBuilder.composable(

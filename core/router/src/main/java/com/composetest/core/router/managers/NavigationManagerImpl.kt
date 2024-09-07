@@ -32,8 +32,8 @@ internal class NavigationManagerImpl(
             .map { it.destination.route }
             .flowOn(dispatcherProvider.io)
 
-    override fun <T : Destination> navigate(
-        destination: T,
+    override fun <D : Destination> navigate(
+        destination: D,
         navigationMode: NavigationMode?
     ) {
         navController.navigate(
@@ -55,8 +55,8 @@ internal class NavigationManagerImpl(
         navController.popBackStack()
     }
 
-    override suspend fun <T : Destination> asyncNavigate(
-        destination: T,
+    override suspend fun <D : Destination> asyncNavigate(
+        destination: D,
         navigationMode: NavigationMode?
     ) = withContext(dispatcherProvider.main) {
         navigate(destination, navigationMode)
