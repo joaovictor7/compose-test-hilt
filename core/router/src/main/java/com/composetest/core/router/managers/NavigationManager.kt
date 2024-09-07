@@ -10,7 +10,7 @@ import kotlin.reflect.KClass
 interface NavigationManager {
     val savedStateHandle: SavedStateHandle
     val currentRoute: String?
-    val currentRouteChangesFlow: Flow<String>
+    val currentRouteChangesFlow: Flow<String?>
 
     fun <T : Destination> navigate(
         destination: T,

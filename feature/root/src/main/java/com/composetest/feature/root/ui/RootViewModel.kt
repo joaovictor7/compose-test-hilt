@@ -52,9 +52,8 @@ internal class RootViewModel @Inject constructor(
     }
 
     override fun setRootNavGraph(navController: NavHostController) {
-        if (!navControllerManager.setNavController(NavGraph.ROOT, navController)) {
-            currentScreenObservable()
-        }
+        navControllerManager.setNavController(NavGraph.ROOT, navController)
+        currentScreenObservable()
     }
 
     private fun navigateToDockItem(dockItem: DockItem) {
@@ -79,8 +78,8 @@ internal class RootViewModel @Inject constructor(
         updateUiState { it.setDockItems(iconDockParam) }
     }
 
-    private fun currentScreenObservable() = with(navigationManager) {
-        runFlowTask(currentRouteChangesFlow) { currentRoute ->
+    private fun currentScreenObservable() {
+        runFlowTask(navigationManager.currentRouteChangesFlow) { currentRoute ->
             val dockItem = when (currentRoute) {
                 HomeDestination.asRoute -> DockItem.HOME
                 ConfigurationDestination.asRoute -> DockItem.CONFIGURATION

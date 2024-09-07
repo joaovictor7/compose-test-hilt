@@ -12,7 +12,8 @@ internal class NavControllerManagerImpl @Inject constructor() : NavControllerMan
     override fun setNavController(
         navGraph: NavGraph,
         navController: NavHostController
-    ) = (navControllers.remove(navGraph) != null).also {
+    ) {
+        navControllers.remove(navGraph)
         navControllers[navGraph] = navController
     }
 

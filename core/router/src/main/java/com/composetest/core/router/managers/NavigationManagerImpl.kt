@@ -2,7 +2,6 @@ package com.composetest.core.router.managers
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.SavedStateHandle
-import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavOptions
 import com.composetest.common.providers.DispatcherProvider
@@ -10,7 +9,6 @@ import com.composetest.core.router.enums.NavGraph
 import com.composetest.core.router.enums.NavigationMode
 import com.composetest.core.router.interfaces.Destination
 import com.composetest.core.router.interfaces.ResultParam
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.transform
@@ -31,7 +29,7 @@ internal class NavigationManagerImpl(
     override val currentRoute get() = navController.currentDestination?.route
     override val currentRouteChangesFlow
         get() = navController.currentBackStackEntryFlow
-            .mapperToRoute()
+            .map { it.destination.route }
             .flowOn(dispatcherProvider.io)
 
     override fun <T : Destination> navigate(
@@ -83,10 +81,6 @@ internal class NavigationManagerImpl(
                 }
             }
         }.flowOn(dispatcherProvider.main)
-
-    private fun Flow<NavBackStackEntry>.mapperToRoute(): Flow<String> = map {
-        it.destination.route.orEmpty()
-    }
 
     private fun getNavigateOptions(mode: NavigationMode?) = NavOptions.Builder().apply {
         when (mode) {

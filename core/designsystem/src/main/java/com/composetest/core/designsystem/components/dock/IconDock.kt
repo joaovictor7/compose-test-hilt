@@ -49,14 +49,13 @@ fun IconDock(
     shape: Shape,
     selectedIndex: Int,
     dockItems: List<IconDockParam>,
-    onChangeDockHeight: ((Int) -> Unit)? = null,
     onSelectionChange: (selectedIndex: Int) -> Unit
 ) {
     if (dockItems.isEmpty()) return
-    val currentDensity = LocalDensity.current
     val internalPadding = spacings.two
-    val containerColor = TabRowDefaults.primaryContainerColor.opacity(0.7f)
     val zeroSpacing = spacings.zero
+    val currentDensity = LocalDensity.current
+    val containerColor = TabRowDefaults.primaryContainerColor.opacity(0.7f)
     var componentHeight by remember { mutableStateOf(zeroSpacing) }
     Row(
         modifier = modifier
@@ -68,7 +67,6 @@ fun IconDock(
                 ),
                 shape = shape
             )
-            .onGloballyPositioned { onChangeDockHeight?.invoke(it.size.height) }
     ) {
         TabRow(
             modifier = Modifier
@@ -150,8 +148,7 @@ private fun Preview() {
                     IconDockParam(1, R.drawable.ic_cancel),
                     IconDockParam(2, R.drawable.ic_search),
                     IconDockParam(3, R.drawable.ic_visibility_off),
-                ),
-                onChangeDockHeight = { }
+                )
             ) {
                 selectedIndex = it
             }

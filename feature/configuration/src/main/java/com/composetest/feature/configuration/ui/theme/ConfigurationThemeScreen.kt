@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -26,6 +25,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.composetest.core.designsystem.components.switches.ThumbSwitch
 import com.composetest.core.designsystem.components.switches.params.SwitchType
 import com.composetest.core.designsystem.dimensions.spacings
+import com.composetest.core.designsystem.extensions.defaultPaddings
 import com.composetest.core.designsystem.extensions.opacity
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.ui.interfaces.Command
@@ -44,8 +44,7 @@ internal object ConfigurationThemeScreen :
     ) {
         Column(
             modifier = Modifier
-                .safeDrawingPadding()
-                .padding(spacings.eighteen)
+                .defaultPaddings()
                 .fillMaxSize()
         ) {
             Section(titleId = R.string.configuration_theme_mode_title) {
@@ -128,7 +127,7 @@ private fun DynamicColor(
 }
 
 @Composable
-private fun Modifier.setSelectedBackgroundColor(selectedTheme: Boolean) = apply {
+private fun Modifier.setSelectedBackgroundColor(selectedTheme: Boolean) = also {
     if (selectedTheme) {
         return background(color = MaterialTheme.colorScheme.primary.opacity(0.12f))
     }
