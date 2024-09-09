@@ -4,23 +4,23 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalConfiguration
 import com.composetest.core.designsystem.dimensions.densities.Densities
 import com.composetest.core.designsystem.dimensions.densities.Densities.DEFAULT
-import com.composetest.core.designsystem.dimensions.densities.Densities.SW_360
-import com.composetest.core.designsystem.dimensions.densities.Densities.SW_600
-
-@Composable
-fun <T> getDensity(default: T, sw360: T? = null, sw600: T? = null) =
-    when (getCurrentDensity()) {
-        SW_360 -> sw360
-        SW_600 -> sw600
-        DEFAULT -> default
-    } ?: default
+import com.composetest.core.designsystem.dimensions.densities.Densities.DP_1200
+import com.composetest.core.designsystem.dimensions.densities.Densities.DP_840
 
 @Composable
 private fun getCurrentDensity(): Densities {
     val currentDensity = LocalConfiguration.current.screenWidthDp
     return when {
-        currentDensity <= SW_360.density -> SW_360
-        currentDensity <= SW_600.density -> SW_600
+        currentDensity <= DP_840.density -> DP_840
+        currentDensity <= DP_1200.density -> DP_1200
         else -> DEFAULT
     }
 }
+
+@Composable
+fun <T> getDensity(default: T, dp840: T? = null, dp1200: T? = null) =
+    when (getCurrentDensity()) {
+        DP_840 -> dp840
+        DP_1200 -> dp1200
+        DEFAULT -> default
+    } ?: default

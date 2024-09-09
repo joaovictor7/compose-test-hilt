@@ -92,7 +92,7 @@ private fun BoxScope.Dock(
             modifier = Modifier
                 .fillMaxWidth(0.5f)
                 .navigationBarsPadding()
-                .padding(bottom = spacings.ten)
+                .padding(bottom = spacings.sixteen)
                 .height(components.dockHeight),
             shape = MaterialTheme.shapes.extraLarge,
             selectedIndex = uiState.selectedDockItem,

@@ -1,5 +1,6 @@
 package com.composetest.core.designsystem.components.cards
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CardDefaults
@@ -19,11 +20,14 @@ fun ElevatedCard(
 ) {
     MaterialElevatedCard(
         modifier = modifier,
-        content = content,
         colors = CardDefaults.elevatedCardColors(
             containerColor = MaterialTheme.colorScheme.surfaceContainerLow
         )
-    )
+    ) {
+        Column(modifier = Modifier.padding(spacings.sixteen)) {
+            content()
+        }
+    }
 }
 
 @Composable
@@ -32,7 +36,7 @@ private fun Preview() {
     ComposeTestTheme {
         ElevatedCard {
             Text(
-                modifier = Modifier.padding(spacings.eighteen),
+                modifier = Modifier.padding(spacings.sixteen),
                 text = "Test"
             )
         }

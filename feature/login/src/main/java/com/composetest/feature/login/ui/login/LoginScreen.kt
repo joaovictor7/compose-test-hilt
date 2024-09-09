@@ -1,16 +1,13 @@
 package com.composetest.feature.login.ui.login
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,12 +23,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.composetest.core.designsystem.components.alertdialogs.DefaultAlertDialog
 import com.composetest.core.designsystem.components.alertdialogs.params.DefaultAlertDialogParam
 import com.composetest.core.designsystem.components.buttons.Button
+import com.composetest.core.designsystem.components.cards.ElevatedCard
 import com.composetest.core.designsystem.components.textfields.OutlinedTextField
 import com.composetest.core.designsystem.components.textfields.enums.TextFieldIcons
 import com.composetest.core.designsystem.components.textfields.params.TextFieldTrailingIconParam
 import com.composetest.core.designsystem.compositions.LocalThemeProvider
 import com.composetest.core.designsystem.dimensions.spacings
-import com.composetest.core.designsystem.extensions.isDarkMode
+import com.composetest.core.designsystem.extensions.defaultScreenPaddings
 import com.composetest.core.designsystem.extensions.verticalTopBackgroundBrush
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.ui.interfaces.Command
@@ -48,18 +46,12 @@ internal object LoginScreen : Screen<LoginUiState, LoginCommandReceiver> {
         if (!uiState.needsLogin) return
         Box(
             modifier = Modifier
-                .verticalTopBackgroundBrush(LocalThemeProvider.current.isDarkMode)
+                .verticalTopBackgroundBrush()
+                .defaultScreenPaddings()
                 .fillMaxSize()
-                .safeDrawingPadding()
         ) {
-            ElevatedCard(
-                modifier = Modifier
-                    .align(Alignment.Center)
-                    .padding(spacings.eighteen)
-            ) {
-                Column(modifier = Modifier.padding(spacings.twenty)) {
-                    LoginForm(uiState = uiState, onExecuteCommand = onExecuteCommand)
-                }
+            ElevatedCard(modifier = Modifier.align(Alignment.Center)) {
+                LoginForm(uiState = uiState, onExecuteCommand = onExecuteCommand)
             }
             Text(
                 text = uiState.versionName,
@@ -69,8 +61,8 @@ internal object LoginScreen : Screen<LoginUiState, LoginCommandReceiver> {
                     .padding(bottom = spacings.twelve)
             )
         }
-        HandleEffects(onExecuteCommand = onExecuteCommand)
-        HandleAlertDialog(defaultAlertDialogParam = uiState.defaultAlertDialogParam)
+        EffectsHandler(onExecuteCommand = onExecuteCommand)
+        AlertDialogHandler(defaultAlertDialogParam = uiState.defaultAlertDialogParam)
     }
 }
 
@@ -85,7 +77,7 @@ private fun ColumnScope.LoginForm(
         modifier = Modifier.fillMaxWidth(),
         textAlign = TextAlign.Center
     )
-    Spacer(Modifier.height(spacings.fourteen))
+    Spacer(Modifier.height(spacings.twelve))
     OutlinedTextField(
         labelText = stringResource(R.string.feature_login_email),
         textValue = uiState.loginFormModel.email,
@@ -100,7 +92,7 @@ private fun ColumnScope.LoginForm(
     ) { email ->
         onExecuteCommand(LoginCommand.WriteData(email = email))
     }
-    Spacer(Modifier.height(spacings.fourteen))
+    Spacer(Modifier.height(spacings.sixteen))
     OutlinedTextField(
         textValue = uiState.loginFormModel.password,
         labelText = stringResource(R.string.feature_login_password),
@@ -112,14 +104,14 @@ private fun ColumnScope.LoginForm(
     ) { password ->
         onExecuteCommand(LoginCommand.WriteData(password = password))
     }
-    Spacer(Modifier.height(spacings.eighteen))
+    Spacer(Modifier.height(spacings.sixteen))
     if (uiState.invalidCredentials) {
         Text(
             text = stringResource(R.string.feature_login_invalid_credentials),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.error
         )
-        Spacer(Modifier.height(spacings.ten))
+        Spacer(Modifier.height(spacings.twelve))
     }
     if (!uiState.isLoading) {
         Button(
@@ -135,7 +127,7 @@ private fun ColumnScope.LoginForm(
 }
 
 @Composable
-private fun HandleEffects(onExecuteCommand: (Command<LoginCommandReceiver>) -> Unit) {
+private fun EffectsHandler(onExecuteCommand: (Command<LoginCommandReceiver>) -> Unit) {
     val currentAppTheme = LocalThemeProvider.current
     LaunchedEffect(Unit) {
         onExecuteCommand(LoginCommand.SetCustomTheme(true, currentAppTheme))
@@ -148,7 +140,7 @@ private fun HandleEffects(onExecuteCommand: (Command<LoginCommandReceiver>) -> U
 }
 
 @Composable
-private fun HandleAlertDialog(defaultAlertDialogParam: DefaultAlertDialogParam?) =
+private fun AlertDialogHandler(defaultAlertDialogParam: DefaultAlertDialogParam?) =
     defaultAlertDialogParam?.let {
         DefaultAlertDialog(param = it)
     }
@@ -161,7 +153,7 @@ private fun Preview() {
             LoginUiState(
                 versionName = "Version",
                 invalidCredentials = false,
-                isLoading = true
+                needsLogin = true
             )
         ) {}
     }

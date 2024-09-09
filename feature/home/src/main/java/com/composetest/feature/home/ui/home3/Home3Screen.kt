@@ -2,13 +2,12 @@ package com.composetest.feature.home.ui.home3
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.composetest.core.designsystem.extensions.defaultPaddings
+import com.composetest.core.designsystem.extensions.defaultTopHorizontalScreenPadding
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.interfaces.Screen
@@ -22,7 +21,7 @@ internal object Home3Screen : Screen<Home3UiState, Home3CommandReceiver> {
     ) {
         Column(
             modifier = Modifier
-                .defaultPaddings()
+                .defaultTopHorizontalScreenPadding()
                 .fillMaxSize()
         ) {
             Button(onClick = { onExecuteCommand(Home3Commands.ReturnLogin) }) {

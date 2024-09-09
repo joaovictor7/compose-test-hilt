@@ -39,7 +39,7 @@ class MainActivity : ComponentActivity() {
         setEdgeToEdge()
         setContent {
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-            LifecycleHandle(viewModel::executeCommand)
+            LifecycleHandler(viewModel::executeCommand)
             ComposeTestTheme(
                 dynamicColor = uiState.appTheme.dynamicColors,
                 theme = uiState.appTheme.theme
@@ -87,7 +87,7 @@ private fun Navigation(
 }
 
 @Composable
-private fun LifecycleHandle(onExecuteCommand: (Command<MainCommandReceiver>) -> Unit) {
+private fun LifecycleHandler(onExecuteCommand: (Command<MainCommandReceiver>) -> Unit) {
     val event = lifecycleEvent()
     LaunchedEffect(event) {
         if (event == Lifecycle.Event.ON_RESUME) {

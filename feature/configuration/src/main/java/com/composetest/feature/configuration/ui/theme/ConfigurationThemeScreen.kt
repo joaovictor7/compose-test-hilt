@@ -25,7 +25,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.composetest.core.designsystem.components.switches.ThumbSwitch
 import com.composetest.core.designsystem.components.switches.params.SwitchType
 import com.composetest.core.designsystem.dimensions.spacings
-import com.composetest.core.designsystem.extensions.defaultPaddings
+import com.composetest.core.designsystem.extensions.defaultScreenPaddings
 import com.composetest.core.designsystem.extensions.opacity
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.ui.interfaces.Command
@@ -44,7 +44,7 @@ internal object ConfigurationThemeScreen :
     ) {
         Column(
             modifier = Modifier
-                .defaultPaddings()
+                .defaultScreenPaddings()
                 .fillMaxSize()
         ) {
             Section(titleId = R.string.configuration_theme_mode_title) {
@@ -68,7 +68,7 @@ private fun Section(
     )
     Spacer(Modifier.height(spacings.sixteen))
     content()
-    Spacer(Modifier.height(spacings.thirty))
+    Spacer(Modifier.height(spacings.twentyEight))
 }
 
 @Composable
@@ -85,7 +85,7 @@ private fun Theme(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
                 modifier = Modifier
-                    .padding(horizontal = spacings.six)
+                    .padding(horizontal = spacings.four)
                     .clip(MaterialTheme.shapes.medium)
                     .setSelectedBackgroundColor(selectedTheme = theme == uiState.selectedTheme)
                     .size(components.themeButtonSize)
@@ -94,7 +94,7 @@ private fun Theme(
                     }
             ) {
                 Icon(painter = painterResource(theme.iconId), contentDescription = null)
-                Spacer(Modifier.height(spacings.ten))
+                Spacer(Modifier.height(spacings.eight))
                 Text(
                     text = stringResource(theme.textId),
                     style = MaterialTheme.typography.labelLarge
