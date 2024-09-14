@@ -5,16 +5,13 @@ plugins {
 }
 
 android {
-    namespace = "com.composetest.feature.root"
+    namespace = "com.composetest.feature.profile"
 }
 
 dependencies {
     implementation(projects.common)
-    implementation(projects.core.router)
+    implementation(projects.core.ui)
     implementation(projects.core.designsystem)
     implementation(projects.core.domain)
-    implementation(projects.core.ui)
-    implementation(projects.feature.home)
-    implementation(projects.feature.configuration)
-    implementation(projects.feature.profile)
+    implementation(projects.core.router)
 }
