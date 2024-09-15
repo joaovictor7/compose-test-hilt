@@ -11,7 +11,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
@@ -45,13 +44,11 @@ abstract class BaseViewModel<UiState : BaseUiState>(
         onCollect: suspend (param: T) -> Unit
     ) {
         viewModelScope.launch {
-            flow.onStart { onStart?.invoke() }
-                .onCompletion { onCompletion?.invoke() }
-                .catch {
-                    sendAnalyticsUseCase(ErrorAnalyticEvent(it, analyticScreen))
-                    onError?.invoke(it)
-                }
-                .collect(onCollect)
+            safeRunTask(onError) {
+                flow.onStart { onStart?.invoke() }
+                    .onCompletion { onCompletion?.invoke() }
+                    .collect(onCollect)
+            }
         }
     }
 
@@ -62,22 +59,22 @@ abstract class BaseViewModel<UiState : BaseUiState>(
         onAsyncTask: suspend CoroutineScope.() -> Unit
     ) {
         with(viewModelScope) {
-            safeRunAsyncTask(onError = onError) {
-                onStart?.invoke()
-                onAsyncTask()
+            launch {
+                safeRunTask(onError) {
+                    onStart?.invoke()
+                    onAsyncTask()
+                }
             }.invokeOnCompletion {
-                safeRunAsyncTask { onCompletion?.invoke() }
+                launch { safeRunTask(onError) { onCompletion?.invoke() } }
             }
         }
     }
 
-    private fun CoroutineScope.safeRunAsyncTask(
-        onError: (suspend (Throwable) -> Unit)? = null,
-        onAsyncTask: suspend () -> Unit
-    ) = launch {
-        runCatching {
-            onAsyncTask()
-        }.onFailure {
+    private suspend fun safeRunTask(
+        onError: (suspend (Throwable) -> Unit)?,
+        onTask: suspend () -> Unit
+    ) {
+        runCatching { onTask() }.onFailure {
             sendAnalyticsUseCase(ErrorAnalyticEvent(it, analyticScreen))
             onError?.invoke(it)
         }
