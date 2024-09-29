@@ -28,6 +28,7 @@ import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.interfaces.Screen
 import com.composetest.feature.configuration.navigation.configurationRootNavGraph
 import com.composetest.feature.home.navigation.homeRootNavGraph
+import com.composetest.feature.profile.navigation.profileRootNavGraph
 import com.composetest.feature.root.dimensions.components
 import kotlin.reflect.KClass
 
@@ -72,6 +73,7 @@ private fun Navigation(
         startDestination = firstScreenDestination
     ) {
         homeRootNavGraph()
+        profileRootNavGraph()
         configurationRootNavGraph()
     }
 }

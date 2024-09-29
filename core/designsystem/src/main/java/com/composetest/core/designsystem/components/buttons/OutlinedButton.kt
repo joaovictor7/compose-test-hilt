@@ -23,7 +23,7 @@ fun OutlinedButton(
         modifier = modifier,
         enabled = enabled,
         border = BorderStroke(
-            width = ButtonDefaults.outlinedButtonBorder.width,
+            width = ButtonDefaults.outlinedButtonBorder().width,
             color = if (enabled)
                 MaterialTheme.colorScheme.outline
             else

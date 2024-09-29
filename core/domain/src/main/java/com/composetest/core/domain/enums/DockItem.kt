@@ -2,8 +2,8 @@ package com.composetest.core.domain.enums
 
 enum class DockItem {
     HOME,
-    CONFIGURATION,
-    HOME2;
+    PROFILE,
+    CONFIGURATION;
 
     companion object {
         fun getItemDock(index: Int) = entries[index]

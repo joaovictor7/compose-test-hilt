@@ -6,8 +6,8 @@ import com.composetest.core.domain.enums.DockItem
 import com.composetest.core.domain.managers.RootDockManager
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
 import com.composetest.core.router.destinations.configuration.ConfigurationDestination
-import com.composetest.core.router.destinations.home.Home2Destination
 import com.composetest.core.router.destinations.home.HomeDestination
+import com.composetest.core.router.destinations.profile.ProfileDestination
 import com.composetest.core.router.di.qualifiers.NavGraphQualifier
 import com.composetest.core.router.enums.NavGraph
 import com.composetest.core.router.enums.NavigationMode
@@ -30,6 +30,7 @@ internal class RootViewModel @Inject constructor(
     override val commandReceiver = this
 
     init {
+        openScreenAnalytic()
         setDockItems()
     }
 
@@ -57,8 +58,8 @@ internal class RootViewModel @Inject constructor(
     private fun navigateToDockItem(dockItem: DockItem) {
         val destination = when (dockItem) {
             DockItem.HOME -> HomeDestination
+            DockItem.PROFILE -> ProfileDestination
             DockItem.CONFIGURATION -> ConfigurationDestination
-            DockItem.HOME2 -> Home2Destination
         }
         navigationManager.navigate(
             destination,
@@ -80,8 +81,8 @@ internal class RootViewModel @Inject constructor(
         runFlowTask(navigationManager.currentRouteChangesFlow) { currentRoute ->
             val dockItem = when (currentRoute) {
                 HomeDestination.asRoute -> DockItem.HOME
+                ProfileDestination.asRoute -> DockItem.PROFILE
                 ConfigurationDestination.asRoute -> DockItem.CONFIGURATION
-                Home2Destination.asRoute -> DockItem.HOME2
                 else -> null
             }
             if (dockItem != null) {

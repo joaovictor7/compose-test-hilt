@@ -18,7 +18,7 @@ internal class SessionManagerImpl @Inject constructor(
 ) : SessionManager {
 
     override suspend fun createSession(session: SessionModel, user: UserModel) {
-        userRepository.insert(user)
+        userRepository.upsert(user)
         sessionRepository.insert(session, user)
         createSessionSchedule(session.startDate, session.endDate)
     }

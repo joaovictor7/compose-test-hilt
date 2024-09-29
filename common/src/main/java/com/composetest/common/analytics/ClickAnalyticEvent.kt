@@ -6,8 +6,7 @@ import com.composetest.common.analytics.interfaces.AnalyticScreen
 open class ClickAnalyticEvent(
     clickEvent: String,
     analyticScreen: AnalyticScreen
-) : AnalyticEvent {
-    final override val screen = analyticScreen.screen
+) : AnalyticEvent, AnalyticScreen by analyticScreen {
     final override val tag = "click"
     final override val params = mapOf(
         "clicked" to clickEvent
