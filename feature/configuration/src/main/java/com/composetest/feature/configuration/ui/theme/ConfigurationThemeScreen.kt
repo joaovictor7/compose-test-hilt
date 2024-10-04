@@ -25,8 +25,8 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.composetest.core.designsystem.components.switches.ThumbSwitch
 import com.composetest.core.designsystem.components.switches.params.SwitchType
 import com.composetest.core.designsystem.dimensions.spacings
-import com.composetest.core.designsystem.extensions.defaultScreenPaddings
 import com.composetest.core.designsystem.extensions.opacity
+import com.composetest.core.designsystem.extensions.screenPadding
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.interfaces.Screen
@@ -42,11 +42,7 @@ internal object ConfigurationThemeScreen :
         uiState: ConfigurationThemeUiState,
         onExecuteCommand: (Command<ConfigurationThemeCommandReceiver>) -> Unit
     ) {
-        Column(
-            modifier = Modifier
-                .defaultScreenPaddings()
-                .fillMaxSize()
-        ) {
+        Column(modifier = Modifier.screenPadding().fillMaxSize()) {
             Section(titleId = R.string.configuration_theme_mode_title) {
                 Theme(uiState = uiState, onExecuteCommand = onExecuteCommand)
             }

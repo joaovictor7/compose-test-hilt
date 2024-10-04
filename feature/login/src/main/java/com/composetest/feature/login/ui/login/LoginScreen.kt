@@ -29,7 +29,7 @@ import com.composetest.core.designsystem.components.textfields.enums.TextFieldIc
 import com.composetest.core.designsystem.components.textfields.params.TextFieldTrailingIconParam
 import com.composetest.core.designsystem.compositions.LocalThemeProvider
 import com.composetest.core.designsystem.dimensions.spacings
-import com.composetest.core.designsystem.extensions.defaultScreenPaddings
+import com.composetest.core.designsystem.extensions.screenPadding
 import com.composetest.core.designsystem.extensions.verticalTopBackgroundBrush
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.ui.interfaces.Command
@@ -47,7 +47,7 @@ internal object LoginScreen : Screen<LoginUiState, LoginCommandReceiver> {
         Box(
             modifier = Modifier
                 .verticalTopBackgroundBrush()
-                .defaultScreenPaddings()
+                .screenPadding()
                 .fillMaxSize()
         ) {
             ElevatedCard(modifier = Modifier.align(Alignment.Center)) {

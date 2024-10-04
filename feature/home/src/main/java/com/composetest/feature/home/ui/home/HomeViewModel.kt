@@ -1,7 +1,6 @@
 package com.composetest.feature.home.ui.home
 
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
-import com.composetest.core.router.destinations.home.Home2Destination
 import com.composetest.core.router.destinations.home.Home3Destination
 import com.composetest.core.router.destinations.home.InnerHome
 import com.composetest.core.router.di.qualifiers.NavGraphQualifier

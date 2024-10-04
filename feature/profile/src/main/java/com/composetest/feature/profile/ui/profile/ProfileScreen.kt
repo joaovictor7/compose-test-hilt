@@ -12,7 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.composetest.core.designsystem.dimensions.spacings
-import com.composetest.core.designsystem.extensions.defaultTopHorizontalScreenPadding
+import com.composetest.core.designsystem.extensions.screenPadding
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.interfaces.Screen
@@ -26,7 +26,7 @@ internal object ProfileScreen : Screen<ProfileUiState, ProfileCommandReceiver> {
         onExecuteCommand: (Command<ProfileCommandReceiver>) -> Unit
     ) {
         Column(
-            modifier = Modifier.defaultTopHorizontalScreenPadding(),
+            modifier = Modifier.screenPadding(),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             ProfileDataRow(title = "Nome", text = uiState.profileForm?.name)

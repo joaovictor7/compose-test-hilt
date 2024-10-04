@@ -23,7 +23,8 @@ internal class EditProfileViewModel @Inject constructor(
     private val profileFormMapper: ProfileFormMapper,
     @NavGraphQualifier(NavGraph.MAIN) private val navigationManager: NavigationManager,
     override val sendAnalyticsUseCase: SendAnalyticsUseCase
-) : BaseViewModel<EditProfileUiState>(ProfileScreenAnalytic, EditProfileUiState()), EditProfileCommandReceiver {
+) : BaseViewModel<EditProfileUiState>(ProfileScreenAnalytic, EditProfileUiState()),
+    EditProfileCommandReceiver {
 
     private var userModel: UserModel? = null
 

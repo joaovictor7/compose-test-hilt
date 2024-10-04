@@ -17,8 +17,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.composetest.core.designsystem.constants.topScreenPaddingList
 import com.composetest.core.designsystem.dimensions.spacings
-import com.composetest.core.designsystem.extensions.defaultScreenPaddings
+import com.composetest.core.designsystem.extensions.horizontalScreenPadding
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.interfaces.Screen
@@ -35,7 +36,8 @@ ConfigurationScreen : Screen<ConfigurationUiState, ConfigurationCommandReceiver>
         onExecuteCommand: (Command<ConfigurationCommandReceiver>) -> Unit
     ) {
         LazyVerticalStaggeredGrid(
-            modifier = Modifier.defaultScreenPaddings(),
+            modifier = Modifier.horizontalScreenPadding(),
+            contentPadding = topScreenPaddingList,
             columns = StaggeredGridCells.Fixed(LIMIT_CONFIGURATIONS_PER_LINE),
             verticalItemSpacing = spacings.sixteen,
             horizontalArrangement = Arrangement.spacedBy(spacings.sixteen)

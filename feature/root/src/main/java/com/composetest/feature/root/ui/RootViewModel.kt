@@ -1,9 +1,7 @@
 package com.composetest.feature.root.ui
 
+import android.util.Log
 import androidx.navigation.NavHostController
-import com.composetest.core.designsystem.components.dock.params.IconDockParam
-import com.composetest.core.domain.enums.DockItem
-import com.composetest.core.domain.managers.RootDockManager
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
 import com.composetest.core.router.destinations.configuration.ConfigurationDestination
 import com.composetest.core.router.destinations.home.HomeDestination
@@ -14,7 +12,7 @@ import com.composetest.core.router.enums.NavigationMode
 import com.composetest.core.router.managers.NavControllerManager
 import com.composetest.core.router.managers.NavigationManager
 import com.composetest.core.ui.bases.BaseViewModel
-import com.composetest.feature.root.extensions.iconId
+import com.composetest.feature.root.enums.NavigationBottomBar
 import com.composetest.feature.root.ui.analytics.RootAnalytic
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -22,32 +20,36 @@ import javax.inject.Inject
 @HiltViewModel
 internal class RootViewModel @Inject constructor(
     private val navControllerManager: NavControllerManager,
-    private val rootDockManager: RootDockManager,
     @NavGraphQualifier(NavGraph.ROOT) private val navigationManager: NavigationManager,
     override val sendAnalyticsUseCase: SendAnalyticsUseCase
 ) : BaseViewModel<RootUiState>(RootAnalytic, RootUiState()), RootCommandReceiver {
+
+    private val bottomBarItemsNavigation = mutableListOf(firstSelectedBottomBarItem)
 
     override val commandReceiver = this
 
     init {
         openScreenAnalytic()
-        setDockItems()
     }
 
     override fun backHandler() {
-        rootDockManager.getNextDockItem()?.let {
-            navigateToDockItem(it)
-        } ?: run {
+        if (bottomBarItemsNavigation.size > 1) {
+            val bottomBarItem = bottomBarItemsNavigation[bottomBarItemsNavigation.lastIndex.dec()]
+            bottomBarItemsNavigation.removeLastOrNull()
+            navigateToBottomBarItem(bottomBarItem)
+        } else {
             updateUiState { it.copy(finishApp = true) }
         }
     }
 
-    override fun changeSelectedDockItem(selectedIndex: Int) {
-        navigateToDockItem(rootDockManager.changeSelectedDockItem(selectedIndex))
-    }
-
-    override fun setDockHeight(height: Int) {
-        updateUiState { it.setDockHeight(height) }
+    override fun setSelectedNavigationBottomBar(selectedBottomBarItem: NavigationBottomBar) {
+        if (firstSelectedBottomBarItem == selectedBottomBarItem) {
+            bottomBarItemsNavigation.clear()
+        } else {
+            bottomBarItemsNavigation.remove(selectedBottomBarItem)
+        }
+        bottomBarItemsNavigation.add(selectedBottomBarItem)
+        navigateToBottomBarItem(selectedBottomBarItem)
     }
 
     override fun setRootNavGraph(navController: NavHostController) {
@@ -55,40 +57,31 @@ internal class RootViewModel @Inject constructor(
         currentScreenObservable()
     }
 
-    private fun navigateToDockItem(dockItem: DockItem) {
-        val destination = when (dockItem) {
-            DockItem.HOME -> HomeDestination
-            DockItem.PROFILE -> ProfileDestination
-            DockItem.CONFIGURATION -> ConfigurationDestination
+    private fun navigateToBottomBarItem(bottomBarItem: NavigationBottomBar) {
+        val destination = when (bottomBarItem) {
+            NavigationBottomBar.HOME -> HomeDestination
+            NavigationBottomBar.PROFILE -> ProfileDestination
+            NavigationBottomBar.CONFIGURATION -> ConfigurationDestination
         }
-        navigationManager.navigate(
-            destination,
-            NavigationMode.SAVE_SCREEN_STATE
-        )
-    }
-
-    private fun setDockItems() {
-        val iconDockParam = DockItem.entries.mapIndexed { index, value ->
-            IconDockParam(
-                index = index,
-                iconId = value.iconId
-            )
-        }
-        updateUiState { it.setDockItems(iconDockParam) }
+        navigationManager.navigate(destination, NavigationMode.SAVE_SCREEN_STATE)
     }
 
     private fun currentScreenObservable() {
         runFlowTask(navigationManager.currentRouteChangesFlow) { currentRoute ->
-            val dockItem = when (currentRoute) {
-                HomeDestination.asRoute -> DockItem.HOME
-                ProfileDestination.asRoute -> DockItem.PROFILE
-                ConfigurationDestination.asRoute -> DockItem.CONFIGURATION
+            val bottomBarItem = when (currentRoute) {
+                HomeDestination.asRoute -> NavigationBottomBar.HOME
+                ProfileDestination.asRoute -> NavigationBottomBar.PROFILE
+                ConfigurationDestination.asRoute -> NavigationBottomBar.CONFIGURATION
                 else -> null
             }
-            if (dockItem != null) {
-                updateUiState { it.setSelectedDockItem(DockItem.getItemDockIndex(dockItem)) }
+            if (bottomBarItem != null) {
+                updateUiState { it.setSelectedBottomBarItem(bottomBarItem) }
                 return@runFlowTask
             }
         }
+    }
+
+   internal companion object {
+        val firstSelectedBottomBarItem = NavigationBottomBar.HOME
     }
 }
