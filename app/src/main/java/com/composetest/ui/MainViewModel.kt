@@ -31,8 +31,8 @@ class MainViewModel @Inject constructor(
     override val commandReceiver = this
 
     init {
-        iniState()
-        getInitialData()
+        initUiState()
+        appThemeObservable()
     }
 
     override fun verifySession() {
@@ -54,14 +54,14 @@ class MainViewModel @Inject constructor(
         navControllerManager.setNavController(NavGraph.MAIN, navController)
     }
 
-    private fun iniState() {
+    private fun initUiState() {
+        updateUiState { it.splashScreenFinished() }
+    }
+
+    private fun appThemeObservable() {
         runFlowTask(flow = appThemeManager.appThemeFlow) { appTheme ->
             updateUiState { it.setAppTheme(appTheme) }
         }
-    }
-
-    private fun getInitialData() {
-        updateUiState { it.splashScreenFinished() }
     }
 
     private fun showAlertDialogSession() {

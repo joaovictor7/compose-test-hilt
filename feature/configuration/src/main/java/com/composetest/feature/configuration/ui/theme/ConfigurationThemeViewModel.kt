@@ -22,7 +22,7 @@ internal class ConfigurationThemeViewModel @Inject constructor(
     override val commandReceiver = this
 
     init {
-        initState()
+        initUiState()
     }
 
     override fun changeTheme(selectedTheme: ThemeConfiguration) {
@@ -41,7 +41,7 @@ internal class ConfigurationThemeViewModel @Inject constructor(
         }
     }
 
-    private fun initState() {
+    private fun initUiState() {
         runAsyncTask {
             appThemeManager.getAppTheme()?.let { appTheme ->
                 updateUiState {

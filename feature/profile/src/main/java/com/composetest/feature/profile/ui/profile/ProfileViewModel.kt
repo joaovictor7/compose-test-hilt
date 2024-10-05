@@ -1,6 +1,5 @@
 package com.composetest.feature.profile.ui.profile
 
-import androidx.lifecycle.viewModelScope
 import com.composetest.core.domain.models.UserModel
 import com.composetest.core.domain.usecases.GetUserUseCase
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
@@ -13,7 +12,6 @@ import com.composetest.feature.profile.analytics.profile.ProfileScreenAnalytic
 import com.composetest.feature.profile.mappers.ProfileFormMapper
 import com.composetest.feature.profile.models.ProfileFormModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -31,7 +29,7 @@ internal class ProfileViewModel @Inject constructor(
 
     init {
         openScreenAnalytic()
-        initState()
+        initUiState()
     }
 
     override fun setFormData(profileFormModel: ProfileFormModel) {
@@ -50,10 +48,9 @@ internal class ProfileViewModel @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    private fun initState() {
-        viewModelScope.launch {
-            userModel = getUserUseCase()
-            userModel?.let { t ->
+    private fun initUiState() {
+        runAsyncTask {
+            getUserUseCase()?.let { userModel ->
                 updateUiState {
                     it.copy(profileForm = profileFormMapper(userModel))
                 }

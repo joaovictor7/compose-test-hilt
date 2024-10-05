@@ -23,14 +23,15 @@ internal class ConfigurationViewModel @Inject constructor(
     override val commandReceiver = this
 
     init {
-        initState()
+        openScreenAnalytic()
+        initUiState()
     }
 
     override fun clickConfiguration(configuration: Configuration) {
         navigationManager.navigate(ConfigurationThemeDestination)
     }
 
-    private fun initState() {
+    private fun initUiState() {
         updateUiState { it.setConfigurations(Configuration.entries) }
     }
 }

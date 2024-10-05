@@ -63,7 +63,7 @@ internal class LoginViewModel @Inject constructor(
 
     override fun writeData(email: String?, password: String?) {
         updateUiState { it.setLoginForm(email, password) }
-        stateScreenWritingManager()
+        screenStateWritingManager()
     }
 
     override fun setCustomTheme(enterScreen: Boolean, currentAppTheme: Theme) {
@@ -90,13 +90,13 @@ internal class LoginViewModel @Inject constructor(
     private fun checkNeedsLogin() = runAsyncTask {
         if (sessionManager.needsLogin()) {
             openScreenAnalytic()
-            initState()
+            initUiState()
         } else {
             navigateToRoot()
         }
     }
 
-    private fun initState() {
+    private fun initUiState() {
         updateUiState {
             it.initState(
                 versionName = buildConfigProvider.get.versionNameForView,
@@ -112,7 +112,7 @@ internal class LoginViewModel @Inject constructor(
         )
     }
 
-    private fun stateScreenWritingManager() {
+    private fun screenStateWritingManager() {
         updateUiState {
             it
                 .setShowInvalidCredentialsMsg(false)
