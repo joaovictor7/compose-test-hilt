@@ -7,7 +7,6 @@ android {
 }
 
 dependencies {
-    implementation(projects.common)
     implementation(libs.sql.cipher)
     implementation(libs.sqlite)
 }

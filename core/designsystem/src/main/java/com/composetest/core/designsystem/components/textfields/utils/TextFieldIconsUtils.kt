@@ -24,11 +24,13 @@ internal fun trailingIcon(
                     createIcon(if (passwordHidden.value) R.drawable.ic_visibility else R.drawable.ic_visibility_off)?.invoke()
                 }
             }
+
             it.onClick != null -> {
                 IconButton(onClick = { it.onClick.invoke() }) {
                     createIcon(it.iconType.iconId)?.invoke()
                 }
             }
+
             else -> {
                 createIcon(it.iconType.iconId)?.invoke()
             }

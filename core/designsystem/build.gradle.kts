@@ -8,7 +8,6 @@ android {
 }
 
 dependencies {
-    implementation(projects.common)
     implementation(projects.core.data)
     implementation(projects.core.domain)
 }

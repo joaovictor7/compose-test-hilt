@@ -3,10 +3,10 @@ package com.composetest.feature.configuration.ui.theme
 import com.composetest.core.domain.managers.AppThemeManager
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
 import com.composetest.core.ui.bases.BaseViewModel
+import com.composetest.feature.configuration.analytics.theme.ChangeDynamicColorsEvent
+import com.composetest.feature.configuration.analytics.theme.ChangeThemeEvent
+import com.composetest.feature.configuration.analytics.theme.ConfigurationThemeAnalytic
 import com.composetest.feature.configuration.enums.ThemeConfiguration
-import com.composetest.feature.configuration.ui.theme.analytics.ChangeDynamicColorsEvent
-import com.composetest.feature.configuration.ui.theme.analytics.ChangeThemeEvent
-import com.composetest.feature.configuration.ui.theme.analytics.ConfigurationThemeAnalytic
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

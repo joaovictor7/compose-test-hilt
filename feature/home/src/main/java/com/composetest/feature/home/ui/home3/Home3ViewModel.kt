@@ -7,7 +7,7 @@ import com.composetest.core.router.enums.NavGraph
 import com.composetest.core.router.extensions.getParam
 import com.composetest.core.router.managers.NavigationManager
 import com.composetest.core.ui.bases.BaseViewModel
-import com.composetest.feature.home.ui.home3.analytics.Home3Analytic
+import com.composetest.feature.home.analytics.home3.Home3Analytic
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

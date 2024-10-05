@@ -9,9 +9,9 @@ import com.composetest.core.router.di.qualifiers.NavGraphQualifier
 import com.composetest.core.router.enums.NavGraph
 import com.composetest.core.router.managers.NavigationManager
 import com.composetest.core.ui.bases.BaseViewModel
+import com.composetest.feature.profile.analytics.profile.ProfileScreenAnalytic
 import com.composetest.feature.profile.mappers.ProfileFormMapper
 import com.composetest.feature.profile.models.ProfileFormModel
-import com.composetest.feature.profile.ui.profile.analytics.ProfileScreenAnalytic
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

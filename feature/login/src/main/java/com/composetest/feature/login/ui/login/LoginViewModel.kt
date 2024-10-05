@@ -15,8 +15,8 @@ import com.composetest.core.router.enums.NavGraph
 import com.composetest.core.router.enums.NavigationMode
 import com.composetest.core.router.managers.NavigationManager
 import com.composetest.core.ui.bases.BaseViewModel
-import com.composetest.feature.login.ui.login.analytics.LoginClickEventAnalytic
-import com.composetest.feature.login.ui.login.analytics.LoginScreenAnalytic
+import com.composetest.feature.login.analytics.login.LoginClickEventAnalytic
+import com.composetest.feature.login.analytics.login.LoginScreenAnalytic
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
