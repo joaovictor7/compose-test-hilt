@@ -21,12 +21,12 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.composetest.core.designsystem.components.alertdialogs.DefaultAlertDialog
-import com.composetest.core.designsystem.components.alertdialogs.params.DefaultAlertDialogParam
+import com.composetest.core.designsystem.params.alertdialogs.DefaultAlertDialogParam
 import com.composetest.core.designsystem.components.buttons.Button
 import com.composetest.core.designsystem.components.cards.ElevatedCard
 import com.composetest.core.designsystem.components.textfields.OutlinedTextField
-import com.composetest.core.designsystem.components.textfields.enums.TextFieldIcons
-import com.composetest.core.designsystem.components.textfields.params.TextFieldTrailingIconParam
+import com.composetest.core.designsystem.enums.textfields.TextFieldIcons
+import com.composetest.core.designsystem.params.textfields.TextFieldTrailingIconParam
 import com.composetest.core.designsystem.compositions.LocalThemeProvider
 import com.composetest.core.designsystem.dimensions.spacings
 import com.composetest.core.designsystem.extensions.screenPadding

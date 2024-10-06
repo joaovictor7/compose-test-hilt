@@ -1,7 +1,7 @@
 package com.composetest.ui
 
 import android.os.Build
-import com.composetest.core.designsystem.components.alertdialogs.params.DefaultAlertDialogParam
+import com.composetest.core.designsystem.params.alertdialogs.DefaultAlertDialogParam
 import com.composetest.core.designsystem.extensions.systemBarStyles
 import com.composetest.core.domain.models.AppThemeModel
 import com.composetest.core.ui.interfaces.BaseUiState

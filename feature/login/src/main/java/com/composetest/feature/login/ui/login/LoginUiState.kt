@@ -1,8 +1,8 @@
 package com.composetest.feature.login.ui.login
 
-import com.composetest.core.designsystem.components.alertdialogs.params.DefaultAlertDialogParam
-import com.composetest.core.designsystem.components.textfields.enums.TextFieldIcons
-import com.composetest.core.designsystem.components.textfields.params.TextFieldTrailingIconParam
+import com.composetest.core.designsystem.params.alertdialogs.DefaultAlertDialogParam
+import com.composetest.core.designsystem.enums.textfields.TextFieldIcons
+import com.composetest.core.designsystem.params.textfields.TextFieldTrailingIconParam
 import com.composetest.core.ui.interfaces.BaseUiState
 import com.composetest.feature.login.R
 import com.composetest.feature.login.models.LoginFormModel

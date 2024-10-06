@@ -1,4 +1,4 @@
-package com.composetest.core.designsystem.components.switches.params
+package com.composetest.core.designsystem.params.switches
 
 import androidx.annotation.DrawableRes
 import com.composetest.core.designsystem.R

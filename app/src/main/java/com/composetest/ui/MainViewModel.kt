@@ -2,8 +2,8 @@ package com.composetest.ui
 
 import androidx.navigation.NavHostController
 import com.composetest.R
-import com.composetest.core.designsystem.components.alertdialogs.params.ButtonAlertDialogParam
-import com.composetest.core.designsystem.components.alertdialogs.params.DefaultAlertDialogParam
+import com.composetest.core.designsystem.params.alertdialogs.ButtonAlertDialogParam
+import com.composetest.core.designsystem.params.alertdialogs.DefaultAlertDialogParam
 import com.composetest.core.domain.managers.AppThemeManager
 import com.composetest.core.domain.managers.SessionManager
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase

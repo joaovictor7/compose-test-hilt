@@ -8,9 +8,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.composetest.core.designsystem.components.alertdialogs.params.ButtonAlertDialogParam
-import com.composetest.core.designsystem.components.alertdialogs.params.DefaultAlertDialogParam
 import com.composetest.core.designsystem.components.buttons.Button
+import com.composetest.core.designsystem.params.alertdialogs.ButtonAlertDialogParam
+import com.composetest.core.designsystem.params.alertdialogs.DefaultAlertDialogParam
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 
 @Composable

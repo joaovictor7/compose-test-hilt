@@ -5,7 +5,7 @@ import com.composetest.common.enums.Flavor
 import com.composetest.common.models.BuildConfigFieldsModel
 import com.composetest.common.models.BuildConfigModel
 import com.composetest.common.providers.BuildConfigProvider
-import com.composetest.core.designsystem.components.alertdialogs.params.DefaultAlertDialogParam
+import com.composetest.core.designsystem.params.alertdialogs.DefaultAlertDialogParam
 import com.composetest.core.designsystem.utils.AlertDialogUtils
 import com.composetest.core.domain.managers.SessionManager
 import com.composetest.core.domain.throwables.InvalidCredentialsThrowable

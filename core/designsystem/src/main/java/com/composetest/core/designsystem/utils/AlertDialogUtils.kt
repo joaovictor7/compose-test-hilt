@@ -1,6 +1,6 @@
 package com.composetest.core.designsystem.utils
 
-import com.composetest.core.designsystem.components.alertdialogs.params.DefaultAlertDialogParam
+import com.composetest.core.designsystem.params.alertdialogs.DefaultAlertDialogParam
 import com.composetest.core.domain.throwables.network.NetworkThrowable
 import javax.inject.Inject
 

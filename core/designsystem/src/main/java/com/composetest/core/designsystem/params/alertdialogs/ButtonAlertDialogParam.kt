@@ -1,4 +1,4 @@
-package com.composetest.core.designsystem.components.alertdialogs.params
+package com.composetest.core.designsystem.params.alertdialogs
 
 import androidx.annotation.StringRes
 

@@ -1,4 +1,4 @@
-package com.composetest.core.designsystem.components.textfields.utils
+package com.composetest.core.designsystem.utils.textfields
 
 import androidx.annotation.DrawableRes
 import androidx.compose.material3.Icon
@@ -7,8 +7,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.res.painterResource
 import com.composetest.core.designsystem.R
-import com.composetest.core.designsystem.components.textfields.enums.TextFieldIcons
-import com.composetest.core.designsystem.components.textfields.params.TextFieldTrailingIconParam
+import com.composetest.core.designsystem.enums.textfields.TextFieldIcons
+import com.composetest.core.designsystem.params.textfields.TextFieldTrailingIconParam
 
 internal fun trailingIcon(
     trailingIconParam: TextFieldTrailingIconParam?,

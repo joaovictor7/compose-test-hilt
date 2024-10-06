@@ -15,11 +15,11 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
-import com.composetest.core.designsystem.components.textfields.enums.TextFieldIcons
-import com.composetest.core.designsystem.components.textfields.params.TextFieldTrailingIconParam
-import com.composetest.core.designsystem.components.textfields.utils.createIcon
-import com.composetest.core.designsystem.components.textfields.utils.textFieldHelpedText
-import com.composetest.core.designsystem.components.textfields.utils.trailingIcon
+import com.composetest.core.designsystem.enums.textfields.TextFieldIcons
+import com.composetest.core.designsystem.params.textfields.TextFieldTrailingIconParam
+import com.composetest.core.designsystem.utils.textfields.createIcon
+import com.composetest.core.designsystem.utils.textfields.textFieldHelpedText
+import com.composetest.core.designsystem.utils.textfields.trailingIcon
 import com.composetest.core.designsystem.extensions.opacity
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 
