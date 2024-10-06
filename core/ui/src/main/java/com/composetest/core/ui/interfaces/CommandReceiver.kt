@@ -6,4 +6,6 @@ interface CommandReceiver<CommandReceiver> {
     fun executeCommand(command: Command<CommandReceiver>) {
         command.execute(commandReceiver)
     }
+
+    fun navigateBack() {}
 }

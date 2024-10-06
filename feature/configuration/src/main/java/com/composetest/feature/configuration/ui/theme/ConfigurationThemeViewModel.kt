@@ -2,6 +2,9 @@ package com.composetest.feature.configuration.ui.theme
 
 import com.composetest.core.domain.managers.AppThemeManager
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
+import com.composetest.core.router.di.qualifiers.NavGraphQualifier
+import com.composetest.core.router.enums.NavGraph
+import com.composetest.core.router.managers.NavigationManager
 import com.composetest.core.ui.bases.BaseViewModel
 import com.composetest.feature.configuration.analytics.theme.ChangeDynamicColorsEvent
 import com.composetest.feature.configuration.analytics.theme.ChangeThemeEvent
@@ -13,6 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 internal class ConfigurationThemeViewModel @Inject constructor(
     private val appThemeManager: AppThemeManager,
+    @NavGraphQualifier(NavGraph.MAIN) private val navigationManager: NavigationManager,
     override val sendAnalyticsUseCase: SendAnalyticsUseCase
 ) : BaseViewModel<ConfigurationThemeUiState>(
     ConfigurationThemeAnalytic,
@@ -23,6 +27,10 @@ internal class ConfigurationThemeViewModel @Inject constructor(
 
     init {
         initUiState()
+    }
+
+    override fun navigateBack() {
+        navigationManager.navigateBack()
     }
 
     override fun changeTheme(selectedTheme: ThemeConfiguration) {

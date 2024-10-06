@@ -5,6 +5,12 @@ import com.composetest.feature.configuration.enums.ThemeConfiguration
 
 internal sealed interface ConfigurationThemeCommand : Command<ConfigurationThemeCommandReceiver> {
 
+    data object NavigateBack: ConfigurationThemeCommand {
+        override fun execute(commandReceiver: ConfigurationThemeCommandReceiver) {
+            commandReceiver.navigateBack()
+        }
+    }
+
     data class ChangeTheme(
         private val selectedTheme: ThemeConfiguration
     ) : ConfigurationThemeCommand {

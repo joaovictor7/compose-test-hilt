@@ -24,15 +24,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.composetest.core.designsystem.components.switches.ThumbSwitch
 import com.composetest.core.designsystem.components.switches.params.SwitchType
+import com.composetest.core.designsystem.components.toolbar.Toolbar
 import com.composetest.core.designsystem.dimensions.spacings
+import com.composetest.core.designsystem.extensions.horizontalScreenPadding
 import com.composetest.core.designsystem.extensions.opacity
-import com.composetest.core.designsystem.extensions.screenPadding
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.interfaces.Screen
-import com.composetest.feature.configuration.R
 import com.composetest.feature.configuration.dimensions.components
 import com.composetest.feature.configuration.enums.ThemeConfiguration
+import com.composetest.feature.configuration.R as ConfigurationResources
 
 internal object ConfigurationThemeScreen :
     Screen<ConfigurationThemeUiState, ConfigurationThemeCommandReceiver> {
@@ -42,12 +43,21 @@ internal object ConfigurationThemeScreen :
         uiState: ConfigurationThemeUiState,
         onExecuteCommand: (Command<ConfigurationThemeCommandReceiver>) -> Unit
     ) {
-        Column(modifier = Modifier.screenPadding().fillMaxSize()) {
-            Section(titleId = R.string.configuration_theme_mode_title) {
-                Theme(uiState = uiState, onExecuteCommand = onExecuteCommand)
-            }
-            Section(titleId = R.string.configuration_theme_colors_title) {
-                DynamicColor(uiState = uiState, onExecuteCommand = onExecuteCommand)
+        Toolbar(
+            titleId = ConfigurationResources.string.configuration_theme_text,
+            onBackButtonClick = { onExecuteCommand(ConfigurationThemeCommand.NavigateBack) },
+        ) {
+            Column(
+                modifier = Modifier
+                    .horizontalScreenPadding()
+                    .fillMaxSize()
+            ) {
+                Section(titleId = ConfigurationResources.string.configuration_theme_mode_title) {
+                    Theme(uiState = uiState, onExecuteCommand = onExecuteCommand)
+                }
+                Section(titleId = ConfigurationResources.string.configuration_theme_colors_title) {
+                    DynamicColor(uiState = uiState, onExecuteCommand = onExecuteCommand)
+                }
             }
         }
     }
@@ -60,7 +70,7 @@ private fun Section(
 ) {
     Text(
         text = stringResource(titleId),
-        style = MaterialTheme.typography.headlineSmall
+        style = MaterialTheme.typography.titleMedium
     )
     Spacer(Modifier.height(spacings.sixteen))
     content()
@@ -111,8 +121,8 @@ private fun DynamicColor(
         modifier = Modifier.fillMaxWidth()
     ) {
         Text(
-            text = stringResource(R.string.configuration_theme_dynamic_colors),
-            style = MaterialTheme.typography.bodyLarge
+            text = stringResource(ConfigurationResources.string.configuration_theme_dynamic_colors),
+            style = MaterialTheme.typography.bodyMedium
         )
         ThumbSwitch(
             checked = uiState.dynamicColors,
