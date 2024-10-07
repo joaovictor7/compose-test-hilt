@@ -2,6 +2,7 @@
 <resources>
 
     <!-- Configurations -->
+    <string name="configuration_title">Configurações</string>
     <string name="configuration_theme_text">Tema</string>
 
     <!-- Theme Configurations -->

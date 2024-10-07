@@ -2,21 +2,19 @@ package com.composetest.feature.profile.ui.profile
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
+import com.composetest.core.designsystem.components.labels.DataLabel
+import com.composetest.core.designsystem.components.toolbar.Toolbar
 import com.composetest.core.designsystem.dimensions.spacings
-import com.composetest.core.designsystem.extensions.screenPadding
+import com.composetest.core.designsystem.enums.toolbar.ToolbarAction
+import com.composetest.core.designsystem.params.toolbar.ToolbarActionParam
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.interfaces.Screen
-import com.composetest.feature.profile.models.ProfileFormModel
+import com.composetest.feature.profile.R
+import com.composetest.feature.profile.models.ProfileScreenModel
 
 internal object ProfileScreen : Screen<ProfileUiState, ProfileCommandReceiver> {
 
@@ -25,33 +23,24 @@ internal object ProfileScreen : Screen<ProfileUiState, ProfileCommandReceiver> {
         uiState: ProfileUiState,
         onExecuteCommand: (Command<ProfileCommandReceiver>) -> Unit
     ) {
-        Column(
-            modifier = Modifier.screenPadding(),
-            verticalArrangement = Arrangement.SpaceBetween
+        Toolbar(
+            titleId = R.string.profile_title,
+            actions = listOf(
+                ToolbarActionParam(ToolbarAction.EDIT) {
+                    onExecuteCommand(ProfileCommand.NavigateToEditProfile)
+                }
+            )
         ) {
-            ProfileDataRow(title = "Nome", text = uiState.profileForm?.name)
-            ProfileDataRow(title = "E-mail", text = uiState.profileForm?.email)
+            Column(verticalArrangement = Arrangement.spacedBy(spacings.eight)) {
+                uiState.profileScreenModels.forEach {
+                    DataLabel(
+                        labelTitleId = it.titleId,
+                        labelText = it.text
+                    )
+                }
+            }
         }
     }
-}
-
-@Composable
-private fun ProfileDataRow(
-    title: String,
-    text: String?
-) {
-    Column(modifier = Modifier.padding(horizontal = spacings.eight)) {
-        Text(
-            text = title,
-            style = MaterialTheme.typography.titleSmall
-        )
-        Text(
-            text = text.orEmpty(),
-            style = MaterialTheme.typography.titleMedium
-        )
-    }
-    Spacer(Modifier.height(spacings.eight))
-    HorizontalDivider()
 }
 
 @Composable
@@ -60,9 +49,15 @@ private fun Preview() {
     ComposeTestTheme {
         ProfileScreen(
             ProfileUiState(
-                profileForm = ProfileFormModel(
-                    name = "Nome teste",
-                    email = "E-mail teste"
+                profileScreenModels = listOf(
+                    ProfileScreenModel(
+                        titleId = R.string.profile_email_title,
+                        text = AnnotatedString("E-mail")
+                    ),
+                    ProfileScreenModel(
+                        titleId = R.string.profile_email_title,
+                        text = AnnotatedString("E-mail")
+                    )
                 )
             )
         ) {}

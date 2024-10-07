@@ -1,6 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="navigation_bottom_bar_home_item">Home</string>
-    <string name="navigation_bottom_bar_profile_item">Profile</string>
-    <string name="navigation_bottom_bar_configuration_item">Configurations</string>
-</resources>
+<resources></resources>
