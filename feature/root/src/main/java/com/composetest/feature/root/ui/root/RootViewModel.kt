@@ -27,7 +27,7 @@ internal class RootViewModel @Inject constructor(
 
     override val commandReceiver = this
 
-    init {
+    override fun initUiState() {
         openScreenAnalytic()
     }
 

@@ -35,7 +35,7 @@ internal class LoginViewModel @Inject constructor(
 
     private val loginFormModel get() = uiState.value.loginFormModel
 
-    init {
+    override fun initUiState() {
         checkNeedsLogin()
     }
 
@@ -89,16 +89,16 @@ internal class LoginViewModel @Inject constructor(
 
     private fun checkNeedsLogin() = runAsyncTask {
         if (sessionManager.needsLogin()) {
-            openScreenAnalytic()
-            initUiState()
+            showScreen()
         } else {
             navigateToRoot()
         }
     }
 
-    private fun initUiState() {
+    private fun showScreen() {
+        openScreenAnalytic()
         updateUiState {
-            it.initState(
+            it.initUiState(
                 versionName = buildConfigProvider.get.versionNameForView,
                 enableLoginButton = buildConfigProvider.get.isDebug
             )

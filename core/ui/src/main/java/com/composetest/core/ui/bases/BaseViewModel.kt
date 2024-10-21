@@ -10,9 +10,10 @@ import com.composetest.core.ui.interfaces.BaseUiState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -24,7 +25,11 @@ abstract class BaseViewModel<UiState : BaseUiState>(
     abstract val sendAnalyticsUseCase: SendAnalyticsUseCase
 
     private val _uiState = MutableStateFlow(uiState)
-    val uiState = _uiState.asStateFlow()
+    val uiState = _uiState
+        .onStart { initUiState() }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), uiState)
+
+    abstract fun initUiState()
 
     protected fun updateUiState(onNewUiState: (UiState) -> UiState) {
         _uiState.update(onNewUiState)

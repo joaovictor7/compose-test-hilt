@@ -31,8 +31,11 @@ class MainViewModel @Inject constructor(
     override val commandReceiver = this
 
     init {
-        initUiState()
         appThemeObservable()
+    }
+
+    override fun initUiState() {
+        updateUiState { it.splashScreenFinished() }
     }
 
     override fun verifySession() {
@@ -52,10 +55,6 @@ class MainViewModel @Inject constructor(
 
     override fun setMainNavGraph(navController: NavHostController) {
         navControllerManager.setNavController(NavGraph.MAIN, navController)
-    }
-
-    private fun initUiState() {
-        updateUiState { it.splashScreenFinished() }
     }
 
     private fun appThemeObservable() {

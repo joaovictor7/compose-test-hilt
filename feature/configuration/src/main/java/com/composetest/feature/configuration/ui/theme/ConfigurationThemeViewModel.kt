@@ -25,8 +25,18 @@ internal class ConfigurationThemeViewModel @Inject constructor(
 
     override val commandReceiver = this
 
-    init {
-        initUiState()
+    override fun initUiState() {
+        runAsyncTask {
+            appThemeManager.getAppTheme()?.let { appTheme ->
+                updateUiState {
+                    it.initUiState(
+                        ThemeConfiguration.entries,
+                        ThemeConfiguration.getThemeConfiguration(appTheme.theme),
+                        appTheme.dynamicColors
+                    )
+                }
+            }
+        }
     }
 
     override fun navigateBack() {
@@ -46,20 +56,6 @@ internal class ConfigurationThemeViewModel @Inject constructor(
         updateUiState { it.setDynamicColors(active) }
         runAsyncTask(onStart = { sendAnalyticsUseCase(ChangeDynamicColorsEvent(active)) }) {
             appThemeManager.setDynamicColor(active)
-        }
-    }
-
-    private fun initUiState() {
-        runAsyncTask {
-            appThemeManager.getAppTheme()?.let { appTheme ->
-                updateUiState {
-                    it.initUiState(
-                        ThemeConfiguration.entries,
-                        ThemeConfiguration.getThemeConfiguration(appTheme.theme),
-                        appTheme.dynamicColors
-                    )
-                }
-            }
         }
     }
 }

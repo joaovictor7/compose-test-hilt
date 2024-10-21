@@ -30,22 +30,18 @@ internal class ProfileViewModel @Inject constructor(
 
     override val commandReceiver = this
 
-    init {
+    override fun initUiState() {
         openScreenAnalytic()
-        initUiState()
-    }
-
-    override fun navigateToEditProfile() {
-        navigationManager.navigate(EditProfileDestination)
-    }
-
-    private fun initUiState() {
         runAsyncTask {
             getUserUseCase()?.let { userModel ->
                 val profileScreenModel = getModelToScreen(userModel)
                 updateUiState { it.setProfileScreenModels(profileScreenModel) }
             }
         }
+    }
+
+    override fun navigateToEditProfile() {
+        navigationManager.navigate(EditProfileDestination)
     }
 
     private fun getModelToScreen(userModel: UserModel) = listOf(

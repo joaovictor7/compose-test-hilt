@@ -18,7 +18,7 @@ internal class Home2ViewModel @Inject constructor(
 
     override val commandReceiver = this
 
-    init {
+    override fun initUiState() {
         openScreenAnalytic()
     }
 

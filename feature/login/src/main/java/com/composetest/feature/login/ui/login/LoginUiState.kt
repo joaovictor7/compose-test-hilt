@@ -24,7 +24,7 @@ internal data class LoginUiState(
         get() = if (invalidEmail)
             R.string.feature_login_invalid_email else null
 
-    fun initState(
+    fun initUiState(
         versionName: String,
         enableLoginButton: Boolean
     ) = copy(

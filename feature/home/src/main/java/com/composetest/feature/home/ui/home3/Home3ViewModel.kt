@@ -17,12 +17,13 @@ internal class Home3ViewModel @Inject constructor(
     override val sendAnalyticsUseCase: SendAnalyticsUseCase
 ) : BaseViewModel<Home3UiState>(Home3Analytic, Home3UiState()), Home3CommandReceiver {
 
+    private val param = navigationManager.getParam<Home3Destination>()
+
     override val commandReceiver = this
 
-    init {
+    override fun initUiState() {
         openScreenAnalytic()
-        val e = navigationManager.getParam<Home3Destination>()
-        updateUiState { it.copy(t = e.teste) }
+        updateUiState { it.copy(t = param.teste) }
     }
 
     override fun returnLogin() {
