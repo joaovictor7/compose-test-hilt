@@ -1,9 +1,9 @@
 package com.composetest.core.router.extensions
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
-import androidx.compose.animation.SizeTransform
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -23,10 +23,8 @@ import kotlin.reflect.KType
 import kotlin.reflect.full.companionObjectInstance
 import com.composetest.core.router.interfaces.NavType as NavTypes
 
-inline fun <reified D : Destination> NavigationManager.getParam(): D {
-    val navTypes = getNavTypes(D::class.companionObjectInstance)
-    return savedStateHandle.toRoute<D>(navTypes)
-}
+inline fun <reified D : Destination> NavigationManager.getParam() =
+    savedStateHandle.toRoute<D>(getNavTypes(D::class.companionObjectInstance))
 
 inline fun <reified D, reified VM, US, CR> NavGraphBuilder.composable(
     screen: Screen<US, CR>,
@@ -35,17 +33,14 @@ inline fun <reified D, reified VM, US, CR> NavGraphBuilder.composable(
     noinline exitTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition?)? = null,
     noinline popEnterTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition?)? = enterTransition,
     noinline popExitTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition?)? = exitTransition,
-    noinline sizeTransform: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> SizeTransform?)? = null
 ) where D : Destination, VM : BaseViewModel<US>, VM : CommandReceiver<CR>, US : BaseUiState, CR : CommandReceiver<CR> {
-    val navTypes = getNavTypes(D::class.companionObjectInstance)
     composable<D>(
-        typeMap = navTypes,
+        typeMap = getNavTypes(D::class.companionObjectInstance),
         deepLinks = deepLinks,
         enterTransition = enterTransition,
         exitTransition = exitTransition,
         popEnterTransition = popEnterTransition,
-        popExitTransition = popExitTransition,
-        sizeTransform = sizeTransform
+        popExitTransition = popExitTransition
     ) {
         val viewModel = hiltViewModel<VM>()
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
