@@ -23,6 +23,7 @@ abstract class BaseViewModel<UiState : BaseUiState>(
 ) : ViewModel() {
 
     abstract val sendAnalyticsUseCase: SendAnalyticsUseCase
+//    abstract val navigationManager: NavigationManager
 
     private val _uiState = MutableStateFlow(uiState)
     val uiState = _uiState
@@ -30,6 +31,10 @@ abstract class BaseViewModel<UiState : BaseUiState>(
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), uiState)
 
     abstract fun initUiState()
+
+    open fun navigateBack() {
+//        navigationManager.navigateBack()
+    }
 
     protected fun updateUiState(onNewUiState: (UiState) -> UiState) {
         _uiState.update(onNewUiState)

@@ -27,7 +27,10 @@ internal object EditProfileScreen : Screen<EditProfileUiState, EditProfileComman
         onExecuteCommand: (Command<EditProfileCommandReceiver>) -> Unit
     ) {
         Column(
-            modifier = Modifier.fillMaxSize().screenPadding().imePadding(),
+            modifier = Modifier
+                .fillMaxSize()
+                .screenPadding()
+                .imePadding(),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             EditProfileFormData(uiState = uiState, onExecuteCommand = onExecuteCommand)

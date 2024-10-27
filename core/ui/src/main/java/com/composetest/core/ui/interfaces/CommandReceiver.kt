@@ -7,5 +7,5 @@ interface CommandReceiver<CommandReceiver> {
         command.execute(commandReceiver)
     }
 
-    fun navigateBack() {}
+    fun navigateBack()
 }

@@ -1,5 +1,6 @@
 package com.composetest.core.designsystem.components.toolbar
 
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -26,11 +27,11 @@ import com.composetest.core.designsystem.theme.ComposeTestTheme
 @Composable
 fun Toolbar(
     @StringRes titleId: Int,
-    onBackButtonClick: (() -> Unit)? = null,
+    showBackButton: Boolean = true,
     actions: List<ToolbarActionParam>? = null,
     content: @Composable ColumnScope.() -> Unit
 ) {
-    Scaffold(topBar = getTopBar(titleId, onBackButtonClick, actions)) { paddingValues ->
+    Scaffold(topBar = getTopBar(titleId, showBackButton, actions)) { paddingValues ->
         Column(
             modifier = Modifier
                 .padding(paddingValues)
@@ -43,11 +44,11 @@ fun Toolbar(
 @OptIn(ExperimentalMaterial3Api::class)
 private fun getTopBar(
     @StringRes titleId: Int,
-    onBackButtonClick: (() -> Unit)?,
+    showBackButton: Boolean,
     actions: List<ToolbarActionParam>?
 ) = @Composable {
     TopAppBar(
-        navigationIcon = getNavigationIcon(onBackButtonClick),
+        navigationIcon = { NavigationIcon(showBackButton = showBackButton) },
         actions = getActions(actions),
         title = {
             Text(
@@ -58,14 +59,15 @@ private fun getTopBar(
     )
 }
 
-private fun getNavigationIcon(onBackButtonClick: (() -> Unit)?): @Composable () -> Unit = {
-    onBackButtonClick?.let {
-        IconButton(onClick = it) {
-            Icon(
-                painter = painterResource(R.drawable.ic_back),
-                contentDescription = stringResource(R.string.toolbar_back_button_content_description)
-            )
-        }
+@Composable
+private fun NavigationIcon(showBackButton: Boolean) {
+    if (!showBackButton) return
+    val backDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
+    IconButton(onClick = { backDispatcher?.onBackPressed() }) {
+        Icon(
+            painter = painterResource(R.drawable.ic_back),
+            contentDescription = stringResource(R.string.toolbar_back_button_content_description)
+        )
     }
 }
 
@@ -86,7 +88,6 @@ private fun Preview() {
     ComposeTestTheme {
         Toolbar(
             titleId = R.string.global_word_close,
-            onBackButtonClick = {},
             actions = listOf(ToolbarActionParam(ToolbarAction.EDIT, { }))
         ) { }
     }

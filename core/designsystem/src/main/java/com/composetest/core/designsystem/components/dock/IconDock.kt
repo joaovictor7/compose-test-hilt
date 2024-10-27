@@ -34,10 +34,10 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.composetest.core.designsystem.R
-import com.composetest.core.designsystem.params.dock.IconDockParam
 import com.composetest.core.designsystem.dimensions.components
 import com.composetest.core.designsystem.dimensions.spacings
 import com.composetest.core.designsystem.extensions.opacity
+import com.composetest.core.designsystem.params.dock.IconDockParam
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 
 /**

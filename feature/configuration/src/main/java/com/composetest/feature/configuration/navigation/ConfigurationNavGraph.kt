@@ -15,12 +15,13 @@ import com.composetest.feature.configuration.ui.theme.ConfigurationThemeViewMode
 
 fun NavGraphBuilder.configurationRootNavGraph() {
     composable<ConfigurationDestination, ConfigurationViewModel, ConfigurationUiState, ConfigurationCommandReceiver>(
-        ConfigurationScreen
+        screen = ConfigurationScreen,
+        navigateBackHandler = false
     )
 }
 
 fun NavGraphBuilder.configurationNavGraph() {
     composable<ConfigurationThemeDestination, ConfigurationThemeViewModel, ConfigurationThemeUiState, ConfigurationThemeCommandReceiver>(
-        ConfigurationThemeScreen
+        screen = ConfigurationThemeScreen
     )
 }

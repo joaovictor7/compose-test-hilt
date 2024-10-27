@@ -19,7 +19,10 @@ import com.composetest.feature.home.ui.home3.Home3UiState
 import com.composetest.feature.home.ui.home3.Home3ViewModel
 
 fun NavGraphBuilder.homeRootNavGraph() {
-    composable<HomeDestination, HomeViewModel, HomeUiState, HomeCommandReceiver>(HomeScreen)
+    composable<HomeDestination, HomeViewModel, HomeUiState, HomeCommandReceiver>(
+        screen = HomeScreen,
+        navigateBackHandler = false
+    )
     composable<Home2Destination, Home2ViewModel, Home2UiState, Home2CommandReceiver>(Home2Screen)
 }
 

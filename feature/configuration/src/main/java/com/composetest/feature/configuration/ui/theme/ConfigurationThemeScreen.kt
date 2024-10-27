@@ -23,11 +23,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.composetest.core.designsystem.components.switches.ThumbSwitch
-import com.composetest.core.designsystem.params.switches.SwitchType
 import com.composetest.core.designsystem.components.toolbar.Toolbar
 import com.composetest.core.designsystem.dimensions.spacings
 import com.composetest.core.designsystem.extensions.horizontalScreenPadding
 import com.composetest.core.designsystem.extensions.opacity
+import com.composetest.core.designsystem.params.switches.SwitchType
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.interfaces.Screen
@@ -43,10 +43,7 @@ internal object ConfigurationThemeScreen :
         uiState: ConfigurationThemeUiState,
         onExecuteCommand: (Command<ConfigurationThemeCommandReceiver>) -> Unit
     ) {
-        Toolbar(
-            titleId = ConfigurationResources.string.configuration_theme_text,
-            onBackButtonClick = { onExecuteCommand(ConfigurationThemeCommand.NavigateBack) },
-        ) {
+        Toolbar(titleId = ConfigurationResources.string.configuration_theme_text) {
             Column(
                 modifier = Modifier
                     .horizontalScreenPadding()

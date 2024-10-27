@@ -2,18 +2,25 @@ package com.composetest.feature.root.ui.root
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalDrawerSheet
+import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.composetest.core.designsystem.extensions.asActivity
@@ -32,14 +39,30 @@ internal object RootScreen : Screen<RootUiState, RootCommandReceiver> {
         uiState: RootUiState,
         onExecuteCommand: (Command<RootCommandReceiver>) -> Unit
     ) {
+        val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
         val context = LocalContext.current
-        Scaffold(bottomBar = getBottomBar(onExecuteCommand, uiState)) { paddingValues ->
-            Navigation(
-                modifier = Modifier.padding(bottom = paddingValues.calculateBottomPadding()),
-                onExecuteCommand = onExecuteCommand
-            )
-            BackHandler {
-                onExecuteCommand(RootCommand.BackHandler)
+        ModalNavigationDrawer(
+            drawerState = drawerState,
+            drawerContent = {
+                ModalDrawerSheet {
+                    Text("Drawer title", modifier = Modifier.padding(16.dp))
+                    HorizontalDivider()
+                    NavigationDrawerItem(
+                        label = { Text(text = "Drawer Item") },
+                        selected = true,
+                        onClick = { /*TODO*/ }
+                    )
+                }
+            },
+        ) {
+            Scaffold(bottomBar = getBottomBar(onExecuteCommand, uiState)) { paddingValues ->
+                Navigation(
+                    modifier = Modifier.padding(bottom = paddingValues.calculateBottomPadding()),
+                    onExecuteCommand = onExecuteCommand
+                )
+                BackHandler {
+                    onExecuteCommand(RootCommand.BackHandler)
+                }
             }
         }
         LaunchedEffect(uiState.finishApp) {

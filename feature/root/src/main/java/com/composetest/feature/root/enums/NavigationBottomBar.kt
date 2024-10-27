@@ -3,9 +3,9 @@ package com.composetest.feature.root.enums
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.composetest.core.designsystem.R as DesignSystemResources
-import com.composetest.feature.profile.R as ProfileResources
-import com.composetest.feature.home.R as HomeResources
 import com.composetest.feature.configuration.R as ConfigurationResources
+import com.composetest.feature.home.R as HomeResources
+import com.composetest.feature.profile.R as ProfileResources
 
 internal enum class NavigationBottomBar(
     @DrawableRes val iconId: Int,

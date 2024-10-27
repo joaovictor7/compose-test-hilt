@@ -9,5 +9,8 @@ import com.composetest.feature.root.ui.root.RootUiState
 import com.composetest.feature.root.ui.root.RootViewModel
 
 fun NavGraphBuilder.rootNavGraph() {
-    composable<RootDestination, RootViewModel, RootUiState, RootCommandReceiver>(RootScreen)
+    composable<RootDestination, RootViewModel, RootUiState, RootCommandReceiver>(
+        screen = RootScreen,
+        navigateBackHandler = false
+    )
 }

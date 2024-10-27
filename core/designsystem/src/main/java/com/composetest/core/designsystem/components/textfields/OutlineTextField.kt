@@ -18,12 +18,12 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import com.composetest.core.designsystem.enums.textfields.TextFieldIcons
+import com.composetest.core.designsystem.extensions.opacity
 import com.composetest.core.designsystem.params.textfields.TextFieldTrailingIconParam
+import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.designsystem.utils.textfields.createIcon
 import com.composetest.core.designsystem.utils.textfields.textFieldHelpedText
 import com.composetest.core.designsystem.utils.textfields.trailingIcon
-import com.composetest.core.designsystem.extensions.opacity
-import com.composetest.core.designsystem.theme.ComposeTestTheme
 
 @Composable
 fun OutlinedTextField(

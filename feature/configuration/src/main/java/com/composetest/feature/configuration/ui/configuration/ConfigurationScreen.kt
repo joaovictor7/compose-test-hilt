@@ -27,8 +27,7 @@ import com.composetest.feature.configuration.enums.Configuration
 
 private const val LIMIT_CONFIGURATIONS_PER_LINE = 2
 
-internal object
-ConfigurationScreen : Screen<ConfigurationUiState, ConfigurationCommandReceiver> {
+internal object ConfigurationScreen : Screen<ConfigurationUiState, ConfigurationCommandReceiver> {
 
     @Composable
     override operator fun invoke(
