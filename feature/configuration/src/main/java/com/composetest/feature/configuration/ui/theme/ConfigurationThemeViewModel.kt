@@ -16,8 +16,8 @@ import javax.inject.Inject
 @HiltViewModel
 internal class ConfigurationThemeViewModel @Inject constructor(
     private val appThemeManager: AppThemeManager,
-    @NavGraphQualifier(NavGraph.MAIN) private val navigationManager: NavigationManager,
-    override val sendAnalyticsUseCase: SendAnalyticsUseCase
+    override val sendAnalyticsUseCase: SendAnalyticsUseCase,
+    @NavGraphQualifier(NavGraph.MAIN) override val navigationManager: NavigationManager
 ) : BaseViewModel<ConfigurationThemeUiState>(
     ConfigurationThemeAnalytic,
     ConfigurationThemeUiState()
@@ -37,10 +37,6 @@ internal class ConfigurationThemeViewModel @Inject constructor(
                 }
             }
         }
-    }
-
-    override fun navigateBack() {
-        navigationManager.navigateBack()
     }
 
     override fun changeTheme(selectedTheme: ThemeConfiguration) {

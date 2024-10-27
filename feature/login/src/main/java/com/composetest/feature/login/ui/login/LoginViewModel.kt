@@ -27,8 +27,8 @@ internal class LoginViewModel @Inject constructor(
     private val authenticationUseCase: AuthenticationUseCase,
     private val sessionManager: SessionManager,
     private val alertDialogUtils: AlertDialogUtils,
-    @NavGraphQualifier(NavGraph.MAIN) private val navigationManager: NavigationManager,
-    override val sendAnalyticsUseCase: SendAnalyticsUseCase
+    override val sendAnalyticsUseCase: SendAnalyticsUseCase,
+    @NavGraphQualifier(NavGraph.MAIN) override val navigationManager: NavigationManager
 ) : BaseViewModel<LoginUiState>(LoginScreenAnalytic, LoginUiState()), LoginCommandReceiver {
 
     override val commandReceiver = this

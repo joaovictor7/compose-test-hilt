@@ -13,8 +13,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class ConfigurationViewModel @Inject constructor(
-    @NavGraphQualifier(NavGraph.MAIN) private val navigationManager: NavigationManager,
-    override val sendAnalyticsUseCase: SendAnalyticsUseCase
+    override val sendAnalyticsUseCase: SendAnalyticsUseCase,
+    @NavGraphQualifier(NavGraph.MAIN) override val navigationManager: NavigationManager
 ) : BaseViewModel<ConfigurationUiState>(
     ConfigurationAnalytic,
     ConfigurationUiState()

@@ -4,7 +4,7 @@ import androidx.navigation.NavGraphBuilder
 import com.composetest.core.router.destinations.home.Home2Destination
 import com.composetest.core.router.destinations.home.Home3Destination
 import com.composetest.core.router.destinations.home.HomeDestination
-import com.composetest.core.router.extensions.composable
+import com.composetest.core.ui.extensions.composable
 import com.composetest.feature.home.ui.home.HomeCommandReceiver
 import com.composetest.feature.home.ui.home.HomeScreen
 import com.composetest.feature.home.ui.home.HomeUiState

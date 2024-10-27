@@ -19,8 +19,8 @@ import javax.inject.Inject
 @HiltViewModel
 internal class RootViewModel @Inject constructor(
     private val navControllerManager: NavControllerManager,
-    @NavGraphQualifier(NavGraph.ROOT) private val navigationManager: NavigationManager,
-    override val sendAnalyticsUseCase: SendAnalyticsUseCase
+    override val sendAnalyticsUseCase: SendAnalyticsUseCase,
+    @NavGraphQualifier(NavGraph.ROOT) override val navigationManager: NavigationManager
 ) : BaseViewModel<RootUiState>(RootAnalytic, RootUiState()), RootCommandReceiver {
 
     private val bottomBarItemsNavigation = mutableListOf(firstSelectedBottomBarItem)

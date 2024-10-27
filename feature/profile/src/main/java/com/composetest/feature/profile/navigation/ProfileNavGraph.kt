@@ -3,7 +3,7 @@ package com.composetest.feature.profile.navigation
 import androidx.navigation.NavGraphBuilder
 import com.composetest.core.router.destinations.profile.EditProfileDestination
 import com.composetest.core.router.destinations.profile.ProfileDestination
-import com.composetest.core.router.extensions.composable
+import com.composetest.core.ui.extensions.composable
 import com.composetest.feature.profile.ui.editprofile.EditProfileCommandReceiver
 import com.composetest.feature.profile.ui.editprofile.EditProfileScreen
 import com.composetest.feature.profile.ui.editprofile.EditProfileUiState

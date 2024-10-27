@@ -6,6 +6,7 @@ import com.composetest.core.domain.interfaces.analytics.AnalyticScreen
 import com.composetest.core.domain.models.analytics.ErrorAnalyticEvent
 import com.composetest.core.domain.models.analytics.OpenScreenAnalyticEvent
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
+import com.composetest.core.router.managers.NavigationManager
 import com.composetest.core.ui.interfaces.BaseUiState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
@@ -23,7 +24,7 @@ abstract class BaseViewModel<UiState : BaseUiState>(
 ) : ViewModel() {
 
     abstract val sendAnalyticsUseCase: SendAnalyticsUseCase
-//    abstract val navigationManager: NavigationManager
+    abstract val navigationManager: NavigationManager
 
     private val _uiState = MutableStateFlow(uiState)
     val uiState = _uiState
@@ -33,7 +34,7 @@ abstract class BaseViewModel<UiState : BaseUiState>(
     abstract fun initUiState()
 
     open fun navigateBack() {
-//        navigationManager.navigateBack()
+        navigationManager.navigateBack()
     }
 
     protected fun updateUiState(onNewUiState: (UiState) -> UiState) {

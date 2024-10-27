@@ -24,8 +24,8 @@ import javax.inject.Inject
 internal class ProfileViewModel @Inject constructor(
     private val getUserUseCase: GetUserUseCase,
     private val stringResourceProvider: StringResourceProvider,
-    @NavGraphQualifier(NavGraph.MAIN) private val navigationManager: NavigationManager,
-    override val sendAnalyticsUseCase: SendAnalyticsUseCase
+    override val sendAnalyticsUseCase: SendAnalyticsUseCase,
+    @NavGraphQualifier(NavGraph.MAIN) override val navigationManager: NavigationManager
 ) : BaseViewModel<ProfileUiState>(ProfileScreenAnalytic, ProfileUiState()), ProfileCommandReceiver {
 
     override val commandReceiver = this

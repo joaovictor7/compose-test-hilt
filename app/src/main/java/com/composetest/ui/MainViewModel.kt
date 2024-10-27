@@ -24,8 +24,8 @@ class MainViewModel @Inject constructor(
     private val appThemeManager: AppThemeManager,
     private val sessionManager: SessionManager,
     private val navControllerManager: NavControllerManager,
-    @NavGraphQualifier(NavGraph.MAIN) private val navigationManager: NavigationManager,
-    override val sendAnalyticsUseCase: SendAnalyticsUseCase
+    override val sendAnalyticsUseCase: SendAnalyticsUseCase,
+    @NavGraphQualifier(NavGraph.MAIN) override val navigationManager: NavigationManager
 ) : BaseViewModel<MainUiState>(MainAnalytic, MainUiState()), MainCommandReceiver {
 
     override val commandReceiver = this

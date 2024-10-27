@@ -2,7 +2,7 @@ package com.composetest.feature.root.navigation
 
 import androidx.navigation.NavGraphBuilder
 import com.composetest.core.router.destinations.root.RootDestination
-import com.composetest.core.router.extensions.composable
+import com.composetest.core.ui.extensions.composable
 import com.composetest.feature.root.ui.root.RootCommandReceiver
 import com.composetest.feature.root.ui.root.RootScreen
 import com.composetest.feature.root.ui.root.RootUiState
