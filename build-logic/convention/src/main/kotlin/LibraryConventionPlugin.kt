@@ -1,5 +1,7 @@
 import com.android.build.gradle.LibraryExtension
 import modularization.configureAndroid
+import modularization.setBuildTypes
+import modularization.setFlavors
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
@@ -12,6 +14,8 @@ internal class LibraryConventionPlugin : Plugin<Project> {
             }
             extensions.configure<LibraryExtension> {
                 configureAndroid(this)
+                setBuildTypes(false)
+                setFlavors(false)
             }
         }
     }

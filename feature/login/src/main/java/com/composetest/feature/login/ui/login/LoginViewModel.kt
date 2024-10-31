@@ -99,7 +99,7 @@ internal class LoginViewModel @Inject constructor(
         openScreenAnalytic()
         updateUiState {
             it.initUiState(
-                versionName = buildConfigProvider.get.versionNameForView,
+                versionName = buildConfigProvider.get.versionNameToView,
                 enableLoginButton = buildConfigProvider.get.isDebug
             )
         }

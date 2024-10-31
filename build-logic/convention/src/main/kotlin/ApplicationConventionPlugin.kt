@@ -5,7 +5,7 @@ import com.android.build.api.dsl.ApplicationExtension
 import extensions.getLibrary
 import extensions.implementation
 import modularization.configureAndroid
-import modularization.setApplicationBuildTypes
+import modularization.setBuildTypes
 import modularization.setFlavors
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Plugin
@@ -32,6 +32,8 @@ internal class ApplicationConventionPlugin : Plugin<Project> {
                     vectorDrawables {
                         useSupportLibrary = true
                     }
+                    manifestPlaceholders["appName"] = AppConfig.APP_NAME
+                    manifestPlaceholders["usesCleartextTraffic"] = false
                 }
                 signingConfigs {
                     createSigning(this, AppSigning.RELEASE)
@@ -44,8 +46,8 @@ internal class ApplicationConventionPlugin : Plugin<Project> {
                         excludes += "/META-INF/{AL2.0,LGPL2.1}"
                     }
                 }
-                setApplicationBuildTypes()
-                setFlavors()
+                setBuildTypes(true)
+                setFlavors(true)
             }
             dependencies {
                 implementation(getLibrary("firebase.analytics"))

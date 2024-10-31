@@ -3,9 +3,9 @@ package com.composetest.common.enums
 enum class Flavor {
     FULL, FREE;
 
-    val flavorName get() = name.lowercase()
+    override fun toString() = name.lowercase()
 
     companion object {
-        fun String.getFlavor() = entries.firstOrNull { it.flavorName == this } ?: FREE
+        fun String.getFlavor() = entries.find { it.toString() == this } ?: FREE
     }
 }

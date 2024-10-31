@@ -38,7 +38,6 @@ internal fun Project.configureAndroid(
             excludes += "/META-INF/LICENSE*"
         }
     }
-    setBuildTypesAllModules()
     dependencies {
         implementation(platform(getLibrary("firebase.bom")))
         implementation(getLibrary("androidx.lifecycle.runtime.ktx"))

@@ -2,6 +2,7 @@ package com.composetest.feature.login.viewmodels
 
 import com.composetest.common.enums.BuildType
 import com.composetest.common.enums.Flavor
+import com.composetest.common.enums.FlavorDimension
 import com.composetest.common.models.BuildConfigFieldsModel
 import com.composetest.common.models.BuildConfigModel
 import com.composetest.common.providers.BuildConfigProvider
@@ -39,6 +40,7 @@ class LoginViewModelTest : CoroutinesTest {
         versionName = "1.0.0",
         versionCode = 0,
         buildType = BuildType.DEBUG,
+        flavorDimension = FlavorDimension.DEVELOP,
         flavor = Flavor.FULL,
         androidSdkVersion = 34,
         buildConfigFieldsModel = BuildConfigFieldsModel(
@@ -77,7 +79,7 @@ class LoginViewModelTest : CoroutinesTest {
             listOf(
                 LoginUiState(
                     needsLogin = true,
-                    versionName = buildConfigModelMock.versionNameForView,
+                    versionName = buildConfigModelMock.versionNameToView,
                     enableLoginButton = true
                 )
             ),
@@ -120,12 +122,12 @@ class LoginViewModelTest : CoroutinesTest {
                 listOf(
                     LoginUiState(
                         needsLogin = true,
-                        versionName = buildConfigModelMock.versionNameForView,
+                        versionName = buildConfigModelMock.versionNameToView,
                         enableLoginButton = true
                     ),
                     LoginUiState(
                         needsLogin = true,
-                        versionName = buildConfigModelMock.versionNameForView,
+                        versionName = buildConfigModelMock.versionNameToView,
                         enableLoginButton = true,
                         loginFormModel = LoginFormModel(
                             email = "teste@teste.com",
@@ -134,7 +136,7 @@ class LoginViewModelTest : CoroutinesTest {
                     ),
                     LoginUiState(
                         needsLogin = true,
-                        versionName = buildConfigModelMock.versionNameForView,
+                        versionName = buildConfigModelMock.versionNameToView,
                         enableLoginButton = true,
                         isLoading = true,
                         loginFormModel = LoginFormModel(
@@ -144,7 +146,7 @@ class LoginViewModelTest : CoroutinesTest {
                     ),
                     LoginUiState(
                         needsLogin = true,
-                        versionName = buildConfigModelMock.versionNameForView,
+                        versionName = buildConfigModelMock.versionNameToView,
                         enableLoginButton = true,
                         invalidCredentials = true,
                         isLoading = true,
@@ -155,7 +157,7 @@ class LoginViewModelTest : CoroutinesTest {
                     ),
                     LoginUiState(
                         needsLogin = true,
-                        versionName = buildConfigModelMock.versionNameForView,
+                        versionName = buildConfigModelMock.versionNameToView,
                         enableLoginButton = true,
                         invalidCredentials = true,
                         loginFormModel = LoginFormModel(
@@ -183,12 +185,12 @@ class LoginViewModelTest : CoroutinesTest {
                 listOf(
                     LoginUiState(
                         needsLogin = true,
-                        versionName = buildConfigModelMock.versionNameForView,
+                        versionName = buildConfigModelMock.versionNameToView,
                         enableLoginButton = true
                     ),
                     LoginUiState(
                         needsLogin = true,
-                        versionName = buildConfigModelMock.versionNameForView,
+                        versionName = buildConfigModelMock.versionNameToView,
                         enableLoginButton = true,
                         loginFormModel = LoginFormModel(
                             email = "teste@teste.com",
@@ -197,7 +199,7 @@ class LoginViewModelTest : CoroutinesTest {
                     ),
                     LoginUiState(
                         needsLogin = true,
-                        versionName = buildConfigModelMock.versionNameForView,
+                        versionName = buildConfigModelMock.versionNameToView,
                         enableLoginButton = true,
                         isLoading = true,
                         loginFormModel = LoginFormModel(
@@ -207,7 +209,7 @@ class LoginViewModelTest : CoroutinesTest {
                     ),
                     LoginUiState(
                         needsLogin = true,
-                        versionName = buildConfigModelMock.versionNameForView,
+                        versionName = buildConfigModelMock.versionNameToView,
                         enableLoginButton = true,
                         loginFormModel = LoginFormModel(
                             email = "teste@teste.com",
@@ -240,12 +242,12 @@ class LoginViewModelTest : CoroutinesTest {
                 listOf(
                     LoginUiState(
                         needsLogin = true,
-                        versionName = buildConfigModelMock.versionNameForView,
+                        versionName = buildConfigModelMock.versionNameToView,
                         enableLoginButton = true
                     ),
                     LoginUiState(
                         needsLogin = true,
-                        versionName = buildConfigModelMock.versionNameForView,
+                        versionName = buildConfigModelMock.versionNameToView,
                         enableLoginButton = true,
                         loginFormModel = LoginFormModel(
                             email = "teste@teste.com",
@@ -254,7 +256,7 @@ class LoginViewModelTest : CoroutinesTest {
                     ),
                     LoginUiState(
                         needsLogin = true,
-                        versionName = buildConfigModelMock.versionNameForView,
+                        versionName = buildConfigModelMock.versionNameToView,
                         enableLoginButton = true,
                         isLoading = true,
                         loginFormModel = LoginFormModel(
@@ -264,7 +266,7 @@ class LoginViewModelTest : CoroutinesTest {
                     ),
                     LoginUiState(
                         needsLogin = true,
-                        versionName = buildConfigModelMock.versionNameForView,
+                        versionName = buildConfigModelMock.versionNameToView,
                         enableLoginButton = true,
                         isLoading = true,
                         defaultAlertDialogParam = networkAlertDialogParam,
@@ -275,7 +277,7 @@ class LoginViewModelTest : CoroutinesTest {
                     ),
                     LoginUiState(
                         needsLogin = true,
-                        versionName = buildConfigModelMock.versionNameForView,
+                        versionName = buildConfigModelMock.versionNameToView,
                         enableLoginButton = true,
                         defaultAlertDialogParam = networkAlertDialogParam,
                         loginFormModel = LoginFormModel(

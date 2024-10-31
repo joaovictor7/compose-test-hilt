@@ -1,5 +1,6 @@
 package com.composetest.core.data.managers
 
+import com.composetest.common.enums.FlavorDimension
 import com.composetest.common.providers.BuildConfigProvider
 import com.composetest.common.providers.DispatcherProvider
 import com.composetest.core.data.providers.NetworkProvider
@@ -21,7 +22,9 @@ internal class RemoteCallManagerImpl @Inject constructor(
 
     private suspend fun <T> call(onRemoteCall: suspend () -> T) =
         withContext(dispatcherProvider.io) {
-            if (buildConfigProvider.get.isDebug) delay(FAKE_CALL_DELAY)
+            if (buildConfigProvider.get.flavorDimension == FlavorDimension.DEVELOP) {
+                delay(FAKE_CALL_DELAY)
+            }
             onRemoteCall()
         }
 

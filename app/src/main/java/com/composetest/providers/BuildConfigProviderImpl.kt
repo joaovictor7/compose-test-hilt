@@ -3,6 +3,7 @@ package com.composetest.providers
 import android.os.Build
 import com.composetest.BuildConfig
 import com.composetest.common.enums.BuildType.Companion.getBuildType
+import com.composetest.common.enums.FlavorDimension.Companion.getDimensionFlavor
 import com.composetest.common.enums.Flavor.Companion.getFlavor
 import com.composetest.common.models.BuildConfigFieldsModel
 import com.composetest.common.models.BuildConfigModel
@@ -15,7 +16,8 @@ internal class BuildConfigProviderImpl @Inject constructor() : BuildConfigProvid
         versionName = BuildConfig.VERSION_NAME,
         versionCode = BuildConfig.VERSION_CODE,
         buildType = BuildConfig.BUILD_TYPE.getBuildType(),
-        flavor = BuildConfig.FLAVOR.getFlavor(),
+        flavorDimension = BuildConfig.FLAVOR_environment.getDimensionFlavor(),
+        flavor = BuildConfig.FLAVOR_distribution.getFlavor(),
         androidSdkVersion = Build.VERSION.SDK_INT,
         buildConfigFieldsModel = BuildConfigFieldsModel(
             bffApiHost = BuildConfig.BFF_API_HOST,
