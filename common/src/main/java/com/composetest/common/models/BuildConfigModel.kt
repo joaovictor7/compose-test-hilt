@@ -15,11 +15,6 @@ data class BuildConfigModel(
     val buildConfigFieldsModel: BuildConfigFieldsModel
 ) {
 
-    val isDebug get() = BuildType.DEBUG == buildType
-    val isRelease get() = BuildType.RELEASE == buildType
-    val versionNameToView: String
-        get() {
-            val flavor = if (buildType != BuildType.RELEASE) " ($flavor)" else String()
-            return "$versionName - $versionCode$flavor"
-        }
+    val isRelease get() = buildType == BuildType.RELEASE
+    val isProduction get() = flavorDimension == FlavorDimension.PRODUCTION
 }

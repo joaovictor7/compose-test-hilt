@@ -1,5 +1,6 @@
 package com.composetest.feature.login.ui.login
 
+import androidx.annotation.StringRes
 import com.composetest.core.designsystem.enums.textfields.TextFieldIcons
 import com.composetest.core.designsystem.params.alertdialogs.DefaultAlertDialogParam
 import com.composetest.core.designsystem.params.textfields.TextFieldTrailingIconParam
@@ -11,6 +12,7 @@ internal data class LoginUiState(
     val loginFormModel: LoginFormModel = LoginFormModel(),
     val needsLogin: Boolean = false,
     val versionName: String = String(),
+    @StringRes val distributionTextId: Int? = null,
     val invalidEmail: Boolean = false,
     val enableLoginButton: Boolean = false,
     val invalidCredentials: Boolean = false,
@@ -21,15 +23,16 @@ internal data class LoginUiState(
         get() = if (invalidEmail)
             TextFieldTrailingIconParam(iconType = TextFieldIcons.ERROR) else null
     val emailSupportingTextField
-        get() = if (invalidEmail)
-            R.string.feature_login_invalid_email else null
+        get() = if (invalidEmail) R.string.feature_login_invalid_email else null
 
     fun initUiState(
         versionName: String,
+        @StringRes distributionTextId: Int,
         enableLoginButton: Boolean
     ) = copy(
         needsLogin = true,
         versionName = versionName,
+        distributionTextId = distributionTextId,
         enableLoginButton = enableLoginButton
     )
 

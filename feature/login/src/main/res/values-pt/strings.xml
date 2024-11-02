@@ -4,4 +4,6 @@
     <string name="feature_login_enter">Entrar</string>
     <string name="feature_login_invalid_email">Você não digitou um e-mail 🤔</string>
     <string name="feature_login_invalid_credentials">Algo deu errado. Tente novamente.</string>
+    <string name="feature_login_limited_distribution">Distribuição limitada</string>
+    <string name="feature_login_full_distribution">Distribuição completa</string>
 </resources>

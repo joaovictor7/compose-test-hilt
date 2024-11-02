@@ -21,6 +21,7 @@ dependencies {
     implementation(libs.androidx.work.manager)
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.config)
     implementation(libs.slf4j.api)
     ksp(libs.androidx.hilt.compiler)
 }

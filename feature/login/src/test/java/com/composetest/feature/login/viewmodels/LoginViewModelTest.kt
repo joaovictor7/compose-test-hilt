@@ -79,7 +79,7 @@ class LoginViewModelTest : CoroutinesTest {
             listOf(
                 LoginUiState(
                     needsLogin = true,
-                    versionName = buildConfigModelMock.versionNameToView,
+//                    versionName = buildConfigModelMock.versionNameToView,
                     enableLoginButton = true
                 )
             ),

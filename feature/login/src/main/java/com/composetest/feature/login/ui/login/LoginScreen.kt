@@ -1,6 +1,8 @@
 package com.composetest.feature.login.ui.login
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -53,13 +55,7 @@ internal object LoginScreen : Screen<LoginUiState, LoginCommandReceiver> {
             ElevatedCard(modifier = Modifier.align(Alignment.Center)) {
                 LoginForm(uiState = uiState, onExecuteCommand = onExecuteCommand)
             }
-            Text(
-                text = uiState.versionName,
-                style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(bottom = spacings.twelve)
-            )
+            VersionName(uiState = uiState)
         }
         EffectsHandler(onExecuteCommand = onExecuteCommand)
         AlertDialogHandler(defaultAlertDialogParam = uiState.defaultAlertDialogParam)
@@ -127,6 +123,27 @@ private fun ColumnScope.LoginForm(
 }
 
 @Composable
+private fun BoxScope.VersionName(uiState: LoginUiState) {
+    Column(
+        modifier = Modifier
+            .align(Alignment.BottomCenter)
+            .padding(bottom = spacings.twelve),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = uiState.versionName,
+            style = MaterialTheme.typography.bodyMedium
+        )
+        uiState.distributionTextId?.let {
+            Text(
+                text = stringResource(it),
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
+    }
+}
+
+@Composable
 private fun EffectsHandler(onExecuteCommand: (Command<LoginCommandReceiver>) -> Unit) {
     val currentAppTheme = LocalThemeProvider.current
     LaunchedEffect(Unit) {
@@ -152,6 +169,7 @@ private fun Preview() {
         LoginScreen(
             LoginUiState(
                 versionName = "Version",
+                distributionTextId = R.string.feature_login_full_distribution,
                 invalidCredentials = false,
                 needsLogin = true
             )

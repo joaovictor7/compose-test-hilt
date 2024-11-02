@@ -11,6 +11,8 @@ import com.composetest.core.data.datasources.remote.AuthenticationDataSourceImpl
 import com.composetest.core.data.datasources.remote.AuthenticationFakeDataSourceImpl
 import com.composetest.core.data.datasources.remote.FirebaseAnalyticsDataSource
 import com.composetest.core.data.datasources.remote.FirebaseAnalyticsDataSourceImpl
+import com.composetest.core.data.datasources.remote.FirebaseRemoteConfigDataSource
+import com.composetest.core.data.datasources.remote.FirebaseRemoteConfigDataSourceImpl
 import com.composetest.core.data.di.qualifiers.Api
 import com.composetest.core.data.enums.NetworkApi
 import com.composetest.core.data.managers.RemoteCallManager
@@ -30,6 +32,11 @@ internal abstract class DataSourceBindsModule {
     abstract fun firebaseAnalyticsDataSource(
         firebaseAnalyticsDataSourceImpl: FirebaseAnalyticsDataSourceImpl
     ): FirebaseAnalyticsDataSource
+
+    @Binds
+    abstract fun firebaseRemoteConfigsDataSource(
+        firebaseRemoteConfigDataSourceImpl: FirebaseRemoteConfigDataSourceImpl
+    ): FirebaseRemoteConfigDataSource
 
     @Binds
     abstract fun preferenceDataSource(

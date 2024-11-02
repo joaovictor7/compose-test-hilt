@@ -59,7 +59,7 @@ class MainActivity : ComponentActivity() {
     private fun setEdgeToEdge() = lifecycleScope.launch {
         viewModel.uiState.flowWithLifecycle(lifecycle).collect { uiState ->
             enableEdgeToEdge(uiState.statusBarStyle, uiState.navigationBarStyle)
-            if (uiState.forceNavigationBarTransparence) {
+            if (uiState.forceNavigationBarTransparency) {
                 window.isNavigationBarContrastEnforced = false
             }
         }

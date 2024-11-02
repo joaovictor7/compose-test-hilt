@@ -13,7 +13,7 @@ data class MainUiState(
 ) : BaseUiState {
     val statusBarStyle get() = appTheme.systemBarStyles.first
     val navigationBarStyle get() = appTheme.systemBarStyles.second
-    val forceNavigationBarTransparence get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
+    val forceNavigationBarTransparency get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
 
     fun setAppTheme(appTheme: AppThemeModel) = copy(appTheme = appTheme)
     fun splashScreenFinished() = copy(showSplashScreen = false)

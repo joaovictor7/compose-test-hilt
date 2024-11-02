@@ -1,5 +1,6 @@
 package com.composetest.feature.login.ui.login
 
+import com.composetest.common.enums.Flavor
 import com.composetest.common.providers.BuildConfigProvider
 import com.composetest.core.designsystem.utils.AlertDialogUtils
 import com.composetest.core.domain.enums.Theme
@@ -9,14 +10,17 @@ import com.composetest.core.domain.models.AuthenticationCredentialsModel
 import com.composetest.core.domain.throwables.InvalidCredentialsThrowable
 import com.composetest.core.domain.usecases.AuthenticationUseCase
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
+import com.composetest.core.domain.usecases.remoteconfigs.GetBooleanRemoteConfigUseCase
 import com.composetest.core.router.destinations.root.RootDestination
 import com.composetest.core.router.di.qualifiers.NavGraphQualifier
 import com.composetest.core.router.enums.NavGraph
 import com.composetest.core.router.enums.NavigationMode
 import com.composetest.core.router.managers.NavigationManager
 import com.composetest.core.ui.bases.BaseViewModel
+import com.composetest.feature.login.R
 import com.composetest.feature.login.analytics.login.LoginClickEventAnalytic
 import com.composetest.feature.login.analytics.login.LoginScreenAnalytic
+import com.composetest.feature.login.remoteconfigs.ByPassLoginRemoteConfig
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -27,6 +31,7 @@ internal class LoginViewModel @Inject constructor(
     private val authenticationUseCase: AuthenticationUseCase,
     private val sessionManager: SessionManager,
     private val alertDialogUtils: AlertDialogUtils,
+    private val getBooleanRemoteConfigUseCase: GetBooleanRemoteConfigUseCase,
     override val sendAnalyticsUseCase: SendAnalyticsUseCase,
     @NavGraphQualifier(NavGraph.MAIN) override val navigationManager: NavigationManager
 ) : BaseViewModel<LoginUiState>(LoginScreenAnalytic, LoginUiState()), LoginCommandReceiver {
@@ -34,6 +39,7 @@ internal class LoginViewModel @Inject constructor(
     override val commandReceiver = this
 
     private val loginFormModel get() = uiState.value.loginFormModel
+    private val byPassLogin by lazy { getBooleanRemoteConfigUseCase(ByPassLoginRemoteConfig) }
 
     override fun initUiState() {
         checkNeedsLogin()
@@ -99,8 +105,12 @@ internal class LoginViewModel @Inject constructor(
         openScreenAnalytic()
         updateUiState {
             it.initUiState(
-                versionName = buildConfigProvider.get.versionNameToView,
-                enableLoginButton = buildConfigProvider.get.isDebug
+                versionName = "${buildConfigProvider.get.versionName} - ${buildConfigProvider.get.versionCode}",
+                distributionTextId = when (buildConfigProvider.get.flavor) {
+                    Flavor.FREE -> R.string.feature_login_limited_distribution
+                    Flavor.FULL -> R.string.feature_login_full_distribution
+                },
+                enableLoginButton = byPassLogin
             )
         }
     }
@@ -116,7 +126,7 @@ internal class LoginViewModel @Inject constructor(
         updateUiState {
             it
                 .setShowInvalidCredentialsMsg(false)
-                .setEnabledButton(loginFormModel.loginAlready || buildConfigProvider.get.isDebug)
+                .setEnabledButton(loginFormModel.loginAlready || byPassLogin)
         }
     }
 }
