@@ -6,9 +6,8 @@ import com.composetest.core.router.di.qualifiers.NavGraphQualifier
 import com.composetest.core.router.enums.NavGraph
 import com.composetest.core.router.managers.NavigationManager
 import com.composetest.core.ui.bases.BaseViewModel
-import com.composetest.feature.configuration.analytics.theme.ChangeDynamicColorsEvent
-import com.composetest.feature.configuration.analytics.theme.ChangeThemeEvent
-import com.composetest.feature.configuration.analytics.theme.ConfigurationThemeAnalytic
+import com.composetest.feature.configuration.analytics.theme.ConfigurationThemeClickEventAnalytic
+import com.composetest.feature.configuration.analytics.theme.ConfigurationThemeScreenAnalytic
 import com.composetest.feature.configuration.enums.ThemeConfiguration
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -19,7 +18,7 @@ internal class ConfigurationThemeViewModel @Inject constructor(
     override val sendAnalyticsUseCase: SendAnalyticsUseCase,
     @NavGraphQualifier(NavGraph.MAIN) override val navigationManager: NavigationManager
 ) : BaseViewModel<ConfigurationThemeUiState>(
-    ConfigurationThemeAnalytic,
+    ConfigurationThemeScreenAnalytic,
     ConfigurationThemeUiState()
 ), ConfigurationThemeCommandReceiver {
 
@@ -42,7 +41,11 @@ internal class ConfigurationThemeViewModel @Inject constructor(
     override fun changeTheme(selectedTheme: ThemeConfiguration) {
         updateUiState { it.setSelectedTheme(selectedTheme) }
         runAsyncTask(
-            onStart = { sendAnalyticsUseCase(ChangeThemeEvent(selectedTheme.theme.name)) }
+            onStart = {
+                sendAnalyticsUseCase(
+                    ConfigurationThemeClickEventAnalytic.ChangeThemeEvent(selectedTheme.theme.name)
+                )
+            }
         ) {
             appThemeManager.setTheme(selectedTheme.theme)
         }
@@ -50,7 +53,11 @@ internal class ConfigurationThemeViewModel @Inject constructor(
 
     override fun changeDynamicColor(active: Boolean) {
         updateUiState { it.setDynamicColors(active) }
-        runAsyncTask(onStart = { sendAnalyticsUseCase(ChangeDynamicColorsEvent(active)) }) {
+        runAsyncTask(onStart = {
+            sendAnalyticsUseCase(
+                ConfigurationThemeClickEventAnalytic.ChangeDynamicColors(active)
+            )
+        }) {
             appThemeManager.setDynamicColor(active)
         }
     }

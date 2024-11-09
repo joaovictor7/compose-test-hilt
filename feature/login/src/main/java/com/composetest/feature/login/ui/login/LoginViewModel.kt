@@ -20,7 +20,7 @@ import com.composetest.core.ui.bases.BaseViewModel
 import com.composetest.feature.login.R
 import com.composetest.feature.login.analytics.login.LoginClickEventAnalytic
 import com.composetest.feature.login.analytics.login.LoginScreenAnalytic
-import com.composetest.feature.login.remoteconfigs.ByPassLoginRemoteConfig
+import com.composetest.feature.login.enums.LoginRemoteConfig
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -39,7 +39,7 @@ internal class LoginViewModel @Inject constructor(
     override val commandReceiver = this
 
     private val loginFormModel get() = uiState.value.loginFormModel
-    private val byPassLogin by lazy { getBooleanRemoteConfigUseCase(ByPassLoginRemoteConfig) }
+    private val byPassLogin by lazy { getBooleanRemoteConfigUseCase(LoginRemoteConfig.BYPASS_LOGIN) }
 
     override fun initUiState() {
         checkNeedsLogin()
@@ -56,7 +56,7 @@ internal class LoginViewModel @Inject constructor(
             onError = ::handleLoginError,
             onCompletion = { updateUiState { it.setLoading(false) } },
             onStart = {
-                sendAnalyticsUseCase(LoginClickEventAnalytic)
+                sendAnalyticsUseCase(LoginClickEventAnalytic.LoginButton)
                 updateUiState { it.setLoading(true).setShowInvalidCredentialsMsg(false) }
             }
         ) {
