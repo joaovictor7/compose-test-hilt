@@ -26,7 +26,7 @@ import com.composetest.core.designsystem.components.alertdialogs.DefaultAlertDia
 import com.composetest.core.designsystem.components.buttons.Button
 import com.composetest.core.designsystem.components.cards.ElevatedCard
 import com.composetest.core.designsystem.components.textfields.OutlinedTextField
-import com.composetest.core.designsystem.compositions.LocalThemeProvider
+import com.composetest.core.designsystem.compositions.LocalTheme
 import com.composetest.core.designsystem.dimensions.spacings
 import com.composetest.core.designsystem.enums.textfields.TextFieldIcons
 import com.composetest.core.designsystem.extensions.screenPadding
@@ -145,7 +145,7 @@ private fun BoxScope.VersionName(uiState: LoginUiState) {
 
 @Composable
 private fun EffectsHandler(onExecuteCommand: (Command<LoginCommandReceiver>) -> Unit) {
-    val currentAppTheme = LocalThemeProvider.current
+    val currentAppTheme = LocalTheme.current
     LaunchedEffect(Unit) {
         onExecuteCommand(LoginCommand.SetCustomTheme(true, currentAppTheme))
     }

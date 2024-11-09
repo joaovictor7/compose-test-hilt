@@ -15,8 +15,8 @@ import com.composetest.core.domain.usecases.AuthenticationUseCase
 import com.composetest.core.router.destinations.root.RootDestination
 import com.composetest.core.router.enums.NavigationMode
 import com.composetest.core.router.managers.NavigationManager
+import com.composetest.core.test.extensions.runFlowTest
 import com.composetest.core.test.interfaces.CoroutinesTest
-import com.composetest.core.test.utils.runStateFlowTest
 import com.composetest.feature.login.models.LoginFormModel
 import com.composetest.feature.login.ui.login.LoginCommand
 import com.composetest.feature.login.ui.login.LoginUiState
@@ -71,7 +71,7 @@ class LoginViewModelTest : CoroutinesTest {
     }
 
     @Test
-    fun `initial uiState`() = runStateFlowTest(viewModel.uiState) { job, collectedStates ->
+    fun `initial uiState`() = runFlowTest(viewModel.uiState) { job, collectedStates ->
         coEvery { sessionManager.needsLogin() } returns false
         job.cancel()
 
@@ -91,7 +91,7 @@ class LoginViewModelTest : CoroutinesTest {
     fun `initial uiState when not need login`() {
         coEvery { sessionManager.needsLogin() } returns false
         val viewModel = initViewModel()
-        runStateFlowTest(viewModel.uiState) { job, collectedStates ->
+        runFlowTest(viewModel.uiState) { job, collectedStates ->
             job.cancel()
 
             assertEquals(
@@ -109,7 +109,7 @@ class LoginViewModelTest : CoroutinesTest {
 
     @Test
     fun `misleanding credentials login`() =
-        runStateFlowTest(viewModel.uiState) { job, collectedStates ->
+        runFlowTest(viewModel.uiState) { job, collectedStates ->
             coEvery {
                 authenticationUseCase.invoke(any())
             } coAnswers { withContext(testDispatcher) { throw InvalidCredentialsThrowable() } }
@@ -172,7 +172,7 @@ class LoginViewModelTest : CoroutinesTest {
 
     @Test
     fun `success login`() =
-        runStateFlowTest(viewModel.uiState) { job, collectedStates ->
+        runFlowTest(viewModel.uiState) { job, collectedStates ->
             coEvery {
                 authenticationUseCase(any())
             } coAnswers { withContext(testDispatcher) {} }
@@ -229,7 +229,7 @@ class LoginViewModelTest : CoroutinesTest {
 
     @Test
     fun `error network`() =
-        runStateFlowTest(viewModel.uiState) { job, collectedStates ->
+        runFlowTest(viewModel.uiState) { job, collectedStates ->
             coEvery {
                 authenticationUseCase(any())
             } coAnswers { withContext(testDispatcher) { throw NetworkThrowable() } }

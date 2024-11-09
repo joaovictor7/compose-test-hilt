@@ -8,7 +8,7 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.platform.LocalContext
-import com.composetest.core.designsystem.compositions.LocalThemeProvider
+import com.composetest.core.designsystem.compositions.LocalTheme
 import com.composetest.core.designsystem.extensions.isDarkMode
 import com.composetest.core.domain.enums.Theme
 
@@ -19,7 +19,7 @@ fun ComposeTestTheme(
     content: @Composable () -> Unit
 ) {
     val colorScheme = getColorScheme(dynamicColor, theme)
-    CompositionLocalProvider(LocalThemeProvider provides theme) {
+    CompositionLocalProvider(LocalTheme provides theme) {
         MaterialTheme(
             colorScheme = colorScheme,
             typography = typography,
