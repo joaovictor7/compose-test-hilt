@@ -1,6 +1,6 @@
 package com.composetest.feature.configuration.analytics.theme
 
-import com.composetest.core.domain.models.analytics.ClickAnalyticEvent
+import com.composetest.core.domain.analytics.ClickAnalyticEvent
 
 internal sealed class ConfigurationThemeClickEventAnalytic(
     event: String

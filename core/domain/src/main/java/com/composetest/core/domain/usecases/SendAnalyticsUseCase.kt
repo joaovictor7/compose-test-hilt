@@ -3,8 +3,8 @@ package com.composetest.core.domain.usecases
 import android.os.Bundle
 import androidx.core.os.bundleOf
 import com.composetest.common.providers.BuildConfigProvider
-import com.composetest.core.domain.interfaces.analytics.AnalyticEvent
-import com.composetest.core.domain.models.analytics.ErrorAnalyticEvent
+import com.composetest.core.domain.interfaces.AnalyticEvent
+import com.composetest.core.domain.analytics.ErrorAnalyticEvent
 import com.composetest.core.domain.repositories.AnalyticsRepository
 import com.composetest.core.domain.repositories.UserRepository
 import java.time.LocalDateTime

@@ -2,9 +2,9 @@ package com.composetest.core.ui.bases
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.composetest.core.domain.interfaces.analytics.AnalyticScreen
-import com.composetest.core.domain.models.analytics.ErrorAnalyticEvent
-import com.composetest.core.domain.models.analytics.OpenScreenAnalyticEvent
+import com.composetest.core.domain.interfaces.AnalyticScreen
+import com.composetest.core.domain.analytics.ErrorAnalyticEvent
+import com.composetest.core.domain.analytics.OpenScreenAnalyticEvent
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
 import com.composetest.core.router.managers.NavigationManager
 import com.composetest.core.ui.interfaces.BaseUiState

@@ -1,7 +1,11 @@
 package com.composetest.feature.root.ui.root
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -16,13 +20,17 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import com.composetest.core.designsystem.R
 import com.composetest.core.designsystem.extensions.asActivity
 import com.composetest.core.router.destinations.home.HomeDestination
 import com.composetest.core.ui.interfaces.Command
@@ -45,7 +53,7 @@ internal object RootScreen : Screen<RootUiState, RootCommandReceiver> {
             drawerState = drawerState,
             drawerContent = {
                 ModalDrawerSheet {
-                    Text("Drawer title", modifier = Modifier.padding(16.dp))
+                    ModalDrawerHeader(uiState = uiState, onExecuteCommand = onExecuteCommand)
                     HorizontalDivider()
                     NavigationDrawerItem(
                         label = { Text(text = "Drawer Item") },
@@ -68,6 +76,28 @@ internal object RootScreen : Screen<RootUiState, RootCommandReceiver> {
         LaunchedEffect(uiState.finishApp) {
             if (uiState.finishApp) context.asActivity?.finish()
         }
+    }
+}
+
+@Composable
+private fun ModalDrawerHeader(
+    uiState: RootUiState,
+    onExecuteCommand: (Command<RootCommandReceiver>) -> Unit
+) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Image(
+            modifier = Modifier
+                .size(60.dp)
+                .clip(CircleShape),
+            painter = painterResource(R.drawable.ic_person_off),
+            contentDescription = null,
+            contentScale = ContentScale.Crop
+        )
+//        Text(
+//            text = uiState.finishApp,
+//            modifier = Modifier.padding(16.dp),
+//            style = MaterialTheme.typography.bodyMedium
+//        )
     }
 }
 

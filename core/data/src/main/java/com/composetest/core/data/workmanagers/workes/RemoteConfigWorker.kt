@@ -10,7 +10,7 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkerParameters
 import com.composetest.core.data.enums.WorkManagerName
 import com.composetest.core.data.workmanagers.WorkManager
-import com.composetest.core.domain.models.analytics.ErrorAnalyticEvent
+import com.composetest.core.domain.analytics.ErrorAnalyticEvent
 import com.composetest.core.domain.repositories.RemoteConfigRepository
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
 import dagger.assisted.Assisted
