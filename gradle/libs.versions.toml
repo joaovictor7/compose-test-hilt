@@ -23,7 +23,6 @@ workManager = "2.10.0"
 ktor = "3.0.1"
 slf4j = "2.0.16"
 splashScreen = "1.0.1"
-unspecified = "unspecified"
 
 [libraries]
 # Kotlin
@@ -90,10 +89,10 @@ slf4j-simple = { group = "org.slf4j", name = "slf4j-simple", version.ref = "slf4
 
 [plugins]
 # Convention plugins
-composeTest-application = { id = "com.composetest.application", version.ref = "unspecified" }
-composeTest-library = { id = "com.composetest.library", version.ref = "unspecified" }
-composeTest-compose = { id = "com.composetest.compose", version.ref = "unspecified" }
-composeTest-test = { id = "com.composetest.test", version.ref = "unspecified" }
+composeTest-application = { id = "com.composetest.application" }
+composeTest-library = { id = "com.composetest.library" }
+composeTest-compose = { id = "com.composetest.compose" }
+composeTest-test = { id = "com.composetest.test" }
 
 # Another plugins
 kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
