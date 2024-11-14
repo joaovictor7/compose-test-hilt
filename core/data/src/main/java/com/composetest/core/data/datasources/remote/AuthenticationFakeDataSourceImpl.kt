@@ -1,18 +1,18 @@
 package com.composetest.core.data.datasources.remote
 
-import com.composetest.core.data.managers.RemoteCallManager
 import com.composetest.core.data.network.requests.AuthenticationRequest
 import com.composetest.core.data.network.responses.AuthenticationResponse
 import com.composetest.core.data.network.responses.SessionResponse
 import com.composetest.core.data.network.responses.UserResponse
+import com.composetest.core.data.utils.RemoteCallUtils
 import java.time.LocalDateTime
 
 internal class AuthenticationFakeDataSourceImpl(
-    private val safeRemoteCallManager: RemoteCallManager
+    private val remoteCallUtils: RemoteCallUtils
 ) : AuthenticationDataSource {
 
     override suspend fun authentication(request: AuthenticationRequest) =
-        safeRemoteCallManager.safeRemoteCall {
+        remoteCallUtils.executeRemoteCall {
             val sessionStartDate = LocalDateTime.now()
             val sessionEndDate = sessionStartDate.plusMinutes(PLUS_FAKE_SESSION_DURATION)
             AuthenticationResponse(

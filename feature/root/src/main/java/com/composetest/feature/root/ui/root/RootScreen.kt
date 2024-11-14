@@ -6,7 +6,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -17,6 +20,7 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -38,32 +42,32 @@ import com.composetest.core.ui.interfaces.Screen
 import com.composetest.feature.configuration.navigation.configurationRootNavGraph
 import com.composetest.feature.home.navigation.homeRootNavGraph
 import com.composetest.feature.profile.navigation.profileRootNavGraph
-import com.composetest.feature.root.enums.NavigationBottomBar
 
 internal object RootScreen : Screen<RootUiState, RootCommandReceiver> {
 
+    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override operator fun invoke(
         uiState: RootUiState,
         onExecuteCommand: (Command<RootCommandReceiver>) -> Unit
     ) {
-        val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
         val context = LocalContext.current
+        val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
         ModalNavigationDrawer(
             drawerState = drawerState,
-            drawerContent = {
-                ModalDrawerSheet {
-                    ModalDrawerHeader(uiState = uiState, onExecuteCommand = onExecuteCommand)
-                    HorizontalDivider()
-                    NavigationDrawerItem(
-                        label = { Text(text = "Drawer Item") },
-                        selected = true,
-                        onClick = { /*TODO*/ }
-                    )
-                }
-            },
+            drawerContent = getModalDrawerContent(uiState, onExecuteCommand),
         ) {
-            Scaffold(bottomBar = getBottomBar(onExecuteCommand, uiState)) { paddingValues ->
+            Scaffold(
+                topBar = {
+                    TopAppBar(
+                        title = {},
+                        navigationIcon = {
+                            Icon(imageVector = Icons.Filled.Menu, contentDescription = null)
+                        }
+                    )
+                },
+                bottomBar = getBottomBar(onExecuteCommand, uiState)
+            ) { paddingValues ->
                 Navigation(
                     modifier = Modifier.padding(bottom = paddingValues.calculateBottomPadding()),
                     onExecuteCommand = onExecuteCommand
@@ -75,6 +79,35 @@ internal object RootScreen : Screen<RootUiState, RootCommandReceiver> {
         }
         LaunchedEffect(uiState.finishApp) {
             if (uiState.finishApp) context.asActivity?.finish()
+        }
+    }
+}
+
+private fun getModalDrawerContent(
+    uiState: RootUiState,
+    onExecuteCommand: (Command<RootCommandReceiver>) -> Unit
+) = @Composable {
+    ModalDrawerSheet {
+        ModalDrawerHeader(uiState = uiState, onExecuteCommand = onExecuteCommand)
+        HorizontalDivider()
+        uiState.modalDrawerFeatures.forEach {
+            val label = stringResource(it.textId)
+            NavigationDrawerItem(
+                label = {
+                    Text(
+                        text = label,
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                },
+                icon = {
+                    Icon(
+                        painter = painterResource(it.iconId),
+                        contentDescription = label
+                    )
+                },
+                selected = true,
+                onClick = { /*TODO*/ }
+            )
         }
     }
 }
@@ -124,11 +157,11 @@ private fun getBottomBar(
     uiState: RootUiState
 ) = @Composable {
     NavigationBar {
-        NavigationBottomBar.entries.forEach {
-            val label = stringResource(it.labelId)
+        uiState.bottomFeatures.forEach {
+            val label = stringResource(it.textId)
             NavigationBarItem(
-                selected = it == uiState.selectedBottomBarItem,
-                onClick = { onExecuteCommand(RootCommand.SetSelectedNavigationBottomBar(it)) },
+                selected = it == uiState.selectedBottomNavigationFeature,
+                onClick = { onExecuteCommand(RootCommand.SetSelectedBottomNavigationFeature(it)) },
                 label = {
                     Text(text = label, style = MaterialTheme.typography.labelLarge)
                 },

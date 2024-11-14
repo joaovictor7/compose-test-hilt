@@ -1,8 +1,6 @@
 package com.composetest.core.data.di
 
 import com.composetest.core.data.managers.AppThemeManagerImpl
-import com.composetest.core.data.managers.RemoteCallManager
-import com.composetest.core.data.managers.RemoteCallManagerImpl
 import com.composetest.core.data.managers.SessionManagerImpl
 import com.composetest.core.data.providers.WorkManagerProvider
 import com.composetest.core.data.providers.WorkManagerProviderImpl
@@ -16,9 +14,6 @@ import dagger.hilt.components.SingletonComponent
 @Module
 @InstallIn(SingletonComponent::class)
 internal abstract class ManagerModule {
-
-    @Binds
-    abstract fun remoteCallManager(remoteCallManagerImpl: RemoteCallManagerImpl): RemoteCallManager
 
     @Binds
     abstract fun sessionManager(sessionManagerImpl: SessionManagerImpl): SessionManager

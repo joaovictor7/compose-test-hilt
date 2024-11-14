@@ -2,14 +2,14 @@ package com.composetest.feature.root.ui.root
 
 import androidx.navigation.NavHostController
 import com.composetest.core.ui.interfaces.Command
-import com.composetest.feature.root.enums.NavigationBottomBar
+import com.composetest.feature.root.enums.NavigationFeature
 
 internal sealed interface RootCommand : Command<RootCommandReceiver> {
-    data class SetSelectedNavigationBottomBar(
-        private val selectedNavigationBottomBar: NavigationBottomBar
+    data class SetSelectedBottomNavigationFeature(
+        private val selectedNavigationBottomBar: NavigationFeature
     ) : RootCommand {
         override fun execute(commandReceiver: RootCommandReceiver) {
-            commandReceiver.setSelectedNavigationBottomBar(selectedNavigationBottomBar)
+            commandReceiver.setSelectedBottomNavigationFeature(selectedNavigationBottomBar)
         }
     }
 

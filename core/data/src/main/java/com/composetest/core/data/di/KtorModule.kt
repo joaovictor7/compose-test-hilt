@@ -1,7 +1,7 @@
 package com.composetest.core.data.di
 
 import com.composetest.common.providers.BuildConfigProvider
-import com.composetest.core.data.di.qualifiers.Api
+import com.composetest.core.data.di.qualifiers.ApiQualifier
 import com.composetest.core.data.enums.NetworkApi
 import com.composetest.core.data.extensions.setHost
 import com.composetest.core.domain.throwables.network.UnauthorizedRequestThrowable
@@ -69,7 +69,7 @@ internal object KtorModule {
     }
 
     @Provides
-    @Api(NetworkApi.BFF)
+    @ApiQualifier(NetworkApi.BFF)
     fun bffApi(
         httpClient: HttpClient,
         buildConfigProvider: BuildConfigProvider

@@ -5,4 +5,4 @@ import javax.inject.Qualifier
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
-internal annotation class Api(val networkApi: NetworkApi)
+internal annotation class ApiQualifier(val networkApi: NetworkApi)

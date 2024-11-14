@@ -1,4 +1,4 @@
-package com.composetest.core.data.managers
+package com.composetest.core.data.utils
 
 import com.composetest.common.enums.FlavorDimension
 import com.composetest.common.providers.BuildConfigProvider
@@ -9,13 +9,13 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-internal class RemoteCallManagerImpl @Inject constructor(
+internal class RemoteCallUtils @Inject constructor(
     private val networkProvider: NetworkProvider,
     private val buildConfigProvider: BuildConfigProvider,
     private val dispatcherProvider: DispatcherProvider
-) : RemoteCallManager {
+)  {
 
-    override suspend fun <T> safeRemoteCall(onRemoteCall: suspend () -> T): T = when {
+    suspend fun <T> executeRemoteCall(onRemoteCall: suspend () -> T): T = when {
         !networkProvider.internetIsConnected -> throw NetworkThrowable()
         else -> call(onRemoteCall)
     }

@@ -2,7 +2,7 @@ package com.composetest.feature.login.ui.login
 
 import com.composetest.common.enums.Flavor
 import com.composetest.common.providers.BuildConfigProvider
-import com.composetest.core.designsystem.utils.AlertDialogUtils
+import com.composetest.core.designsystem.utils.getErrorAlertDialogParam
 import com.composetest.core.domain.enums.Theme
 import com.composetest.core.domain.managers.AppThemeManager
 import com.composetest.core.domain.managers.SessionManager
@@ -30,7 +30,6 @@ internal class LoginViewModel @Inject constructor(
     private val appThemeManager: AppThemeManager,
     private val authenticationUseCase: AuthenticationUseCase,
     private val sessionManager: SessionManager,
-    private val alertDialogUtils: AlertDialogUtils,
     private val getBooleanRemoteConfigUseCase: GetBooleanRemoteConfigUseCase,
     override val sendAnalyticsUseCase: SendAnalyticsUseCase,
     @NavGraphQualifier(NavGraph.MAIN) override val navigationManager: NavigationManager
@@ -85,7 +84,7 @@ internal class LoginViewModel @Inject constructor(
                 uiState.setShowInvalidCredentialsMsg(true)
             } else {
                 uiState.setDefaultAlertDialog(
-                    alertDialogUtils.getErrorAlertDialogParam(throwable) {
+                    getErrorAlertDialogParam(throwable) {
                         updateUiState { it.setDefaultAlertDialog(null) }
                     }
                 )

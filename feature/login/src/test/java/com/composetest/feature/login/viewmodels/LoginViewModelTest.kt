@@ -7,7 +7,6 @@ import com.composetest.common.models.BuildConfigFieldsModel
 import com.composetest.common.models.BuildConfigModel
 import com.composetest.common.providers.BuildConfigProvider
 import com.composetest.core.designsystem.params.alertdialogs.DefaultAlertDialogParam
-import com.composetest.core.designsystem.utils.AlertDialogUtils
 import com.composetest.core.domain.managers.SessionManager
 import com.composetest.core.domain.throwables.InvalidCredentialsThrowable
 import com.composetest.core.domain.throwables.network.NetworkThrowable
@@ -17,13 +16,13 @@ import com.composetest.core.router.enums.NavigationMode
 import com.composetest.core.router.managers.NavigationManager
 import com.composetest.core.test.extensions.runFlowTest
 import com.composetest.core.test.interfaces.CoroutinesTest
+import com.composetest.feature.login.R
 import com.composetest.feature.login.models.LoginFormModel
 import com.composetest.feature.login.ui.login.LoginCommand
 import com.composetest.feature.login.ui.login.LoginUiState
 import com.composetest.feature.login.ui.login.LoginViewModel
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.test.TestDispatcher
 import kotlinx.coroutines.withContext
@@ -57,11 +56,6 @@ class LoginViewModelTest : CoroutinesTest {
         coEvery { needsLogin() } returns true
     }
     private val networkAlertDialogParam = DefaultAlertDialogParam.getNetworkAlertDialogParam { }
-    private val alertDialogUtils: AlertDialogUtils = mockk {
-        every {
-            getErrorAlertDialogParam(any<NetworkThrowable>(), any())
-        } returns networkAlertDialogParam
-    }
 
     private lateinit var viewModel: LoginViewModel
 
@@ -71,16 +65,17 @@ class LoginViewModelTest : CoroutinesTest {
     }
 
     @Test
-    fun `initial uiState`() = runFlowTest(viewModel.uiState) { job, collectedStates ->
+    fun `initial uiState`() = runFlowTest(viewModel.uiState) { onCancelJob, collectedStates ->
         coEvery { sessionManager.needsLogin() } returns false
-        job.cancel()
+        onCancelJob()
 
         assertEquals(
             listOf(
+                LoginUiState(),
                 LoginUiState(
                     needsLogin = true,
-//                    versionName = buildConfigModelMock.versionNameToView,
-                    enableLoginButton = true
+                    distributionTextId = R.string.feature_login_full_distribution,
+                    versionName = "1.0.0 - 0"
                 )
             ),
             collectedStates
@@ -91,8 +86,8 @@ class LoginViewModelTest : CoroutinesTest {
     fun `initial uiState when not need login`() {
         coEvery { sessionManager.needsLogin() } returns false
         val viewModel = initViewModel()
-        runFlowTest(viewModel.uiState) { job, collectedStates ->
-            job.cancel()
+        runFlowTest(viewModel.uiState) { onCancelJob, collectedStates ->
+            onCancelJob()
 
             assertEquals(
                 listOf(LoginUiState()),
@@ -109,25 +104,25 @@ class LoginViewModelTest : CoroutinesTest {
 
     @Test
     fun `misleanding credentials login`() =
-        runFlowTest(viewModel.uiState) { job, collectedStates ->
+        runFlowTest(viewModel.uiState) { onCancelJob, collectedStates ->
             coEvery {
                 authenticationUseCase.invoke(any())
             } coAnswers { withContext(testDispatcher) { throw InvalidCredentialsThrowable() } }
 
             viewModel.executeCommand(LoginCommand.WriteData("teste@teste.com", "password"))
             viewModel.executeCommand(LoginCommand.Login)
-            job.cancel()
+            onCancelJob()
 
             assertEquals(
                 listOf(
                     LoginUiState(
                         needsLogin = true,
-                        versionName = buildConfigModelMock.versionNameToView,
+                        versionName = "1.0.0 - 0",
                         enableLoginButton = true
                     ),
                     LoginUiState(
                         needsLogin = true,
-                        versionName = buildConfigModelMock.versionNameToView,
+                        versionName = "1.0.0 - 0",
                         enableLoginButton = true,
                         loginFormModel = LoginFormModel(
                             email = "teste@teste.com",
@@ -136,7 +131,7 @@ class LoginViewModelTest : CoroutinesTest {
                     ),
                     LoginUiState(
                         needsLogin = true,
-                        versionName = buildConfigModelMock.versionNameToView,
+                        versionName = "1.0.0 - 0",
                         enableLoginButton = true,
                         isLoading = true,
                         loginFormModel = LoginFormModel(
@@ -146,7 +141,7 @@ class LoginViewModelTest : CoroutinesTest {
                     ),
                     LoginUiState(
                         needsLogin = true,
-                        versionName = buildConfigModelMock.versionNameToView,
+                        versionName = "1.0.0 - 0",
                         enableLoginButton = true,
                         invalidCredentials = true,
                         isLoading = true,
@@ -157,7 +152,7 @@ class LoginViewModelTest : CoroutinesTest {
                     ),
                     LoginUiState(
                         needsLogin = true,
-                        versionName = buildConfigModelMock.versionNameToView,
+                        versionName = "1.0.0 - 0",
                         enableLoginButton = true,
                         invalidCredentials = true,
                         loginFormModel = LoginFormModel(
@@ -172,26 +167,27 @@ class LoginViewModelTest : CoroutinesTest {
 
     @Test
     fun `success login`() =
-        runFlowTest(viewModel.uiState) { job, collectedStates ->
+        runFlowTest(viewModel.uiState) { onCancelJob, collectedStates ->
             coEvery {
                 authenticationUseCase(any())
             } coAnswers { withContext(testDispatcher) {} }
 
             viewModel.executeCommand(LoginCommand.WriteData("teste@teste.com", "password"))
             viewModel.executeCommand(LoginCommand.Login)
-            job.cancel()
+            onCancelJob()
 
             assertEquals(
                 listOf(
+                    LoginUiState(),
                     LoginUiState(
+                        versionName = "1.0.0 - 0",
                         needsLogin = true,
-                        versionName = buildConfigModelMock.versionNameToView,
-                        enableLoginButton = true
+                        distributionTextId = R.string.feature_login_full_distribution,
                     ),
                     LoginUiState(
+                        versionName = "1.0.0 - 0",
                         needsLogin = true,
-                        versionName = buildConfigModelMock.versionNameToView,
-                        enableLoginButton = true,
+                        distributionTextId = R.string.feature_login_full_distribution,
                         loginFormModel = LoginFormModel(
                             email = "teste@teste.com",
                             password = "password"
@@ -199,8 +195,19 @@ class LoginViewModelTest : CoroutinesTest {
                     ),
                     LoginUiState(
                         needsLogin = true,
-                        versionName = buildConfigModelMock.versionNameToView,
+                        versionName = "1.0.0 - 0",
                         enableLoginButton = true,
+                        distributionTextId = R.string.feature_login_full_distribution,
+                        loginFormModel = LoginFormModel(
+                            email = "teste@teste.com",
+                            password = "password"
+                        )
+                    ),
+                    LoginUiState(
+                        needsLogin = true,
+                        versionName = "1.0.0 - 0",
+                        enableLoginButton = true,
+                        distributionTextId = R.string.feature_login_full_distribution,
                         isLoading = true,
                         loginFormModel = LoginFormModel(
                             email = "teste@teste.com",
@@ -209,8 +216,9 @@ class LoginViewModelTest : CoroutinesTest {
                     ),
                     LoginUiState(
                         needsLogin = true,
-                        versionName = buildConfigModelMock.versionNameToView,
+                        versionName = "1.0.0 - 0",
                         enableLoginButton = true,
+                        distributionTextId = R.string.feature_login_full_distribution,
                         loginFormModel = LoginFormModel(
                             email = "teste@teste.com",
                             password = "password"
@@ -229,25 +237,26 @@ class LoginViewModelTest : CoroutinesTest {
 
     @Test
     fun `error network`() =
-        runFlowTest(viewModel.uiState) { job, collectedStates ->
+        runFlowTest(viewModel.uiState) { onCancelJob, collectedStates ->
             coEvery {
                 authenticationUseCase(any())
             } coAnswers { withContext(testDispatcher) { throw NetworkThrowable() } }
 
             viewModel.executeCommand(LoginCommand.WriteData("teste@teste.com", "password"))
             viewModel.executeCommand(LoginCommand.Login)
-            job.cancel()
+            onCancelJob()
 
             assertEquals(
                 listOf(
+                    LoginUiState(),
                     LoginUiState(
                         needsLogin = true,
-                        versionName = buildConfigModelMock.versionNameToView,
+                        versionName = "1.0.0 - 0",
                         enableLoginButton = true
                     ),
                     LoginUiState(
                         needsLogin = true,
-                        versionName = buildConfigModelMock.versionNameToView,
+                        versionName = "1.0.0 - 0",
                         enableLoginButton = true,
                         loginFormModel = LoginFormModel(
                             email = "teste@teste.com",
@@ -256,7 +265,7 @@ class LoginViewModelTest : CoroutinesTest {
                     ),
                     LoginUiState(
                         needsLogin = true,
-                        versionName = buildConfigModelMock.versionNameToView,
+                        versionName = "1.0.0 - 0",
                         enableLoginButton = true,
                         isLoading = true,
                         loginFormModel = LoginFormModel(
@@ -266,7 +275,7 @@ class LoginViewModelTest : CoroutinesTest {
                     ),
                     LoginUiState(
                         needsLogin = true,
-                        versionName = buildConfigModelMock.versionNameToView,
+                        versionName = "1.0.0 - 0",
                         enableLoginButton = true,
                         isLoading = true,
                         defaultAlertDialogParam = networkAlertDialogParam,
@@ -277,7 +286,7 @@ class LoginViewModelTest : CoroutinesTest {
                     ),
                     LoginUiState(
                         needsLogin = true,
-                        versionName = buildConfigModelMock.versionNameToView,
+                        versionName = "1.0.0 - 0",
                         enableLoginButton = true,
                         defaultAlertDialogParam = networkAlertDialogParam,
                         loginFormModel = LoginFormModel(
@@ -294,9 +303,9 @@ class LoginViewModelTest : CoroutinesTest {
         navigationManager = navigationManager,
         buildConfigProvider = buildConfigProvider,
         appThemeManager = mockk(),
-        alertDialogUtils = alertDialogUtils,
         authenticationUseCase = authenticationUseCase,
         sendAnalyticsUseCase = mockk(relaxed = true),
-        sessionManager = sessionManager
+        sessionManager = sessionManager,
+        getBooleanRemoteConfigUseCase = mockk(relaxed = true)
     )
 }
