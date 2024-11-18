@@ -3,13 +3,15 @@ package com.composetest.feature.root.ui.root
 import androidx.navigation.NavHostController
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.feature.root.enums.NavigationFeature
+import com.composetest.feature.root.enums.NavigationLocal
 
 internal sealed interface RootCommand : Command<RootCommandReceiver> {
     data class SetSelectedBottomNavigationFeature(
-        private val selectedNavigationBottomBar: NavigationFeature
+        private val selectedFeature: NavigationFeature,
+        private val navigationLocal: NavigationLocal
     ) : RootCommand {
         override fun execute(commandReceiver: RootCommandReceiver) {
-            commandReceiver.setSelectedBottomNavigationFeature(selectedNavigationBottomBar)
+            commandReceiver.setSelectedNavigationFeature(selectedFeature, navigationLocal)
         }
     }
 

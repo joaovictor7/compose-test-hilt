@@ -20,7 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.composetest.core.designsystem.R
 import com.composetest.core.designsystem.enums.toolbar.ToolbarAction
-import com.composetest.core.designsystem.extensions.horizontalScreenPadding
+import com.composetest.core.designsystem.extensions.horizontalScreenMargin
 import com.composetest.core.designsystem.params.toolbar.ToolbarActionParam
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 
@@ -35,7 +35,7 @@ fun Toolbar(
         Column(
             modifier = Modifier
                 .padding(paddingValues)
-                .horizontalScreenPadding(),
+                .horizontalScreenMargin(),
             content = content
         )
     }

@@ -7,7 +7,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.composetest.core.designsystem.extensions.screenPadding
+import com.composetest.core.designsystem.extensions.screenMargin
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.interfaces.Screen
@@ -21,7 +21,7 @@ internal object Home3Screen : Screen<Home3UiState, Home3CommandReceiver> {
     ) {
         Column(
             modifier = Modifier
-                .screenPadding()
+                .screenMargin()
                 .fillMaxSize()
         ) {
             Button(onClick = { onExecuteCommand(Home3Commands.ReturnLogin) }) {

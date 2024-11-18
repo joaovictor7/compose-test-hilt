@@ -13,14 +13,11 @@ import com.composetest.feature.configuration.ui.theme.ConfigurationThemeScreen
 import com.composetest.feature.configuration.ui.theme.ConfigurationThemeUiState
 import com.composetest.feature.configuration.ui.theme.ConfigurationThemeViewModel
 
-fun NavGraphBuilder.configurationRootNavGraph() {
+fun NavGraphBuilder.configurationNavGraph() {
     composable<ConfigurationDestination, ConfigurationViewModel, ConfigurationUiState, ConfigurationCommandReceiver>(
         screen = ConfigurationScreen,
         navigateBackHandler = false
     )
-}
-
-fun NavGraphBuilder.configurationNavGraph() {
     composable<ConfigurationThemeDestination, ConfigurationThemeViewModel, ConfigurationThemeUiState, ConfigurationThemeCommandReceiver>(
         screen = ConfigurationThemeScreen
     )

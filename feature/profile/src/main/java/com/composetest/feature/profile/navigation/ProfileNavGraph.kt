@@ -13,14 +13,11 @@ import com.composetest.feature.profile.ui.profile.ProfileScreen
 import com.composetest.feature.profile.ui.profile.ProfileUiState
 import com.composetest.feature.profile.ui.profile.ProfileViewModel
 
-fun NavGraphBuilder.profileRootNavGraph() {
+fun NavGraphBuilder.profileNavGraph() {
     composable<ProfileDestination, ProfileViewModel, ProfileUiState, ProfileCommandReceiver>(
         screen = ProfileScreen,
         navigateBackHandler = false
     )
-}
-
-fun NavGraphBuilder.profileNavGraph() {
     composable<EditProfileDestination, EditProfileViewModel, EditProfileUiState, EditProfileCommandReceiver>(
         screen = EditProfileScreen
     )

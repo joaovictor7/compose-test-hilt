@@ -7,9 +7,9 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
 
-internal val screenPadding = 16.dp
+val screenMargin = 16.dp
 
-val topScreenPaddingList
+val topScreenMarginList
     @Composable get() = PaddingValues(
-        top = WindowInsets.statusBars.asPaddingValues().calculateTopPadding() + screenPadding
+        top = WindowInsets.statusBars.asPaddingValues().calculateTopPadding() + screenMargin
     )

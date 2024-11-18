@@ -3,7 +3,9 @@ package com.composetest.feature.root.enums
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.composetest.core.domain.enums.Feature
+import com.composetest.core.router.destinations.configuration.ConfigurationDestination
 import com.composetest.core.router.destinations.home.HomeDestination
+import com.composetest.core.router.destinations.profile.ProfileDestination
 import com.composetest.core.router.interfaces.Destination
 import com.composetest.core.designsystem.R as DesignSystemResources
 import com.composetest.feature.configuration.R as ConfigurationResources
@@ -15,7 +17,8 @@ internal enum class NavigationFeature(
     val destination: Destination,
     val navigationLocal: NavigationLocal,
     @DrawableRes val iconId: Int,
-    @StringRes val textId: Int
+    @StringRes val textId: Int,
+    var selected: Boolean = false,
 ) {
     HOME(
         Feature.HOME,
@@ -26,14 +29,14 @@ internal enum class NavigationFeature(
     ),
     CONFIGURATION(
         Feature.CONFIGURATION,
-        HomeDestination,
+        ConfigurationDestination,
         NavigationLocal.MODAL_DRAWER,
         DesignSystemResources.drawable.ic_config_filled,
         ConfigurationResources.string.configuration_title
     ),
     PROFILE(
-        Feature.HOME,
-        HomeDestination,
+        Feature.PROFILE,
+        ProfileDestination,
         NavigationLocal.MODAL_DRAWER,
         DesignSystemResources.drawable.ic_person_circle,
         ProfileResources.string.profile_title

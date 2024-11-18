@@ -25,7 +25,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.composetest.core.designsystem.components.switches.ThumbSwitch
 import com.composetest.core.designsystem.components.toolbar.Toolbar
 import com.composetest.core.designsystem.dimensions.spacings
-import com.composetest.core.designsystem.extensions.horizontalScreenPadding
+import com.composetest.core.designsystem.extensions.horizontalScreenMargin
 import com.composetest.core.designsystem.extensions.opacity
 import com.composetest.core.designsystem.params.switches.SwitchType
 import com.composetest.core.designsystem.theme.ComposeTestTheme
@@ -46,7 +46,7 @@ internal object ConfigurationThemeScreen :
         Toolbar(titleId = ConfigurationResources.string.configuration_theme_text) {
             Column(
                 modifier = Modifier
-                    .horizontalScreenPadding()
+                    .horizontalScreenMargin()
                     .fillMaxSize()
             ) {
                 Section(titleId = ConfigurationResources.string.configuration_theme_mode_title) {

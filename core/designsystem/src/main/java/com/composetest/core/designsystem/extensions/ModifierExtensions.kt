@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Brush
 import com.composetest.core.designsystem.compositions.LocalTheme
-import com.composetest.core.designsystem.constants.screenPadding
+import com.composetest.core.designsystem.constants.screenMargin
 
 @Composable
 fun Modifier.visibility(isVisible: Boolean) = alpha(if (isVisible) 1f else 0f)
@@ -28,9 +28,9 @@ fun Modifier.verticalTopBackgroundBrush() = also {
 }
 
 @Composable
-fun Modifier.horizontalScreenPadding() = padding(horizontal = screenPadding)
+fun Modifier.horizontalScreenMargin() = padding(horizontal = screenMargin)
 
 @Composable
-fun Modifier.screenPadding() = windowInsetsPadding(WindowInsets.systemBars)
-    .padding(top = screenPadding)
-    .horizontalScreenPadding()
+fun Modifier.screenMargin() = windowInsetsPadding(WindowInsets.systemBars)
+    .padding(top = screenMargin)
+    .horizontalScreenMargin()
