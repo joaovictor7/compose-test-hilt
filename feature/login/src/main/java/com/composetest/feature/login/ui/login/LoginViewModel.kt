@@ -5,12 +5,12 @@ import com.composetest.common.providers.BuildConfigProvider
 import com.composetest.core.designsystem.utils.getErrorAlertDialogParam
 import com.composetest.core.domain.enums.Theme
 import com.composetest.core.domain.managers.AppThemeManager
+import com.composetest.core.domain.managers.RemoteConfigManager
 import com.composetest.core.domain.managers.SessionManager
 import com.composetest.core.domain.models.AuthenticationCredentialsModel
 import com.composetest.core.domain.throwables.InvalidCredentialsThrowable
 import com.composetest.core.domain.usecases.AuthenticationUseCase
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
-import com.composetest.core.domain.usecases.remoteconfigs.GetBooleanRemoteConfigUseCase
 import com.composetest.core.router.destinations.root.RootDestination
 import com.composetest.core.router.di.qualifiers.NavGraphQualifier
 import com.composetest.core.router.enums.NavGraph
@@ -30,7 +30,7 @@ internal class LoginViewModel @Inject constructor(
     private val appThemeManager: AppThemeManager,
     private val authenticationUseCase: AuthenticationUseCase,
     private val sessionManager: SessionManager,
-    private val getBooleanRemoteConfigUseCase: GetBooleanRemoteConfigUseCase,
+    private val remoteConfigManager: RemoteConfigManager,
     override val sendAnalyticsUseCase: SendAnalyticsUseCase,
     @NavGraphQualifier(NavGraph.MAIN) override val navigationManager: NavigationManager
 ) : BaseViewModel<LoginUiState>(LoginScreenAnalytic, LoginUiState()), LoginCommandReceiver {
@@ -38,7 +38,7 @@ internal class LoginViewModel @Inject constructor(
     override val commandReceiver = this
 
     private val loginFormModel get() = uiState.value.loginFormModel
-    private val byPassLogin by lazy { getBooleanRemoteConfigUseCase(LoginRemoteConfig.BypassLogin) }
+    private val byPassLogin by lazy { remoteConfigManager.getBoolean(LoginRemoteConfig.BypassLogin) }
 
     override fun initUiState() {
         checkNeedsLogin()

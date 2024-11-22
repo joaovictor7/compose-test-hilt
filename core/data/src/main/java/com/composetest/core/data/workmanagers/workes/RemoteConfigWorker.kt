@@ -1,6 +1,7 @@
 package com.composetest.core.data.workmanagers.workes
 
 import android.content.Context
+import android.util.Log
 import androidx.hilt.work.HiltWorker
 import androidx.work.Constraints
 import androidx.work.CoroutineWorker
@@ -28,6 +29,7 @@ class RemoteConfigWorker @AssistedInject constructor(
 
     override suspend fun doWork() = runCatching {
         remoteConfigRepository.fetch()
+        Log.i("RemoteConfig", "Remote configs updated")
         Result.success()
     }.getOrElse {
         sendAnalyticsUseCase(ErrorAnalyticEvent(it))
