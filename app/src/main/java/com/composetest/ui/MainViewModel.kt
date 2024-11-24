@@ -5,6 +5,7 @@ import com.composetest.R
 import com.composetest.core.designsystem.params.alertdialogs.ButtonAlertDialogParam
 import com.composetest.core.designsystem.params.alertdialogs.DefaultAlertDialogParam
 import com.composetest.core.domain.managers.AppThemeManager
+import com.composetest.core.domain.managers.RemoteConfigManager
 import com.composetest.core.domain.managers.SessionManager
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
 import com.composetest.core.router.destinations.login.LoginDestination
@@ -24,6 +25,7 @@ class MainViewModel @Inject constructor(
     private val appThemeManager: AppThemeManager,
     private val sessionManager: SessionManager,
     private val navControllerManager: NavControllerManager,
+    private val remoteConfigManager: RemoteConfigManager,
     override val sendAnalyticsUseCase: SendAnalyticsUseCase,
     @NavGraphQualifier(NavGraph.MAIN) override val navigationManager: NavigationManager
 ) : BaseViewModel<MainUiState>(MainAnalytic, MainUiState()), MainCommandReceiver {
@@ -55,6 +57,10 @@ class MainViewModel @Inject constructor(
 
     override fun setMainNavGraph(navController: NavHostController) {
         navControllerManager.setNavController(NavGraph.MAIN, navController)
+    }
+
+    override fun fetchRemoteConfig() {
+        remoteConfigManager.fetch()
     }
 
     private fun appThemeObservable() {

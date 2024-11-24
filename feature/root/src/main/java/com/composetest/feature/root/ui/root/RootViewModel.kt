@@ -4,7 +4,6 @@ import androidx.navigation.NavHostController
 import com.composetest.core.domain.usecases.GetAvailableFeaturesUseCase
 import com.composetest.core.domain.usecases.GetUserUseCase
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
-import com.composetest.core.router.destinations.home.HomeDestination
 import com.composetest.core.router.di.qualifiers.NavGraphQualifier
 import com.composetest.core.router.enums.NavGraph
 import com.composetest.core.router.enums.NavigationMode
@@ -15,6 +14,7 @@ import com.composetest.feature.root.analytics.root.RootAnalytic
 import com.composetest.feature.root.enums.NavigationFeature
 import com.composetest.feature.root.enums.NavigationLocal
 import com.composetest.feature.root.mappers.UserModalDrawerMapper
+import com.composetest.feature.root.models.BottomFeatureNavigationModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -22,59 +22,56 @@ import javax.inject.Inject
 internal class RootViewModel @Inject constructor(
     private val navControllerManager: NavControllerManager,
     private val getUserUseCase: GetUserUseCase,
-    private val getAvailableFeaturesUseCase: GetAvailableFeaturesUseCase,
     private val userModalDrawerMapper: UserModalDrawerMapper,
     @NavGraphQualifier(NavGraph.MAIN) private val mainNavigationManager: NavigationManager,
+    getAvailableFeaturesUseCase: GetAvailableFeaturesUseCase,
     override val sendAnalyticsUseCase: SendAnalyticsUseCase,
     @NavGraphQualifier(NavGraph.ROOT) override val navigationManager: NavigationManager
 ) : BaseViewModel<RootUiState>(RootAnalytic, RootUiState()), RootCommandReceiver {
 
-    private val bottomBarItemsNavigation = mutableListOf(firstSelectedBottomBarItem)
+    private val availableFeatures = getAvailableFeaturesUseCase()
+    private val bottomNavigationFeaturesOrder = mutableListOf<NavigationFeature>()
+    private var firstBottomNavigationFeature: NavigationFeature? = null
 
     override val commandReceiver = this
 
     override fun initUiState() {
         openScreenAnalytic()
+        val modalDrawerNavigationFeatures = getModalDrawerNavigationFeatures()
+        val bottomNavigationFeatures = getBottomNavigationFeatures()
         runAsyncTask {
-            val navigationFeatures = getNavigationFeatures()
             val user = getUserUseCase()
-            updateUiState { it.initUiState(navigationFeatures, userModalDrawerMapper(user)) }
+            updateUiState {
+                it.initUiState(
+                    firstBottomNavigationFeature?.destination,
+                    modalDrawerNavigationFeatures,
+                    bottomNavigationFeatures,
+                    userModalDrawerMapper(user)
+                )
+            }
         }
     }
 
     override fun backHandler() {
-        if (bottomBarItemsNavigation.size > 1) {
-            val bottomBarItem = bottomBarItemsNavigation[bottomBarItemsNavigation.lastIndex.dec()]
-            bottomBarItemsNavigation.removeLastOrNull()
-            navigateToFeature(bottomBarItem, NavigationLocal.BOTTOM)
+        if (bottomNavigationFeaturesOrder.size > 1) {
+            val navigationBottomFeature =
+                bottomNavigationFeaturesOrder[bottomNavigationFeaturesOrder.lastIndex.dec()]
+            bottomNavigationFeaturesOrder.removeLastOrNull()
+            navigationManager.navigate(
+                navigationBottomFeature.destination,
+                NavigationMode.SAVE_SCREEN_STATE
+            )
         } else {
-            updateUiState { it.copy(finishApp = true) }
+            updateUiState { it.setFinishApp() }
         }
     }
 
-    override fun setSelectedNavigationFeature(
-        selectedFeature: NavigationFeature,
-        navigationLocal: NavigationLocal
-    ) {
-        when (navigationLocal) {
-            NavigationLocal.BOTTOM -> {
-                if (firstSelectedBottomBarItem == selectedFeature) {
-                    bottomBarItemsNavigation.clear()
-                } else {
-                    bottomBarItemsNavigation.remove(selectedFeature)
-                }
-                bottomBarItemsNavigation.add(selectedFeature)
-            }
-            NavigationLocal.MODAL_DRAWER -> {
-                val newList = uiState.value.navigationFeatures.map {
-                    it.apply {
-                        if (this == selectedFeature) selected = true
-                    }
-                }
-                updateUiState { it.setNavigationFeatures(features = newList) }
-            }
+    override fun navigateToFeature(navigatioFeature: NavigationFeature) {
+        if (navigatioFeature.navigationLocal == NavigationLocal.MODAL_DRAWER) {
+            mainNavigationManager.navigate(navigatioFeature.destination)
+        } else {
+            navigateToBottomFeature(navigatioFeature)
         }
-        navigateToFeature(selectedFeature, navigationLocal)
     }
 
     override fun setRootNavGraph(navController: NavHostController) {
@@ -82,36 +79,41 @@ internal class RootViewModel @Inject constructor(
         currentScreenObservable()
     }
 
-    private fun navigateToFeature(feature: NavigationFeature, navigationLocal: NavigationLocal) {
-        when (navigationLocal) {
-            NavigationLocal.BOTTOM ->
-                navigationManager.navigate(feature.destination, NavigationMode.SAVE_SCREEN_STATE)
-            NavigationLocal.MODAL_DRAWER -> mainNavigationManager.navigate(feature.destination)
+    private fun navigateToBottomFeature(navigationFeature: NavigationFeature) {
+        if (firstBottomNavigationFeature == navigationFeature) {
+            bottomNavigationFeaturesOrder.clear()
+        } else {
+            bottomNavigationFeaturesOrder.remove(navigationFeature)
         }
+        bottomNavigationFeaturesOrder.add(navigationFeature)
+        navigationManager.navigate(navigationFeature.destination, NavigationMode.SAVE_SCREEN_STATE)
     }
 
     private fun currentScreenObservable() {
         runFlowTask(navigationManager.currentRouteChangesFlow) { currentRoute ->
-            val bottomNavigationFeature = when (currentRoute) {
-                HomeDestination.asRoute -> NavigationFeature.HOME
-                else -> null
-            }
-            if (bottomNavigationFeature == null) return@runFlowTask
-            val newList = uiState.value.navigationFeatures.map {
-                it.apply {
-                    if (this == bottomNavigationFeature) selected = true
+            val bottomNavigationFeature = NavigationFeature.bottomNavigationFeatures
+                .firstOrNull { currentRoute == it.destination.asRoute }
+            bottomNavigationFeature?.let {
+                updateUiState {
+                    it.setSelectedBottomNavigationFeature(bottomNavigationFeature)
                 }
             }
-            updateUiState { it.setNavigationFeatures(features = newList) }
         }
     }
 
-    private fun getNavigationFeatures(): List<NavigationFeature> {
-        val features = getAvailableFeaturesUseCase()
-        return NavigationFeature.entries.filter { it.feature in features }
+    private fun getModalDrawerNavigationFeatures() = NavigationFeature.modalDrawerFeatures.filter {
+        it.feature in availableFeatures
     }
 
-    internal companion object {
-        val firstSelectedBottomBarItem = NavigationFeature.HOME
+    private fun getBottomNavigationFeatures(): List<BottomFeatureNavigationModel> {
+        val bottomFeatures = NavigationFeature.bottomNavigationFeatures.filter {
+            it.feature in availableFeatures
+        }
+        firstBottomNavigationFeature = bottomFeatures.firstOrNull()?.also {
+            bottomNavigationFeaturesOrder.add(it)
+        }
+        return bottomFeatures.map {
+            BottomFeatureNavigationModel(it, it == firstBottomNavigationFeature)
+        }
     }
 }

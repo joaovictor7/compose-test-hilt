@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
 import com.composetest.core.data.providers.WorkManagerProvider
-import com.composetest.core.data.workmanagers.workes.RemoteConfigWorker
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
 
@@ -21,13 +20,4 @@ internal class MainApplication : Application(), Configuration.Provider {
         get() = Configuration.Builder()
             .setWorkerFactory(workerFactory)
             .build()
-
-    override fun onCreate() {
-        super.onCreate()
-        createRemoteConfigWorker()
-    }
-
-    private fun createRemoteConfigWorker() {
-        workManagerProvider.createPeriodicWork(RemoteConfigWorker.Builder)
-    }
 }

@@ -4,6 +4,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.composetest.core.domain.enums.Feature
 import com.composetest.core.router.destinations.configuration.ConfigurationDestination
+import com.composetest.core.router.destinations.home.Home2Destination
 import com.composetest.core.router.destinations.home.HomeDestination
 import com.composetest.core.router.destinations.profile.ProfileDestination
 import com.composetest.core.router.interfaces.Destination
@@ -18,11 +19,17 @@ internal enum class NavigationFeature(
     val navigationLocal: NavigationLocal,
     @DrawableRes val iconId: Int,
     @StringRes val textId: Int,
-    var selected: Boolean = false,
 ) {
     HOME(
         Feature.HOME,
         HomeDestination,
+        NavigationLocal.BOTTOM,
+        DesignSystemResources.drawable.ic_house_filled,
+        HomeResources.string.home_title
+    ),
+    HOME2(
+        Feature.HOME2,
+        Home2Destination,
         NavigationLocal.BOTTOM,
         DesignSystemResources.drawable.ic_house_filled,
         HomeResources.string.home_title
@@ -40,5 +47,10 @@ internal enum class NavigationFeature(
         NavigationLocal.MODAL_DRAWER,
         DesignSystemResources.drawable.ic_person_circle,
         ProfileResources.string.profile_title
-    )
+    );
+
+    companion object {
+        val bottomNavigationFeatures get() = entries.filter { it.navigationLocal == NavigationLocal.BOTTOM }
+        val modalDrawerFeatures get() = entries.filter { it.navigationLocal == NavigationLocal.MODAL_DRAWER }
+    }
 }

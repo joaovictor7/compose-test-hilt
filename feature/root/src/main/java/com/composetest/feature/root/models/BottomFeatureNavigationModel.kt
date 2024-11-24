@@ -2,7 +2,7 @@ package com.composetest.feature.root.models
 
 import com.composetest.feature.root.enums.NavigationFeature
 
-internal data class FeatureNavigationModel(
+internal data class BottomFeatureNavigationModel(
     val feature: NavigationFeature,
-    val selected: Boolean
+    val selected: Boolean = false
 )

@@ -9,8 +9,11 @@ import javax.inject.Inject
 internal class RemoteConfigManagerImpl @Inject constructor(
     private val remoteConfigRepository: RemoteConfigRepository,
     private val checkAppVersionUseCase: CheckAppVersionUseCase
-
 ) : RemoteConfigManager {
+
+    override fun fetch() {
+        remoteConfigRepository.fetch()
+    }
 
     override fun getBoolean(remoteConfig: RemoteConfig) =
         remoteConfigRepository.getBoolean(remoteConfig.key)
