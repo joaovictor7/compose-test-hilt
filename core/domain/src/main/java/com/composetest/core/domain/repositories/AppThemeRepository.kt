@@ -5,10 +5,10 @@ import com.composetest.core.domain.models.AppThemeModel
 import kotlinx.coroutines.flow.Flow
 
 interface AppThemeRepository {
-    val customAppTheme: Flow<Theme?>
+    val customAppThemeFlow: Flow<Theme?>
+    val appThemeFlow: Flow<AppThemeModel>
 
     suspend fun setTheme(theme: Theme)
     suspend fun setDynamicColor(dynamicColor: Boolean)
-    fun setCustomTheme(customTheme: Theme?)
-    fun getAppTheme(): Flow<AppThemeModel>
+    suspend fun setCustomTheme(customTheme: Theme?)
 }

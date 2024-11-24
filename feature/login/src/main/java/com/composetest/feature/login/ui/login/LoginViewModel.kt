@@ -56,7 +56,7 @@ internal class LoginViewModel @Inject constructor(
             onCompletion = { updateUiState { it.setLoading(false) } },
             onStart = {
                 sendAnalyticsUseCase(LoginClickEventAnalytic.LoginButton)
-                updateUiState { it.setLoading(true).setShowInvalidCredentialsMsg(false) }
+                updateUiState { it.setLoading(true) }
             }
         ) {
             authenticationUseCase(
@@ -75,7 +75,9 @@ internal class LoginViewModel @Inject constructor(
         val theme = if (enterScreen && currentAppTheme != Theme.DARK)
             Theme.DARK
         else null
-        appThemeManager.setCustomTheme(theme)
+        runAsyncTask {
+            appThemeManager.setCustomTheme(theme)
+        }
     }
 
     private fun handleLoginError(throwable: Throwable?) {
@@ -115,17 +117,12 @@ internal class LoginViewModel @Inject constructor(
     }
 
     private suspend fun navigateToRoot() {
-        navigationManager.asyncNavigate(
-            RootDestination,
-            NavigationMode.REMOVE_ALL_SCREENS_STACK
-        )
+        navigationManager.asyncNavigate(RootDestination, NavigationMode.REMOVE_ALL_SCREENS_STACK)
     }
 
     private fun screenStateWritingManager() {
         updateUiState {
-            it
-                .setShowInvalidCredentialsMsg(false)
-                .setEnabledButton(loginFormModel.loginAlready || byPassLogin)
+            it.setEnabledButton(loginFormModel.loginAlready || byPassLogin)
         }
     }
 }

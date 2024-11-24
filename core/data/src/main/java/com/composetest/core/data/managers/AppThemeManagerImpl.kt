@@ -13,8 +13,8 @@ internal class AppThemeManagerImpl @Inject constructor(
 
     override val appThemeFlow
         get() = appThemeRepository
-            .getAppTheme()
-            .combine(appThemeRepository.customAppTheme) { appTheme, customTheme ->
+            .appThemeFlow
+            .combine(appThemeRepository.customAppThemeFlow) { appTheme, customTheme ->
                 appTheme.copy(customTheme = customTheme)
             }
 
@@ -23,7 +23,7 @@ internal class AppThemeManagerImpl @Inject constructor(
     override suspend fun setDynamicColor(dynamicColor: Boolean) =
         appThemeRepository.setDynamicColor(dynamicColor)
 
-    override fun setCustomTheme(customTheme: Theme?) =
+    override suspend fun setCustomTheme(customTheme: Theme?) =
         appThemeRepository.setCustomTheme(customTheme)
 
     override suspend fun getAppTheme() = appThemeFlow.firstOrNull()

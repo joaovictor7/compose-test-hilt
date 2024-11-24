@@ -1,5 +1,7 @@
 package com.composetest.core.data.di
 
+import com.composetest.core.data.datasources.local.AppThemeDataSource
+import com.composetest.core.data.datasources.local.AppThemeDataSourceImpl
 import com.composetest.core.data.datasources.local.PreferenceDataSource
 import com.composetest.core.data.datasources.local.PreferenceDataSourceImpl
 import com.composetest.core.data.datasources.local.SessionDataSource
@@ -48,6 +50,9 @@ internal abstract class DataSourceBindsModule {
 
     @Binds
     abstract fun sessionDataSource(sessionDataSourceImpl: SessionDataSourceImpl): SessionDataSource
+
+    @Binds
+    abstract fun appThemeDataSource(appThemeDataSourceImpl: AppThemeDataSourceImpl): AppThemeDataSource
 }
 
 @Module

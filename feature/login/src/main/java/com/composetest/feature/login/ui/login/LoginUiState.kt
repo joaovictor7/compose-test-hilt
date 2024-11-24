@@ -49,11 +49,15 @@ internal data class LoginUiState(
 
     fun setInvalidEmail(invalid: Boolean) = copy(invalidEmail = invalid)
 
-    fun setEnabledButton(enable: Boolean) = copy(enableLoginButton = enable)
+    fun setEnabledButton(enable: Boolean) =
+        copy(invalidCredentials = false, enableLoginButton = enable)
 
     fun setShowInvalidCredentialsMsg(show: Boolean) = copy(invalidCredentials = show)
 
-    fun setLoading(isLoading: Boolean) = copy(isLoading = isLoading)
+    fun setLoading(isLoading: Boolean) = copy(
+        isLoading = isLoading,
+        invalidCredentials = if (isLoading == true) false else invalidCredentials
+    )
 
     fun setDefaultAlertDialog(defaultAlertDialogParam: DefaultAlertDialogParam?) = copy(
         defaultAlertDialogParam = defaultAlertDialogParam
