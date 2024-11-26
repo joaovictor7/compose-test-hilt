@@ -18,7 +18,7 @@ internal enum class NavigationFeature(
     val destination: Destination,
     val navigationLocal: NavigationLocal,
     @DrawableRes val iconId: Int,
-    @StringRes val textId: Int,
+    @StringRes val textId: Int? = null,
 ) {
     HOME(
         Feature.HOME,
@@ -45,9 +45,10 @@ internal enum class NavigationFeature(
         Feature.PROFILE,
         ProfileDestination,
         NavigationLocal.MODAL_DRAWER,
-        DesignSystemResources.drawable.ic_person_circle,
         ProfileResources.string.profile_title
     );
+
+    val noText get() = textId == null
 
     companion object {
         val bottomNavigationFeatures get() = entries.filter { it.navigationLocal == NavigationLocal.BOTTOM }

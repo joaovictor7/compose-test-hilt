@@ -11,9 +11,7 @@ internal class RemoteConfigManagerImpl @Inject constructor(
     private val checkAppVersionUseCase: CheckAppVersionUseCase
 ) : RemoteConfigManager {
 
-    override fun fetch() {
-        remoteConfigRepository.fetch()
-    }
+    override fun fetch() = remoteConfigRepository.fetch()
 
     override fun getBoolean(remoteConfig: RemoteConfig) =
         remoteConfigRepository.getBoolean(remoteConfig.key)

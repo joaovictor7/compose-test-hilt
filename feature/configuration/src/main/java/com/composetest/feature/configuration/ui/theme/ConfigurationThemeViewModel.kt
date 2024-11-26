@@ -54,9 +54,7 @@ internal class ConfigurationThemeViewModel @Inject constructor(
     override fun changeDynamicColor(active: Boolean) {
         updateUiState { it.setDynamicColors(active) }
         runAsyncTask(onStart = {
-            sendAnalyticsUseCase(
-                ConfigurationThemeClickEventAnalytic.ChangeDynamicColors(active)
-            )
+            sendAnalyticsUseCase(ConfigurationThemeClickEventAnalytic.ChangeDynamicColors(active))
         }) {
             appThemeManager.setDynamicColor(active)
         }

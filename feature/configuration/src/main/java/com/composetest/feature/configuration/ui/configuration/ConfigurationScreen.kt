@@ -17,12 +17,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.composetest.core.designsystem.constants.topScreenMarginList
+import com.composetest.core.designsystem.components.toolbar.Toolbar
 import com.composetest.core.designsystem.dimensions.spacings
-import com.composetest.core.designsystem.extensions.horizontalScreenMargin
+import com.composetest.core.designsystem.extensions.screenMargin
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.interfaces.Screen
+import com.composetest.feature.configuration.R
 import com.composetest.feature.configuration.enums.Configuration
 
 private const val LIMIT_CONFIGURATIONS_PER_LINE = 2
@@ -34,18 +35,21 @@ internal object ConfigurationScreen : Screen<ConfigurationUiState, Configuration
         uiState: ConfigurationUiState,
         onExecuteCommand: (Command<ConfigurationCommandReceiver>) -> Unit
     ) {
-        LazyVerticalStaggeredGrid(
-            modifier = Modifier.horizontalScreenMargin(),
-            contentPadding = topScreenMarginList,
-            columns = StaggeredGridCells.Fixed(LIMIT_CONFIGURATIONS_PER_LINE),
-            verticalItemSpacing = spacings.sixteen,
-            horizontalArrangement = Arrangement.spacedBy(spacings.sixteen)
+        Toolbar(
+            modifier = Modifier.screenMargin(),
+            titleId = R.string.configuration_title
         ) {
-            items(uiState.configurations) { item ->
-                ConfigurationCard(
-                    onExecuteCommand = onExecuteCommand,
-                    configuration = item
-                )
+            LazyVerticalStaggeredGrid(
+                columns = StaggeredGridCells.Fixed(LIMIT_CONFIGURATIONS_PER_LINE),
+                verticalItemSpacing = spacings.sixteen,
+                horizontalArrangement = Arrangement.spacedBy(spacings.sixteen)
+            ) {
+                items(uiState.configurations) { item ->
+                    ConfigurationCard(
+                        onExecuteCommand = onExecuteCommand,
+                        configuration = item
+                    )
+                }
             }
         }
     }

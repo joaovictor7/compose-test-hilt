@@ -27,6 +27,7 @@ import com.composetest.core.designsystem.components.toolbar.Toolbar
 import com.composetest.core.designsystem.dimensions.spacings
 import com.composetest.core.designsystem.extensions.horizontalScreenMargin
 import com.composetest.core.designsystem.extensions.opacity
+import com.composetest.core.designsystem.extensions.screenMargin
 import com.composetest.core.designsystem.params.switches.SwitchType
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.ui.interfaces.Command
@@ -43,18 +44,15 @@ internal object ConfigurationThemeScreen :
         uiState: ConfigurationThemeUiState,
         onExecuteCommand: (Command<ConfigurationThemeCommandReceiver>) -> Unit
     ) {
-        Toolbar(titleId = ConfigurationResources.string.configuration_theme_text) {
-            Column(
-                modifier = Modifier
-                    .horizontalScreenMargin()
-                    .fillMaxSize()
-            ) {
-                Section(titleId = ConfigurationResources.string.configuration_theme_mode_title) {
-                    Theme(uiState = uiState, onExecuteCommand = onExecuteCommand)
-                }
-                Section(titleId = ConfigurationResources.string.configuration_theme_colors_title) {
-                    DynamicColor(uiState = uiState, onExecuteCommand = onExecuteCommand)
-                }
+        Toolbar(
+            modifier = Modifier.screenMargin(),
+            titleId = ConfigurationResources.string.configuration_theme_text
+        ) {
+            Section(titleId = ConfigurationResources.string.configuration_theme_mode_title) {
+                Theme(uiState = uiState, onExecuteCommand = onExecuteCommand)
+            }
+            Section(titleId = ConfigurationResources.string.configuration_theme_colors_title) {
+                DynamicColor(uiState = uiState, onExecuteCommand = onExecuteCommand)
             }
         }
     }

@@ -56,8 +56,8 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    override fun onPause() {
-        super.onPause()
+    override fun onResume() {
+        super.onResume()
         viewModel.executeCommand(MainCommand.FetchRemoteConfig)
     }
 

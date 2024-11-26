@@ -15,6 +15,8 @@ internal data class RootUiState(
 ) : BaseUiState {
 
     val currentScreenTitle get() = bottomNavigationFeatures.find { it.selected }?.feature?.textId
+    val showEditProfile get() = modalDrawerNavigationFeatures.any { it == NavigationFeature.PROFILE }
+    val modalDrawerNavigationFeaturesToList get() = modalDrawerNavigationFeatures.filterNot { it.noText }
 
     fun initUiState(
         firstDestination: Destination?,

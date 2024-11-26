@@ -66,11 +66,11 @@ internal class RootViewModel @Inject constructor(
         }
     }
 
-    override fun navigateToFeature(navigatioFeature: NavigationFeature) {
-        if (navigatioFeature.navigationLocal == NavigationLocal.MODAL_DRAWER) {
-            mainNavigationManager.navigate(navigatioFeature.destination)
+    override fun navigateToFeature(feature: NavigationFeature) {
+        if (feature.navigationLocal == NavigationLocal.MODAL_DRAWER) {
+            mainNavigationManager.navigate(feature.destination)
         } else {
-            navigateToBottomFeature(navigatioFeature)
+            navigateToBottomFeature(feature)
         }
     }
 

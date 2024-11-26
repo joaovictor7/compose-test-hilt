@@ -31,6 +31,12 @@ fun Modifier.verticalTopBackgroundBrush() = also {
 fun Modifier.horizontalScreenMargin() = padding(horizontal = screenMargin)
 
 @Composable
-fun Modifier.screenMargin() = windowInsetsPadding(WindowInsets.systemBars)
-    .padding(top = screenMargin)
+fun Modifier.topScreenMargin() = padding(top = screenMargin)
+
+@Composable
+fun Modifier.screenMarginWithoutBar() = windowInsetsPadding(WindowInsets.systemBars)
+    .topScreenMargin()
     .horizontalScreenMargin()
+
+@Composable
+fun Modifier.screenMargin() = topScreenMargin().horizontalScreenMargin()

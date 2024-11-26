@@ -6,17 +6,14 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -26,9 +23,7 @@ import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationDrawerItem
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -42,14 +37,20 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import com.composetest.core.designsystem.components.toolbar.Toolbar
 import com.composetest.core.designsystem.dimensions.spacings
+import com.composetest.core.designsystem.enums.toolbar.ToolbarAction
+import com.composetest.core.designsystem.enums.toolbar.ToolbarType
 import com.composetest.core.designsystem.extensions.asActivity
+import com.composetest.core.designsystem.extensions.horizontalScreenMargin
+import com.composetest.core.designsystem.params.toolbar.ToolbarActionParam
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.interfaces.Screen
 import com.composetest.feature.home.navigation.homeRootNavGraph
+import com.composetest.feature.root.dimensions.components
+import com.composetest.feature.root.enums.NavigationFeature
 import kotlinx.coroutines.launch
 import com.composetest.core.designsystem.R as DesignSystemResources
 
@@ -61,17 +62,23 @@ internal object RootScreen : Screen<RootUiState, RootCommandReceiver> {
         onExecuteCommand: (Command<RootCommandReceiver>) -> Unit
     ) {
         val context = LocalContext.current
+        val coroutineScope = rememberCoroutineScope()
         val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+        val screenTitle = uiState.currentScreenTitle
         ModalNavigationDrawer(
             drawerState = drawerState,
             drawerContent = getModalDrawerContent(uiState, onExecuteCommand),
         ) {
-            Scaffold(
-                topBar = getTopBar(uiState, drawerState),
-                bottomBar = getBottomBar(uiState, onExecuteCommand)
-            ) { paddingValues ->
+            if (screenTitle == null) return@ModalNavigationDrawer
+            Toolbar(
+                type = ToolbarType.CENTRALIZED,
+                titleId = screenTitle,
+                bottomBar = getBottomBar(uiState, onExecuteCommand),
+                navigationAction = ToolbarActionParam(ToolbarAction.MENU) {
+                    coroutineScope.launch { drawerState.open() }
+                }
+            ) {
                 Navigation(
-                    modifier = Modifier.padding(paddingValues),
                     uiState = uiState,
                     onExecuteCommand = onExecuteCommand
                 )
@@ -88,7 +95,6 @@ internal object RootScreen : Screen<RootUiState, RootCommandReceiver> {
 
 @Composable
 private fun Navigation(
-    modifier: Modifier,
     uiState: RootUiState,
     onExecuteCommand: (Command<RootCommandReceiver>) -> Unit
 ) {
@@ -96,7 +102,6 @@ private fun Navigation(
     val navController = rememberNavController()
     onExecuteCommand(RootCommand.SetRootNavGraph(navController))
     NavHost(
-        modifier = modifier,
         navController = navController,
         startDestination = uiState.firstDestination
     ) {
@@ -109,16 +114,33 @@ private fun getModalDrawerContent(
     onExecuteCommand: (Command<RootCommandReceiver>) -> Unit
 ) = @Composable {
     ModalDrawerSheet {
+        Column(verticalArrangement = Arrangement.spacedBy(spacings.twenty)) {
+            ModalDrawerHeader(uiState = uiState, onExecuteCommand = onExecuteCommand)
+            HorizontalDivider()
+            ModalDrawerItems(uiState = uiState, onExecuteCommand = onExecuteCommand)
+        }
+    }
+}
+
+@Composable
+private fun ModalDrawerHeader(
+    uiState: RootUiState,
+    onExecuteCommand: (Command<RootCommandReceiver>) -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .horizontalScreenMargin()
+            .windowInsetsPadding(WindowInsets.statusBars)
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
         Row(
-            modifier = Modifier
-                .padding(horizontal = spacings.twelve)
-                .windowInsetsPadding(WindowInsets.statusBars),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(spacings.twelve)
         ) {
             Image(
                 modifier = Modifier
-                    .size(50.dp)
+                    .size(components.modelDrawerUserImageSize)
                     .clip(CircleShape),
                 painter = painterResource(DesignSystemResources.drawable.ic_person_off),
                 contentDescription = null,
@@ -139,8 +161,14 @@ private fun getModalDrawerContent(
                 )
             }
         }
-        HorizontalDivider()
-        ModalDrawerItems(uiState = uiState, onExecuteCommand = onExecuteCommand)
+        if (uiState.showEditProfile) {
+            IconButton(onClick = { onExecuteCommand(RootCommand.NavigateToFeature(NavigationFeature.PROFILE)) }) {
+                Icon(
+                    painter = painterResource(DesignSystemResources.drawable.ic_edit_medium),
+                    contentDescription = null
+                )
+            }
+        }
     }
 }
 
@@ -149,10 +177,11 @@ private fun ModalDrawerItems(
     uiState: RootUiState,
     onExecuteCommand: (Command<RootCommandReceiver>) -> Unit
 ) {
-    LazyColumn(verticalArrangement = Arrangement.spacedBy(spacings.eight)) {
-        items(uiState.modalDrawerNavigationFeatures) {
-            val label = stringResource(it.textId)
+    LazyColumn(verticalArrangement = Arrangement.spacedBy(spacings.four)) {
+        items(uiState.modalDrawerNavigationFeaturesToList) {
+            val label = it.textId?.let { stringResource(it) }.orEmpty()
             NavigationDrawerItem(
+                selected = false,
                 label = {
                     Text(
                         text = label,
@@ -165,7 +194,6 @@ private fun ModalDrawerItems(
                         contentDescription = label
                     )
                 },
-                selected = false,
                 onClick = {
                     onExecuteCommand(RootCommand.NavigateToFeature(it))
                 }
@@ -174,48 +202,13 @@ private fun ModalDrawerItems(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-private fun getTopBar(
-    uiState: RootUiState,
-    drawerState: DrawerState
-) = @Composable {
-    val coroutineScope = rememberCoroutineScope()
-    CenterAlignedTopAppBar(
-        title = {
-            uiState.currentScreenTitle?.let {
-                Text(
-                    text = stringResource(it),
-                    style = MaterialTheme.typography.titleLarge
-                )
-            }
-        },
-        navigationIcon = {
-            IconButton(
-                onClick = {
-                    coroutineScope.launch {
-                        drawerState.open()
-                    }
-                }
-            ) {
-                Icon(
-                    painter = painterResource(DesignSystemResources.drawable.ic_menu),
-                    contentDescription = null
-                )
-            }
-        },
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainer
-        )
-    )
-}
-
 private fun getBottomBar(
     uiState: RootUiState,
     onExecuteCommand: (Command<RootCommandReceiver>) -> Unit
 ) = @Composable {
     NavigationBar {
         uiState.bottomNavigationFeatures.forEach {
-            val label = stringResource(it.feature.textId)
+            val label = it.feature.textId?.let { stringResource(it) }.orEmpty()
             NavigationBarItem(
                 selected = it.selected,
                 onClick = {
