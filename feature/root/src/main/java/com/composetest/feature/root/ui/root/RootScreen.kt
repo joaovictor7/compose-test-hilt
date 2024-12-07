@@ -61,6 +61,7 @@ internal object RootScreen : Screen<RootUiState, RootCommandReceiver> {
         uiState: RootUiState,
         onExecuteCommand: (Command<RootCommandReceiver>) -> Unit
     ) {
+        val e = System.getenv("API_KEY") ?: "default_value"
         val context = LocalContext.current
         val coroutineScope = rememberCoroutineScope()
         val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
@@ -83,7 +84,11 @@ internal object RootScreen : Screen<RootUiState, RootCommandReceiver> {
                     onExecuteCommand = onExecuteCommand
                 )
                 BackHandler {
-                    onExecuteCommand(RootCommand.BackHandler)
+                    if (drawerState.isOpen) {
+                        coroutineScope.launch { drawerState.close() }
+                    } else {
+                        onExecuteCommand(RootCommand.BackHandler)
+                    }
                 }
             }
         }

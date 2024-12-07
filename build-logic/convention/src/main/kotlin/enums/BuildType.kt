@@ -1,6 +1,6 @@
-package appconfig
+package enums
 
-internal enum class AppBuildType {
+internal enum class BuildType {
     RELEASE,
     DEBUG;
 

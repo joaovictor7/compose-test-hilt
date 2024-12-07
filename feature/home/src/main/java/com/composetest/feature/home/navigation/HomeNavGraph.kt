@@ -23,7 +23,10 @@ fun NavGraphBuilder.homeRootNavGraph() {
         screen = HomeScreen,
         navigateBackHandler = false
     )
-    composable<Home2Destination, Home2ViewModel, Home2UiState, Home2CommandReceiver>(Home2Screen)
+    composable<Home2Destination, Home2ViewModel, Home2UiState, Home2CommandReceiver>(
+        screen = Home2Screen,
+        navigateBackHandler = false
+    )
 }
 
 fun NavGraphBuilder.homeNavGraph() {

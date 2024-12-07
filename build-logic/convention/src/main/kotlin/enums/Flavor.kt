@@ -1,6 +1,6 @@
-package appconfig
+package enums
 
-internal enum class AppFlavor {
+internal enum class Flavor {
     DEVELOP, STAGING, PRODUCTION, FULL, FREE;
 
     val isDefault get() = this == FULL

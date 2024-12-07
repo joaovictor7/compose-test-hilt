@@ -13,7 +13,6 @@ internal class NavControllerManagerImpl @Inject constructor() : NavControllerMan
         navGraph: NavGraph,
         navController: NavHostController
     ) {
-        navControllers.remove(navGraph)
         navControllers[navGraph] = navController
     }
 

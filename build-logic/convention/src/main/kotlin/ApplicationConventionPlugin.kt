@@ -1,11 +1,12 @@
 import appconfig.AppConfig
-import appconfig.AppSigning
+import enums.Signing
 import com.android.build.api.dsl.ApkSigningConfig
 import com.android.build.api.dsl.ApplicationExtension
 import extensions.getLibrary
 import extensions.implementation
 import modularization.configureAndroid
 import modularization.setBuildTypes
+import modularization.setDefaultBuildConfigFields
 import modularization.setFlavors
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Plugin
@@ -34,9 +35,10 @@ internal class ApplicationConventionPlugin : Plugin<Project> {
                     }
                     manifestPlaceholders["appName"] = AppConfig.APP_NAME
                     manifestPlaceholders["usesCleartextTraffic"] = false
+                    setDefaultBuildConfigFields(project)
                 }
                 signingConfigs {
-                    createSigning(this, AppSigning.RELEASE)
+                    createSigning(this, Signing.RELEASE)
                 }
                 buildFeatures {
                     buildConfig = true
@@ -58,7 +60,7 @@ internal class ApplicationConventionPlugin : Plugin<Project> {
 
     private fun Project.createSigning(
         apkSigningConfig: NamedDomainObjectContainer<out ApkSigningConfig>,
-        name: AppSigning
+        name: Signing
     ) {
         val propertyFile = file("../${name.signingName}-signing.properties")
         if (propertyFile.exists()) {
