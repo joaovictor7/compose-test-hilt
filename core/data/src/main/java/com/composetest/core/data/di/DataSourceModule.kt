@@ -16,7 +16,7 @@ import com.composetest.core.data.datasources.remote.FirebaseAnalyticsDataSourceI
 import com.composetest.core.data.datasources.remote.FirebaseRemoteConfigDataSource
 import com.composetest.core.data.datasources.remote.FirebaseRemoteConfigDataSourceImpl
 import com.composetest.core.data.di.qualifiers.ApiQualifier
-import com.composetest.core.data.enums.NetworkApi
+import com.composetest.core.data.enums.Api
 import com.composetest.core.data.providers.FakeInstanceProvider
 import com.composetest.core.data.utils.RemoteCallUtils
 import dagger.Binds
@@ -62,7 +62,7 @@ internal object DataSourceProvidesModule {
     @Provides
     fun authenticationDataSource(
         fakeInstanceProvider: FakeInstanceProvider,
-        @ApiQualifier(NetworkApi.BFF) bffApi: HttpClient,
+        @ApiQualifier(Api.BFF) bffApi: HttpClient,
         remoteCallUtils: RemoteCallUtils
     ): AuthenticationDataSource = fakeInstanceProvider.getInstance(
         instance = AuthenticationDataSourceImpl(

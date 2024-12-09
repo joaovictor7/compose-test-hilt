@@ -2,17 +2,15 @@ package com.composetest.core.data.di
 
 import com.composetest.common.providers.BuildConfigProvider
 import com.composetest.core.data.di.qualifiers.ApiQualifier
-import com.composetest.core.data.enums.NetworkApi
-import com.composetest.core.data.extensions.setHost
-import com.composetest.core.domain.throwables.network.UnauthorizedRequestThrowable
+import com.composetest.core.data.enums.Api
+import com.composetest.core.data.extensions.configureApi
+import com.composetest.core.data.network.ApiConfiguration
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android
-import io.ktor.client.plugins.ClientRequestException
-import io.ktor.client.plugins.HttpResponseValidator
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
@@ -20,39 +18,28 @@ import io.ktor.client.plugins.logging.ANDROID
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
-import io.ktor.client.request.header
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
-import io.ktor.http.HttpStatusCode
+import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import javax.inject.Singleton
+import kotlin.time.Duration.Companion.seconds
 
-private const val TIMEOUT = 20000L
 
 @Module
 @InstallIn(SingletonComponent::class)
-internal object KtorModule {
+internal object ApiModule {
 
-    @Provides
-    @Singleton
-    fun ktorClient(): HttpClient = HttpClient(Android) {
+    private val requestTimeout = 20.seconds
+
+    private val httpClient = HttpClient(Android) {
         expectSuccess = true
         defaultRequest {
-            header(HttpHeaders.ContentType, ContentType.Application.Json)
-        }
-        HttpResponseValidator {
-            handleResponseExceptionWithRequest { exception, _ ->
-                val clientException = exception as? ClientRequestException
-                when (clientException?.response?.status) {
-                    HttpStatusCode.Unauthorized -> throw UnauthorizedRequestThrowable(
-                        message = clientException.message
-                    )
-                }
-            }
+            contentType(ContentType.Application.Json)
         }
         install(HttpTimeout) {
-            requestTimeoutMillis = TIMEOUT
+            requestTimeoutMillis = requestTimeout.inWholeMilliseconds
         }
         install(ContentNegotiation) {
             json(Json {
@@ -69,13 +56,24 @@ internal object KtorModule {
     }
 
     @Provides
-    @ApiQualifier(NetworkApi.BFF)
-    fun bffApi(
-        httpClient: HttpClient,
-        buildConfigProvider: BuildConfigProvider
-    ): HttpClient = httpClient.setHost(
-        buildConfigProvider.get.buildConfigFieldsModel.bffApiHost,
-        buildConfigProvider.get.buildConfigFieldsModel.bffApiPort,
-        NetworkApi.BFF
+    @Singleton
+    @ApiQualifier(Api.NEWS_API)
+    fun newsApi(buildConfigProvider: BuildConfigProvider): HttpClient = httpClient
+        .configureApi(
+            ApiConfiguration.NewsApi(
+                apiKey = buildConfigProvider.get.buildConfigFieldsModel.newsApiKey,
+                host = buildConfigProvider.get.buildConfigFieldsModel.newsApiKey,
+                country = "us",
+            )
+        )
+
+    @Provides
+    @Singleton
+    @ApiQualifier(Api.BFF)
+    fun bffApi(buildConfigProvider: BuildConfigProvider): HttpClient = httpClient.configureApi(
+        ApiConfiguration.Bff(
+            host = buildConfigProvider.get.buildConfigFieldsModel.bffApiHost,
+            port = buildConfigProvider.get.buildConfigFieldsModel.bffApiPort
+        )
     )
 }

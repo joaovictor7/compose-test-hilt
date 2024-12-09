@@ -17,8 +17,7 @@ internal fun Project.setFlavors(application: Boolean) = extensions.configure<Bas
                     this.dimension = dimension.toString()
                     this.isDefault = flavor.isDefault
                     if (application) {
-                        setApplicationIdSuffix(dimension, flavor)
-                        setManifestPlaceholders(dimension, flavor)
+                        setNonProductionFields(dimension, flavor)
                         setBuildConfigFields(this@setFlavors, dimension, flavor)
                     }
                 }
@@ -27,22 +26,19 @@ internal fun Project.setFlavors(application: Boolean) = extensions.configure<Bas
     }
 }
 
-private fun ApplicationProductFlavor.setApplicationIdSuffix(
-    dimension: FlavorDimension,
-    flavor: Flavor
-) {
+private fun ApplicationProductFlavor.setNonProductionFields(dimension: FlavorDimension, flavor: Flavor) {
     if (dimension == FlavorDimension.ENVIRONMENT && flavor != Flavor.PRODUCTION) {
-        versionNameSuffix = "-$flavor"
-        applicationIdSuffix = ".$flavor"
+        setApplicationIdSuffix(flavor)
+        setManifestPlaceholders(flavor)
     }
 }
 
-private fun ApplicationProductFlavor.setManifestPlaceholders(
-    dimension: FlavorDimension,
-    flavor: Flavor
-) {
-    if (dimension == FlavorDimension.ENVIRONMENT && flavor != Flavor.PRODUCTION) {
-        manifestPlaceholders["appName"] = "${AppConfig.APP_NAME} - ${flavor.name}"
-        manifestPlaceholders["usesCleartextTraffic"] = true
-    }
+private fun ApplicationProductFlavor.setApplicationIdSuffix(flavor: Flavor) {
+    versionNameSuffix = "-$flavor"
+    applicationIdSuffix = ".$flavor"
+}
+
+private fun ApplicationProductFlavor.setManifestPlaceholders(flavor: Flavor) {
+    manifestPlaceholders["appName"] = "${AppConfig.APP_NAME} - ${flavor.name}"
+    manifestPlaceholders["usesCleartextTraffic"] = true
 }

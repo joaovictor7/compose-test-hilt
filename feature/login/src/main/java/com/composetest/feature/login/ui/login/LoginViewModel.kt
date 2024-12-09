@@ -4,11 +4,11 @@ import com.composetest.common.enums.Flavor
 import com.composetest.common.providers.BuildConfigProvider
 import com.composetest.core.designsystem.utils.getErrorAlertDialogParam
 import com.composetest.core.domain.enums.Theme
+import com.composetest.core.domain.errors.ApiError
 import com.composetest.core.domain.managers.AppThemeManager
 import com.composetest.core.domain.managers.RemoteConfigManager
 import com.composetest.core.domain.managers.SessionManager
 import com.composetest.core.domain.models.AuthenticationCredentialsModel
-import com.composetest.core.domain.throwables.InvalidCredentialsThrowable
 import com.composetest.core.domain.usecases.AuthenticationUseCase
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
 import com.composetest.core.router.destinations.root.RootDestination
@@ -82,7 +82,7 @@ internal class LoginViewModel @Inject constructor(
 
     private fun handleLoginError(throwable: Throwable?) {
         updateUiState { uiState ->
-            if (throwable is InvalidCredentialsThrowable) {
+            if (throwable is ApiError.Unauthorized) {
                 uiState.setShowInvalidCredentialsMsg(true)
             } else {
                 uiState.setDefaultAlertDialog(

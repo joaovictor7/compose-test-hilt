@@ -8,8 +8,7 @@ import com.composetest.common.models.BuildConfigModel
 import com.composetest.common.providers.BuildConfigProvider
 import com.composetest.core.designsystem.params.alertdialogs.DefaultAlertDialogParam
 import com.composetest.core.domain.managers.SessionManager
-import com.composetest.core.domain.throwables.InvalidCredentialsThrowable
-import com.composetest.core.domain.throwables.network.NetworkThrowable
+import com.composetest.core.domain.errors.network.NetworkThrowable
 import com.composetest.core.domain.usecases.AuthenticationUseCase
 import com.composetest.core.router.destinations.root.RootDestination
 import com.composetest.core.router.enums.NavigationMode

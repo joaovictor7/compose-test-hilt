@@ -1,26 +1,29 @@
 package com.composetest.core.data.extensions
 
-import com.composetest.core.data.enums.NetworkApi
+import com.composetest.core.data.network.ApiConfiguration
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
-import io.ktor.client.plugins.HttpSend
-import io.ktor.client.plugins.plugin
+import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.get
+import io.ktor.client.request.headers
 import io.ktor.client.request.post
 
-internal fun HttpClient.setHost(
-    host: String,
-    port: Int = 0,
-    networkApi: NetworkApi
-) = apply {
-    plugin(HttpSend).intercept { request ->
-        request.url {
-            this.host = host
-            this.port = port
-            this.protocol = networkApi.protocol
+internal fun HttpClient.configureApi(apiConfiguration: ApiConfiguration) = config {
+    defaultRequest {
+        url {
+            protocol = apiConfiguration.protocol
+            host = apiConfiguration.host
+            port = apiConfiguration.port
+            apiConfiguration.params.forEach {
+                parameters.append(it.key, it.value)
+            }
         }
-        execute(request)
+        headers {
+            apiConfiguration.headers.forEach {
+                append(it.key, it.value)
+            }
+        }
     }
 }
 

@@ -1,4 +1,4 @@
-package com.composetest.core.data.providers
+package com.composetest.common.providers
 
 import android.content.Context
 import android.net.ConnectivityManager

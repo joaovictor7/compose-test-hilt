@@ -1,4 +1,4 @@
-package com.composetest.core.data.providers
+package com.composetest.common.providers
 
 interface NetworkProvider {
     val internetIsConnected: Boolean

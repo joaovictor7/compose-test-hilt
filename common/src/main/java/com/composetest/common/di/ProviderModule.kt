@@ -2,6 +2,8 @@ package com.composetest.common.di
 
 import com.composetest.common.providers.DispatcherProvider
 import com.composetest.common.providers.DispatcherProviderImpl
+import com.composetest.common.providers.NetworkProvider
+import com.composetest.common.providers.NetworkProviderImpl
 import com.composetest.common.providers.StringResourceProvider
 import com.composetest.common.providers.StringResourceProviderImpl
 import dagger.Binds
@@ -22,4 +24,7 @@ internal abstract class ProviderModule {
     abstract fun stringResourceProvider(
         stringResourceProviderImpl: StringResourceProviderImpl
     ): StringResourceProvider
+
+    @Binds
+    abstract fun networkProvider(networkProviderImpl: NetworkProviderImpl): NetworkProvider
 }
