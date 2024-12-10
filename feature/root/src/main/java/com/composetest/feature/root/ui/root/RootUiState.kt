@@ -10,7 +10,6 @@ internal data class RootUiState(
     val firstDestination: Destination? = null,
     val modalDrawerNavigationFeatures: List<NavigationFeature> = emptyList(),
     val bottomNavigationFeatures: List<BottomFeatureNavigationModel> = emptyList(),
-    val finishApp: Boolean = false,
     val userModalDrawerModel: UserModalDrawerModel = UserModalDrawerModel()
 ) : BaseUiState {
 
@@ -29,8 +28,6 @@ internal data class RootUiState(
         bottomNavigationFeatures = bottomNavigationFeatures,
         userModalDrawerModel = userModalDrawerModel
     )
-
-    fun setFinishApp() = copy(finishApp = true)
 
     fun setSelectedBottomNavigationFeature(feature: NavigationFeature) = copy(
         bottomNavigationFeatures = bottomNavigationFeatures.map {

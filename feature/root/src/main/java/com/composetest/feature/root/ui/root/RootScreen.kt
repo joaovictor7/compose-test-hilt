@@ -48,20 +48,22 @@ import com.composetest.core.designsystem.extensions.horizontalScreenMargin
 import com.composetest.core.designsystem.params.toolbar.ToolbarActionParam
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.interfaces.Screen
+import com.composetest.core.ui.interfaces.Screen2
 import com.composetest.feature.home.navigation.homeRootNavGraph
 import com.composetest.feature.root.dimensions.components
 import com.composetest.feature.root.enums.NavigationFeature
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import com.composetest.core.designsystem.R as DesignSystemResources
 
-internal object RootScreen : Screen<RootUiState, RootCommandReceiver> {
+internal object RootScreen : Screen2<RootUiState, RootUiEvent, RootCommandReceiver> {
 
     @Composable
     override operator fun invoke(
         uiState: RootUiState,
+        uiEvent: Flow<RootUiEvent>,
         onExecuteCommand: (Command<RootCommandReceiver>) -> Unit
     ) {
-        val e = System.getenv("API_KEY") ?: "default_value"
         val context = LocalContext.current
         val coroutineScope = rememberCoroutineScope()
         val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
@@ -92,8 +94,12 @@ internal object RootScreen : Screen<RootUiState, RootCommandReceiver> {
                 }
             }
         }
-        LaunchedEffect(uiState.finishApp) {
-            if (uiState.finishApp) context.asActivity?.finish()
+        LaunchedEffect(uiEvent) {
+            uiEvent.collect {
+                when (it) {
+                    is RootUiEvent.FinishApp -> context.asActivity?.finish()
+                }
+            }
         }
     }
 }

@@ -10,6 +10,7 @@ import com.composetest.core.router.enums.NavigationMode
 import com.composetest.core.router.managers.NavControllerManager
 import com.composetest.core.router.managers.NavigationManager
 import com.composetest.core.ui.bases.BaseViewModel
+import com.composetest.core.ui.bases.BaseViewModel2
 import com.composetest.feature.root.analytics.root.RootAnalytic
 import com.composetest.feature.root.enums.NavigationFeature
 import com.composetest.feature.root.enums.NavigationLocal
@@ -27,7 +28,7 @@ internal class RootViewModel @Inject constructor(
     getAvailableFeaturesUseCase: GetAvailableFeaturesUseCase,
     override val sendAnalyticsUseCase: SendAnalyticsUseCase,
     @NavGraphQualifier(NavGraph.ROOT) override val navigationManager: NavigationManager
-) : BaseViewModel<RootUiState>(RootAnalytic, RootUiState()), RootCommandReceiver {
+) : BaseViewModel2<RootUiState, RootUiEvent>(RootAnalytic, RootUiState()), RootCommandReceiver {
 
     private val availableFeatures = getAvailableFeaturesUseCase()
     private val bottomNavigationFeaturesOrder = mutableListOf<NavigationFeature>()
@@ -62,7 +63,7 @@ internal class RootViewModel @Inject constructor(
                 NavigationMode.SAVE_SCREEN_STATE
             )
         } else {
-            updateUiState { it.setFinishApp() }
+            launchUiEvent(RootUiEvent.FinishApp)
         }
     }
 

@@ -16,7 +16,7 @@ internal fun ApplicationDefaultConfig.setDefaultBuildConfigFields(project: Proje
         buildConfigField("String", "BFF_API_HOST", "\"\"") // Macbook
 //    buildConfigField("String", "BFF_API_HOST", "\"10.0.2.2\"") // Emulator
         buildConfigField("int", "BFF_API_PORT", "0")
-        buildConfigField("String", "NEWS_API_API_KEY", properties?.getProperty("NEWS_API").orEmpty())
+        buildConfigField("String", "NEWS_API_API_KEY", properties?.getProperty("NEWS_API") ?: "\"\"")
     }
 
 internal fun ApplicationBuildType.setBuildConfigFields(
