@@ -11,12 +11,14 @@ import com.composetest.core.designsystem.extensions.screenMarginWithoutBar
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.interfaces.Screen
+import kotlinx.coroutines.flow.Flow
 
-internal object Home3Screen : Screen<Home3UiState, Home3CommandReceiver> {
+internal object Home3Screen : Screen<Home3UiState, Home3UiEvent, Home3CommandReceiver> {
 
     @Composable
     override fun invoke(
         uiState: Home3UiState,
+        uiEvent: Flow<Home3UiEvent>?,
         onExecuteCommand: (Command<Home3CommandReceiver>) -> Unit
     ) {
         Column(

@@ -18,15 +18,15 @@ import com.composetest.core.ui.interfaces.BaseUiState
 import com.composetest.core.ui.interfaces.CommandReceiver
 import com.composetest.core.ui.interfaces.Screen
 
-inline fun <reified D, reified VM, US, CR> NavGraphBuilder.composable(
-    screen: Screen<US, CR>,
+inline fun <reified D, reified VM, US, UE, CR> NavGraphBuilder.composable(
+    screen: Screen<US, UE, CR>,
     navigateBackHandler: Boolean = true,
     deepLinks: List<NavDeepLink> = emptyList(),
     noinline enterTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition?)? = null,
     noinline exitTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition?)? = null,
     noinline popEnterTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition?)? = enterTransition,
     noinline popExitTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition?)? = exitTransition,
-) where D : Destination, VM : BaseViewModel<US>, VM : CommandReceiver<CR>, US : BaseUiState, CR : CommandReceiver<CR> {
+) where D : Destination, VM : BaseViewModel<US, UE>, VM : CommandReceiver<CR>, US : BaseUiState, CR : CommandReceiver<CR> {
     composable<D>(
         typeMap = getNavTypes<D>(),
         deepLinks = deepLinks,
@@ -42,6 +42,10 @@ inline fun <reified D, reified VM, US, CR> NavGraphBuilder.composable(
                 viewModel.navigateBack()
             }
         }
-        screen(uiState = uiState, onExecuteCommand = viewModel::executeCommand)
+        screen(
+            uiState = uiState,
+            uiEvent = viewModel.uiEvent,
+            onExecuteCommand = viewModel::executeCommand
+        )
     }
 }

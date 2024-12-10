@@ -51,17 +51,18 @@ import com.composetest.core.ui.interfaces.Screen
 import com.composetest.feature.home.navigation.homeRootNavGraph
 import com.composetest.feature.root.dimensions.components
 import com.composetest.feature.root.enums.NavigationFeature
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import com.composetest.core.designsystem.R as DesignSystemResources
 
-internal object RootScreen : Screen<RootUiState, RootCommandReceiver> {
+internal object RootScreen : Screen<RootUiState, RootUiEvent, RootCommandReceiver> {
 
     @Composable
     override operator fun invoke(
         uiState: RootUiState,
+        uiEvent: Flow<RootUiEvent>?,
         onExecuteCommand: (Command<RootCommandReceiver>) -> Unit
     ) {
-        val e = System.getenv("API_KEY") ?: "default_value"
         val context = LocalContext.current
         val coroutineScope = rememberCoroutineScope()
         val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)

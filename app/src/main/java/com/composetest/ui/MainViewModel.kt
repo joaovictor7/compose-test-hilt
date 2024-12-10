@@ -21,14 +21,14 @@ import javax.inject.Inject
 import com.composetest.core.designsystem.R as DesignSystemResources
 
 @HiltViewModel
-class MainViewModel @Inject constructor(
+internal class MainViewModel @Inject constructor(
     private val appThemeManager: AppThemeManager,
     private val sessionManager: SessionManager,
     private val navControllerManager: NavControllerManager,
     private val remoteConfigManager: RemoteConfigManager,
     override val sendAnalyticsUseCase: SendAnalyticsUseCase,
     @NavGraphQualifier(NavGraph.MAIN) override val navigationManager: NavigationManager
-) : BaseViewModel<MainUiState>(MainAnalytic, MainUiState()), MainCommandReceiver {
+) : BaseViewModel<MainUiState, MainUiEvent>(MainAnalytic, MainUiState()), MainCommandReceiver {
 
     override val commandReceiver = this
 

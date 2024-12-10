@@ -17,7 +17,7 @@ internal class ConfigurationThemeViewModel @Inject constructor(
     private val appThemeManager: AppThemeManager,
     override val sendAnalyticsUseCase: SendAnalyticsUseCase,
     @NavGraphQualifier(NavGraph.MAIN) override val navigationManager: NavigationManager
-) : BaseViewModel<ConfigurationThemeUiState>(
+) : BaseViewModel<ConfigurationThemeUiState, ConfigurationThemeUiEvent>(
     ConfigurationThemeScreenAnalytic,
     ConfigurationThemeUiState()
 ), ConfigurationThemeCommandReceiver {

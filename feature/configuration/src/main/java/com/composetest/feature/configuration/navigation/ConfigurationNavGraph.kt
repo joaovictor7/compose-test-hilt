@@ -6,19 +6,21 @@ import com.composetest.core.router.destinations.configuration.ConfigurationTheme
 import com.composetest.core.ui.extensions.composable
 import com.composetest.feature.configuration.ui.configuration.ConfigurationCommandReceiver
 import com.composetest.feature.configuration.ui.configuration.ConfigurationScreen
+import com.composetest.feature.configuration.ui.configuration.ConfigurationUiEvent
 import com.composetest.feature.configuration.ui.configuration.ConfigurationUiState
 import com.composetest.feature.configuration.ui.configuration.ConfigurationViewModel
 import com.composetest.feature.configuration.ui.theme.ConfigurationThemeCommandReceiver
 import com.composetest.feature.configuration.ui.theme.ConfigurationThemeScreen
+import com.composetest.feature.configuration.ui.theme.ConfigurationThemeUiEvent
 import com.composetest.feature.configuration.ui.theme.ConfigurationThemeUiState
 import com.composetest.feature.configuration.ui.theme.ConfigurationThemeViewModel
 
 fun NavGraphBuilder.configurationNavGraph() {
-    composable<ConfigurationDestination, ConfigurationViewModel, ConfigurationUiState, ConfigurationCommandReceiver>(
+    composable<ConfigurationDestination, ConfigurationViewModel, ConfigurationUiState, ConfigurationUiEvent, ConfigurationCommandReceiver>(
         screen = ConfigurationScreen,
         navigateBackHandler = false
     )
-    composable<ConfigurationThemeDestination, ConfigurationThemeViewModel, ConfigurationThemeUiState, ConfigurationThemeCommandReceiver>(
+    composable<ConfigurationThemeDestination, ConfigurationThemeViewModel, ConfigurationThemeUiState, ConfigurationThemeUiEvent, ConfigurationThemeCommandReceiver>(
         screen = ConfigurationThemeScreen
     )
 }

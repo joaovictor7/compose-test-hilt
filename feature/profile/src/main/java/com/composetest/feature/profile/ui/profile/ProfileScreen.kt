@@ -15,12 +15,14 @@ import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.interfaces.Screen
 import com.composetest.feature.profile.R
 import com.composetest.feature.profile.models.ProfileScreenModel
+import kotlinx.coroutines.flow.Flow
 
-internal object ProfileScreen : Screen<ProfileUiState, ProfileCommandReceiver> {
+internal object ProfileScreen : Screen<ProfileUiState, ProfileUiEvent, ProfileCommandReceiver> {
 
     @Composable
     override operator fun invoke(
         uiState: ProfileUiState,
+        uiEvent: Flow<ProfileUiEvent>?,
         onExecuteCommand: (Command<ProfileCommandReceiver>) -> Unit
     ) {
         Toolbar(

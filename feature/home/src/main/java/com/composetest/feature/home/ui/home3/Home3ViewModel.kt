@@ -15,7 +15,7 @@ import javax.inject.Inject
 internal class Home3ViewModel @Inject constructor(
     override val sendAnalyticsUseCase: SendAnalyticsUseCase,
     @NavGraphQualifier(NavGraph.MAIN) override val navigationManager: NavigationManager
-) : BaseViewModel<Home3UiState>(Home3Analytic, Home3UiState()), Home3CommandReceiver {
+) : BaseViewModel<Home3UiState, Home3UiEvent>(Home3Analytic, Home3UiState()), Home3CommandReceiver {
 
     private val param = navigationManager.getParam<Home3Destination>()
 

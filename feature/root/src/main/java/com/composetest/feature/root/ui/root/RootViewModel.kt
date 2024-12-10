@@ -27,7 +27,7 @@ internal class RootViewModel @Inject constructor(
     getAvailableFeaturesUseCase: GetAvailableFeaturesUseCase,
     override val sendAnalyticsUseCase: SendAnalyticsUseCase,
     @NavGraphQualifier(NavGraph.ROOT) override val navigationManager: NavigationManager
-) : BaseViewModel<RootUiState>(RootAnalytic, RootUiState()), RootCommandReceiver {
+) : BaseViewModel<RootUiState, RootUiEvent>(RootAnalytic, RootUiState()), RootCommandReceiver {
 
     private val availableFeatures = getAvailableFeaturesUseCase()
     private val bottomNavigationFeaturesOrder = mutableListOf<NavigationFeature>()

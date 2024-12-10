@@ -5,9 +5,10 @@ import com.composetest.core.router.destinations.login.LoginDestination
 import com.composetest.core.ui.extensions.composable
 import com.composetest.feature.login.ui.login.LoginCommandReceiver
 import com.composetest.feature.login.ui.login.LoginScreen
+import com.composetest.feature.login.ui.login.LoginUiEvent
 import com.composetest.feature.login.ui.login.LoginUiState
 import com.composetest.feature.login.ui.login.LoginViewModel
 
 fun NavGraphBuilder.loginNavGraph() {
-    composable<LoginDestination, LoginViewModel, LoginUiState, LoginCommandReceiver>(LoginScreen)
+    composable<LoginDestination, LoginViewModel, LoginUiState, LoginUiEvent, LoginCommandReceiver>(LoginScreen)
 }

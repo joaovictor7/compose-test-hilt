@@ -25,14 +25,16 @@ import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.interfaces.Screen
 import com.composetest.feature.configuration.R
 import com.composetest.feature.configuration.enums.Configuration
+import kotlinx.coroutines.flow.Flow
 
 private const val LIMIT_CONFIGURATIONS_PER_LINE = 2
 
-internal object ConfigurationScreen : Screen<ConfigurationUiState, ConfigurationCommandReceiver> {
+internal object ConfigurationScreen : Screen<ConfigurationUiState, ConfigurationUiEvent, ConfigurationCommandReceiver> {
 
     @Composable
     override operator fun invoke(
         uiState: ConfigurationUiState,
+        uiEvent: Flow<ConfigurationUiEvent>?,
         onExecuteCommand: (Command<ConfigurationCommandReceiver>) -> Unit
     ) {
         Toolbar(

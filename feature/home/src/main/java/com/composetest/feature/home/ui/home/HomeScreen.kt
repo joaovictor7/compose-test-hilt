@@ -12,12 +12,14 @@ import com.composetest.core.designsystem.extensions.horizontalScreenMargin
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.interfaces.Screen
+import kotlinx.coroutines.flow.Flow
 
-internal object HomeScreen : Screen<HomeUiState, HomeCommandReceiver> {
+internal object HomeScreen : Screen<HomeUiState, HomeUiEvent, HomeCommandReceiver> {
 
     @Composable
     override fun invoke(
         uiState: HomeUiState,
+        uiEvent: Flow<HomeUiEvent>?,
         onExecuteCommand: (Command<HomeCommandReceiver>) -> Unit
     ) {
         LazyColumn(

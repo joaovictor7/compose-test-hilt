@@ -33,7 +33,7 @@ internal class LoginViewModel @Inject constructor(
     private val remoteConfigManager: RemoteConfigManager,
     override val sendAnalyticsUseCase: SendAnalyticsUseCase,
     @NavGraphQualifier(NavGraph.MAIN) override val navigationManager: NavigationManager
-) : BaseViewModel<LoginUiState>(LoginScreenAnalytic, LoginUiState()), LoginCommandReceiver {
+) : BaseViewModel<LoginUiState, LoginUiEvent>(LoginScreenAnalytic, LoginUiState()), LoginCommandReceiver {
 
     override val commandReceiver = this
 

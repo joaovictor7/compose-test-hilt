@@ -7,18 +7,22 @@ import com.composetest.core.domain.analytics.ErrorAnalyticEvent
 import com.composetest.core.domain.analytics.OpenScreenAnalyticEvent
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
 import com.composetest.core.router.managers.NavigationManager
+import com.composetest.core.ui.interfaces.BaseUiEvent
 import com.composetest.core.ui.interfaces.BaseUiState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-abstract class BaseViewModel<UiState : BaseUiState>(
+abstract class BaseViewModel<UiState : BaseUiState, UiEvent: BaseUiEvent>(
     private val analyticScreen: AnalyticScreen,
     uiState: UiState
 ) : ViewModel() {
@@ -31,6 +35,9 @@ abstract class BaseViewModel<UiState : BaseUiState>(
         .onStart { initUiState() }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), uiState)
 
+    private val _uiEvent = MutableSharedFlow<UiEvent>()
+    val uiEvent = _uiEvent.asSharedFlow()
+
     abstract fun initUiState()
 
     open fun navigateBack() {
@@ -39,6 +46,10 @@ abstract class BaseViewModel<UiState : BaseUiState>(
 
     protected fun updateUiState(onNewUiState: (UiState) -> UiState) {
         _uiState.update(onNewUiState)
+    }
+
+    protected fun launchUiEvent(uiEvent: UiEvent) {
+        _uiEvent.tryEmit(uiEvent)
     }
 
     protected fun openScreenAnalytic() {

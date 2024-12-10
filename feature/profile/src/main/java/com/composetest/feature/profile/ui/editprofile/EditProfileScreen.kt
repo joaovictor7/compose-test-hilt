@@ -19,12 +19,14 @@ import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.interfaces.Screen
 import com.composetest.feature.profile.R
 import com.composetest.feature.profile.models.ProfileFormModel
+import kotlinx.coroutines.flow.Flow
 
-internal object EditProfileScreen : Screen<EditProfileUiState, EditProfileCommandReceiver> {
+internal object EditProfileScreen : Screen<EditProfileUiState, EditProfileUiEvent, EditProfileCommandReceiver> {
 
     @Composable
     override operator fun invoke(
         uiState: EditProfileUiState,
+        uiEvent: Flow<EditProfileUiEvent>?,
         onExecuteCommand: (Command<EditProfileCommandReceiver>) -> Unit
     ) {
         Toolbar(

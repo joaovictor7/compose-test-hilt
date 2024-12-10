@@ -34,14 +34,16 @@ import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.interfaces.Screen
 import com.composetest.feature.configuration.dimensions.components
 import com.composetest.feature.configuration.enums.ThemeConfiguration
+import kotlinx.coroutines.flow.Flow
 import com.composetest.feature.configuration.R as ConfigurationResources
 
 internal object ConfigurationThemeScreen :
-    Screen<ConfigurationThemeUiState, ConfigurationThemeCommandReceiver> {
+    Screen<ConfigurationThemeUiState, ConfigurationThemeUiEvent, ConfigurationThemeCommandReceiver> {
 
     @Composable
     override operator fun invoke(
         uiState: ConfigurationThemeUiState,
+        uiEvent: Flow<ConfigurationThemeUiEvent>?,
         onExecuteCommand: (Command<ConfigurationThemeCommandReceiver>) -> Unit
     ) {
         Toolbar(

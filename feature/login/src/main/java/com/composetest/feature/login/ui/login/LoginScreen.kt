@@ -37,12 +37,16 @@ import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.interfaces.Screen
 import com.composetest.feature.login.R
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.emptyFlow
 
-internal object LoginScreen : Screen<LoginUiState, LoginCommandReceiver> {
+internal object LoginScreen : Screen<LoginUiState, LoginUiEvent, LoginCommandReceiver> {
 
     @Composable
     override operator fun invoke(
         uiState: LoginUiState,
+        uiEvent: Flow<LoginUiEvent>?,
         onExecuteCommand: (Command<LoginCommandReceiver>) -> Unit
     ) {
         if (!uiState.needsLogin) return
