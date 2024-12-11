@@ -45,6 +45,6 @@ internal object Home2Screen : Screen<Home2UiState, Home2UiEvent, Home2CommandRec
 @Composable
 private fun Preview() {
     ComposeTestTheme {
-        Home2Screen(uiState = Home2UiState()) { }
+        Home2Screen(uiState = Home2UiState(), uiEvent = null) { }
     }
 }

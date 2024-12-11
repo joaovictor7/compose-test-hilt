@@ -38,8 +38,6 @@ import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.interfaces.Screen
 import com.composetest.feature.login.R
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.emptyFlow
 
 internal object LoginScreen : Screen<LoginUiState, LoginUiEvent, LoginCommandReceiver> {
 
@@ -176,7 +174,8 @@ private fun Preview() {
                 distributionTextId = R.string.feature_login_full_distribution,
                 invalidCredentials = false,
                 needsLogin = true
-            )
+            ),
+            uiEvent = null
         ) {}
     }
 }

@@ -29,7 +29,8 @@ import kotlinx.coroutines.flow.Flow
 
 private const val LIMIT_CONFIGURATIONS_PER_LINE = 2
 
-internal object ConfigurationScreen : Screen<ConfigurationUiState, ConfigurationUiEvent, ConfigurationCommandReceiver> {
+internal object ConfigurationScreen :
+    Screen<ConfigurationUiState, ConfigurationUiEvent, ConfigurationCommandReceiver> {
 
     @Composable
     override operator fun invoke(
@@ -87,7 +88,8 @@ private fun Preview() {
         ConfigurationScreen(
             uiState = ConfigurationUiState(
                 configurations = Configuration.entries
-            )
+            ),
+            null
         ) { }
     }
 }

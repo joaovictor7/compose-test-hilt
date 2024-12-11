@@ -38,6 +38,6 @@ internal object Home3Screen : Screen<Home3UiState, Home3UiEvent, Home3CommandRec
 @Composable
 private fun Preview() {
     ComposeTestTheme {
-        Home3Screen(uiState = Home3UiState()) { }
+        Home3Screen(uiState = Home3UiState(), uiEvent = null) { }
     }
 }

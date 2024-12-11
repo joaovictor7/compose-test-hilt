@@ -93,8 +93,12 @@ internal object RootScreen : Screen<RootUiState, RootUiEvent, RootCommandReceive
                 }
             }
         }
-        LaunchedEffect(uiState.finishApp) {
-            if (uiState.finishApp) context.asActivity?.finish()
+        LaunchedEffect(Unit) {
+            uiEvent?.collect {
+                when (it) {
+                    RootUiEvent.FinishApp -> context.asActivity?.finish()
+                }
+            }
         }
     }
 }

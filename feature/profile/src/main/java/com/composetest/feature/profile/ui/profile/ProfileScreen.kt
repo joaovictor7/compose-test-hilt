@@ -61,7 +61,8 @@ private fun Preview() {
                         text = AnnotatedString("E-mail")
                     )
                 )
-            )
+            ),
+            uiEvent = null
         ) {}
     }
 }

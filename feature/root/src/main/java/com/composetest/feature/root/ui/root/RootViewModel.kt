@@ -62,7 +62,7 @@ internal class RootViewModel @Inject constructor(
                 NavigationMode.SAVE_SCREEN_STATE
             )
         } else {
-            updateUiState { it.setFinishApp() }
+            launchUiEvent(RootUiEvent.FinishApp)
         }
     }
 

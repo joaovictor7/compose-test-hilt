@@ -21,7 +21,8 @@ import com.composetest.feature.profile.R
 import com.composetest.feature.profile.models.ProfileFormModel
 import kotlinx.coroutines.flow.Flow
 
-internal object EditProfileScreen : Screen<EditProfileUiState, EditProfileUiEvent, EditProfileCommandReceiver> {
+internal object EditProfileScreen :
+    Screen<EditProfileUiState, EditProfileUiEvent, EditProfileCommandReceiver> {
 
     @Composable
     override operator fun invoke(
@@ -81,10 +82,9 @@ private fun EditProfileFormData(
 @Preview
 private fun Preview() {
     ComposeTestTheme {
-        EditProfileFormData(
-            EditProfileUiState(
-                saveButtonEnabled = true
-            )
-        ) {}
+        EditProfileScreen(
+            uiState = EditProfileUiState(),
+            uiEvent = null
+        ) { }
     }
 }

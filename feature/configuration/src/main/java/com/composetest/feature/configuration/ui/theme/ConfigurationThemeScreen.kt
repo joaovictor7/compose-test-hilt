@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -25,7 +24,6 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.composetest.core.designsystem.components.switches.ThumbSwitch
 import com.composetest.core.designsystem.components.toolbar.Toolbar
 import com.composetest.core.designsystem.dimensions.spacings
-import com.composetest.core.designsystem.extensions.horizontalScreenMargin
 import com.composetest.core.designsystem.extensions.opacity
 import com.composetest.core.designsystem.extensions.screenMargin
 import com.composetest.core.designsystem.params.switches.SwitchType
@@ -145,7 +143,8 @@ private fun Preview() {
                 themes = ThemeConfiguration.entries,
                 selectedTheme = ThemeConfiguration.AUTO,
                 dynamicColors = true
-            )
+            ),
+            uiEvent = null
         ) { }
     }
 }

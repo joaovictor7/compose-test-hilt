@@ -7,7 +7,7 @@ interface Screen<UiState, UiEvent, CommandReceiver> {
     @Composable
     operator fun invoke(
         uiState: UiState,
-        uiEvent: Flow<UiEvent>? = null,
+        uiEvent: Flow<UiEvent>?,
         onExecuteCommand: (Command<CommandReceiver>) -> Unit
     )
 }
