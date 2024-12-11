@@ -1,7 +1,6 @@
 package com.composetest.core.ui.interfaces
 
 import androidx.compose.runtime.Composable
-import kotlinx.coroutines.flow.Flow
 
 interface Screen<UiState, CommandReceiver> {
     @Composable
@@ -15,7 +14,7 @@ interface Screen2<UiState, UiEvent, CommandReceiver> {
     @Composable
     operator fun invoke(
         uiState: UiState,
-        uiEvent: Flow<UiEvent>,
+        uiEvent: UiEvent? = null,
         onExecuteCommand: (Command<CommandReceiver>) -> Unit
     )
 }

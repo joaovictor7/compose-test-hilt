@@ -15,6 +15,7 @@ import com.composetest.core.router.interfaces.Destination
 import com.composetest.core.router.utils.getNavTypes
 import com.composetest.core.ui.bases.BaseViewModel
 import com.composetest.core.ui.bases.BaseViewModel2
+import com.composetest.core.ui.interfaces.BaseUiEvent
 import com.composetest.core.ui.interfaces.BaseUiState
 import com.composetest.core.ui.interfaces.CommandReceiver
 import com.composetest.core.ui.interfaces.Screen
@@ -56,7 +57,7 @@ inline fun <reified D, reified VM, US, UE, CR> NavGraphBuilder.composable2(
     noinline exitTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition?)? = null,
     noinline popEnterTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition?)? = enterTransition,
     noinline popExitTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition?)? = exitTransition,
-) where D : Destination, VM : BaseViewModel2<US, UE>, VM : CommandReceiver<CR>, US : BaseUiState, CR : CommandReceiver<CR> {
+) where D : Destination, VM : BaseViewModel2<US, UE>, VM : CommandReceiver<CR>, US : BaseUiState, UE : BaseUiEvent, CR : CommandReceiver<CR> {
     composable<D>(
         typeMap = getNavTypes<D>(),
         deepLinks = deepLinks,
@@ -67,11 +68,12 @@ inline fun <reified D, reified VM, US, UE, CR> NavGraphBuilder.composable2(
     ) {
         val viewModel = hiltViewModel<VM>()
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+        val uiEvent by viewModel.uiEvent.collectAsStateWithLifecycle(null)
         if (navigateBackHandler) {
             BackHandler {
                 viewModel.navigateBack()
             }
         }
-        screen(uiState = uiState, uiEvent = viewModel.uiEvent, onExecuteCommand = viewModel::executeCommand)
+        screen(uiState = uiState, uiEvent = uiEvent, onExecuteCommand = viewModel::executeCommand)
     }
 }

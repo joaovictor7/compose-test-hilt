@@ -16,7 +16,7 @@ import com.composetest.core.router.di.qualifiers.NavGraphQualifier
 import com.composetest.core.router.enums.NavGraph
 import com.composetest.core.router.enums.NavigationMode
 import com.composetest.core.router.managers.NavigationManager
-import com.composetest.core.ui.bases.BaseViewModel
+import com.composetest.core.ui.bases.BaseViewModel2
 import com.composetest.feature.login.R
 import com.composetest.feature.login.analytics.login.LoginClickEventAnalytic
 import com.composetest.feature.login.analytics.login.LoginScreenAnalytic
@@ -33,7 +33,7 @@ internal class LoginViewModel @Inject constructor(
     private val remoteConfigManager: RemoteConfigManager,
     override val sendAnalyticsUseCase: SendAnalyticsUseCase,
     @NavGraphQualifier(NavGraph.MAIN) override val navigationManager: NavigationManager
-) : BaseViewModel<LoginUiState>(LoginScreenAnalytic, LoginUiState()), LoginCommandReceiver {
+) : BaseViewModel2<LoginUiState, LoginUiEvent>(LoginScreenAnalytic, LoginUiState()), LoginCommandReceiver {
 
     override val commandReceiver = this
 

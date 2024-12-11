@@ -36,13 +36,16 @@ import com.composetest.core.designsystem.params.textfields.TextFieldTrailingIcon
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.interfaces.Screen
+import com.composetest.core.ui.interfaces.Screen2
 import com.composetest.feature.login.R
+import kotlinx.coroutines.flow.Flow
 
-internal object LoginScreen : Screen<LoginUiState, LoginCommandReceiver> {
+internal object LoginScreen : Screen2<LoginUiState, LoginUiEvent, LoginCommandReceiver> {
 
     @Composable
     override operator fun invoke(
         uiState: LoginUiState,
+        uiEvent: LoginUiEvent?,
         onExecuteCommand: (Command<LoginCommandReceiver>) -> Unit
     ) {
         if (!uiState.needsLogin) return
@@ -172,7 +175,8 @@ private fun Preview() {
                 distributionTextId = R.string.feature_login_full_distribution,
                 invalidCredentials = false,
                 needsLogin = true
-            )
+            ),
+            null
         ) {}
     }
 }

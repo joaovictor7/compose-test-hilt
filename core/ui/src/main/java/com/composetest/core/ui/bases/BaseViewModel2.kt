@@ -10,6 +10,8 @@ import com.composetest.core.router.managers.NavigationManager
 import com.composetest.core.ui.interfaces.BaseUiEvent
 import com.composetest.core.ui.interfaces.BaseUiState
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.Channel.Factory.BUFFERED
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,6 +19,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -34,8 +37,8 @@ abstract class BaseViewModel2<UiState : BaseUiState, UiEvent: BaseUiEvent>(
         .onStart { initUiState() }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), uiState)
 
-    private val _uiEvent = MutableSharedFlow<UiEvent>()
-    val uiEvent = _uiEvent.asSharedFlow()
+    private val _uiEvent = Channel<UiEvent?>(BUFFERED)
+    val uiEvent = _uiEvent.receiveAsFlow()
 
     abstract fun initUiState()
 
@@ -48,7 +51,7 @@ abstract class BaseViewModel2<UiState : BaseUiState, UiEvent: BaseUiEvent>(
     }
 
     protected fun launchUiEvent(uiEvent: UiEvent) {
-        _uiEvent.tryEmit(uiEvent)
+        _uiEvent.trySend(uiEvent)
     }
 
     protected fun openScreenAnalytic() {

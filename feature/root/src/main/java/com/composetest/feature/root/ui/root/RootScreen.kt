@@ -47,21 +47,18 @@ import com.composetest.core.designsystem.extensions.asActivity
 import com.composetest.core.designsystem.extensions.horizontalScreenMargin
 import com.composetest.core.designsystem.params.toolbar.ToolbarActionParam
 import com.composetest.core.ui.interfaces.Command
-import com.composetest.core.ui.interfaces.Screen
 import com.composetest.core.ui.interfaces.Screen2
 import com.composetest.feature.home.navigation.homeRootNavGraph
 import com.composetest.feature.root.dimensions.components
 import com.composetest.feature.root.enums.NavigationFeature
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import com.composetest.core.designsystem.R as DesignSystemResources
 
 internal object RootScreen : Screen2<RootUiState, RootUiEvent, RootCommandReceiver> {
-
     @Composable
-    override operator fun invoke(
+    override fun invoke(
         uiState: RootUiState,
-        uiEvent: Flow<RootUiEvent>,
+        uiEvent: RootUiEvent?,
         onExecuteCommand: (Command<RootCommandReceiver>) -> Unit
     ) {
         val context = LocalContext.current
@@ -95,10 +92,9 @@ internal object RootScreen : Screen2<RootUiState, RootUiEvent, RootCommandReceiv
             }
         }
         LaunchedEffect(uiEvent) {
-            uiEvent.collect {
-                when (it) {
-                    is RootUiEvent.FinishApp -> context.asActivity?.finish()
-                }
+            when (uiEvent) {
+                is RootUiEvent.FinishApp -> context.asActivity?.finish()
+                else -> Unit
             }
         }
     }
