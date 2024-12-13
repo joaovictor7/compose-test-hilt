@@ -17,9 +17,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.composetest.core.designsystem.components.toolbar.Toolbar
+import com.composetest.core.designsystem.components.scaffolds.ScreenScaffold
+import com.composetest.core.designsystem.components.toolbar.LeftTopBar
 import com.composetest.core.designsystem.dimensions.spacings
-import com.composetest.core.designsystem.extensions.screenMargin
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.interfaces.Screen
@@ -38,9 +38,8 @@ internal object ConfigurationScreen :
         uiEvent: Flow<ConfigurationUiEvent>?,
         onExecuteCommand: (Command<ConfigurationCommandReceiver>) -> Unit
     ) {
-        Toolbar(
-            modifier = Modifier.screenMargin(),
-            titleId = R.string.configuration_title
+        ScreenScaffold(
+            topBar = { LeftTopBar(titleId = R.string.configuration_title) }
         ) {
             LazyVerticalStaggeredGrid(
                 columns = StaggeredGridCells.Fixed(LIMIT_CONFIGURATIONS_PER_LINE),

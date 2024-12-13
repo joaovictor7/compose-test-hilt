@@ -10,8 +10,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.composetest.core.designsystem.components.buttons.Button
+import com.composetest.core.designsystem.components.scaffolds.ScreenScaffold
 import com.composetest.core.designsystem.components.textfields.TextField
-import com.composetest.core.designsystem.components.toolbar.Toolbar
+import com.composetest.core.designsystem.components.toolbar.LeftTopBar
 import com.composetest.core.designsystem.dimensions.spacings
 import com.composetest.core.designsystem.extensions.screenMargin
 import com.composetest.core.designsystem.theme.ComposeTestTheme
@@ -30,9 +31,7 @@ internal object EditProfileScreen :
         uiEvent: Flow<EditProfileUiEvent>?,
         onExecuteCommand: (Command<EditProfileCommandReceiver>) -> Unit
     ) {
-        Toolbar(
-            titleId = R.string.profile_title
-        ) {
+        ScreenScaffold(topBar = { LeftTopBar(titleId = R.string.profile_title) }) {
             Column(
                 modifier = Modifier
                     .screenMargin()

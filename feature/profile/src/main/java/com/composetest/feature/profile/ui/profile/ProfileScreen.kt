@@ -6,7 +6,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
 import com.composetest.core.designsystem.components.labels.DataLabel
-import com.composetest.core.designsystem.components.toolbar.Toolbar
+import com.composetest.core.designsystem.components.scaffolds.ScreenScaffold
+import com.composetest.core.designsystem.components.toolbar.LeftTopBar
 import com.composetest.core.designsystem.dimensions.spacings
 import com.composetest.core.designsystem.enums.toolbar.ToolbarAction
 import com.composetest.core.designsystem.params.toolbar.ToolbarActionParam
@@ -25,13 +26,17 @@ internal object ProfileScreen : Screen<ProfileUiState, ProfileUiEvent, ProfileCo
         uiEvent: Flow<ProfileUiEvent>?,
         onExecuteCommand: (Command<ProfileCommandReceiver>) -> Unit
     ) {
-        Toolbar(
-            titleId = R.string.profile_title,
-            actions = listOf(
-                ToolbarActionParam(ToolbarAction.EDIT) {
-                    onExecuteCommand(ProfileCommand.NavigateToEditProfile)
-                }
-            )
+        ScreenScaffold(
+            topBar = {
+                LeftTopBar(
+                    titleId = R.string.profile_title,
+                    actions = listOf(
+                        ToolbarActionParam(ToolbarAction.EDIT) {
+                            onExecuteCommand(ProfileCommand.NavigateToEditProfile)
+                        }
+                    )
+                )
+            }
         ) {
             Column(verticalArrangement = Arrangement.spacedBy(spacings.eight)) {
                 uiState.profileScreenModels.forEach {

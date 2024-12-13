@@ -22,6 +22,12 @@ internal sealed interface LoginCommand : Command<LoginCommandReceiver> {
         }
     }
 
+    data object DismissSimpleDialog : LoginCommand {
+        override fun execute(commandReceiver: LoginCommandReceiver) {
+            commandReceiver.dismissSimpleDialog()
+        }
+    }
+
     data object CheckShowInvalidEmailMsg : LoginCommand {
         override fun execute(commandReceiver: LoginCommandReceiver) {
             commandReceiver.checkShowInvalidEmailMsg()

@@ -3,13 +3,13 @@ package com.composetest.feature.login.ui.login
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,16 +22,15 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import com.composetest.core.designsystem.components.alertdialogs.DefaultAlertDialog
+import com.composetest.core.designsystem.components.dialogs.SimpleDialog
 import com.composetest.core.designsystem.components.buttons.Button
-import com.composetest.core.designsystem.components.cards.ElevatedCard
 import com.composetest.core.designsystem.components.textfields.OutlinedTextField
 import com.composetest.core.designsystem.compositions.LocalTheme
+import com.composetest.core.designsystem.constants.screenMargin
 import com.composetest.core.designsystem.dimensions.spacings
 import com.composetest.core.designsystem.enums.textfields.TextFieldIcons
 import com.composetest.core.designsystem.extensions.screenMarginWithoutBar
 import com.composetest.core.designsystem.extensions.verticalTopBackgroundBrush
-import com.composetest.core.designsystem.params.alertdialogs.DefaultAlertDialogParam
 import com.composetest.core.designsystem.params.textfields.TextFieldTrailingIconParam
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.ui.interfaces.Command
@@ -60,67 +59,69 @@ internal object LoginScreen : Screen<LoginUiState, LoginUiEvent, LoginCommandRec
             VersionName(uiState = uiState)
         }
         EffectsHandler(onExecuteCommand = onExecuteCommand)
-        AlertDialogHandler(defaultAlertDialogParam = uiState.defaultAlertDialogParam)
+        HandleDialogs(uiState = uiState, onExecuteCommand = onExecuteCommand)
     }
 }
 
 @Composable
-private fun ColumnScope.LoginForm(
+private fun LoginForm(
     uiState: LoginUiState,
     onExecuteCommand: (Command<LoginCommandReceiver>) -> Unit
 ) {
-    Text(
-        text = stringResource(R.string.feature_login_login),
-        style = MaterialTheme.typography.headlineLarge,
-        modifier = Modifier.fillMaxWidth(),
-        textAlign = TextAlign.Center
-    )
-    Spacer(Modifier.height(spacings.twelve))
-    OutlinedTextField(
-        labelText = stringResource(R.string.feature_login_email),
-        textValue = uiState.loginFormModel.email,
-        placeholderText = stringResource(R.string.feature_login_email_placeholder),
-        supportingText = uiState.emailSupportingTextField?.let { stringResource(it) },
-        imeAction = ImeAction.Next,
-        trailingIconParam = uiState.emailTrailingIconTextField,
-        modifier = Modifier.fillMaxWidth(),
-        onFocusChanged = {
-            if (!it.hasFocus) onExecuteCommand.invoke(LoginCommand.CheckShowInvalidEmailMsg)
-        }
-    ) { email ->
-        onExecuteCommand(LoginCommand.WriteData(email = email))
-    }
-    Spacer(Modifier.height(spacings.sixteen))
-    OutlinedTextField(
-        textValue = uiState.loginFormModel.password,
-        labelText = stringResource(R.string.feature_login_password),
-        keyboardInput = KeyboardType.Password,
-        trailingIconParam = TextFieldTrailingIconParam(
-            iconType = TextFieldIcons.SEARCH
-        ),
-        modifier = Modifier.fillMaxWidth()
-    ) { password ->
-        onExecuteCommand(LoginCommand.WriteData(password = password))
-    }
-    Spacer(Modifier.height(spacings.sixteen))
-    if (uiState.invalidCredentials) {
+    Column(modifier = Modifier.padding(screenMargin)) {
         Text(
-            text = stringResource(R.string.feature_login_invalid_credentials),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.error
+            text = stringResource(R.string.feature_login_login),
+            style = MaterialTheme.typography.headlineLarge,
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Center
         )
         Spacer(Modifier.height(spacings.twelve))
-    }
-    if (!uiState.isLoading) {
-        Button(
-            text = stringResource(R.string.feature_login_enter),
+        OutlinedTextField(
+            labelText = stringResource(R.string.feature_login_email),
+            textValue = uiState.loginFormModel.email,
+            placeholderText = stringResource(R.string.feature_login_email_placeholder),
+            supportingText = uiState.emailSupportingTextField?.let { stringResource(it) },
+            imeAction = ImeAction.Next,
+            trailingIconParam = uiState.emailTrailingIconTextField,
             modifier = Modifier.fillMaxWidth(),
-            enabled = uiState.enableLoginButton
-        ) { onExecuteCommand(LoginCommand.Login) }
-    } else {
-        CircularProgressIndicator(
-            modifier = Modifier.align(alignment = Alignment.CenterHorizontally)
-        )
+            onFocusChanged = {
+                if (!it.hasFocus) onExecuteCommand.invoke(LoginCommand.CheckShowInvalidEmailMsg)
+            }
+        ) { email ->
+            onExecuteCommand(LoginCommand.WriteData(email = email))
+        }
+        Spacer(Modifier.height(spacings.sixteen))
+        OutlinedTextField(
+            textValue = uiState.loginFormModel.password,
+            labelText = stringResource(R.string.feature_login_password),
+            keyboardInput = KeyboardType.Password,
+            trailingIconParam = TextFieldTrailingIconParam(
+                iconType = TextFieldIcons.SEARCH
+            ),
+            modifier = Modifier.fillMaxWidth()
+        ) { password ->
+            onExecuteCommand(LoginCommand.WriteData(password = password))
+        }
+        Spacer(Modifier.height(spacings.sixteen))
+        if (uiState.invalidCredentials) {
+            Text(
+                text = stringResource(R.string.feature_login_invalid_credentials),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.error
+            )
+            Spacer(Modifier.height(spacings.twelve))
+        }
+        if (!uiState.isLoading) {
+            Button(
+                text = stringResource(R.string.feature_login_enter),
+                modifier = Modifier.fillMaxWidth(),
+                enabled = uiState.enableLoginButton
+            ) { onExecuteCommand(LoginCommand.Login) }
+        } else {
+            CircularProgressIndicator(
+                modifier = Modifier.align(alignment = Alignment.CenterHorizontally)
+            )
+        }
     }
 }
 
@@ -159,10 +160,14 @@ private fun EffectsHandler(onExecuteCommand: (Command<LoginCommandReceiver>) -> 
 }
 
 @Composable
-private fun AlertDialogHandler(defaultAlertDialogParam: DefaultAlertDialogParam?) =
-    defaultAlertDialogParam?.let {
-        DefaultAlertDialog(param = it)
+private fun HandleDialogs(
+    uiState: LoginUiState,
+    onExecuteCommand: (Command<LoginCommandReceiver>) -> Unit
+) = uiState.simpleDialogParam?.let {
+    SimpleDialog(param = it) {
+        onExecuteCommand(LoginCommand.DismissSimpleDialog)
     }
+}
 
 @Composable
 @Preview

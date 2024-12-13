@@ -21,12 +21,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import com.composetest.core.designsystem.components.scaffolds.ScreenScaffold
 import com.composetest.core.designsystem.components.switches.ThumbSwitch
-import com.composetest.core.designsystem.components.toolbar.Toolbar
+import com.composetest.core.designsystem.components.toolbar.LeftTopBar
 import com.composetest.core.designsystem.dimensions.spacings
 import com.composetest.core.designsystem.extensions.opacity
 import com.composetest.core.designsystem.extensions.screenMargin
-import com.composetest.core.designsystem.params.switches.SwitchType
+import com.composetest.core.designsystem.enums.switches.SwitchType
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.interfaces.Screen
@@ -44,15 +45,16 @@ internal object ConfigurationThemeScreen :
         uiEvent: Flow<ConfigurationThemeUiEvent>?,
         onExecuteCommand: (Command<ConfigurationThemeCommandReceiver>) -> Unit
     ) {
-        Toolbar(
-            modifier = Modifier.screenMargin(),
-            titleId = ConfigurationResources.string.configuration_theme_text
+        ScreenScaffold(
+            topBar = { LeftTopBar(titleId = ConfigurationResources.string.configuration_theme_text) }
         ) {
-            Section(titleId = ConfigurationResources.string.configuration_theme_mode_title) {
-                Theme(uiState = uiState, onExecuteCommand = onExecuteCommand)
-            }
-            Section(titleId = ConfigurationResources.string.configuration_theme_colors_title) {
-                DynamicColor(uiState = uiState, onExecuteCommand = onExecuteCommand)
+            Column(modifier = Modifier.screenMargin()) {
+                Section(titleId = ConfigurationResources.string.configuration_theme_mode_title) {
+                    Theme(uiState = uiState, onExecuteCommand = onExecuteCommand)
+                }
+                Section(titleId = ConfigurationResources.string.configuration_theme_colors_title) {
+                    DynamicColor(uiState = uiState, onExecuteCommand = onExecuteCommand)
+                }
             }
         }
     }

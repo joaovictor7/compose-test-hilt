@@ -2,85 +2,32 @@ package com.composetest.core.designsystem.components.toolbar
 
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.annotation.StringRes
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.composetest.core.designsystem.R
-import com.composetest.core.designsystem.enums.toolbar.ToolbarAction
-import com.composetest.core.designsystem.enums.toolbar.ToolbarColor
-import com.composetest.core.designsystem.enums.toolbar.ToolbarType
+import com.composetest.core.designsystem.dimensions.spacings
 import com.composetest.core.designsystem.params.toolbar.ToolbarActionParam
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 
 @Composable
-fun Toolbar(
-    modifier: Modifier = Modifier,
+@OptIn(ExperimentalMaterial3Api::class)
+fun LeftTopBar(
     @StringRes titleId: Int,
-    type: ToolbarType = ToolbarType.LEFT,
-    color: ToolbarColor = ToolbarColor.SURFACE,
     showBackButton: Boolean = true,
     navigationAction: ToolbarActionParam? = null,
-    actions: List<ToolbarActionParam>? = null,
-    bottomBar: @Composable () -> Unit = { },
-    content: @Composable ColumnScope.() -> Unit
-) {
-    Scaffold(
-        topBar = getTopBar(type, titleId, showBackButton, navigationAction, actions),
-        bottomBar = bottomBar
-    ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .padding(paddingValues)
-                .then(modifier),
-            content = content
-        )
-    }
-}
-
-private fun getTopBar(
-    type: ToolbarType,
-    @StringRes titleId: Int,
-    showBackButton: Boolean,
-    navigationAction: ToolbarActionParam? = null,
-    actions: List<ToolbarActionParam>?
-) = @Composable {
-    when (type) {
-        ToolbarType.CENTRALIZED -> CentralizedTopBar(
-            titleId = titleId,
-            showBackButton = showBackButton,
-            navigationAction = navigationAction,
-            actions = actions
-        )
-        ToolbarType.LEFT -> LeftTopBar(
-            titleId = titleId,
-            showBackButton = showBackButton,
-            navigationAction = navigationAction,
-            actions = actions
-        )
-    }
-}
-
-@Composable
-@OptIn(ExperimentalMaterial3Api::class)
-private fun LeftTopBar(
-    @StringRes titleId: Int,
-    showBackButton: Boolean,
-    navigationAction: ToolbarActionParam?,
-    actions: List<ToolbarActionParam>?
+    actions: List<ToolbarActionParam>? = null
 ) {
     TopAppBar(
         navigationIcon = {
@@ -90,22 +37,17 @@ private fun LeftTopBar(
             )
         },
         actions = getActions(actions),
-        title = {
-            Text(
-                text = stringResource(titleId),
-                style = MaterialTheme.typography.titleLarge
-            )
-        }
+        title = getTitleBar(titleId)
     )
 }
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-private fun CentralizedTopBar(
+fun CentralizedTopBar(
     @StringRes titleId: Int,
-    showBackButton: Boolean,
-    navigationAction: ToolbarActionParam?,
-    actions: List<ToolbarActionParam>?
+    showBackButton: Boolean = true,
+    navigationAction: ToolbarActionParam? = null,
+    actions: List<ToolbarActionParam>? = null
 ) {
     CenterAlignedTopAppBar(
         navigationIcon = {
@@ -115,12 +57,33 @@ private fun CentralizedTopBar(
             )
         },
         actions = getActions(actions),
-        title = {
-            Text(
-                text = stringResource(titleId),
-                style = MaterialTheme.typography.titleLarge
+        title = getTitleBar(titleId)
+    )
+}
+
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+fun TopBarWithoutTitle(
+    showBackButton: Boolean = true,
+    navigationAction: ToolbarActionParam? = null,
+    actions: List<ToolbarActionParam>? = null
+) {
+    TopAppBar(
+        title = {},
+        navigationIcon = {
+            NavigationIcon(
+                showBackButton = showBackButton,
+                navigationAction = navigationAction
             )
-        }
+        },
+        actions = getActions(actions),
+    )
+}
+
+private fun getTitleBar(@StringRes titleId: Int): @Composable () -> Unit = {
+    Text(
+        text = stringResource(titleId),
+        style = MaterialTheme.typography.titleLarge
     )
 }
 
@@ -168,9 +131,10 @@ private fun getActions(actions: List<ToolbarActionParam>?): @Composable RowScope
 @PreviewLightDark
 private fun Preview() {
     ComposeTestTheme {
-        Toolbar(
-            titleId = R.string.global_word_close,
-            actions = listOf(ToolbarActionParam(ToolbarAction.EDIT) { })
-        ) { }
+        Column(verticalArrangement = Arrangement.spacedBy(spacings.twenty)) {
+            TopBarWithoutTitle()
+            LeftTopBar(titleId = R.string.toolbar_back_button_content_description)
+            CentralizedTopBar(titleId = R.string.toolbar_back_button_content_description)
+        }
     }
 }

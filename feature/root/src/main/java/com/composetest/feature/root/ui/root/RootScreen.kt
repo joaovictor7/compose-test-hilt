@@ -39,10 +39,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import com.composetest.core.designsystem.components.toolbar.Toolbar
+import com.composetest.core.designsystem.components.scaffolds.ScreenScaffold
+import com.composetest.core.designsystem.components.toolbar.CentralizedTopBar
 import com.composetest.core.designsystem.dimensions.spacings
 import com.composetest.core.designsystem.enums.toolbar.ToolbarAction
-import com.composetest.core.designsystem.enums.toolbar.ToolbarType
 import com.composetest.core.designsystem.extensions.asActivity
 import com.composetest.core.designsystem.extensions.horizontalScreenMargin
 import com.composetest.core.designsystem.params.toolbar.ToolbarActionParam
@@ -72,13 +72,16 @@ internal object RootScreen : Screen<RootUiState, RootUiEvent, RootCommandReceive
             drawerContent = getModalDrawerContent(uiState, onExecuteCommand),
         ) {
             if (screenTitle == null) return@ModalNavigationDrawer
-            Toolbar(
-                type = ToolbarType.CENTRALIZED,
-                titleId = screenTitle,
-                bottomBar = getBottomBar(uiState, onExecuteCommand),
-                navigationAction = ToolbarActionParam(ToolbarAction.MENU) {
-                    coroutineScope.launch { drawerState.open() }
-                }
+            ScreenScaffold(
+                topBar = {
+                    CentralizedTopBar(
+                        titleId = screenTitle,
+                        navigationAction = ToolbarActionParam(ToolbarAction.MENU) {
+                            coroutineScope.launch { drawerState.open() }
+                        }
+                    )
+                },
+                bottomBar = getBottomBar(uiState, onExecuteCommand)
             ) {
                 Navigation(
                     uiState = uiState,

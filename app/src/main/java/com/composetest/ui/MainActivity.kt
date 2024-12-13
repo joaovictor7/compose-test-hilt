@@ -15,7 +15,7 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import com.composetest.core.designsystem.components.alertdialogs.DefaultAlertDialog
+import com.composetest.core.designsystem.components.dialogs.SimpleDialog
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.designsystem.utils.lifecycleEvent
 import com.composetest.core.router.destinations.login.LoginDestination
@@ -37,7 +37,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setSplashScreen()
-        setEdgeToEdge()
+        observerUiState()
         setContent {
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
             LifecycleHandler(viewModel::executeCommand)
@@ -45,9 +45,7 @@ class MainActivity : ComponentActivity() {
                 dynamicColor = uiState.appTheme.dynamicColors,
                 theme = uiState.appTheme.theme
             ) {
-                uiState.defaultAlertDialogParam?.let {
-                    DefaultAlertDialog(param = it)
-                }
+                HandleDialogs(uiState = uiState, onExecuteCommand = viewModel::executeCommand)
                 Navigation(
                     firstScreenDestination = LoginDestination::class,
                     onExecuteCommand = viewModel::executeCommand
@@ -61,12 +59,16 @@ class MainActivity : ComponentActivity() {
         viewModel.executeCommand(MainCommand.FetchRemoteConfig)
     }
 
-    private fun setEdgeToEdge() = lifecycleScope.launch {
+    private fun observerUiState() = lifecycleScope.launch {
         viewModel.uiState.flowWithLifecycle(lifecycle).collect { uiState ->
-            enableEdgeToEdge(uiState.statusBarStyle, uiState.navigationBarStyle)
-            if (uiState.forceNavigationBarTransparency) {
-                window.isNavigationBarContrastEnforced = false
-            }
+            setEdgeToEdge(uiState)
+        }
+    }
+
+    private fun setEdgeToEdge(uiState: MainUiState) {
+        enableEdgeToEdge(uiState.statusBarStyle, uiState.navigationBarStyle)
+        if (uiState.forceNavigationBarTransparency) {
+            window.isNavigationBarContrastEnforced = false
         }
     }
 
@@ -103,5 +105,15 @@ private fun LifecycleHandler(onExecuteCommand: (Command<MainCommandReceiver>) ->
         if (event == Lifecycle.Event.ON_RESUME) {
             onExecuteCommand(MainCommand.VerifySession)
         }
+    }
+}
+
+@Composable
+private fun HandleDialogs(
+    uiState: MainUiState,
+    onExecuteCommand: (Command<MainCommandReceiver>) -> Unit
+) = uiState.simpleDialogParam?.let {
+    SimpleDialog(param = it) {
+        onExecuteCommand(MainCommand.DismissAlertDialog)
     }
 }

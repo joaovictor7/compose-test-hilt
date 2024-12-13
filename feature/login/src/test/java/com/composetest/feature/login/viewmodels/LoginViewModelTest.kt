@@ -6,7 +6,7 @@ import com.composetest.common.enums.FlavorDimension
 import com.composetest.common.models.BuildConfigFieldsModel
 import com.composetest.common.models.BuildConfigModel
 import com.composetest.common.providers.BuildConfigProvider
-import com.composetest.core.designsystem.params.alertdialogs.DefaultAlertDialogParam
+import com.composetest.core.designsystem.params.alertdialogs.SimpleDialogParam
 import com.composetest.core.domain.managers.SessionManager
 import com.composetest.core.domain.errors.network.NetworkThrowable
 import com.composetest.core.domain.usecases.AuthenticationUseCase
@@ -55,7 +55,7 @@ class LoginViewModelTest : CoroutinesTest {
     private val sessionManager: SessionManager = mockk {
         coEvery { needsLogin() } returns true
     }
-    private val networkAlertDialogParam = DefaultAlertDialogParam.getNetworkAlertDialogParam { }
+    private val networkAlertDialogParam = SimpleDialogParam.getNetworkAlertDialogParam { }
 
     private lateinit var viewModel: LoginViewModel
 
@@ -278,7 +278,7 @@ class LoginViewModelTest : CoroutinesTest {
                         versionName = "1.0.0 - 0",
                         enableLoginButton = true,
                         isLoading = true,
-                        defaultAlertDialogParam = networkAlertDialogParam,
+                        simpleDialogParam = networkAlertDialogParam,
                         loginFormModel = LoginFormModel(
                             email = "teste@teste.com",
                             password = "password"
@@ -288,7 +288,7 @@ class LoginViewModelTest : CoroutinesTest {
                         needsLogin = true,
                         versionName = "1.0.0 - 0",
                         enableLoginButton = true,
-                        defaultAlertDialogParam = networkAlertDialogParam,
+                        simpleDialogParam = networkAlertDialogParam,
                         loginFormModel = LoginFormModel(
                             email = "teste@teste.com",
                             password = "password"

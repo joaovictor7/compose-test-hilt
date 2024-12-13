@@ -7,4 +7,5 @@ internal interface MainCommandReceiver : CommandReceiver<MainCommandReceiver> {
     fun verifySession()
     fun fetchRemoteConfig()
     fun setMainNavGraph(navController: NavHostController)
+    fun dismissAlertDialog()
 }

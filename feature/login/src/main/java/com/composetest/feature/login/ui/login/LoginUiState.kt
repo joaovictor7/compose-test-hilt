@@ -2,7 +2,7 @@ package com.composetest.feature.login.ui.login
 
 import androidx.annotation.StringRes
 import com.composetest.core.designsystem.enums.textfields.TextFieldIcons
-import com.composetest.core.designsystem.params.alertdialogs.DefaultAlertDialogParam
+import com.composetest.core.designsystem.params.alertdialogs.SimpleDialogParam
 import com.composetest.core.designsystem.params.textfields.TextFieldTrailingIconParam
 import com.composetest.core.ui.interfaces.BaseUiState
 import com.composetest.feature.login.R
@@ -16,7 +16,7 @@ internal data class LoginUiState(
     val invalidEmail: Boolean = false,
     val enableLoginButton: Boolean = false,
     val invalidCredentials: Boolean = false,
-    val defaultAlertDialogParam: DefaultAlertDialogParam? = null,
+    val simpleDialogParam: SimpleDialogParam? = null,
     override var isLoading: Boolean = false
 ) : BaseUiState {
     val emailTrailingIconTextField
@@ -56,10 +56,10 @@ internal data class LoginUiState(
 
     fun setLoading(isLoading: Boolean) = copy(
         isLoading = isLoading,
-        invalidCredentials = if (isLoading == true) false else invalidCredentials
+        invalidCredentials = if (isLoading) false else invalidCredentials
     )
 
-    fun setDefaultAlertDialog(defaultAlertDialogParam: DefaultAlertDialogParam?) = copy(
-        defaultAlertDialogParam = defaultAlertDialogParam
+    fun setSimpleDialog(simpleDialogParam: SimpleDialogParam?) = copy(
+        simpleDialogParam = simpleDialogParam
     )
 }

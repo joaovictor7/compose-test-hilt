@@ -2,7 +2,7 @@ package com.composetest.feature.login.ui.login
 
 import com.composetest.common.enums.Flavor
 import com.composetest.common.providers.BuildConfigProvider
-import com.composetest.core.designsystem.utils.getErrorAlertDialogParam
+import com.composetest.core.designsystem.utils.getDefaultSimpleDialogErrorParam
 import com.composetest.core.domain.enums.Theme
 import com.composetest.core.domain.errors.ApiError
 import com.composetest.core.domain.managers.AppThemeManager
@@ -80,16 +80,16 @@ internal class LoginViewModel @Inject constructor(
         }
     }
 
+    override fun dismissSimpleDialog() {
+        updateUiState { it.setSimpleDialog(null) }
+    }
+
     private fun handleLoginError(throwable: Throwable?) {
         updateUiState { uiState ->
             if (throwable is ApiError.Unauthorized) {
                 uiState.setShowInvalidCredentialsMsg(true)
             } else {
-                uiState.setDefaultAlertDialog(
-                    getErrorAlertDialogParam(throwable) {
-                        updateUiState { it.setDefaultAlertDialog(null) }
-                    }
-                )
+                uiState.setSimpleDialog(getDefaultSimpleDialogErrorParam(throwable))
             }
         }
     }

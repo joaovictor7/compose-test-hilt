@@ -16,6 +16,12 @@ internal sealed interface MainCommand : Command<MainCommandReceiver> {
         }
     }
 
+    data object DismissAlertDialog : MainCommand {
+        override fun execute(commandReceiver: MainCommandReceiver) {
+            commandReceiver.dismissAlertDialog()
+        }
+    }
+
     data class SetNavigationGraph(private val navController: NavHostController) : MainCommand {
         override fun execute(commandReceiver: MainCommandReceiver) {
             commandReceiver.setMainNavGraph(navController)
