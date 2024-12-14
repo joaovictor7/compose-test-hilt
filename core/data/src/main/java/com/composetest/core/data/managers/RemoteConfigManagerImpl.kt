@@ -1,6 +1,6 @@
 package com.composetest.core.data.managers
 
-import com.composetest.core.domain.interfaces.RemoteConfig
+import com.composetest.core.domain.remoteconfigs.RemoteConfig
 import com.composetest.core.domain.managers.RemoteConfigManager
 import com.composetest.core.domain.repositories.RemoteConfigRepository
 import com.composetest.core.domain.usecases.CheckAppVersionUseCase

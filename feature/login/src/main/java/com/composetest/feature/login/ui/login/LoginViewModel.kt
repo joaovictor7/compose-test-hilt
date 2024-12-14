@@ -19,6 +19,7 @@ import com.composetest.core.router.managers.NavigationManager
 import com.composetest.core.ui.bases.BaseViewModel
 import com.composetest.feature.login.R
 import com.composetest.feature.login.analytics.login.LoginClickEventAnalytic
+import com.composetest.feature.login.analytics.login.LoginEventAnalytic
 import com.composetest.feature.login.analytics.login.LoginScreenAnalytic
 import com.composetest.feature.login.remoteconfigs.LoginRemoteConfig
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -33,7 +34,8 @@ internal class LoginViewModel @Inject constructor(
     private val remoteConfigManager: RemoteConfigManager,
     override val sendAnalyticsUseCase: SendAnalyticsUseCase,
     @NavGraphQualifier(NavGraph.MAIN) override val navigationManager: NavigationManager
-) : BaseViewModel<LoginUiState, LoginUiEvent>(LoginScreenAnalytic, LoginUiState()), LoginCommandReceiver {
+) : BaseViewModel<LoginUiState, LoginUiEvent>(LoginScreenAnalytic, LoginUiState()),
+    LoginCommandReceiver {
 
     override val commandReceiver = this
 
@@ -64,6 +66,7 @@ internal class LoginViewModel @Inject constructor(
             authenticationUseCase(
                 AuthenticationCredentialsModel(loginFormModel.email, loginFormModel.password)
             )
+            sendAnalyticsUseCase(LoginEventAnalytic.LoginSuccessful(true))
             navigateToRoot()
         }
     }
@@ -94,7 +97,8 @@ internal class LoginViewModel @Inject constructor(
         updateUiState { it.setSimpleDialog(null) }
     }
 
-    private fun handleLoginError(throwable: Throwable?) {
+    private suspend fun handleLoginError(throwable: Throwable?) {
+        sendAnalyticsUseCase(LoginEventAnalytic.LoginSuccessful(false))
         updateUiState { uiState ->
             if (throwable is ApiError.Unauthorized) {
                 uiState.setShowInvalidCredentialsMsg(true)

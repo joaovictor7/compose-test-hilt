@@ -9,11 +9,11 @@ internal class AnalyticsRepositoryImpl @Inject constructor(
     private val analyticsDataSource: FirebaseAnalyticsDataSource
 ) : AnalyticsRepository {
 
-    override suspend fun logEvent(tag: String, bundle: Bundle) {
+    override fun logEvent(tag: String, bundle: Bundle) {
         analyticsDataSource.logEvent(tag, bundle)
     }
 
-    override suspend fun logNonFatalError(tag: String, throwable: Throwable, bundle: Bundle) {
+    override fun logNonFatalError(tag: String, throwable: Throwable, bundle: Bundle) {
         analyticsDataSource.logNonFatalError(tag, throwable, bundle)
     }
 }

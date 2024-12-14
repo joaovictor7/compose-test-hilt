@@ -2,9 +2,9 @@ package com.composetest.core.ui.bases
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.composetest.core.domain.analytics.AnalyticScreen
+import com.composetest.core.domain.analytics.CommonAnalyticEvent
 import com.composetest.core.domain.analytics.ErrorAnalyticEvent
-import com.composetest.core.domain.analytics.OpenScreenAnalyticEvent
-import com.composetest.core.domain.interfaces.AnalyticScreen
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
 import com.composetest.core.router.managers.NavigationManager
 import com.composetest.core.ui.interfaces.BaseUiEvent
@@ -53,7 +53,7 @@ abstract class BaseViewModel<UiState : BaseUiState, UiEvent : BaseUiEvent>(
 
     protected fun openScreenAnalytic() {
         runAsyncTask {
-            sendAnalyticsUseCase(OpenScreenAnalyticEvent(analyticScreen))
+            sendAnalyticsUseCase(CommonAnalyticEvent.OpenScreen(analyticScreen))
         }
     }
 

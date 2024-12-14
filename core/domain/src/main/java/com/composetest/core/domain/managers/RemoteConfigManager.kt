@@ -1,6 +1,6 @@
 package com.composetest.core.domain.managers
 
-import com.composetest.core.domain.interfaces.RemoteConfig
+import com.composetest.core.domain.remoteconfigs.RemoteConfig
 
 interface RemoteConfigManager {
     fun fetch()

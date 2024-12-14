@@ -1,15 +1,24 @@
 package com.composetest.feature.configuration.analytics.theme
 
-import com.composetest.core.domain.analytics.ClickAnalyticEvent
+import com.composetest.core.domain.analytics.AnalyticEvent
+import com.composetest.core.domain.analytics.AnalyticScreen
 
-internal sealed class ConfigurationThemeClickEventAnalytic(
-    event: String
-) : ClickAnalyticEvent(event, ConfigurationThemeScreenAnalytic) {
-    data class ChangeDynamicColors(
-        private val activeDynamicColors: Boolean
-    ) : ConfigurationThemeClickEventAnalytic("dynamic_colors_active:$activeDynamicColors")
+sealed class ConfigurationThemeEventAnalytic :
+    AnalyticEvent,
+    AnalyticScreen by ConfigurationThemeScreenAnalytic {
 
-    data class ChangeThemeEvent(
-        private val theme: String
-    ) : ConfigurationThemeClickEventAnalytic("change_theme:$theme")
+    data class ChangeTheme(
+        private val theme: String? = null,
+        private val dynamicColors: Boolean? = null
+    ) : ConfigurationThemeEventAnalytic() {
+        override val tag = "change_theme"
+        override val params: Map<String, Any> = mutableMapOf<String, Any>().apply {
+            theme?.let {
+                this["theme"] = it
+            }
+            dynamicColors?.let {
+                this["dynamic_colors"] = it
+            }
+        }
+    }
 }

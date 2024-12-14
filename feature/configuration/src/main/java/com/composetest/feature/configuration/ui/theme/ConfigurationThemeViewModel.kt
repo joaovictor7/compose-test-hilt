@@ -6,7 +6,7 @@ import com.composetest.core.router.di.qualifiers.NavGraphQualifier
 import com.composetest.core.router.enums.NavGraph
 import com.composetest.core.router.managers.NavigationManager
 import com.composetest.core.ui.bases.BaseViewModel
-import com.composetest.feature.configuration.analytics.theme.ConfigurationThemeClickEventAnalytic
+import com.composetest.feature.configuration.analytics.theme.ConfigurationThemeEventAnalytic
 import com.composetest.feature.configuration.analytics.theme.ConfigurationThemeScreenAnalytic
 import com.composetest.feature.configuration.enums.ThemeConfiguration
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -43,7 +43,7 @@ internal class ConfigurationThemeViewModel @Inject constructor(
         runAsyncTask(
             onStart = {
                 sendAnalyticsUseCase(
-                    ConfigurationThemeClickEventAnalytic.ChangeThemeEvent(selectedTheme.theme.name)
+                    ConfigurationThemeEventAnalytic.ChangeTheme(theme = selectedTheme.theme.name)
                 )
             }
         ) {
@@ -54,7 +54,7 @@ internal class ConfigurationThemeViewModel @Inject constructor(
     override fun changeDynamicColor(active: Boolean) {
         updateUiState { it.setDynamicColors(active) }
         runAsyncTask(onStart = {
-            sendAnalyticsUseCase(ConfigurationThemeClickEventAnalytic.ChangeDynamicColors(active))
+            sendAnalyticsUseCase(ConfigurationThemeEventAnalytic.ChangeTheme(dynamicColors = active))
         }) {
             appThemeManager.setDynamicColor(active)
         }

@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.core.os.bundleOf
 import com.composetest.common.providers.BuildConfigProvider
 import com.composetest.core.domain.analytics.ErrorAnalyticEvent
-import com.composetest.core.domain.interfaces.AnalyticEvent
+import com.composetest.core.domain.analytics.AnalyticEvent
 import com.composetest.core.domain.repositories.AnalyticsRepository
 import com.composetest.core.domain.repositories.UserRepository
 import java.time.LocalDateTime
@@ -23,7 +23,7 @@ class SendAnalyticsUseCase @Inject constructor(
 
     suspend operator fun invoke(event: ErrorAnalyticEvent) {
         val bundle = createBundle(event)
-        analyticsRepository.logNonFatalError(event.tag, event.throwable, bundle)
+        analyticsRepository.logNonFatalError(event.tag, event.error, bundle)
     }
 
     private suspend fun createBundle(event: AnalyticEvent): Bundle {
