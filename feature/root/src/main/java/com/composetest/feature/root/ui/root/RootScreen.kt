@@ -40,12 +40,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.composetest.core.designsystem.components.scaffolds.ScreenScaffold
-import com.composetest.core.designsystem.components.toolbar.CentralizedTopBar
+import com.composetest.core.designsystem.components.topbar.CentralizedTopBar
 import com.composetest.core.designsystem.dimensions.spacings
-import com.composetest.core.designsystem.enums.toolbar.ToolbarAction
+import com.composetest.core.designsystem.enums.topbar.TopBarAction
 import com.composetest.core.designsystem.extensions.asActivity
 import com.composetest.core.designsystem.extensions.horizontalScreenMargin
-import com.composetest.core.designsystem.params.toolbar.ToolbarActionParam
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.interfaces.Screen
 import com.composetest.feature.home.navigation.homeRootNavGraph
@@ -76,7 +75,8 @@ internal object RootScreen : Screen<RootUiState, RootUiEvent, RootCommandReceive
                 topBar = {
                     CentralizedTopBar(
                         titleId = screenTitle,
-                        navigationAction = ToolbarActionParam(ToolbarAction.MENU) {
+                        navigationAction = TopBarAction.MENU,
+                        onClickNavigationAction = {
                             coroutineScope.launch { drawerState.open() }
                         }
                     )

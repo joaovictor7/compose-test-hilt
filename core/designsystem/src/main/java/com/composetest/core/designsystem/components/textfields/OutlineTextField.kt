@@ -1,6 +1,7 @@
 package com.composetest.core.designsystem.components.textfields
 
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -12,18 +13,16 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
-import com.composetest.core.designsystem.enums.textfields.TextFieldIcons
+import com.composetest.core.designsystem.enums.textfields.TextFieldIcon
 import com.composetest.core.designsystem.extensions.opacity
-import com.composetest.core.designsystem.params.textfields.TextFieldTrailingIconParam
 import com.composetest.core.designsystem.theme.ComposeTestTheme
-import com.composetest.core.designsystem.utils.textfields.createIcon
-import com.composetest.core.designsystem.utils.textfields.textFieldHelpedText
-import com.composetest.core.designsystem.utils.textfields.trailingIcon
+import com.composetest.core.designsystem.utils.getTextFieldTrailingIcon
 
 @Composable
 fun OutlinedTextField(
@@ -32,8 +31,9 @@ fun OutlinedTextField(
     labelText: String,
     placeholderText: String? = null,
     supportingText: String? = null,
-    trailingIconParam: TextFieldTrailingIconParam? = null,
-    leadingIcon: TextFieldIcons? = null,
+    trailingIcon: TextFieldIcon? = null,
+    onTrailingIconClick: (() -> Unit)? = null,
+    leadingIcon: TextFieldIcon? = null,
     singleLine: Boolean = true,
     enabled: Boolean = true,
     readOnly: Boolean = false,
@@ -43,27 +43,34 @@ fun OutlinedTextField(
     onTextChanged: (String) -> Unit
 ) {
     val passwordHidden = rememberSaveable { mutableStateOf(true) }
-    val password = keyboardInput == KeyboardType.Password
+    val isPassword = keyboardInput == KeyboardType.Password
     OutlinedTextField(
         value = textValue,
         enabled = enabled,
         singleLine = singleLine,
-        isError = trailingIconParam?.iconType == TextFieldIcons.ERROR,
+        isError = trailingIcon == TextFieldIcon.ERROR,
         readOnly = readOnly,
         modifier = modifier.onFocusChanged { onFocusChanged?.invoke(it) },
         onValueChange = { onTextChanged(it) },
-        label = { Text(text = labelText) },
-        placeholder = textFieldHelpedText(placeholderText),
-        supportingText = textFieldHelpedText(supportingText),
-        leadingIcon = createIcon(leadingIcon?.iconId),
-        trailingIcon = trailingIcon(
-            trailingIconParam,
+        label = { Text(text = labelText, style = MaterialTheme.typography.bodyLarge) },
+        placeholder = placeholderText?.let {
+            { Text(text = it, style = MaterialTheme.typography.bodyLarge) }
+        },
+        supportingText = supportingText?.let {
+            { Text(text = it, style = MaterialTheme.typography.bodyMedium) }
+        },
+        leadingIcon = leadingIcon?.iconId?.let {
+            { Icon(painter = painterResource(it), contentDescription = null) }
+        },
+        trailingIcon = getTextFieldTrailingIcon(
+            trailingIcon,
+            onTrailingIconClick,
             textValue,
-            password,
+            isPassword,
             passwordHidden,
             onTextChanged
         ),
-        visualTransformation = if (password && passwordHidden.value)
+        visualTransformation = if (isPassword && passwordHidden.value)
             PasswordVisualTransformation() else VisualTransformation.None,
         keyboardOptions = KeyboardOptions(
             keyboardType = keyboardInput,

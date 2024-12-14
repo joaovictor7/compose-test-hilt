@@ -16,12 +16,14 @@ interface NavigationManager {
         destination: D,
         navigationMode: NavigationMode? = null
     )
+
     fun navigateBack()
     fun <Result : ResultParam> navigateBack(result: Result)
     suspend fun <D : Destination> asyncNavigate(
         destination: D,
         navigationMode: NavigationMode? = null
     )
+
     suspend fun asyncNavigateBack()
     suspend fun <Result : ResultParam> asyncNavigateBack(result: Result)
     fun <Result : ResultParam> getResultFlow(resultClass: KClass<Result>): Flow<Result>

@@ -1,4 +1,4 @@
-package com.composetest.enums
+package com.composetest.ui.dialogs
 
 import com.composetest.R
 import com.composetest.core.designsystem.params.alertdialogs.SimpleDialogParam

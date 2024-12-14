@@ -1,5 +1,6 @@
 package com.composetest.feature.login.ui.login
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
@@ -17,21 +18,20 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import com.composetest.core.designsystem.components.dialogs.SimpleDialog
 import com.composetest.core.designsystem.components.buttons.Button
+import com.composetest.core.designsystem.components.dialogs.SimpleDialog
 import com.composetest.core.designsystem.components.textfields.OutlinedTextField
 import com.composetest.core.designsystem.compositions.LocalTheme
 import com.composetest.core.designsystem.constants.screenMargin
 import com.composetest.core.designsystem.dimensions.spacings
-import com.composetest.core.designsystem.enums.textfields.TextFieldIcons
 import com.composetest.core.designsystem.extensions.screenMarginWithoutBar
 import com.composetest.core.designsystem.extensions.verticalTopBackgroundBrush
-import com.composetest.core.designsystem.params.textfields.TextFieldTrailingIconParam
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.interfaces.Screen
@@ -76,51 +76,48 @@ private fun LoginForm(
             textAlign = TextAlign.Center
         )
         Spacer(Modifier.height(spacings.twelve))
-        OutlinedTextField(
-            labelText = stringResource(R.string.feature_login_email),
-            textValue = uiState.loginFormModel.email,
-            placeholderText = stringResource(R.string.feature_login_email_placeholder),
-            supportingText = uiState.emailSupportingTextField?.let { stringResource(it) },
-            imeAction = ImeAction.Next,
-            trailingIconParam = uiState.emailTrailingIconTextField,
-            modifier = Modifier.fillMaxWidth(),
-            onFocusChanged = {
-                if (!it.hasFocus) onExecuteCommand.invoke(LoginCommand.CheckShowInvalidEmailMsg)
-            }
-        ) { email ->
-            onExecuteCommand(LoginCommand.WriteData(email = email))
-        }
-        Spacer(Modifier.height(spacings.sixteen))
-        OutlinedTextField(
-            textValue = uiState.loginFormModel.password,
-            labelText = stringResource(R.string.feature_login_password),
-            keyboardInput = KeyboardType.Password,
-            trailingIconParam = TextFieldTrailingIconParam(
-                iconType = TextFieldIcons.SEARCH
-            ),
-            modifier = Modifier.fillMaxWidth()
-        ) { password ->
-            onExecuteCommand(LoginCommand.WriteData(password = password))
-        }
-        Spacer(Modifier.height(spacings.sixteen))
-        if (uiState.invalidCredentials) {
-            Text(
-                text = stringResource(R.string.feature_login_invalid_credentials),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.error
-            )
-            Spacer(Modifier.height(spacings.twelve))
-        }
-        if (!uiState.isLoading) {
-            Button(
-                text = stringResource(R.string.feature_login_enter),
+        Column(verticalArrangement = Arrangement.spacedBy(spacings.sixteen)) {
+            OutlinedTextField(
+                labelText = stringResource(R.string.feature_login_email),
+                textValue = uiState.loginFormModel.email,
+                placeholderText = stringResource(R.string.feature_login_email_placeholder),
+                supportingText = uiState.emailSupporting?.let { stringResource(it) },
+                imeAction = ImeAction.Next,
+                trailingIcon = uiState.emailTrailingIcon,
                 modifier = Modifier.fillMaxWidth(),
-                enabled = uiState.enableLoginButton
-            ) { onExecuteCommand(LoginCommand.Login) }
-        } else {
-            CircularProgressIndicator(
-                modifier = Modifier.align(alignment = Alignment.CenterHorizontally)
-            )
+                onFocusChanged = {
+                    onExecuteCommand(LoginCommand.CheckShowInvalidEmailMsg(it.hasFocus))
+                }
+            ) { email ->
+                onExecuteCommand(LoginCommand.WriteData(email = email))
+            }
+            OutlinedTextField(
+                textValue = uiState.loginFormModel.password,
+                labelText = stringResource(R.string.feature_login_password),
+                keyboardInput = KeyboardType.Password,
+                modifier = Modifier.fillMaxWidth()
+            ) { password ->
+                onExecuteCommand(LoginCommand.WriteData(password = password))
+            }
+            if (uiState.invalidCredentials) {
+                Text(
+                    text = stringResource(R.string.feature_login_invalid_credentials),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.error
+                )
+                Spacer(Modifier.height(spacings.twelve))
+            }
+            if (!uiState.isLoading) {
+                Button(
+                    text = stringResource(R.string.feature_login_enter),
+                    modifier = Modifier.fillMaxWidth(),
+                    enabled = uiState.enableLoginButton
+                ) { onExecuteCommand(LoginCommand.Login) }
+            } else {
+                CircularProgressIndicator(
+                    modifier = Modifier.align(alignment = Alignment.CenterHorizontally)
+                )
+            }
         }
     }
 }

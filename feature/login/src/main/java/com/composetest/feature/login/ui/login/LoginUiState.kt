@@ -1,9 +1,8 @@
 package com.composetest.feature.login.ui.login
 
 import androidx.annotation.StringRes
-import com.composetest.core.designsystem.enums.textfields.TextFieldIcons
+import com.composetest.core.designsystem.enums.textfields.TextFieldIcon
 import com.composetest.core.designsystem.params.alertdialogs.SimpleDialogParam
-import com.composetest.core.designsystem.params.textfields.TextFieldTrailingIconParam
 import com.composetest.core.ui.interfaces.BaseUiState
 import com.composetest.feature.login.R
 import com.composetest.feature.login.models.LoginFormModel
@@ -19,10 +18,9 @@ internal data class LoginUiState(
     val simpleDialogParam: SimpleDialogParam? = null,
     override var isLoading: Boolean = false
 ) : BaseUiState {
-    val emailTrailingIconTextField
-        get() = if (invalidEmail)
-            TextFieldTrailingIconParam(iconType = TextFieldIcons.ERROR) else null
-    val emailSupportingTextField
+    val emailTrailingIcon
+        get() = if (invalidEmail) TextFieldIcon.ERROR else null
+    val emailSupporting
         get() = if (invalidEmail) R.string.feature_login_invalid_email else null
 
     fun initUiState(
@@ -36,21 +34,16 @@ internal data class LoginUiState(
         enableLoginButton = enableLoginButton
     )
 
-    fun setLoginForm(email: String?, password: String?): LoginUiState {
-        var newLoginFormModel = loginFormModel
-        email?.let {
-            newLoginFormModel = newLoginFormModel.copy(email = it)
-        }
-        password?.let {
-            newLoginFormModel = newLoginFormModel.copy(password = it)
-        }
-        return this.copy(loginFormModel = newLoginFormModel)
-    }
+    fun setLoginForm(
+        loginFormModel: LoginFormModel,
+        enableLoginButton: Boolean
+    ) = copy(
+        loginFormModel = loginFormModel,
+        enableLoginButton = enableLoginButton,
+        invalidCredentials = false,
+    )
 
     fun setInvalidEmail(invalid: Boolean) = copy(invalidEmail = invalid)
-
-    fun setEnabledButton(enable: Boolean) =
-        copy(invalidCredentials = false, enableLoginButton = enable)
 
     fun setShowInvalidCredentialsMsg(show: Boolean) = copy(invalidCredentials = show)
 

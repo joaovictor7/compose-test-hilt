@@ -9,7 +9,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.composetest.core.designsystem.components.buttons.Button
-import com.composetest.core.designsystem.params.alertdialogs.DefaultSimpleDialogParam
 import com.composetest.core.designsystem.params.alertdialogs.SimpleDialogParam
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 
@@ -48,6 +47,6 @@ fun SimpleDialog(
 @Preview
 private fun Preview() {
     ComposeTestTheme {
-        SimpleDialog(param = DefaultSimpleDialogParam.NetworkError) {}
+        SimpleDialog(param = CommonSimpleDialog.NetworkError) {}
     }
 }

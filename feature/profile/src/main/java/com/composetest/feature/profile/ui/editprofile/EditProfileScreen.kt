@@ -12,7 +12,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.composetest.core.designsystem.components.buttons.Button
 import com.composetest.core.designsystem.components.scaffolds.ScreenScaffold
 import com.composetest.core.designsystem.components.textfields.TextField
-import com.composetest.core.designsystem.components.toolbar.LeftTopBar
+import com.composetest.core.designsystem.components.topbar.LeftTopBar
 import com.composetest.core.designsystem.dimensions.spacings
 import com.composetest.core.designsystem.extensions.screenMargin
 import com.composetest.core.designsystem.theme.ComposeTestTheme

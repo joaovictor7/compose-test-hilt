@@ -22,15 +22,15 @@ internal sealed interface LoginCommand : Command<LoginCommandReceiver> {
         }
     }
 
-    data object DismissSimpleDialog : LoginCommand {
+    data class CheckShowInvalidEmailMsg(private val hasFocus: Boolean) : LoginCommand {
         override fun execute(commandReceiver: LoginCommandReceiver) {
-            commandReceiver.dismissSimpleDialog()
+            commandReceiver.checkShowInvalidEmailMsg(hasFocus)
         }
     }
 
-    data object CheckShowInvalidEmailMsg : LoginCommand {
+    data object DismissSimpleDialog : LoginCommand {
         override fun execute(commandReceiver: LoginCommandReceiver) {
-            commandReceiver.checkShowInvalidEmailMsg()
+            commandReceiver.dismissSimpleDialog()
         }
     }
 

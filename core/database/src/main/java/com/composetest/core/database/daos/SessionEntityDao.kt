@@ -17,9 +17,9 @@ interface SessionEntityDao {
 
     @Query(
         "SELECT * FROM session " +
-            "WHERE isFinished = 0 " +
-            "ORDER BY sessionId DESC " +
-            "LIMIT 1"
+                "WHERE isFinished = 0 " +
+                "ORDER BY sessionId DESC " +
+                "LIMIT 1"
     )
     suspend fun getCurrentSession(): SessionEntity?
 }

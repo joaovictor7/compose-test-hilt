@@ -7,10 +7,9 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
 import com.composetest.core.designsystem.components.labels.DataLabel
 import com.composetest.core.designsystem.components.scaffolds.ScreenScaffold
-import com.composetest.core.designsystem.components.toolbar.LeftTopBar
+import com.composetest.core.designsystem.components.topbar.LeftTopBar
 import com.composetest.core.designsystem.dimensions.spacings
-import com.composetest.core.designsystem.enums.toolbar.ToolbarAction
-import com.composetest.core.designsystem.params.toolbar.ToolbarActionParam
+import com.composetest.core.designsystem.enums.topbar.TopBarAction
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.interfaces.Screen
@@ -30,11 +29,8 @@ internal object ProfileScreen : Screen<ProfileUiState, ProfileUiEvent, ProfileCo
             topBar = {
                 LeftTopBar(
                     titleId = R.string.profile_title,
-                    actions = listOf(
-                        ToolbarActionParam(ToolbarAction.EDIT) {
-                            onExecuteCommand(ProfileCommand.NavigateToEditProfile)
-                        }
-                    )
+                    actionIcons = listOf(TopBarAction.EDIT),
+                    onClickAction = { onExecuteCommand(ProfileCommand.ToolbarActionClick(it)) },
                 )
             }
         ) {

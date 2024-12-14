@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 internal class RemoteConfigRepositoryImpl @Inject constructor(
     private val remoteConfigDataSource: FirebaseRemoteConfigDataSource
-): RemoteConfigRepository {
+) : RemoteConfigRepository {
 
     override fun getString(key: String) = remoteConfigDataSource.getString(key)
     override fun getBoolean(key: String) = remoteConfigDataSource.getBoolean(key)

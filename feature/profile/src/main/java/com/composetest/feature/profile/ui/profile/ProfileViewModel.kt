@@ -6,6 +6,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.withStyle
 import com.composetest.common.providers.StringResourceProvider
+import com.composetest.core.designsystem.enums.topbar.TopBarAction
 import com.composetest.core.domain.models.UserModel
 import com.composetest.core.domain.usecases.GetUserUseCase
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
@@ -40,8 +41,10 @@ internal class ProfileViewModel @Inject constructor(
         }
     }
 
-    override fun navigateToEditProfile() {
-        navigationManager.navigate(EditProfileDestination)
+    override fun toolbarActionCLick(action: TopBarAction) {
+        if (action == TopBarAction.EDIT) {
+            navigationManager.navigate(EditProfileDestination)
+        }
     }
 
     private fun getModelToScreen(userModel: UserModel) = listOf(

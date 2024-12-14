@@ -44,8 +44,10 @@ internal class LoginViewModel @Inject constructor(
         checkNeedsLogin()
     }
 
-    override fun checkShowInvalidEmailMsg() {
-        if (loginFormModel.emailIsNotEmpty) {
+    override fun checkShowInvalidEmailMsg(hasFocus: Boolean) {
+        if (hasFocus) {
+            updateUiState { it.setInvalidEmail(false) }
+        } else if (loginFormModel.emailIsNotEmpty) {
             updateUiState { it.setInvalidEmail(!loginFormModel.emailIsValid) }
         }
     }
@@ -67,8 +69,16 @@ internal class LoginViewModel @Inject constructor(
     }
 
     override fun writeData(email: String?, password: String?) {
-        updateUiState { it.setLoginForm(email, password) }
-        screenStateWritingManager()
+        var newLoginFormModel = loginFormModel
+        email?.let {
+            newLoginFormModel = newLoginFormModel.copy(email = it)
+        }
+        password?.let {
+            newLoginFormModel = newLoginFormModel.copy(password = it)
+        }
+        updateUiState {
+            it.setLoginForm(newLoginFormModel, newLoginFormModel.loginAlready || byPassLogin)
+        }
     }
 
     override fun setCustomTheme(enterScreen: Boolean, currentAppTheme: Theme) {
@@ -118,11 +128,5 @@ internal class LoginViewModel @Inject constructor(
 
     private suspend fun navigateToRoot() {
         navigationManager.asyncNavigate(RootDestination, NavigationMode.REMOVE_ALL_SCREENS_STACK)
-    }
-
-    private fun screenStateWritingManager() {
-        updateUiState {
-            it.setEnabledButton(loginFormModel.loginAlready || byPassLogin)
-        }
     }
 }

@@ -12,7 +12,7 @@ import com.composetest.core.router.enums.NavigationMode
 import com.composetest.core.router.managers.NavControllerManager
 import com.composetest.core.router.managers.NavigationManager
 import com.composetest.core.ui.bases.BaseViewModel
-import com.composetest.enums.SimpleDialogParam
+import com.composetest.ui.dialogs.SimpleDialogParam
 import com.composetest.ui.analytics.MainAnalytic
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

@@ -19,11 +19,12 @@ internal class AppThemeRepositoryImpl @Inject constructor(
     override val customAppThemeFlow: Flow<Theme?>
         get() = appThemeDataSource.customAppThemeFlow
 
-    override val appThemeFlow: Flow<AppThemeModel> get() = preferenceDataSource.getData { preferences ->
-        val theme = preferences[PreferencesDataKeys.appTheme]
-        val dynamicColors = preferences[PreferencesDataKeys.dynamicColor]
-        appThemeMapper(theme, dynamicColors)
-    }
+    override val appThemeFlow: Flow<AppThemeModel>
+        get() = preferenceDataSource.getData { preferences ->
+            val theme = preferences[PreferencesDataKeys.appTheme]
+            val dynamicColors = preferences[PreferencesDataKeys.dynamicColor]
+            appThemeMapper(theme, dynamicColors)
+        }
 
     override suspend fun setTheme(theme: Theme) {
         preferenceDataSource.setData(PreferencesDataKeys.appTheme, theme.name)
