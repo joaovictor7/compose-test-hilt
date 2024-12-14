@@ -10,7 +10,7 @@ import com.composetest.core.router.enums.NavigationMode
 import com.composetest.core.router.managers.NavControllerManager
 import com.composetest.core.router.managers.NavigationManager
 import com.composetest.core.ui.bases.BaseViewModel
-import com.composetest.feature.root.analytics.root.RootAnalytic
+import com.composetest.feature.root.analytics.root.RootScreenAnalytic
 import com.composetest.feature.root.enums.NavigationFeature
 import com.composetest.feature.root.enums.NavigationLocal
 import com.composetest.feature.root.mappers.UserModalDrawerMapper
@@ -27,7 +27,7 @@ internal class RootViewModel @Inject constructor(
     getAvailableFeaturesUseCase: GetAvailableFeaturesUseCase,
     override val sendAnalyticsUseCase: SendAnalyticsUseCase,
     @NavGraphQualifier(NavGraph.ROOT) override val navigationManager: NavigationManager
-) : BaseViewModel<RootUiState, RootUiEvent>(RootAnalytic, RootUiState()), RootCommandReceiver {
+) : BaseViewModel<RootUiState, RootUiEvent>(RootScreenAnalytic, RootUiState()), RootCommandReceiver {
 
     private val availableFeatures = getAvailableFeaturesUseCase()
     private val bottomNavigationFeaturesOrder = mutableListOf<NavigationFeature>()

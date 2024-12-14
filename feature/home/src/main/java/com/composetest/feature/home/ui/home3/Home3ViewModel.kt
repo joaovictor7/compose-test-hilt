@@ -7,7 +7,7 @@ import com.composetest.core.router.enums.NavGraph
 import com.composetest.core.router.extensions.getParam
 import com.composetest.core.router.managers.NavigationManager
 import com.composetest.core.ui.bases.BaseViewModel
-import com.composetest.feature.home.analytics.home3.Home3Analytic
+import com.composetest.feature.home.analytics.home3.Home3ScreenAnalytic
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -15,7 +15,7 @@ import javax.inject.Inject
 internal class Home3ViewModel @Inject constructor(
     override val sendAnalyticsUseCase: SendAnalyticsUseCase,
     @NavGraphQualifier(NavGraph.MAIN) override val navigationManager: NavigationManager
-) : BaseViewModel<Home3UiState, Home3UiEvent>(Home3Analytic, Home3UiState()), Home3CommandReceiver {
+) : BaseViewModel<Home3UiState, Home3UiEvent>(Home3ScreenAnalytic, Home3UiState()), Home3CommandReceiver {
 
     private val param = navigationManager.getParam<Home3Destination>()
 
