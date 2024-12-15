@@ -1,5 +1,6 @@
 package com.composetest.feature.configuration.ui.theme
 
+import com.composetest.core.domain.enums.Theme
 import com.composetest.core.domain.managers.AppThemeManager
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
 import com.composetest.core.router.di.qualifiers.NavGraphQualifier
@@ -40,23 +41,21 @@ internal class ConfigurationThemeViewModel @Inject constructor(
 
     override fun changeTheme(selectedTheme: ThemeConfiguration) {
         updateUiState { it.setSelectedTheme(selectedTheme) }
-        runAsyncTask(
-            onStart = {
-                sendAnalyticsUseCase(
-                    ConfigurationThemeEventAnalytic.ChangeTheme(theme = selectedTheme.theme.name)
-                )
-            }
-        ) {
+        runAsyncTask {
+            sendChangeThemeAnalytic(theme = selectedTheme.theme)
             appThemeManager.setTheme(selectedTheme.theme)
         }
     }
 
     override fun changeDynamicColor(active: Boolean) {
         updateUiState { it.setDynamicColors(active) }
-        runAsyncTask(onStart = {
-            sendAnalyticsUseCase(ConfigurationThemeEventAnalytic.ChangeTheme(dynamicColors = active))
-        }) {
+        runAsyncTask {
+            sendChangeThemeAnalytic(dynamicColors = active)
             appThemeManager.setDynamicColor(active)
         }
+    }
+
+    private suspend fun sendChangeThemeAnalytic(dynamicColors: Boolean? = null, theme: Theme? = null) {
+        sendAnalyticsUseCase(ConfigurationThemeEventAnalytic.ChangeTheme(theme?.name, dynamicColors))
     }
 }

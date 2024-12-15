@@ -55,14 +55,12 @@ internal class LoginViewModel @Inject constructor(
     }
 
     override fun login() {
+        updateUiState { it.setLoading(true) }
         runAsyncTask(
             onError = ::handleLoginError,
-            onCompletion = { updateUiState { it.setLoading(false) } },
-            onStart = {
-                sendAnalyticsUseCase(LoginClickEventAnalytic.LoginButton)
-                updateUiState { it.setLoading(true) }
-            }
+            onCompletion = { updateUiState { it.setLoading(false) } }
         ) {
+            sendAnalyticsUseCase(LoginClickEventAnalytic.LoginButton)
             authenticationUseCase(
                 AuthenticationCredentialsModel(loginFormModel.email, loginFormModel.password)
             )

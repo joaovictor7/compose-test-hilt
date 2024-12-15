@@ -12,8 +12,8 @@ import com.composetest.core.router.enums.NavigationMode
 import com.composetest.core.router.managers.NavControllerManager
 import com.composetest.core.router.managers.NavigationManager
 import com.composetest.core.ui.bases.BaseViewModel
-import com.composetest.ui.dialogs.SimpleDialogParam
 import com.composetest.ui.analytics.MainAnalytic
+import com.composetest.ui.dialogs.SimpleDialogParam
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -62,7 +62,7 @@ internal class MainViewModel @Inject constructor(
     }
 
     private fun appThemeObservable() {
-        runFlowTask(flow = appThemeManager.appThemeFlow) { appTheme ->
+        runFlowTask(appThemeManager.appThemeFlow) { appTheme ->
             updateUiState { it.setAppTheme(appTheme) }
         }
     }

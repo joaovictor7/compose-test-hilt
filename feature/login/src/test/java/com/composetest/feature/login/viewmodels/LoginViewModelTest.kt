@@ -6,62 +6,61 @@ import com.composetest.common.enums.FlavorDimension
 import com.composetest.common.models.BuildConfigFieldsModel
 import com.composetest.common.models.BuildConfigModel
 import com.composetest.common.providers.BuildConfigProvider
-import com.composetest.core.designsystem.params.alertdialogs.SimpleDialogParam
+import com.composetest.core.designsystem.components.dialogs.CommonSimpleDialog
+import com.composetest.core.domain.analytics.CommonAnalyticEvent
+import com.composetest.core.domain.errors.ApiError
+import com.composetest.core.domain.managers.AppThemeManager
+import com.composetest.core.domain.managers.RemoteConfigManager
 import com.composetest.core.domain.managers.SessionManager
-import com.composetest.core.domain.errors.network.NetworkThrowable
 import com.composetest.core.domain.usecases.AuthenticationUseCase
+import com.composetest.core.domain.usecases.SendAnalyticsUseCase
 import com.composetest.core.router.destinations.root.RootDestination
 import com.composetest.core.router.enums.NavigationMode
 import com.composetest.core.router.managers.NavigationManager
 import com.composetest.core.test.extensions.runFlowTest
 import com.composetest.core.test.interfaces.CoroutinesTest
 import com.composetest.feature.login.R
+import com.composetest.feature.login.analytics.login.LoginClickEventAnalytic
+import com.composetest.feature.login.analytics.login.LoginEventAnalytic
+import com.composetest.feature.login.analytics.login.LoginScreenAnalytic
 import com.composetest.feature.login.models.LoginFormModel
+import com.composetest.feature.login.remoteconfigs.LoginRemoteConfig
 import com.composetest.feature.login.ui.login.LoginCommand
 import com.composetest.feature.login.ui.login.LoginUiState
 import com.composetest.feature.login.ui.login.LoginViewModel
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.coVerifySequence
+import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.test.TestDispatcher
-import kotlinx.coroutines.withContext
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-class LoginViewModelTest : CoroutinesTest {
+private class LoginViewModelTest : CoroutinesTest {
 
     override lateinit var testDispatcher: TestDispatcher
 
-    private val buildConfigModelMock = BuildConfigModel(
-        applicationId = "app",
-        versionName = "1.0.0",
-        versionCode = 0,
-        buildType = BuildType.DEBUG,
-        flavorDimension = FlavorDimension.DEVELOP,
-        flavor = Flavor.FULL,
-        androidSdkVersion = 34,
-        buildConfigFieldsModel = BuildConfigFieldsModel(
-            bffApiHost = String(),
-            bffApiPort = 0,
-            newsApiKey = String()
-        )
-    )
     private val navigationManager: NavigationManager = mockk(relaxed = true)
     private val buildConfigProvider: BuildConfigProvider = object : BuildConfigProvider {
         override val get: BuildConfigModel = buildConfigModelMock
     }
-    private val authenticationUseCase: AuthenticationUseCase = mockk()
+    private val authenticationUseCase: AuthenticationUseCase = mockk(relaxed = true)
     private val sessionManager: SessionManager = mockk {
         coEvery { needsLogin() } returns true
     }
-    private val networkAlertDialogParam = SimpleDialogParam.getNetworkAlertDialogParam { }
+    private val remoteConfigManager: RemoteConfigManager = mockk(relaxed = true) {
+        every { getBoolean(LoginRemoteConfig.BypassLogin) } returns false
+    }
+    private val appThemeManager: AppThemeManager = mockk(relaxed = true)
+    private val sendAnalyticsUseCase: SendAnalyticsUseCase = mockk(relaxed = true)
 
     private lateinit var viewModel: LoginViewModel
 
     @BeforeEach
     fun before() {
-//        viewModel = initViewModel()
+        viewModel = initViewModel()
     }
 
     @Test
@@ -85,92 +84,27 @@ class LoginViewModelTest : CoroutinesTest {
     @Test
     fun `initial uiState when not need login`() {
         coEvery { sessionManager.needsLogin() } returns false
-//        val viewModel = initViewModel()
-//        runFlowTest(viewModel.uiState) { onCancelJob, collectedStates ->
-//            onCancelJob()
-//
-//            assertEquals(
-//                listOf(LoginUiState()),
-//                collectedStates
-//            )
-//            coVerify {
-//                navigationManager.asyncNavigate(
-//                    RootDestination,
-//                    NavigationMode.REMOVE_ALL_SCREENS_STACK
-//                )
-//            }
-//        }
-    }
-
-    @Test
-    fun `misleanding credentials login`() =
+        val viewModel = initViewModel()
         runFlowTest(viewModel.uiState) { onCancelJob, collectedStates ->
-            coEvery {
-                authenticationUseCase.invoke(any())
-            } coAnswers { withContext(testDispatcher) { throw InvalidCredentialsThrowable() } }
-
-            viewModel.executeCommand(LoginCommand.WriteData("teste@teste.com", "password"))
-            viewModel.executeCommand(LoginCommand.Login)
             onCancelJob()
 
             assertEquals(
-                listOf(
-                    LoginUiState(
-                        needsLogin = true,
-                        versionName = "1.0.0 - 0",
-                        enableLoginButton = true
-                    ),
-                    LoginUiState(
-                        needsLogin = true,
-                        versionName = "1.0.0 - 0",
-                        enableLoginButton = true,
-                        loginFormModel = LoginFormModel(
-                            email = "teste@teste.com",
-                            password = "password"
-                        )
-                    ),
-                    LoginUiState(
-                        needsLogin = true,
-                        versionName = "1.0.0 - 0",
-                        enableLoginButton = true,
-                        isLoading = true,
-                        loginFormModel = LoginFormModel(
-                            email = "teste@teste.com",
-                            password = "password"
-                        )
-                    ),
-                    LoginUiState(
-                        needsLogin = true,
-                        versionName = "1.0.0 - 0",
-                        enableLoginButton = true,
-                        invalidCredentials = true,
-                        isLoading = true,
-                        loginFormModel = LoginFormModel(
-                            email = "teste@teste.com",
-                            password = "password"
-                        )
-                    ),
-                    LoginUiState(
-                        needsLogin = true,
-                        versionName = "1.0.0 - 0",
-                        enableLoginButton = true,
-                        invalidCredentials = true,
-                        loginFormModel = LoginFormModel(
-                            email = "teste@teste.com",
-                            password = "password"
-                        )
-                    )
-                ),
+                listOf(LoginUiState()),
                 collectedStates
             )
+            coVerify {
+                navigationManager.asyncNavigate(
+                    RootDestination,
+                    NavigationMode.REMOVE_ALL_SCREENS_STACK
+                )
+            }
         }
+    }
 
     @Test
-    fun `success login`() =
+    fun `misleading credentials login`() =
         runFlowTest(viewModel.uiState) { onCancelJob, collectedStates ->
-            coEvery {
-                authenticationUseCase(any())
-            } coAnswers { withContext(testDispatcher) {} }
+            coEvery { authenticationUseCase(any()) } throws ApiError.Unauthorized()
 
             viewModel.executeCommand(LoginCommand.WriteData("teste@teste.com", "password"))
             viewModel.executeCommand(LoginCommand.Login)
@@ -188,6 +122,7 @@ class LoginViewModelTest : CoroutinesTest {
                         versionName = "1.0.0 - 0",
                         needsLogin = true,
                         distributionTextId = R.string.feature_login_full_distribution,
+                        enableLoginButton = true,
                         loginFormModel = LoginFormModel(
                             email = "teste@teste.com",
                             password = "password"
@@ -198,6 +133,58 @@ class LoginViewModelTest : CoroutinesTest {
                         versionName = "1.0.0 - 0",
                         enableLoginButton = true,
                         distributionTextId = R.string.feature_login_full_distribution,
+                        isLoading = true,
+                        loginFormModel = LoginFormModel(
+                            email = "teste@teste.com",
+                            password = "password"
+                        )
+                    ),
+                    LoginUiState(
+                        needsLogin = true,
+                        versionName = "1.0.0 - 0",
+                        enableLoginButton = true,
+                        distributionTextId = R.string.feature_login_full_distribution,
+                        invalidCredentials = true,
+                        loginFormModel = LoginFormModel(
+                            email = "teste@teste.com",
+                            password = "password"
+                        )
+                    )
+                ),
+                collectedStates
+            )
+            coVerify {
+                sendAnalyticsUseCase(LoginEventAnalytic.LoginSuccessful(false))
+            }
+        }
+
+    @Test
+    fun `success login`() =
+        runFlowTest(viewModel.uiState) { onCancelJob, collectedStates ->
+            viewModel.executeCommand(LoginCommand.WriteData(email = "teste@teste.com"))
+            viewModel.executeCommand(LoginCommand.WriteData(password = "password"))
+            viewModel.executeCommand(LoginCommand.Login)
+            onCancelJob()
+
+            assertEquals(
+                listOf(
+                    LoginUiState(),
+                    LoginUiState(
+                        versionName = "1.0.0 - 0",
+                        needsLogin = true,
+                        distributionTextId = R.string.feature_login_full_distribution,
+                    ),
+                    LoginUiState(
+                        versionName = "1.0.0 - 0",
+                        needsLogin = true,
+                        distributionTextId = R.string.feature_login_full_distribution,
+                        loginFormModel = LoginFormModel(email = "teste@teste.com")
+                    ),
+                    LoginUiState(
+                        versionName = "1.0.0 - 0",
+                        needsLogin = true,
+                        distributionTextId = R.string.feature_login_full_distribution,
+                        enableLoginButton = true,
                         loginFormModel = LoginFormModel(
                             email = "teste@teste.com",
                             password = "password"
@@ -227,7 +214,10 @@ class LoginViewModelTest : CoroutinesTest {
                 ),
                 collectedStates
             )
-            coVerify {
+            coVerifySequence {
+                sendAnalyticsUseCase(CommonAnalyticEvent.OpenScreen(LoginScreenAnalytic))
+                sendAnalyticsUseCase(LoginClickEventAnalytic.LoginButton)
+                sendAnalyticsUseCase(LoginEventAnalytic.LoginSuccessful(true))
                 navigationManager.asyncNavigate(
                     RootDestination,
                     NavigationMode.REMOVE_ALL_SCREENS_STACK
@@ -238,9 +228,7 @@ class LoginViewModelTest : CoroutinesTest {
     @Test
     fun `error network`() =
         runFlowTest(viewModel.uiState) { onCancelJob, collectedStates ->
-            coEvery {
-                authenticationUseCase(any())
-            } coAnswers { withContext(testDispatcher) { throw NetworkThrowable() } }
+            coEvery { authenticationUseCase(any()) } throws ApiError.Network()
 
             viewModel.executeCommand(LoginCommand.WriteData("teste@teste.com", "password"))
             viewModel.executeCommand(LoginCommand.Login)
@@ -250,13 +238,14 @@ class LoginViewModelTest : CoroutinesTest {
                 listOf(
                     LoginUiState(),
                     LoginUiState(
-                        needsLogin = true,
                         versionName = "1.0.0 - 0",
-                        enableLoginButton = true
+                        needsLogin = true,
+                        distributionTextId = R.string.feature_login_full_distribution,
                     ),
                     LoginUiState(
-                        needsLogin = true,
                         versionName = "1.0.0 - 0",
+                        needsLogin = true,
+                        distributionTextId = R.string.feature_login_full_distribution,
                         enableLoginButton = true,
                         loginFormModel = LoginFormModel(
                             email = "teste@teste.com",
@@ -267,6 +256,7 @@ class LoginViewModelTest : CoroutinesTest {
                         needsLogin = true,
                         versionName = "1.0.0 - 0",
                         enableLoginButton = true,
+                        distributionTextId = R.string.feature_login_full_distribution,
                         isLoading = true,
                         loginFormModel = LoginFormModel(
                             email = "teste@teste.com",
@@ -277,18 +267,8 @@ class LoginViewModelTest : CoroutinesTest {
                         needsLogin = true,
                         versionName = "1.0.0 - 0",
                         enableLoginButton = true,
-                        isLoading = true,
-                        simpleDialogParam = networkAlertDialogParam,
-                        loginFormModel = LoginFormModel(
-                            email = "teste@teste.com",
-                            password = "password"
-                        )
-                    ),
-                    LoginUiState(
-                        needsLogin = true,
-                        versionName = "1.0.0 - 0",
-                        enableLoginButton = true,
-                        simpleDialogParam = networkAlertDialogParam,
+                        distributionTextId = R.string.feature_login_full_distribution,
+                        simpleDialogParam = CommonSimpleDialog.NetworkError,
                         loginFormModel = LoginFormModel(
                             email = "teste@teste.com",
                             password = "password"
@@ -297,15 +277,35 @@ class LoginViewModelTest : CoroutinesTest {
                 ),
                 collectedStates
             )
+            coVerify {
+                sendAnalyticsUseCase(LoginEventAnalytic.LoginSuccessful(false))
+            }
         }
 
-//    private fun initViewModel() = LoginViewModel(
-//        navigationManager = navigationManager,
-//        buildConfigProvider = buildConfigProvider,
-//        appThemeManager = mockk(),
-//        authenticationUseCase = authenticationUseCase,
-//        sendAnalyticsUseCase = mockk(relaxed = true),
-//        sessionManager = sessionManager,
-//        getBooleanRemoteConfigUseCase = mockk(relaxed = true)
-//    )
+    private fun initViewModel() = LoginViewModel(
+        buildConfigProvider = buildConfigProvider,
+        appThemeManager = appThemeManager,
+        authenticationUseCase = authenticationUseCase,
+        sessionManager = sessionManager,
+        remoteConfigManager = remoteConfigManager,
+        sendAnalyticsUseCase = sendAnalyticsUseCase,
+        navigationManager = navigationManager,
+    )
+
+    private companion object {
+        val buildConfigModelMock = BuildConfigModel(
+            applicationId = "app",
+            versionName = "1.0.0",
+            versionCode = 0,
+            buildType = BuildType.DEBUG,
+            flavorDimension = FlavorDimension.DEVELOP,
+            flavor = Flavor.FULL,
+            androidSdkVersion = 34,
+            buildConfigFieldsModel = BuildConfigFieldsModel(
+                bffApiHost = String(),
+                bffApiPort = 0,
+                newsApiKey = String()
+            )
+        )
+    }
 }
