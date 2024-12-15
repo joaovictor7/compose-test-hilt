@@ -13,7 +13,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.composetest.core.designsystem.R
-import com.composetest.core.designsystem.dimensions.spacings
+import com.composetest.core.designsystem.dimensions.Spacing
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 
 @Composable
@@ -31,8 +31,8 @@ fun DataLabel(
 ) {
     Column {
         Column(
-            modifier = Modifier.padding(horizontal = spacings.eight, vertical = spacings.twelve),
-            verticalArrangement = Arrangement.spacedBy(spacings.four)
+            modifier = Modifier.padding(horizontal = Spacing.eight, vertical = Spacing.twelve),
+            verticalArrangement = Arrangement.spacedBy(Spacing.four)
         ) {
             Text(
                 text = stringResource(labelTitleId),

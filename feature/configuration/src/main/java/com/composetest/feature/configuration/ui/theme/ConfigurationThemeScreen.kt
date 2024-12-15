@@ -21,17 +21,17 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.unit.dp
 import com.composetest.core.designsystem.components.scaffolds.ScreenScaffold
 import com.composetest.core.designsystem.components.switches.ThumbSwitch
 import com.composetest.core.designsystem.components.topbar.LeftTopBar
-import com.composetest.core.designsystem.dimensions.spacings
+import com.composetest.core.designsystem.dimensions.Spacing
 import com.composetest.core.designsystem.extensions.opacity
 import com.composetest.core.designsystem.extensions.screenMargin
 import com.composetest.core.designsystem.enums.switches.SwitchType
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.interfaces.Screen
-import com.composetest.feature.configuration.dimensions.components
 import com.composetest.feature.configuration.enums.ThemeConfiguration
 import kotlinx.coroutines.flow.Flow
 import com.composetest.feature.configuration.R as ConfigurationResources
@@ -69,9 +69,9 @@ private fun Section(
         text = stringResource(titleId),
         style = MaterialTheme.typography.titleMedium
     )
-    Spacer(Modifier.height(spacings.sixteen))
+    Spacer(Modifier.height(Spacing.sixteen))
     content()
-    Spacer(Modifier.height(spacings.twentyEight))
+    Spacer(Modifier.height(Spacing.twentyEight))
 }
 
 @Composable
@@ -88,16 +88,16 @@ private fun Theme(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
                 modifier = Modifier
-                    .padding(horizontal = spacings.four)
+                    .padding(horizontal = Spacing.four)
                     .clip(MaterialTheme.shapes.medium)
                     .setSelectedBackgroundColor(selectedTheme = theme == uiState.selectedTheme)
-                    .size(components.themeButtonSize)
+                    .size(100.dp)
                     .clickable {
                         onExecuteCommand(ConfigurationThemeCommand.ChangeTheme(theme))
                     }
             ) {
                 Icon(painter = painterResource(theme.iconId), contentDescription = null)
-                Spacer(Modifier.height(spacings.eight))
+                Spacer(Modifier.height(Spacing.eight))
                 Text(
                     text = stringResource(theme.textId),
                     style = MaterialTheme.typography.labelLarge

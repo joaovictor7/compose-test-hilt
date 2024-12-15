@@ -41,14 +41,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.composetest.core.designsystem.components.scaffolds.ScreenScaffold
 import com.composetest.core.designsystem.components.topbar.CentralizedTopBar
-import com.composetest.core.designsystem.dimensions.spacings
+import com.composetest.core.designsystem.dimensions.Spacing
 import com.composetest.core.designsystem.enums.topbar.TopBarAction
 import com.composetest.core.designsystem.extensions.asActivity
 import com.composetest.core.designsystem.extensions.horizontalScreenMargin
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.interfaces.Screen
 import com.composetest.feature.home.navigation.homeRootNavGraph
-import com.composetest.feature.root.dimensions.components
+import com.composetest.feature.root.ui.dimensions.Component
 import com.composetest.feature.root.enums.NavigationFeature
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -127,7 +127,7 @@ private fun getModalDrawerContent(
     onExecuteCommand: (Command<RootCommandReceiver>) -> Unit
 ) = @Composable {
     ModalDrawerSheet {
-        Column(verticalArrangement = Arrangement.spacedBy(spacings.twenty)) {
+        Column(verticalArrangement = Arrangement.spacedBy(Spacing.twenty)) {
             ModalDrawerHeader(uiState = uiState, onExecuteCommand = onExecuteCommand)
             HorizontalDivider()
             ModalDrawerItems(uiState = uiState, onExecuteCommand = onExecuteCommand)
@@ -149,18 +149,18 @@ private fun ModalDrawerHeader(
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(spacings.twelve)
+            horizontalArrangement = Arrangement.spacedBy(Spacing.twelve)
         ) {
             Image(
                 modifier = Modifier
-                    .size(components.modelDrawerUserImageSize)
+                    .size(Component.modelDrawerUserImageSize)
                     .clip(CircleShape),
                 painter = painterResource(DesignSystemResources.drawable.ic_person_off),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary)
             )
-            Column(verticalArrangement = Arrangement.spacedBy(spacings.four)) {
+            Column(verticalArrangement = Arrangement.spacedBy(Spacing.four)) {
                 uiState.userModalDrawerModel.username?.let {
                     Text(
                         text = uiState.userModalDrawerModel.username,
@@ -190,9 +190,9 @@ private fun ModalDrawerItems(
     uiState: RootUiState,
     onExecuteCommand: (Command<RootCommandReceiver>) -> Unit
 ) {
-    LazyColumn(verticalArrangement = Arrangement.spacedBy(spacings.four)) {
-        items(uiState.modalDrawerNavigationFeaturesToList) {
-            val label = it.textId?.let { stringResource(it) }.orEmpty()
+    LazyColumn(verticalArrangement = Arrangement.spacedBy(Spacing.four)) {
+        items(uiState.modalDrawerNavigationFeaturesToList) { item ->
+            val label = item.textId?.let { stringResource(it) }.orEmpty()
             NavigationDrawerItem(
                 selected = false,
                 label = {
@@ -203,12 +203,12 @@ private fun ModalDrawerItems(
                 },
                 icon = {
                     Icon(
-                        painter = painterResource(it.iconId),
+                        painter = painterResource(item.iconId),
                         contentDescription = label
                     )
                 },
                 onClick = {
-                    onExecuteCommand(RootCommand.NavigateToFeature(it))
+                    onExecuteCommand(RootCommand.NavigateToFeature(item))
                 }
             )
         }

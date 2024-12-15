@@ -34,8 +34,7 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.composetest.core.designsystem.R
-import com.composetest.core.designsystem.dimensions.components
-import com.composetest.core.designsystem.dimensions.spacings
+import com.composetest.core.designsystem.dimensions.Spacing
 import com.composetest.core.designsystem.extensions.opacity
 import com.composetest.core.designsystem.params.dock.IconDockParam
 import com.composetest.core.designsystem.theme.ComposeTestTheme
@@ -52,8 +51,8 @@ fun IconDock(
     onSelectionChange: (selectedIndex: Int) -> Unit
 ) {
     if (dockItems.isEmpty()) return
-    val internalPadding = spacings.one
-    val zeroSpacing = spacings.zero
+    val internalPadding = Spacing.one
+    val zeroSpacing = Spacing.zero
     val currentDensity = LocalDensity.current
     val containerColor = TabRowDefaults.primaryContainerColor.opacity(0.7f)
     var componentHeight by remember { mutableStateOf(zeroSpacing) }
@@ -62,7 +61,7 @@ fun IconDock(
             .background(color = containerColor, shape = shape)
             .border(
                 border = BorderStroke(
-                    width = components.strokeWidthDock,
+                    width = 1.dp,
                     color = MaterialTheme.colorScheme.outlineVariant
                 ),
                 shape = shape

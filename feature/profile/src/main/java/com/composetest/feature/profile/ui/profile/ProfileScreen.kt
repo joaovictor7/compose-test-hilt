@@ -8,7 +8,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.composetest.core.designsystem.components.labels.DataLabel
 import com.composetest.core.designsystem.components.scaffolds.ScreenScaffold
 import com.composetest.core.designsystem.components.topbar.LeftTopBar
-import com.composetest.core.designsystem.dimensions.spacings
+import com.composetest.core.designsystem.dimensions.Spacing
 import com.composetest.core.designsystem.enums.topbar.TopBarAction
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.ui.interfaces.Command
@@ -34,7 +34,7 @@ internal object ProfileScreen : Screen<ProfileUiState, ProfileUiEvent, ProfileCo
                 )
             }
         ) {
-            Column(verticalArrangement = Arrangement.spacedBy(spacings.eight)) {
+            Column(verticalArrangement = Arrangement.spacedBy(Spacing.eight)) {
                 uiState.profileScreenModels.forEach {
                     DataLabel(
                         labelTitleId = it.titleId,

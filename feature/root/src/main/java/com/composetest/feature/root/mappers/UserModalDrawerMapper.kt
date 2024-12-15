@@ -1,7 +1,7 @@
 package com.composetest.feature.root.mappers
 
 import com.composetest.core.domain.models.UserModel
-import com.composetest.feature.root.UserModalDrawerModel
+import com.composetest.feature.root.models.UserModalDrawerModel
 import javax.inject.Inject
 
 internal class UserModalDrawerMapper @Inject constructor() {

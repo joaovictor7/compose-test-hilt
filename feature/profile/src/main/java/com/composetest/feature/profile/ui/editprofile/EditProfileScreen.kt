@@ -13,7 +13,7 @@ import com.composetest.core.designsystem.components.buttons.Button
 import com.composetest.core.designsystem.components.scaffolds.ScreenScaffold
 import com.composetest.core.designsystem.components.textfields.TextField
 import com.composetest.core.designsystem.components.topbar.LeftTopBar
-import com.composetest.core.designsystem.dimensions.spacings
+import com.composetest.core.designsystem.dimensions.Spacing
 import com.composetest.core.designsystem.extensions.screenMargin
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.ui.interfaces.Command
@@ -41,7 +41,7 @@ internal object EditProfileScreen :
                 EditProfileFormData(uiState = uiState, onExecuteCommand = onExecuteCommand)
                 Button(
                     modifier = Modifier
-                        .padding(top = spacings.twelve)
+                        .padding(top = Spacing.twelve)
                         .fillMaxWidth(0.9f)
                         .align(Alignment.CenterHorizontally),
                     text = "Salvar",
@@ -59,7 +59,7 @@ private fun EditProfileFormData(
     uiState: EditProfileUiState,
     onExecuteCommand: (Command<EditProfileCommandReceiver>) -> Unit
 ) {
-    Column(verticalArrangement = Arrangement.spacedBy(spacings.twelve)) {
+    Column(verticalArrangement = Arrangement.spacedBy(Spacing.twelve)) {
         TextField(
             modifier = Modifier.fillMaxWidth(),
             labelText = "E-mail",

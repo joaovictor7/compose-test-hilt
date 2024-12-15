@@ -29,7 +29,7 @@ import com.composetest.core.designsystem.components.dialogs.SimpleDialog
 import com.composetest.core.designsystem.components.textfields.OutlinedTextField
 import com.composetest.core.designsystem.compositions.LocalTheme
 import com.composetest.core.designsystem.constants.screenMargin
-import com.composetest.core.designsystem.dimensions.spacings
+import com.composetest.core.designsystem.dimensions.Spacing
 import com.composetest.core.designsystem.extensions.screenMarginWithoutBar
 import com.composetest.core.designsystem.extensions.verticalTopBackgroundBrush
 import com.composetest.core.designsystem.theme.ComposeTestTheme
@@ -75,8 +75,8 @@ private fun LoginForm(
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center
         )
-        Spacer(Modifier.height(spacings.twelve))
-        Column(verticalArrangement = Arrangement.spacedBy(spacings.sixteen)) {
+        Spacer(Modifier.height(Spacing.twelve))
+        Column(verticalArrangement = Arrangement.spacedBy(Spacing.sixteen)) {
             OutlinedTextField(
                 labelText = stringResource(R.string.feature_login_email),
                 textValue = uiState.loginFormModel.email,
@@ -105,7 +105,7 @@ private fun LoginForm(
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.error
                 )
-                Spacer(Modifier.height(spacings.twelve))
+                Spacer(Modifier.height(Spacing.twelve))
             }
             if (!uiState.isLoading) {
                 Button(
@@ -127,7 +127,7 @@ private fun BoxScope.VersionName(uiState: LoginUiState) {
     Column(
         modifier = Modifier
             .align(Alignment.BottomCenter)
-            .padding(bottom = spacings.twelve),
+            .padding(bottom = Spacing.twelve),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(

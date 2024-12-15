@@ -1,4 +1,4 @@
-package com.composetest.feature.root
+package com.composetest.feature.root.models
 
 internal data class UserModalDrawerModel(
     val email: String = String(),
