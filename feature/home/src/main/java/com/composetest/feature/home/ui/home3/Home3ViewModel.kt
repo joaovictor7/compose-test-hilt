@@ -4,7 +4,7 @@ import com.composetest.core.domain.usecases.SendAnalyticsUseCase
 import com.composetest.core.router.destinations.home.Home3Destination
 import com.composetest.core.router.di.qualifiers.NavGraphQualifier
 import com.composetest.core.router.enums.NavGraph
-import com.composetest.core.router.extensions.getParam
+import com.composetest.core.router.extensions.getDestination
 import com.composetest.core.router.managers.NavigationManager
 import com.composetest.core.ui.bases.BaseViewModel
 import com.composetest.feature.home.analytics.home3.Home3ScreenAnalytic
@@ -17,7 +17,7 @@ internal class Home3ViewModel @Inject constructor(
     @NavGraphQualifier(NavGraph.MAIN) override val navigationManager: NavigationManager
 ) : BaseViewModel<Home3UiState, Home3UiEvent>(Home3ScreenAnalytic, Home3UiState()), Home3CommandReceiver {
 
-    private val param = navigationManager.getParam<Home3Destination>()
+    private val param = navigationManager.getDestination<Home3Destination>()
 
     override val commandReceiver = this
 
