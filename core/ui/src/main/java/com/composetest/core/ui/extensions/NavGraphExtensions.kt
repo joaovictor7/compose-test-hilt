@@ -11,6 +11,7 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavDeepLink
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import com.composetest.core.designsystem.utils.isPreview
 import com.composetest.core.router.interfaces.Destination
 import com.composetest.core.router.utils.getNavTypes
 import com.composetest.core.ui.bases.BaseViewModel
@@ -18,7 +19,7 @@ import com.composetest.core.ui.interfaces.BaseUiState
 import com.composetest.core.ui.interfaces.CommandReceiver
 import com.composetest.core.ui.interfaces.Screen
 
-inline fun <reified D, reified VM, US, UE, CR> NavGraphBuilder.composable(
+inline fun <reified D, reified VM, US, UE, CR> NavGraphBuilder.buildComposable(
     screen: Screen<US, UE, CR>,
     navigateBackHandler: Boolean = true,
     deepLinks: List<NavDeepLink> = emptyList(),
@@ -35,6 +36,7 @@ inline fun <reified D, reified VM, US, UE, CR> NavGraphBuilder.composable(
         popEnterTransition = popEnterTransition,
         popExitTransition = popExitTransition
     ) {
+        if (isPreview) return@composable
         val viewModel = hiltViewModel<VM>()
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
         if (navigateBackHandler) {

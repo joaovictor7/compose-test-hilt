@@ -1,5 +1,6 @@
 package com.composetest.feature.root.ui.root
 
+import androidx.compose.material3.DrawerValue
 import androidx.navigation.NavHostController
 import com.composetest.core.domain.usecases.GetAvailableFeaturesUseCase
 import com.composetest.core.domain.usecases.GetUserUseCase
@@ -68,7 +69,7 @@ internal class RootViewModel @Inject constructor(
 
     override fun navigateToFeature(feature: NavigationFeature) {
         if (feature.navigationLocal == NavigationLocal.MODAL_DRAWER) {
-            mainNavigationManager.navigate(feature.destination)
+            navigateToModalDrawerFeature(feature)
         } else {
             navigateToBottomFeature(feature)
         }
@@ -79,6 +80,10 @@ internal class RootViewModel @Inject constructor(
         currentScreenObservable()
     }
 
+    override fun modalDrawerManager(drawerValue: DrawerValue) {
+        launchUiEvent(RootUiEvent.ManagerModalDrawer(drawerValue))
+    }
+
     private fun navigateToBottomFeature(navigationFeature: NavigationFeature) {
         if (firstBottomNavigationFeature == navigationFeature) {
             bottomNavigationFeaturesOrder.clear()
@@ -87,6 +92,11 @@ internal class RootViewModel @Inject constructor(
         }
         bottomNavigationFeaturesOrder.add(navigationFeature)
         navigationManager.navigate(navigationFeature.destination, NavigationMode.SAVE_SCREEN_STATE)
+    }
+
+    private fun navigateToModalDrawerFeature(feature: NavigationFeature) {
+        launchUiEvent(RootUiEvent.ManagerModalDrawer(DrawerValue.Closed))
+        mainNavigationManager.navigate(feature.destination)
     }
 
     private fun currentScreenObservable() {

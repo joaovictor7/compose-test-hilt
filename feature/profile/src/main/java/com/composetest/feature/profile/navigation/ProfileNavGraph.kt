@@ -3,7 +3,7 @@ package com.composetest.feature.profile.navigation
 import androidx.navigation.NavGraphBuilder
 import com.composetest.core.router.destinations.profile.EditProfileDestination
 import com.composetest.core.router.destinations.profile.ProfileDestination
-import com.composetest.core.ui.extensions.composable
+import com.composetest.core.ui.extensions.buildComposable
 import com.composetest.feature.profile.ui.editprofile.EditProfileCommandReceiver
 import com.composetest.feature.profile.ui.editprofile.EditProfileScreen
 import com.composetest.feature.profile.ui.editprofile.EditProfileUiEvent
@@ -16,11 +16,11 @@ import com.composetest.feature.profile.ui.profile.ProfileUiState
 import com.composetest.feature.profile.ui.profile.ProfileViewModel
 
 fun NavGraphBuilder.profileNavGraph() {
-    composable<ProfileDestination, ProfileViewModel, ProfileUiState, ProfileUiEvent, ProfileCommandReceiver>(
+    buildComposable<ProfileDestination, ProfileViewModel, ProfileUiState, ProfileUiEvent, ProfileCommandReceiver>(
         screen = ProfileScreen,
         navigateBackHandler = false
     )
-    composable<EditProfileDestination, EditProfileViewModel, EditProfileUiState, EditProfileUiEvent, EditProfileCommandReceiver>(
+    buildComposable<EditProfileDestination, EditProfileViewModel, EditProfileUiState, EditProfileUiEvent, EditProfileCommandReceiver>(
         screen = EditProfileScreen
     )
 }

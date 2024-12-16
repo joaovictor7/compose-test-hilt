@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.Flow
 internal object Home3Screen : Screen<Home3UiState, Home3UiEvent, Home3CommandReceiver> {
 
     @Composable
-    override fun invoke(
+    override operator fun invoke(
         uiState: Home3UiState,
         uiEvent: Flow<Home3UiEvent>?,
         onExecuteCommand: (Command<Home3CommandReceiver>) -> Unit

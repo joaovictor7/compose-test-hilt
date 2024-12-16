@@ -1,6 +1,5 @@
 package com.composetest.core.router.managers
 
-import androidx.lifecycle.SavedStateHandle
 import com.composetest.core.router.enums.NavigationMode
 import com.composetest.core.router.interfaces.Destination
 import com.composetest.core.router.interfaces.ResultParam
@@ -8,7 +7,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlin.reflect.KClass
 
 interface NavigationManager {
-    val savedStateHandle: SavedStateHandle
     val currentRoute: String?
     val currentRouteChangesFlow: Flow<String?>
 

@@ -1,6 +1,5 @@
 package com.composetest.core.router.di
 
-import androidx.lifecycle.SavedStateHandle
 import com.composetest.common.providers.DispatcherProvider
 import com.composetest.core.router.di.qualifiers.NavGraphQualifier
 import com.composetest.core.router.enums.NavGraph
@@ -24,26 +23,22 @@ internal object ViewModelManagerModule {
     @NavGraphQualifier(NavGraph.MAIN)
     fun navigationMainManager(
         navControllerManager: NavControllerManager,
-        savedStateHandle: SavedStateHandle,
         dispatcherProvider: DispatcherProvider
     ): NavigationManager = NavigationManagerImpl(
         navControllerManager = navControllerManager,
         navGraph = NavGraph.MAIN,
-        dispatcherProvider = dispatcherProvider,
-        savedStateHandle = savedStateHandle
+        dispatcherProvider = dispatcherProvider
     )
 
     @Provides
     @NavGraphQualifier(NavGraph.ROOT)
     fun navigationRootManager(
         navControllerManager: NavControllerManager,
-        savedStateHandle: SavedStateHandle,
         dispatcherProvider: DispatcherProvider
     ): NavigationManager = NavigationManagerImpl(
         navControllerManager = navControllerManager,
         navGraph = NavGraph.ROOT,
-        dispatcherProvider = dispatcherProvider,
-        savedStateHandle = savedStateHandle
+        dispatcherProvider = dispatcherProvider
     )
 }
 

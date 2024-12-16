@@ -27,7 +27,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,6 +36,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.composetest.core.designsystem.components.scaffolds.ScreenScaffold
@@ -45,13 +45,15 @@ import com.composetest.core.designsystem.dimensions.Spacing
 import com.composetest.core.designsystem.enums.topbar.TopBarAction
 import com.composetest.core.designsystem.extensions.asActivity
 import com.composetest.core.designsystem.extensions.horizontalScreenMargin
+import com.composetest.core.designsystem.theme.ComposeTestTheme
+import com.composetest.core.router.destinations.home.HomeDestination
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.interfaces.Screen
 import com.composetest.feature.home.navigation.homeRootNavGraph
-import com.composetest.feature.root.ui.dimensions.Component
 import com.composetest.feature.root.enums.NavigationFeature
+import com.composetest.feature.root.models.BottomFeatureNavigationModel
+import com.composetest.feature.root.ui.dimensions.Component
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
 import com.composetest.core.designsystem.R as DesignSystemResources
 
 internal object RootScreen : Screen<RootUiState, RootUiEvent, RootCommandReceiver> {
@@ -63,8 +65,7 @@ internal object RootScreen : Screen<RootUiState, RootUiEvent, RootCommandReceive
         onExecuteCommand: (Command<RootCommandReceiver>) -> Unit
     ) {
         val context = LocalContext.current
-        val coroutineScope = rememberCoroutineScope()
-        val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+        val drawerState = rememberDrawerState(DrawerValue.Closed)
         val screenTitle = uiState.currentScreenTitle
         ModalNavigationDrawer(
             drawerState = drawerState,
@@ -77,7 +78,7 @@ internal object RootScreen : Screen<RootUiState, RootUiEvent, RootCommandReceive
                         titleId = screenTitle,
                         navigationAction = TopBarAction.MENU,
                         onClickNavigationAction = {
-                            coroutineScope.launch { drawerState.open() }
+                            onExecuteCommand(RootCommand.ModalDrawerManager(DrawerValue.Open))
                         }
                     )
                 },
@@ -89,7 +90,7 @@ internal object RootScreen : Screen<RootUiState, RootUiEvent, RootCommandReceive
                 )
                 BackHandler {
                     if (drawerState.isOpen) {
-                        coroutineScope.launch { drawerState.close() }
+                        onExecuteCommand(RootCommand.ModalDrawerManager(DrawerValue.Closed))
                     } else {
                         onExecuteCommand(RootCommand.BackHandler)
                     }
@@ -99,7 +100,11 @@ internal object RootScreen : Screen<RootUiState, RootUiEvent, RootCommandReceive
         LaunchedEffect(Unit) {
             uiEvent?.collect {
                 when (it) {
-                    RootUiEvent.FinishApp -> context.asActivity?.finish()
+                    is RootUiEvent.FinishApp -> context.asActivity?.finish()
+                    is RootUiEvent.ManagerModalDrawer -> when (it.drawerValue) {
+                        DrawerValue.Open -> drawerState.open()
+                        DrawerValue.Closed -> drawerState.close()
+                    }
                 }
             }
         }
@@ -238,5 +243,22 @@ private fun getBottomBar(
                 }
             )
         }
+    }
+}
+
+@Composable
+@Preview
+private fun Preview() {
+    ComposeTestTheme {
+        RootScreen(
+            uiState = RootUiState(
+                firstDestination = HomeDestination,
+                bottomNavigationFeatures = listOf(
+                    BottomFeatureNavigationModel(NavigationFeature.HOME, true),
+                    BottomFeatureNavigationModel(NavigationFeature.HOME)
+                )
+            ),
+            uiEvent = null
+        ) { }
     }
 }

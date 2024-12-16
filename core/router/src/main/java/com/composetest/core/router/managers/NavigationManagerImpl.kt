@@ -1,7 +1,6 @@
 package com.composetest.core.router.managers
 
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavOptions
 import com.composetest.common.providers.DispatcherProvider
@@ -18,8 +17,7 @@ import kotlin.reflect.KClass
 internal class NavigationManagerImpl(
     private val navControllerManager: NavControllerManager,
     private val navGraph: NavGraph,
-    private val dispatcherProvider: DispatcherProvider,
-    override val savedStateHandle: SavedStateHandle
+    private val dispatcherProvider: DispatcherProvider
 ) : NavigationManager {
 
     private val navController get() = navControllerManager.getNavController(navGraph)
