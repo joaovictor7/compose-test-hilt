@@ -1,9 +1,9 @@
 package com.composetest.core.data.datasources.remote
 
-import com.composetest.core.data.network.requests.AuthenticationRequest
-import com.composetest.core.data.network.responses.AuthenticationResponse
-import com.composetest.core.data.network.responses.SessionResponse
-import com.composetest.core.data.network.responses.UserResponse
+import com.composetest.core.data.api.requests.AuthenticationRequest
+import com.composetest.core.data.api.responses.AuthenticationResponse
+import com.composetest.core.data.api.responses.SessionResponse
+import com.composetest.core.data.api.responses.UserResponse
 import com.composetest.core.data.utils.RemoteCallUtils
 import java.time.LocalDateTime
 

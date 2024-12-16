@@ -1,4 +1,4 @@
-package com.composetest.core.data.network.responses
+package com.composetest.core.data.api.responses
 
 import kotlinx.serialization.Serializable
 

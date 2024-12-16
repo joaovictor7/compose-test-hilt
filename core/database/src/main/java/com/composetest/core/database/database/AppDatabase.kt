@@ -9,7 +9,6 @@ import com.composetest.core.database.daos.UserEntityDao
 import com.composetest.core.database.entities.SessionEntity
 import com.composetest.core.database.entities.UserEntity
 
-internal const val DATABASE_NAME = "composetest_database"
 private const val DATABASE_VERSION = 1
 
 @Database(

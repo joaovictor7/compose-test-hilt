@@ -1,8 +1,8 @@
-package com.composetest.core.data.network
+package com.composetest.core.data.api
 
 import io.ktor.http.URLProtocol
 
-internal sealed interface ApiConfiguration {
+internal sealed interface ApiSetting {
     val host: String
     val protocol: URLProtocol get() = URLProtocol.HTTPS
     val port: Int get() = 0
@@ -13,7 +13,7 @@ internal sealed interface ApiConfiguration {
         private val apiKey: String,
         private val country: String,
         override val host: String
-    ) : ApiConfiguration {
+    ) : ApiSetting {
         override val headers = mapOf(API_KEY_HEADER to apiKey)
         override val params = mapOf(COUNTRY_PARAM to country)
 
@@ -23,7 +23,7 @@ internal sealed interface ApiConfiguration {
         }
     }
 
-    data class Bff(override val host: String, override val port: Int) : ApiConfiguration {
+    data class Bff(override val host: String, override val port: Int) : ApiSetting {
         override val protocol = URLProtocol.HTTP
     }
 }

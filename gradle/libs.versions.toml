@@ -20,7 +20,7 @@ room = "2.6.1"
 sqlCipher = "4.6.1"
 sqLite = "2.4.0"
 workManager = "2.10.0"
-ktor = "3.0.1"
+ktor = "3.0.2"
 slf4j = "2.0.16"
 splashScreen = "1.0.1"
 
@@ -44,8 +44,9 @@ androidx-work-manager = { group = "androidx.work", name = "work-runtime-ktx", ve
 androidx-splash-screen = { group = "androidx.core", name = "core-splashscreen", version.ref = "splashScreen" }
 
 # Room
-room = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
-room-compile = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+room-kotlin = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 sql-cipher = { group = "net.zetetic", name = "sqlcipher-android", version.ref = "sqlCipher" }
 sqlite = { group = "androidx.sqlite", name = "sqlite-ktx", version.ref = "sqLite" }
 

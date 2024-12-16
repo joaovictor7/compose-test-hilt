@@ -1,6 +1,6 @@
 package com.composetest.core.data.extensions
 
-import com.composetest.core.data.network.ApiConfiguration
+import com.composetest.core.data.api.ApiSetting
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.defaultRequest
@@ -9,18 +9,18 @@ import io.ktor.client.request.get
 import io.ktor.client.request.headers
 import io.ktor.client.request.post
 
-internal fun HttpClient.configureApi(apiConfiguration: ApiConfiguration) = config {
+internal fun HttpClient.configureApi(apiSetting: ApiSetting) = config {
     defaultRequest {
         url {
-            protocol = apiConfiguration.protocol
-            host = apiConfiguration.host
-            port = apiConfiguration.port
-            apiConfiguration.params.forEach {
+            protocol = apiSetting.protocol
+            host = apiSetting.host
+            port = apiSetting.port
+            apiSetting.params.forEach {
                 parameters.append(it.key, it.value)
             }
         }
         headers {
-            apiConfiguration.headers.forEach {
+            apiSetting.headers.forEach {
                 append(it.key, it.value)
             }
         }

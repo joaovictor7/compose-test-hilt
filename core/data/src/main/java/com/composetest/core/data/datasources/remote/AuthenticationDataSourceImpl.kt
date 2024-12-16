@@ -1,8 +1,8 @@
 package com.composetest.core.data.datasources.remote
 
 import com.composetest.core.data.extensions.post
-import com.composetest.core.data.network.requests.AuthenticationRequest
-import com.composetest.core.data.network.responses.AuthenticationResponse
+import com.composetest.core.data.api.requests.AuthenticationRequest
+import com.composetest.core.data.api.responses.AuthenticationResponse
 import com.composetest.core.data.utils.RemoteCallUtils
 import io.ktor.client.HttpClient
 import io.ktor.client.request.setBody

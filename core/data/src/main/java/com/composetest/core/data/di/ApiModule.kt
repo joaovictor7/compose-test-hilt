@@ -1,10 +1,10 @@
 package com.composetest.core.data.di
 
 import com.composetest.common.providers.BuildConfigProvider
+import com.composetest.core.data.api.ApiSetting
 import com.composetest.core.data.di.qualifiers.ApiQualifier
 import com.composetest.core.data.enums.Api
 import com.composetest.core.data.extensions.configureApi
-import com.composetest.core.data.network.ApiConfiguration
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -26,12 +26,9 @@ import kotlinx.serialization.json.Json
 import javax.inject.Singleton
 import kotlin.time.Duration.Companion.seconds
 
-
 @Module
 @InstallIn(SingletonComponent::class)
 internal object ApiModule {
-
-    private val requestTimeout = 20.seconds
 
     private val httpClient = HttpClient(Android) {
         expectSuccess = true
@@ -39,7 +36,7 @@ internal object ApiModule {
             contentType(ContentType.Application.Json)
         }
         install(HttpTimeout) {
-            requestTimeoutMillis = requestTimeout.inWholeMilliseconds
+            requestTimeoutMillis = 20.seconds.inWholeMilliseconds
         }
         install(ContentNegotiation) {
             json(Json {
@@ -60,7 +57,7 @@ internal object ApiModule {
     @ApiQualifier(Api.NEWS_API)
     fun newsApi(buildConfigProvider: BuildConfigProvider): HttpClient = httpClient
         .configureApi(
-            ApiConfiguration.NewsApi(
+            ApiSetting.NewsApi(
                 apiKey = buildConfigProvider.get.buildConfigFieldsModel.newsApiKey,
                 host = buildConfigProvider.get.buildConfigFieldsModel.newsApiKey,
                 country = "us",
@@ -71,7 +68,7 @@ internal object ApiModule {
     @Singleton
     @ApiQualifier(Api.BFF)
     fun bffApi(buildConfigProvider: BuildConfigProvider): HttpClient = httpClient.configureApi(
-        ApiConfiguration.Bff(
+        ApiSetting.Bff(
             host = buildConfigProvider.get.buildConfigFieldsModel.bffApiHost,
             port = buildConfigProvider.get.buildConfigFieldsModel.bffApiPort
         )
