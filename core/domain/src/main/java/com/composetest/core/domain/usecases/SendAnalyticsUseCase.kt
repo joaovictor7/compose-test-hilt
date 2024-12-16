@@ -7,7 +7,7 @@ import com.composetest.core.domain.analytics.ErrorAnalyticEvent
 import com.composetest.core.domain.analytics.AnalyticEvent
 import com.composetest.core.domain.repositories.AnalyticsRepository
 import com.composetest.core.domain.repositories.UserRepository
-import java.time.LocalDateTime
+import java.time.ZonedDateTime
 import javax.inject.Inject
 
 class SendAnalyticsUseCase @Inject constructor(
@@ -31,7 +31,7 @@ class SendAnalyticsUseCase @Inject constructor(
         return bundleOf(
             USER_ID to user?.id.orEmpty(),
             LOGGED_SESSION to (user != null).toString(),
-            DATE_TIME to LocalDateTime.now().toString(),
+            DATE_TIME to ZonedDateTime.now().toString(),
             APP_VERSION to buildConfigProvider.get.versionName,
             ANDROID_SDK_VERSION to buildConfigProvider.get.androidSdkVersion.toString(),
             *event.params.map { it.key to it.value.toString() }.toTypedArray()
