@@ -11,8 +11,8 @@ class AuthenticationUseCase @Inject constructor(
 ) {
 
     suspend operator fun invoke(authenticationCredentialsModel: AuthenticationCredentialsModel) {
-        val authenticationModel =
-            authenticationRepository.authentication(authenticationCredentialsModel)
-        sessionManager.createSession(authenticationModel.session, authenticationModel.user)
+        val authenticationModel = authenticationRepository
+            .authentication(authenticationCredentialsModel)
+        sessionManager.createSession(authenticationModel)
     }
 }

@@ -3,7 +3,7 @@ package com.composetest.core.data.managers
 import com.composetest.core.data.providers.WorkManagerProvider
 import com.composetest.core.data.workmanagers.workes.SessionWorker
 import com.composetest.core.domain.managers.SessionManager
-import com.composetest.core.domain.models.UserModel
+import com.composetest.core.domain.models.session.AuthenticationModel
 import com.composetest.core.domain.models.session.SessionModel
 import com.composetest.core.domain.repositories.SessionRepository
 import com.composetest.core.domain.repositories.UserRepository
@@ -17,9 +17,15 @@ internal class SessionManagerImpl @Inject constructor(
     private val workManagerProvider: WorkManagerProvider
 ) : SessionManager {
 
-    override suspend fun createSession(session: SessionModel, user: UserModel) {
-        userRepository.upsert(user)
-        sessionRepository.insert(session, user)
+    override suspend fun createSession(authenticationModel: AuthenticationModel) {
+        val session = SessionModel(
+            token = authenticationModel.sessionToken,
+            startDate = LocalDateTime.now(),
+            endDate = LocalDateTime.now().plusWeeks(2),
+            isFinished = false
+        )
+        userRepository.upsert(authenticationModel.user)
+        sessionRepository.insert(session, authenticationModel.user)
         createSessionSchedule(session.startDate, session.endDate)
     }
 

@@ -1,9 +1,9 @@
 package com.composetest.core.data.datasources.remote
 
-import com.composetest.core.data.api.requests.AuthenticationRequest
-import com.composetest.core.data.api.responses.AuthenticationResponse
+import com.composetest.core.domain.models.AuthenticationCredentialsModel
+import com.composetest.core.domain.models.session.AuthenticationModel
 
 internal interface AuthenticationDataSource {
 
-    suspend fun authentication(request: AuthenticationRequest): AuthenticationResponse
+    suspend fun authentication(authenticationCredentials: AuthenticationCredentialsModel): AuthenticationModel
 }

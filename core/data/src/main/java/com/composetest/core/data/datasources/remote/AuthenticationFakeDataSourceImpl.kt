@@ -1,30 +1,25 @@
 package com.composetest.core.data.datasources.remote
 
-import com.composetest.core.data.api.requests.AuthenticationRequest
-import com.composetest.core.data.api.responses.AuthenticationResponse
-import com.composetest.core.data.api.responses.SessionResponse
-import com.composetest.core.data.api.responses.UserResponse
 import com.composetest.core.data.utils.RemoteCallUtils
+import com.composetest.core.domain.models.AuthenticationCredentialsModel
+import com.composetest.core.domain.models.UserModel
+import com.composetest.core.domain.models.session.AuthenticationModel
 import java.time.LocalDateTime
 
 internal class AuthenticationFakeDataSourceImpl(
     private val remoteCallUtils: RemoteCallUtils
 ) : AuthenticationDataSource {
 
-    override suspend fun authentication(request: AuthenticationRequest) =
+    override suspend fun authentication(authenticationCredentials: AuthenticationCredentialsModel) =
         remoteCallUtils.executeRemoteCall {
             val sessionStartDate = LocalDateTime.now()
             val sessionEndDate = sessionStartDate.plusMinutes(PLUS_FAKE_SESSION_DURATION)
-            AuthenticationResponse(
-                user = UserResponse(
+            AuthenticationModel(
+                sessionToken = "43reddcdsfe434323cdf3434",
+                user = UserModel(
                     id = "123",
                     name = "Teste",
                     email = "teste@teste.com"
-                ),
-                sessionResponse = SessionResponse(
-                    token = "43reddcdsfe434323cdf3434",
-                    startDate = sessionStartDate.toString(),
-                    endDate = sessionEndDate.toString(),
                 )
             )
         }

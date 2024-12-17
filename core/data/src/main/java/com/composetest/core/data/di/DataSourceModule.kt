@@ -15,16 +15,15 @@ import com.composetest.core.data.datasources.remote.FirebaseAnalyticsDataSource
 import com.composetest.core.data.datasources.remote.FirebaseAnalyticsDataSourceImpl
 import com.composetest.core.data.datasources.remote.FirebaseRemoteConfigDataSource
 import com.composetest.core.data.datasources.remote.FirebaseRemoteConfigDataSourceImpl
-import com.composetest.core.data.di.qualifiers.ApiQualifier
-import com.composetest.core.data.enums.Api
+import com.composetest.core.data.mappers.AuthenticationMapper
 import com.composetest.core.data.providers.FakeInstanceProvider
 import com.composetest.core.data.utils.RemoteCallUtils
+import com.google.firebase.auth.FirebaseAuth
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import io.ktor.client.HttpClient
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -62,11 +61,13 @@ internal object DataSourceProvidesModule {
     @Provides
     fun authenticationDataSource(
         fakeInstanceProvider: FakeInstanceProvider,
-        @ApiQualifier(Api.BFF) bffApi: HttpClient,
+        firebaseAuth: FirebaseAuth,
+        authenticationMapper: AuthenticationMapper,
         remoteCallUtils: RemoteCallUtils
     ): AuthenticationDataSource = fakeInstanceProvider.getInstance(
         instance = AuthenticationDataSourceImpl(
-            bffApi = bffApi,
+            firebaseAuth = firebaseAuth,
+            authenticationMapper = authenticationMapper,
             remoteCallUtils = remoteCallUtils
         ),
         fakeInstance = AuthenticationFakeDataSourceImpl(

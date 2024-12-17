@@ -1,21 +1,25 @@
 package com.composetest.core.data.datasources.remote
 
-import com.composetest.core.data.extensions.post
-import com.composetest.core.data.api.requests.AuthenticationRequest
-import com.composetest.core.data.api.responses.AuthenticationResponse
+import com.composetest.core.data.mappers.AuthenticationMapper
 import com.composetest.core.data.utils.RemoteCallUtils
-import io.ktor.client.HttpClient
-import io.ktor.client.request.setBody
+import com.composetest.core.domain.models.AuthenticationCredentialsModel
+import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.tasks.await
 
 internal class AuthenticationDataSourceImpl(
-    private val bffApi: HttpClient,
+    private val firebaseAuth: FirebaseAuth,
+    private val authenticationMapper: AuthenticationMapper,
     private val remoteCallUtils: RemoteCallUtils
 ) : AuthenticationDataSource {
 
-    override suspend fun authentication(request: AuthenticationRequest) =
+    override suspend fun authentication(authenticationCredentials: AuthenticationCredentialsModel) =
         remoteCallUtils.executeRemoteCall {
-            bffApi.post<AuthenticationResponse>("authenticate") {
-                setBody(request)
-            }
+            val result = firebaseAuth
+                .signInWithEmailAndPassword(
+                    authenticationCredentials.email,
+                    authenticationCredentials.password
+                )
+                .await()
+            authenticationMapper(result.user)
         }
 }

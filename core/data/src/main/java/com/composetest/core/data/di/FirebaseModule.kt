@@ -4,6 +4,8 @@ import com.composetest.common.providers.BuildConfigProvider
 import com.composetest.core.data.R
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.ktx.Firebase
@@ -26,6 +28,10 @@ internal object FirebaseModule {
     @Provides
     @Singleton
     fun firebaseAnalytics(): FirebaseAnalytics = Firebase.analytics
+
+    @Provides
+    @Singleton
+    fun firebaseAuth(): FirebaseAuth = Firebase.auth
 
     @Provides
     @Singleton
