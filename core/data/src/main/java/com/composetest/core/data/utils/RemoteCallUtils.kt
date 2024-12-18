@@ -41,7 +41,7 @@ internal class RemoteCallUtils @Inject constructor(
         }
         is ServerResponseException -> ApiError.Request(error.message)
         is IOException -> ApiError.Network()
-        else -> ApiError.Unknown(error.message)
+        else -> ApiError.Unknown(error.message, error)
     }
 
     private companion object {

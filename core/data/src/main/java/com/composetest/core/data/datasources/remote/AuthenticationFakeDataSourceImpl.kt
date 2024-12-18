@@ -12,10 +12,9 @@ internal class AuthenticationFakeDataSourceImpl(
 
     override suspend fun authentication(authenticationCredentials: AuthenticationCredentialsModel) =
         remoteCallUtils.executeRemoteCall {
-            val sessionStartDate = LocalDateTime.now()
-            val sessionEndDate = sessionStartDate.plusMinutes(PLUS_FAKE_SESSION_DURATION)
             AuthenticationModel(
                 sessionToken = "43reddcdsfe434323cdf3434",
+                sessionStartDateTime = LocalDateTime.now(),
                 user = UserModel(
                     id = "123",
                     name = "Teste",
@@ -23,8 +22,4 @@ internal class AuthenticationFakeDataSourceImpl(
                 )
             )
         }
-
-    private companion object {
-        const val PLUS_FAKE_SESSION_DURATION = 50L
-    }
 }

@@ -90,6 +90,7 @@ private fun Preview() {
         OutlinedTextField(
             labelText = "Label",
             textValue = textValue,
+            supportingText = "teste",
             placeholderText = "Placeholder",
             keyboardInput = KeyboardType.Password
         ) { }

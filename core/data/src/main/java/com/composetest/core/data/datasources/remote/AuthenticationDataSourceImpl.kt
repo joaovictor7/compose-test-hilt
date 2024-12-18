@@ -14,12 +14,13 @@ internal class AuthenticationDataSourceImpl(
 
     override suspend fun authentication(authenticationCredentials: AuthenticationCredentialsModel) =
         remoteCallUtils.executeRemoteCall {
-            val result = firebaseAuth
+            val authResult = firebaseAuth
                 .signInWithEmailAndPassword(
                     authenticationCredentials.email,
                     authenticationCredentials.password
                 )
                 .await()
-            authenticationMapper(result.user)
+            val tokenResult = authResult.user?.getIdToken(true)?.await()
+            authenticationMapper(authResult.user, tokenResult)
         }
 }

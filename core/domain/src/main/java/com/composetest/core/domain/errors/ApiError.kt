@@ -4,7 +4,10 @@ sealed class ApiError : Throwable() {
 
     data class Request(override val message: String) : ApiError()
 
-    data class Unknown(override val message: String?) : ApiError()
+    data class Unknown(
+        override val message: String?,
+        val originalError: Throwable
+    ) : ApiError()
 
     class Unauthorized : ApiError() {
         override val message = "Client not authorized"

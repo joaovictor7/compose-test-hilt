@@ -18,12 +18,7 @@ internal class SessionManagerImpl @Inject constructor(
 ) : SessionManager {
 
     override suspend fun createSession(authenticationModel: AuthenticationModel) {
-        val session = SessionModel(
-            token = authenticationModel.sessionToken,
-            startDate = LocalDateTime.now(),
-            endDate = LocalDateTime.now().plusWeeks(2),
-            isFinished = false
-        )
+        val session = buildSession(authenticationModel.sessionToken)
         userRepository.upsert(authenticationModel.user)
         sessionRepository.insert(session, authenticationModel.user)
         createSessionSchedule(session.startDate, session.endDate)
@@ -36,11 +31,22 @@ internal class SessionManagerImpl @Inject constructor(
         return !currentSession.isFinished
     }
 
+    private fun buildSession(token: String) = SessionModel(
+        token = token,
+        startDate = LocalDateTime.now(),
+        endDate = LocalDateTime.now().plusWeeks(SESSION_WEEKS_DURATION),
+        isFinished = false
+    )
+
     private fun createSessionSchedule(
         startDate: LocalDateTime,
         endDate: LocalDateTime
     ) {
         val duration = Duration.between(startDate, endDate)
         workManagerProvider.createOneTimeWork(SessionWorker.Builder(duration))
+    }
+
+    private companion object {
+        const val SESSION_WEEKS_DURATION = 2L
     }
 }
