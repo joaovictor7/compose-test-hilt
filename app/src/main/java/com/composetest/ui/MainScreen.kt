@@ -33,7 +33,6 @@ internal object MainScreen : Screen<MainUiState, MainUiEvent, MainCommandReceive
             dynamicColor = uiState.appTheme.dynamicColors,
             theme = uiState.appTheme.theme
         ) {
-            Text("testeghgfhgfh")
             DialogsHandle(uiState = uiState, onExecuteCommand = onExecuteCommand)
             Navigation(
                 firstScreenDestination = LoginDestination,

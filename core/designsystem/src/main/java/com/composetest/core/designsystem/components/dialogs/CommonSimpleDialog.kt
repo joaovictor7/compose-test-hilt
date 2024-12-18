@@ -13,8 +13,8 @@ sealed interface CommonSimpleDialog : SimpleDialogParam {
 
     data object NetworkError : CommonSimpleDialog {
         override val iconId = R.drawable.ic_error_big
-        override val titleId = R.string.error_alert_dialog_generic_title
-        override val textId = R.string.error_alert_dialog_generic_text
+        override val titleId = R.string.error_alert_dialog_network_title
+        override val textId = R.string.error_alert_dialog_network_text
         override val dismissButtonTextId = R.string.global_word_close
     }
 }
