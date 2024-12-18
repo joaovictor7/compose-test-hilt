@@ -1,9 +1,9 @@
 package modularization
 
-import enums.BuildType
-import enums.Signing
 import com.android.build.api.dsl.ApplicationBuildType
 import com.android.build.gradle.BaseExtension
+import enums.BuildType
+import enums.Signing
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 

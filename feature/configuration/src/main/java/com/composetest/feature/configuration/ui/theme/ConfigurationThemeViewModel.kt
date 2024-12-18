@@ -55,7 +55,12 @@ internal class ConfigurationThemeViewModel @Inject constructor(
         }
     }
 
-    private suspend fun sendChangeThemeAnalytic(dynamicColors: Boolean? = null, theme: Theme? = null) {
-        sendAnalyticsUseCase(ConfigurationThemeEventAnalytic.ChangeTheme(theme?.name, dynamicColors))
+    private suspend fun sendChangeThemeAnalytic(
+        dynamicColors: Boolean? = null,
+        theme: Theme? = null
+    ) {
+        sendAnalyticsUseCase(
+            ConfigurationThemeEventAnalytic.ChangeTheme(theme?.name, dynamicColors)
+        )
     }
 }

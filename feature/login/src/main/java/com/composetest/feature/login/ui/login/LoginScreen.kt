@@ -4,10 +4,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
@@ -38,7 +36,6 @@ import com.composetest.feature.login.R
 import kotlinx.coroutines.flow.Flow
 
 internal object LoginScreen : Screen<LoginUiState, LoginUiEvent, LoginCommandReceiver> {
-
     @Composable
     override operator fun invoke(
         uiState: LoginUiState,
@@ -67,14 +64,16 @@ private fun LoginForm(
     uiState: LoginUiState,
     onExecuteCommand: (Command<LoginCommandReceiver>) -> Unit
 ) {
-    Column(modifier = Modifier.padding(screenMargin)) {
+    Column(
+        modifier = Modifier.padding(screenMargin),
+        verticalArrangement = Arrangement.spacedBy(Spacing.twelve)
+    ) {
         Text(
             text = stringResource(R.string.feature_login_login),
             style = MaterialTheme.typography.headlineLarge,
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center
         )
-        Spacer(Modifier.height(Spacing.twelve))
         Column(verticalArrangement = Arrangement.spacedBy(Spacing.sixteen)) {
             OutlinedTextField(
                 labelText = stringResource(R.string.feature_login_email),
@@ -104,7 +103,6 @@ private fun LoginForm(
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.error
                 )
-                Spacer(Modifier.height(Spacing.twelve))
             }
             if (!uiState.isLoading) {
                 Button(
@@ -173,7 +171,7 @@ private fun Preview() {
             LoginUiState(
                 versionName = "Version",
                 distributionTextId = R.string.feature_login_full_distribution,
-                invalidCredentials = false,
+                invalidCredentials = true,
                 needsLogin = true
             ),
             uiEvent = null

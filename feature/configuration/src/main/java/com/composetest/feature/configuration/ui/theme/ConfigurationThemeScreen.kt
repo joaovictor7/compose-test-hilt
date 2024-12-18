@@ -26,9 +26,9 @@ import com.composetest.core.designsystem.components.scaffolds.ScreenScaffold
 import com.composetest.core.designsystem.components.switches.ThumbSwitch
 import com.composetest.core.designsystem.components.topbar.LeftTopBar
 import com.composetest.core.designsystem.dimensions.Spacing
+import com.composetest.core.designsystem.enums.switches.SwitchType
 import com.composetest.core.designsystem.extensions.opacity
 import com.composetest.core.designsystem.extensions.screenMargin
-import com.composetest.core.designsystem.enums.switches.SwitchType
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.interfaces.Screen

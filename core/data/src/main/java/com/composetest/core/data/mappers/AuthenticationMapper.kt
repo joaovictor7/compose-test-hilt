@@ -18,7 +18,7 @@ internal class AuthenticationMapper @Inject constructor() {
             user = UserModel(
                 id = firebaseUser?.uid.orEmpty(),
                 email = firebaseUser?.email.orEmpty(),
-                name = firebaseUser?.email
+                name = firebaseUser?.displayName
             )
         )
 }

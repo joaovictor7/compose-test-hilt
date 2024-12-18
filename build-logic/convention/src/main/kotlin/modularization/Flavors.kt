@@ -1,10 +1,10 @@
 package modularization
 
 import appconfig.AppConfig
-import enums.Flavor
-import enums.FlavorDimension
 import com.android.build.api.dsl.ApplicationProductFlavor
 import com.android.build.gradle.BaseExtension
+import enums.Flavor
+import enums.FlavorDimension
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 
@@ -26,7 +26,10 @@ internal fun Project.setFlavors(application: Boolean) = extensions.configure<Bas
     }
 }
 
-private fun ApplicationProductFlavor.setNonProductionFields(dimension: FlavorDimension, flavor: Flavor) {
+private fun ApplicationProductFlavor.setNonProductionFields(
+    dimension: FlavorDimension,
+    flavor: Flavor
+) {
     if (dimension == FlavorDimension.ENVIRONMENT && flavor != Flavor.PRODUCTION) {
         setApplicationIdSuffix(flavor)
         setManifestPlaceholders(flavor)

@@ -20,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.composetest.core.designsystem.components.scaffolds.ScreenScaffold
 import com.composetest.core.designsystem.components.topbar.LeftTopBar
 import com.composetest.core.designsystem.dimensions.Spacing
+import com.composetest.core.designsystem.extensions.screenMargin
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.interfaces.Screen
@@ -42,9 +43,10 @@ internal object ConfigurationScreen :
             topBar = { LeftTopBar(titleId = R.string.configuration_title) }
         ) {
             LazyVerticalStaggeredGrid(
+                modifier = Modifier.screenMargin(),
                 columns = StaggeredGridCells.Fixed(LIMIT_CONFIGURATIONS_PER_LINE),
                 verticalItemSpacing = Spacing.sixteen,
-                horizontalArrangement = Arrangement.spacedBy(Spacing.sixteen)
+                horizontalArrangement = Arrangement.spacedBy(Spacing.sixteen),
             ) {
                 items(uiState.configurations) { item ->
                     ConfigurationCard(

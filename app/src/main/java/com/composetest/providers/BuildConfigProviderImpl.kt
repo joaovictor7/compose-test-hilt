@@ -3,8 +3,8 @@ package com.composetest.providers
 import android.os.Build
 import com.composetest.BuildConfig
 import com.composetest.common.enums.BuildType.Companion.getBuildType
-import com.composetest.common.enums.FlavorDimension.Companion.getDimensionFlavor
 import com.composetest.common.enums.Flavor.Companion.getFlavor
+import com.composetest.common.enums.FlavorDimension.Companion.getDimensionFlavor
 import com.composetest.common.models.BuildConfigFieldsModel
 import com.composetest.common.models.BuildConfigModel
 import com.composetest.common.providers.BuildConfigProvider

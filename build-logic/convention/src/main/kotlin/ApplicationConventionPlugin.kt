@@ -1,7 +1,7 @@
 import appconfig.AppConfig
-import enums.Signing
 import com.android.build.api.dsl.ApkSigningConfig
 import com.android.build.api.dsl.ApplicationExtension
+import enums.Signing
 import extensions.getLibrary
 import extensions.implementation
 import modularization.configureAndroid

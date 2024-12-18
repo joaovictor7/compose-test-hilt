@@ -2,9 +2,9 @@ package com.composetest.feature.root.ui.root
 
 import com.composetest.core.router.interfaces.Destination
 import com.composetest.core.ui.interfaces.BaseUiState
-import com.composetest.feature.root.models.UserModalDrawerModel
 import com.composetest.feature.root.enums.NavigationFeature
 import com.composetest.feature.root.models.BottomFeatureNavigationModel
+import com.composetest.feature.root.models.UserModalDrawerModel
 
 internal data class RootUiState(
     val firstDestination: Destination? = null,

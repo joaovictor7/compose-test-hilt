@@ -10,5 +10,7 @@ import com.composetest.feature.login.ui.login.LoginUiState
 import com.composetest.feature.login.ui.login.LoginViewModel
 
 fun NavGraphBuilder.loginNavGraph() {
-    buildComposable<LoginDestination, LoginViewModel, LoginUiState, LoginUiEvent, LoginCommandReceiver>(LoginScreen)
+    buildComposable<LoginDestination, LoginViewModel, LoginUiState, LoginUiEvent, LoginCommandReceiver>(
+        screen = LoginScreen
+    )
 }

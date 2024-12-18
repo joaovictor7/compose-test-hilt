@@ -15,7 +15,8 @@ internal class Home3ViewModel @Inject constructor(
     private val destination: Home3Destination,
     @NavGraphQualifier(NavGraph.MAIN) override val navigationManager: NavigationManager,
     override val sendAnalyticsUseCase: SendAnalyticsUseCase
-) : BaseViewModel<Home3UiState, Home3UiEvent>(Home3ScreenAnalytic, Home3UiState()), Home3CommandReceiver {
+) : BaseViewModel<Home3UiState, Home3UiEvent>(Home3ScreenAnalytic, Home3UiState()),
+    Home3CommandReceiver {
 
     override val commandReceiver = this
 

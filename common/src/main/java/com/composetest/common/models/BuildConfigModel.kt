@@ -1,8 +1,8 @@
 package com.composetest.common.models
 
 import com.composetest.common.enums.BuildType
-import com.composetest.common.enums.FlavorDimension
 import com.composetest.common.enums.Flavor
+import com.composetest.common.enums.FlavorDimension
 
 data class BuildConfigModel(
     val applicationId: String,
