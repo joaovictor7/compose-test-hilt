@@ -5,10 +5,10 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import javax.inject.Inject
 
-internal class FirebaseAnalyticsDataSourceImpl @Inject constructor(
+internal class AnalyticsDataSourceImpl @Inject constructor(
     private val firebaseAnalytics: FirebaseAnalytics,
     private val firebaseCrashlytics: FirebaseCrashlytics,
-) : FirebaseAnalyticsDataSource {
+) : AnalyticsDataSource {
 
     override fun logEvent(tag: String, params: Bundle) {
         firebaseAnalytics.logEvent(tag, params)

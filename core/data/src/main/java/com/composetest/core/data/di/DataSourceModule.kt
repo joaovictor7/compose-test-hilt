@@ -11,10 +11,10 @@ import com.composetest.core.data.datasources.local.UserDataSourceImpl
 import com.composetest.core.data.datasources.remote.AuthenticationDataSource
 import com.composetest.core.data.datasources.remote.AuthenticationDataSourceImpl
 import com.composetest.core.data.datasources.remote.AuthenticationFakeDataSourceImpl
-import com.composetest.core.data.datasources.remote.FirebaseAnalyticsDataSource
-import com.composetest.core.data.datasources.remote.FirebaseAnalyticsDataSourceImpl
-import com.composetest.core.data.datasources.remote.FirebaseRemoteConfigDataSource
-import com.composetest.core.data.datasources.remote.FirebaseRemoteConfigDataSourceImpl
+import com.composetest.core.data.datasources.remote.AnalyticsDataSource
+import com.composetest.core.data.datasources.remote.AnalyticsDataSourceImpl
+import com.composetest.core.data.datasources.remote.RemoteConfigDataSource
+import com.composetest.core.data.datasources.remote.RemoteConfigDataSourceImpl
 import com.composetest.core.data.mappers.AuthenticationMapper
 import com.composetest.core.data.providers.FakeInstanceProvider
 import com.composetest.core.data.utils.RemoteCallUtils
@@ -31,13 +31,13 @@ internal abstract class DataSourceBindsModule {
 
     @Binds
     abstract fun firebaseAnalyticsDataSource(
-        firebaseAnalyticsDataSourceImpl: FirebaseAnalyticsDataSourceImpl
-    ): FirebaseAnalyticsDataSource
+        firebaseAnalyticsDataSourceImpl: AnalyticsDataSourceImpl
+    ): AnalyticsDataSource
 
     @Binds
     abstract fun firebaseRemoteConfigsDataSource(
-        firebaseRemoteConfigDataSourceImpl: FirebaseRemoteConfigDataSourceImpl
-    ): FirebaseRemoteConfigDataSource
+        firebaseRemoteConfigDataSourceImpl: RemoteConfigDataSourceImpl
+    ): RemoteConfigDataSource
 
     @Binds
     abstract fun preferenceDataSource(

@@ -22,4 +22,8 @@ internal class AuthenticationFakeDataSourceImpl(
                 )
             )
         }
+
+    override suspend fun updateUserProfile() {
+        TODO("Not yet implemented")
+    }
 }

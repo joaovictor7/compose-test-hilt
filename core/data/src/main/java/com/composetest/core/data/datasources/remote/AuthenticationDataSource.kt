@@ -6,4 +6,6 @@ import com.composetest.core.domain.models.session.AuthenticationModel
 internal interface AuthenticationDataSource {
 
     suspend fun authentication(authenticationCredentials: AuthenticationCredentialsModel): AuthenticationModel
+
+    suspend fun updateUserProfile()
 }

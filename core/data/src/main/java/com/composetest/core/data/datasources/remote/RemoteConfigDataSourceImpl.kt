@@ -3,9 +3,9 @@ package com.composetest.core.data.datasources.remote
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import javax.inject.Inject
 
-internal class FirebaseRemoteConfigDataSourceImpl @Inject constructor(
+internal class RemoteConfigDataSourceImpl @Inject constructor(
     private val firebaseRemoteConfig: FirebaseRemoteConfig,
-) : FirebaseRemoteConfigDataSource {
+) : RemoteConfigDataSource {
 
     override fun getString(key: String) = firebaseRemoteConfig.getString(key)
     override fun getBoolean(key: String) = firebaseRemoteConfig.getBoolean(key)
