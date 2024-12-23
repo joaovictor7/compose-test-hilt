@@ -131,12 +131,6 @@ private fun BoxScope.VersionName(uiState: LoginUiState) {
             text = uiState.versionName,
             style = MaterialTheme.typography.bodyMedium
         )
-        uiState.distributionTextId?.let {
-            Text(
-                text = stringResource(it),
-                style = MaterialTheme.typography.bodyMedium
-            )
-        }
     }
 }
 
@@ -170,7 +164,6 @@ private fun Preview() {
         LoginScreen(
             LoginUiState(
                 versionName = "Version",
-                distributionTextId = R.string.feature_login_full_distribution,
                 invalidCredentials = true,
                 needsLogin = true
             ),

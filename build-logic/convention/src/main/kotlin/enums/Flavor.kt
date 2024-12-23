@@ -1,9 +1,9 @@
 package enums
 
 internal enum class Flavor {
-    DEVELOP, STAGING, PRODUCTION, FULL, FREE;
+    DEVELOP, STAGING, PRODUCTION;
 
-    val isDefault get() = this == FULL
+    val isDefault get() = this == DEVELOP
 
     override fun toString() = name.lowercase()
 }

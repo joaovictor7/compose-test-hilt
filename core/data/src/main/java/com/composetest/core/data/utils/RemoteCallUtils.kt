@@ -1,6 +1,6 @@
 package com.composetest.core.data.utils
 
-import com.composetest.common.enums.FlavorDimension
+import com.composetest.common.enums.Flavor
 import com.composetest.common.providers.BuildConfigProvider
 import com.composetest.common.providers.DispatcherProvider
 import com.composetest.core.domain.errors.ApiError
@@ -25,7 +25,7 @@ internal class RemoteCallUtils @Inject constructor(
 
     private suspend fun <T> call(onRemoteCall: suspend () -> T) =
         withContext(dispatcherProvider.io) {
-            if (buildConfigProvider.get.flavorDimension == FlavorDimension.DEVELOP) {
+            if (buildConfigProvider.get.flavor == Flavor.DEVELOP) {
                 delay(FAKE_CALL_DELAY)
             }
             onRemoteCall()

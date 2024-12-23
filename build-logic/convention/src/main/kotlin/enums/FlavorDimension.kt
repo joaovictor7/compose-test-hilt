@@ -1,8 +1,7 @@
 package enums
 
 internal enum class FlavorDimension(val flavors: List<Flavor>) {
-    ENVIRONMENT(listOf(Flavor.DEVELOP, Flavor.STAGING, Flavor.PRODUCTION)),
-    DISTRIBUTION(listOf(Flavor.FULL, Flavor.FREE));
+    ENVIRONMENT(listOf(Flavor.DEVELOP, Flavor.STAGING, Flavor.PRODUCTION));
 
     override fun toString() = name.lowercase()
 

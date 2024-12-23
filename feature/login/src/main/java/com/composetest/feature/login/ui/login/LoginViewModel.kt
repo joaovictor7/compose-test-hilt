@@ -119,10 +119,6 @@ internal class LoginViewModel @Inject constructor(
         updateUiState {
             it.initUiState(
                 versionName = "${buildConfigProvider.get.versionName} - ${buildConfigProvider.get.versionCode}",
-                distributionTextId = when (buildConfigProvider.get.flavor) {
-                    Flavor.FREE -> R.string.feature_login_limited_distribution
-                    Flavor.FULL -> R.string.feature_login_full_distribution
-                },
                 enableLoginButton = byPassLogin
             )
         }
