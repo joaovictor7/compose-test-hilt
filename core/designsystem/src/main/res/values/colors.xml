@@ -7,5 +7,5 @@
     <color name="background_dark">#161312</color>
 
     <!-- Icons -->
-    <color name="icon_launcher_background">@color/background_dark</color>
+    <color name="ic_launcher_background">@color/background_dark</color>
 </resources>

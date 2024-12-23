@@ -5,13 +5,13 @@
     <application
         android:name=".application.MainApplication"
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@mipmap/ic_launcher"
         android:label="${appName}"
-        android:roundIcon="@drawable/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/Theme.ComposeTest.SplashScreen"
         android:usesCleartextTraffic="${usesCleartextTraffic}"
-        tools:targetApi="34">
+        tools:targetApi="35">
         <activity
             android:name=".ui.MainActivity"
             android:exported="true"

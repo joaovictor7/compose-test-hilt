@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Icon colors -->
-    <color name="icon_launcher_background">@color/on_primary_container_dark</color>
+    <color name="ic_launcher_background">@color/on_primary_container_dark</color>
 </resources>

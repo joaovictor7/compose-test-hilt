@@ -2,61 +2,52 @@ package modularization
 
 import com.android.build.api.dsl.ApplicationBuildType
 import com.android.build.gradle.BaseExtension
-import enums.BuildType
+import com.android.build.gradle.internal.dsl.BuildType
 import enums.Signing
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
+import enums.BuildType as BuildTypeEnum
 
-internal fun Project.setBuildTypes(application: Boolean) = extensions.configure<BaseExtension> {
-    BuildType.values().forEach { buildType ->
-        if (buildType.isInternal) {
-            setInternalBuildTypes(project, buildType, application)
-        } else {
-            createNewBuildTypes(project, buildType, application)
+internal fun Project.setBuildTypes(isApplication: Boolean) = extensions.configure<BaseExtension> {
+    buildTypes {
+        BuildTypeEnum.values().forEach { buildType ->
+            if (buildType.isInternal) {
+                getByName(buildType.toString()) {
+                    configBuildType(this@setBuildTypes, this@configure, buildType, isApplication)
+                }
+            } else {
+                create(buildType.toString()) {
+                    configBuildType(this@setBuildTypes, this@configure, buildType, isApplication)
+                }
+            }
         }
     }
 }
 
-private fun BaseExtension.setInternalBuildTypes(
+private fun BuildType.configBuildType(
     project: Project,
-    buildType: BuildType,
-    application: Boolean
-) = buildTypes {
-    getByName(buildType.toString()) {
-        isDefault = buildType.isDefault
-        isDebuggable = buildType.isDebuggable
-        if (application) {
-            setSigning(this@setInternalBuildTypes, buildType)
-            setBuildConfigFields(project, buildType)
-        }
-        if (buildType == BuildType.RELEASE) {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
+    baseExtension: BaseExtension,
+    buildType: BuildTypeEnum,
+    isApplication: Boolean
+) = with(baseExtension) {
+    isDefault = buildType.isDefault
+    isDebuggable = buildType.isDebuggable
+    if (isApplication) {
+        setSigning(this, buildType)
+        setBuildConfigFields(project, buildType)
     }
-}
-
-private fun BaseExtension.createNewBuildTypes(
-    project: Project,
-    buildType: BuildType,
-    application: Boolean
-) = buildTypes {
-    create(buildType.toString()) {
-        isDefault = buildType.isDefault
-        isDebuggable = buildType.isDebuggable
-        if (application) {
-            setSigning(this@createNewBuildTypes, buildType)
-            setBuildConfigFields(project, buildType)
-        }
+    if (buildType == BuildTypeEnum.RELEASE) {
+        isMinifyEnabled = false
+        proguardFiles(
+            getDefaultProguardFile("proguard-android-optimize.txt"),
+            "proguard-rules.pro"
+        )
     }
 }
 
 private fun ApplicationBuildType.setSigning(
     baseExtension: BaseExtension,
-    buildType: BuildType,
+    buildType: BuildTypeEnum
 ) = with(baseExtension) {
     Signing.getAssociatedBuildType(buildType)?.let { appSigning ->
         signingConfigs.find { signingConfig ->
