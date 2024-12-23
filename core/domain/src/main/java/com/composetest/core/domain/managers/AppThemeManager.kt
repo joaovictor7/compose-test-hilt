@@ -9,6 +9,6 @@ interface AppThemeManager {
 
     suspend fun setTheme(theme: Theme)
     suspend fun setDynamicColor(dynamicColor: Boolean)
-    suspend fun setCustomTheme(customTheme: Theme?)
+    fun setCustomTheme(customTheme: Theme?)
     suspend fun getAppTheme(): AppThemeModel?
 }

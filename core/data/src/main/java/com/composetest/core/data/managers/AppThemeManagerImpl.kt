@@ -23,7 +23,7 @@ internal class AppThemeManagerImpl @Inject constructor(
     override suspend fun setDynamicColor(dynamicColor: Boolean) =
         appThemeRepository.setDynamicColor(dynamicColor)
 
-    override suspend fun setCustomTheme(customTheme: Theme?) =
+    override fun setCustomTheme(customTheme: Theme?) =
         appThemeRepository.setCustomTheme(customTheme)
 
     override suspend fun getAppTheme() = appThemeFlow.firstOrNull()

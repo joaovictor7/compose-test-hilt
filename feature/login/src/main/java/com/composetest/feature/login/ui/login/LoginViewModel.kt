@@ -1,6 +1,5 @@
 package com.composetest.feature.login.ui.login
 
-import com.composetest.common.enums.Flavor
 import com.composetest.common.providers.BuildConfigProvider
 import com.composetest.core.designsystem.utils.getDefaultSimpleDialogErrorParam
 import com.composetest.core.domain.enums.Theme
@@ -17,7 +16,6 @@ import com.composetest.core.router.enums.NavGraph
 import com.composetest.core.router.enums.NavigationMode
 import com.composetest.core.router.managers.NavigationManager
 import com.composetest.core.ui.bases.BaseViewModel
-import com.composetest.feature.login.R
 import com.composetest.feature.login.analytics.login.LoginClickEventAnalytic
 import com.composetest.feature.login.analytics.login.LoginEventAnalytic
 import com.composetest.feature.login.analytics.login.LoginScreenAnalytic
@@ -86,9 +84,7 @@ internal class LoginViewModel @Inject constructor(
         val theme = if (enterScreen && currentAppTheme != Theme.DARK)
             Theme.DARK
         else null
-        runAsyncTask {
-            appThemeManager.setCustomTheme(theme)
-        }
+        appThemeManager.setCustomTheme(theme)
     }
 
     override fun dismissSimpleDialog() {

@@ -10,5 +10,5 @@ interface AppThemeRepository {
 
     suspend fun setTheme(theme: Theme)
     suspend fun setDynamicColor(dynamicColor: Boolean)
-    suspend fun setCustomTheme(customTheme: Theme?)
+    fun setCustomTheme(customTheme: Theme?)
 }

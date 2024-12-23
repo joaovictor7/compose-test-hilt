@@ -34,7 +34,7 @@ internal class AppThemeRepositoryImpl @Inject constructor(
         preferenceDataSource.setData(PreferencesDataKeys.dynamicColor, dynamicColor)
     }
 
-    override suspend fun setCustomTheme(customTheme: Theme?) {
+    override fun setCustomTheme(customTheme: Theme?) {
         appThemeDataSource.emitCustomAppTheme(customTheme)
     }
 }

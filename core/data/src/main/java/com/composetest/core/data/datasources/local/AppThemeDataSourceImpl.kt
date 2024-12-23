@@ -10,7 +10,7 @@ internal class AppThemeDataSourceImpl @Inject constructor() : AppThemeDataSource
     private val _customAppThemeFlow = MutableStateFlow<Theme?>(null)
     override val customAppThemeFlow = _customAppThemeFlow
 
-    override suspend fun emitCustomAppTheme(theme: Theme?) {
+    override fun emitCustomAppTheme(theme: Theme?) {
         _customAppThemeFlow.update { theme }
     }
 }

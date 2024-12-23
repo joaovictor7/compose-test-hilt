@@ -6,5 +6,5 @@ import kotlinx.coroutines.flow.SharedFlow
 internal interface AppThemeDataSource {
     val customAppThemeFlow: SharedFlow<Theme?>
 
-    suspend fun emitCustomAppTheme(theme: Theme?)
+    fun emitCustomAppTheme(theme: Theme?)
 }
