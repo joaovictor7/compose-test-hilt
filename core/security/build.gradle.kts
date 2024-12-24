@@ -9,4 +9,5 @@ android {
 dependencies {
     implementation(libs.sql.cipher)
     implementation(libs.sqlite)
+    implementation(libs.androidx.biometric)
 }

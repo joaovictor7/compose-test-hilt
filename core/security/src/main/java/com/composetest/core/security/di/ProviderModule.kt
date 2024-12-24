@@ -1,5 +1,7 @@
 package com.composetest.core.security.di
 
+import com.composetest.core.security.providers.BiometricsProvider
+import com.composetest.core.security.providers.BiometricsProviderImpl
 import com.composetest.core.security.providers.CipherProvider
 import com.composetest.core.security.providers.CipherProviderImpl
 import com.composetest.core.security.providers.SqliteCipherProvider
@@ -22,4 +24,9 @@ internal abstract class ProviderModule {
     abstract fun sqlCipherProvider(
         sqliteCipherProviderImpl: SqliteCipherProviderImpl
     ): SqliteCipherProvider
+
+    @Binds
+    abstract fun biometricsProvider(
+        biometricsProviderImpl: BiometricsProviderImpl
+    ): BiometricsProvider
 }

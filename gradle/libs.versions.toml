@@ -10,6 +10,7 @@ androidDataStore = "1.1.1"
 androidHilt = "2.53.1"
 androidXHilt = "1.2.0"
 androidXAppCompat = "1.7.0"
+androidXBiometric = "1.4.0-alpha02"
 composeBom = "2024.12.01"
 composeNavigation = "2.8.5"
 googleServices = "4.4.2"
@@ -44,6 +45,7 @@ androidx-dataStore = { group = "androidx.datastore", name = "datastore-preferenc
 androidx-work-manager = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "workManager" }
 androidx-splash-screen = { group = "androidx.core", name = "core-splashscreen", version.ref = "splashScreen" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidXAppCompat" }
+androidx-biometric = { group = "androidx.biometric", name = "biometric", version.ref = "androidXBiometric" }
 
 # Room
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
