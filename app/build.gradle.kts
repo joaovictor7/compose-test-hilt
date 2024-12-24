@@ -26,4 +26,5 @@ dependencies {
     implementation(projects.feature.configuration)
     implementation(libs.androidx.hilt.work)
     implementation(libs.androidx.splash.screen)
+    implementation(libs.androidx.appcompat)
 }

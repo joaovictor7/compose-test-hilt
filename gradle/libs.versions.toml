@@ -9,6 +9,7 @@ activityCompose = "1.9.3"
 androidDataStore = "1.1.1"
 androidHilt = "2.53.1"
 androidXHilt = "1.2.0"
+androidXAppCompat = "1.7.0"
 composeBom = "2024.12.01"
 composeNavigation = "2.8.5"
 googleServices = "4.4.2"
@@ -42,6 +43,7 @@ androidx-lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lif
 androidx-dataStore = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "androidDataStore" }
 androidx-work-manager = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "workManager" }
 androidx-splash-screen = { group = "androidx.core", name = "core-splashscreen", version.ref = "splashScreen" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidXAppCompat" }
 
 # Room
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
