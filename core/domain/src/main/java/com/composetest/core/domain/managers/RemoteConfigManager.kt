@@ -12,6 +12,4 @@ interface RemoteConfigManager {
     fun getLong(remoteConfig: RemoteConfig): Long
 
     fun getString(remoteConfig: RemoteConfig): String
-
-    fun getBooleanByVersion(remoteConfig: RemoteConfig): Boolean
 }

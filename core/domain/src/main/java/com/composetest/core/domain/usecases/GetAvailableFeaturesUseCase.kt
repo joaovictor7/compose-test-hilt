@@ -9,7 +9,7 @@ class GetAvailableFeaturesUseCase @Inject constructor(
 ) {
     operator fun invoke() = mutableListOf<Feature>().apply {
         Feature.entries.forEach {
-            if (remoteConfigManager.getBooleanByVersion(it.remoteConfig)) {
+            if (remoteConfigManager.getBoolean(it.remoteConfig)) {
                 add(it)
             }
         }

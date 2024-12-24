@@ -1,10 +1,10 @@
-package com.composetest.core.domain.repositories
+package com.composetest.core.data.repositories
 
 import com.composetest.core.domain.enums.Theme
 import com.composetest.core.domain.models.AppThemeModel
 import kotlinx.coroutines.flow.Flow
 
-interface AppThemeRepository {
+internal interface AppThemeRepository {
     val customAppThemeFlow: Flow<Theme?>
     val appThemeFlow: Flow<AppThemeModel>
 

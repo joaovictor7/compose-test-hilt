@@ -2,7 +2,7 @@ package com.composetest.core.data.managers
 
 import com.composetest.core.domain.enums.Theme
 import com.composetest.core.domain.managers.AppThemeManager
-import com.composetest.core.domain.repositories.AppThemeRepository
+import com.composetest.core.data.repositories.AppThemeRepository
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.firstOrNull
 import javax.inject.Inject

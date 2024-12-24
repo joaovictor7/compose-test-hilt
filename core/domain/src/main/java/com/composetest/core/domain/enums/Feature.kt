@@ -1,10 +1,10 @@
 package com.composetest.core.domain.enums
 
-import com.composetest.core.domain.remoteconfigs.FeatureRemoteConfig
+import com.composetest.core.domain.remoteconfigs.RemoteConfigKey
 
-enum class Feature(internal val remoteConfig: FeatureRemoteConfig) {
-    HOME(FeatureRemoteConfig.Home),
-    HOME2(FeatureRemoteConfig.Home2),
-    PROFILE(FeatureRemoteConfig.Profile),
-    CONFIGURATION(FeatureRemoteConfig.Configuration)
+enum class Feature(internal val remoteConfig: RemoteConfigKey) {
+    HOME(RemoteConfigKey.FeatureHome),
+    HOME2(RemoteConfigKey.FeatureHome2),
+    PROFILE(RemoteConfigKey.FeatureProfile),
+    CONFIGURATION(RemoteConfigKey.FeatureConfiguration)
 }

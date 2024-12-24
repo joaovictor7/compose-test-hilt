@@ -51,7 +51,7 @@ private class LoginViewModelTest : CoroutinesTest {
         coEvery { needsLogin() } returns true
     }
     private val remoteConfigManager: RemoteConfigManager = mockk(relaxed = true) {
-        every { getBoolean(LoginRemoteConfig.BypassLogin) } returns false
+        every { getBoolean(LoginRemoteConfig.ByPassLogin) } returns false
     }
     private val appThemeManager: AppThemeManager = mockk(relaxed = true)
     private val sendAnalyticsUseCase: SendAnalyticsUseCase = mockk(relaxed = true)

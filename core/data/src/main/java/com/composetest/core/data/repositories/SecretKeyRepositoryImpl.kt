@@ -1,6 +1,6 @@
 package com.composetest.core.data.repositories
 
-import com.composetest.core.data.constants.PreferencesDataKeys.sqliteSecretKey
+import com.composetest.core.data.preferencesdatastore.PreferencesDataKeys.sqliteSecretKey
 import com.composetest.core.data.datasources.local.PreferenceDataSource
 import com.composetest.core.domain.repositories.SecretKeyRepository
 import javax.inject.Inject

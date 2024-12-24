@@ -23,6 +23,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.composetest.core.designsystem.components.buttons.Button
 import com.composetest.core.designsystem.components.dialogs.SimpleDialog
+import com.composetest.core.designsystem.components.icons.VibratingIcon
 import com.composetest.core.designsystem.components.textfields.OutlinedTextField
 import com.composetest.core.designsystem.compositions.LocalTheme
 import com.composetest.core.designsystem.constants.screenMargin
@@ -32,8 +33,9 @@ import com.composetest.core.designsystem.extensions.verticalTopBackgroundBrush
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.interfaces.Screen
-import com.composetest.feature.login.R
 import kotlinx.coroutines.flow.Flow
+import com.composetest.core.designsystem.R as DesignSystemResources
+import com.composetest.feature.login.R as LoginResources
 
 internal object LoginScreen : Screen<LoginUiState, LoginUiEvent, LoginCommandReceiver> {
     @Composable
@@ -69,16 +71,16 @@ private fun LoginForm(
         verticalArrangement = Arrangement.spacedBy(Spacing.twelve)
     ) {
         Text(
-            text = stringResource(R.string.feature_login_login),
+            text = stringResource(LoginResources.string.feature_login_login),
             style = MaterialTheme.typography.headlineLarge,
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center
         )
         Column(verticalArrangement = Arrangement.spacedBy(Spacing.sixteen)) {
             OutlinedTextField(
-                labelText = stringResource(R.string.feature_login_email),
+                labelText = stringResource(LoginResources.string.feature_login_email),
                 textValue = uiState.loginFormModel.email,
-                placeholderText = stringResource(R.string.feature_login_email_placeholder),
+                placeholderText = stringResource(LoginResources.string.feature_login_email_placeholder),
                 supportingText = uiState.emailSupporting?.let { stringResource(it) },
                 imeAction = ImeAction.Next,
                 trailingIcon = uiState.emailTrailingIcon,
@@ -91,7 +93,7 @@ private fun LoginForm(
             }
             OutlinedTextField(
                 textValue = uiState.loginFormModel.password,
-                labelText = stringResource(R.string.feature_login_password),
+                labelText = stringResource(LoginResources.string.feature_login_password),
                 keyboardInput = KeyboardType.Password,
                 modifier = Modifier.fillMaxWidth()
             ) { password ->
@@ -99,17 +101,13 @@ private fun LoginForm(
             }
             if (uiState.invalidCredentials) {
                 Text(
-                    text = stringResource(R.string.feature_login_invalid_credentials),
+                    text = stringResource(LoginResources.string.feature_login_invalid_credentials),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.error
                 )
             }
             if (!uiState.isLoading) {
-                Button(
-                    text = stringResource(R.string.feature_login_enter),
-                    modifier = Modifier.fillMaxWidth(),
-                    enabled = uiState.enableLoginButton
-                ) { onExecuteCommand(LoginCommand.Login) }
+                LoginButton(uiState = uiState, onExecuteCommand = onExecuteCommand)
             } else {
                 CircularProgressIndicator(
                     modifier = Modifier.align(alignment = Alignment.CenterHorizontally)
@@ -117,6 +115,29 @@ private fun LoginForm(
             }
         }
     }
+}
+
+@Composable
+private fun LoginButton(
+    uiState: LoginUiState,
+    onExecuteCommand: (Command<LoginCommandReceiver>) -> Unit
+) {
+    if (uiState.useBiometric) {
+        VibratingIcon(
+            modifier = Modifier.fillMaxWidth(),
+            iconId = DesignSystemResources.drawable.ic_fingerprint_extra_large,
+            iconTint = MaterialTheme.colorScheme.error,
+            amountVibrations = 0,
+            duration = 90,
+            displacement = 10f
+        )
+        return
+    }
+    Button(
+        text = stringResource(LoginResources.string.feature_login_enter),
+        modifier = Modifier.fillMaxWidth(),
+        enabled = uiState.loginButtonEnabled
+    ) { onExecuteCommand(LoginCommand.Login) }
 }
 
 @Composable

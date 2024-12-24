@@ -9,3 +9,5 @@ import androidx.compose.ui.unit.Dp
 private fun getDensity(onConvert: Density.() -> Dp) = with(LocalDensity.current) { onConvert() }
 
 val Int.toDp: Dp @Composable get() = getDensity { this@toDp.toDp() }
+
+val Float.toDp: Dp @Composable get() = getDensity { this@toDp.toDp() }

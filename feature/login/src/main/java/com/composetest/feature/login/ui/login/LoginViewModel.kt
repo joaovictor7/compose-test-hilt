@@ -5,6 +5,7 @@ import com.composetest.core.designsystem.utils.getDefaultSimpleDialogErrorParam
 import com.composetest.core.domain.enums.Theme
 import com.composetest.core.domain.errors.ApiError
 import com.composetest.core.domain.managers.AppThemeManager
+import com.composetest.core.domain.managers.BiometricManager
 import com.composetest.core.domain.managers.RemoteConfigManager
 import com.composetest.core.domain.managers.SessionManager
 import com.composetest.core.domain.models.AuthenticationCredentialsModel
@@ -19,6 +20,7 @@ import com.composetest.core.ui.bases.BaseViewModel
 import com.composetest.feature.login.analytics.login.LoginClickEventAnalytic
 import com.composetest.feature.login.analytics.login.LoginEventAnalytic
 import com.composetest.feature.login.analytics.login.LoginScreenAnalytic
+import com.composetest.feature.login.enums.LoginButtonState
 import com.composetest.feature.login.remoteconfigs.LoginRemoteConfig
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -26,6 +28,7 @@ import javax.inject.Inject
 @HiltViewModel
 internal class LoginViewModel @Inject constructor(
     private val buildConfigProvider: BuildConfigProvider,
+    private val biometricManager: BiometricManager,
     private val appThemeManager: AppThemeManager,
     private val authenticationUseCase: AuthenticationUseCase,
     private val sessionManager: SessionManager,
@@ -38,7 +41,7 @@ internal class LoginViewModel @Inject constructor(
     override val commandReceiver = this
 
     private val loginFormModel get() = uiState.value.loginFormModel
-    private val byPassLogin by lazy { remoteConfigManager.getBoolean(LoginRemoteConfig.BypassLogin) }
+    private val byPassLogin by lazy { remoteConfigManager.getBoolean(LoginRemoteConfig.ByPassLogin) }
 
     override fun initUiState() {
         checkNeedsLogin()
@@ -76,7 +79,10 @@ internal class LoginViewModel @Inject constructor(
             newLoginFormModel = newLoginFormModel.copy(password = it)
         }
         updateUiState {
-            it.setLoginForm(newLoginFormModel, newLoginFormModel.loginAlready || byPassLogin)
+            it.setLoginForm(
+                newLoginFormModel,
+                if (newLoginFormModel.loginAlready || byPassLogin) LoginButtonState.BUTTON_ENABLED else LoginButtonState.BUTTON_DISABLE
+            )
         }
     }
 
@@ -112,15 +118,24 @@ internal class LoginViewModel @Inject constructor(
 
     private fun showScreen() {
         openScreenAnalytic()
-        updateUiState {
-            it.initUiState(
-                versionName = "${buildConfigProvider.get.versionName} - ${buildConfigProvider.get.versionCode}",
-                enableLoginButton = byPassLogin
-            )
+        runAsyncTask {
+            val loginButtonState = getLoginButtonState()
+            updateUiState {
+                it.initUiState(
+                    versionName = "${buildConfigProvider.get.versionName} - ${buildConfigProvider.get.versionCode}",
+                    loginButtonState = loginButtonState,
+                )
+            }
         }
     }
 
     private suspend fun navigateToRoot() {
         navigationManager.asyncNavigate(RootDestination, NavigationMode.REMOVE_ALL_SCREENS_STACK)
+    }
+
+    private suspend fun getLoginButtonState() = when {
+        biometricManager.isBiometricEnabled() -> LoginButtonState.BIOMETRIC
+        byPassLogin -> LoginButtonState.BUTTON_ENABLED
+        else -> LoginButtonState.BUTTON_DISABLE
     }
 }
