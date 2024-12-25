@@ -26,5 +26,7 @@ internal abstract class ProviderModule {
     ): StringResourceProvider
 
     @Binds
-    abstract fun networkProvider(networkProviderImpl: NetworkProviderImpl): NetworkProvider
+    abstract fun networkProvider(
+        networkProviderImpl: NetworkProviderImpl
+    ): NetworkProvider
 }

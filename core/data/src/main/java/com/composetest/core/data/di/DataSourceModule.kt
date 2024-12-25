@@ -16,7 +16,7 @@ import com.composetest.core.data.datasources.remote.AnalyticsDataSourceImpl
 import com.composetest.core.data.datasources.remote.RemoteConfigDataSource
 import com.composetest.core.data.datasources.remote.RemoteConfigDataSourceImpl
 import com.composetest.core.data.mappers.AuthenticationMapper
-import com.composetest.core.data.providers.FakeInstanceProvider
+import com.composetest.core.data.providers.EnvironmentInstanceProvider
 import com.composetest.core.data.utils.RemoteCallUtils
 import com.google.firebase.auth.FirebaseAuth
 import dagger.Binds
@@ -60,11 +60,11 @@ internal object DataSourceProvidesModule {
 
     @Provides
     fun authenticationDataSource(
-        fakeInstanceProvider: FakeInstanceProvider,
+        environmentInstanceProvider: EnvironmentInstanceProvider,
         firebaseAuth: FirebaseAuth,
         authenticationMapper: AuthenticationMapper,
         remoteCallUtils: RemoteCallUtils
-    ): AuthenticationDataSource = fakeInstanceProvider.getInstance(
+    ): AuthenticationDataSource = environmentInstanceProvider.getInstance(
         instance = AuthenticationDataSourceImpl(
             firebaseAuth = firebaseAuth,
             authenticationMapper = authenticationMapper,

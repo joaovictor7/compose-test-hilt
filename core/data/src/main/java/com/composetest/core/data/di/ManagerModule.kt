@@ -4,8 +4,8 @@ import com.composetest.core.data.managers.AppThemeManagerImpl
 import com.composetest.core.data.managers.BiometricManagerImpl
 import com.composetest.core.data.managers.RemoteConfigManagerImpl
 import com.composetest.core.data.managers.SessionManagerImpl
-import com.composetest.core.data.providers.WorkManagerProvider
-import com.composetest.core.data.providers.WorkManagerProviderImpl
+import com.composetest.core.data.managers.WorkManager
+import com.composetest.core.data.managers.WorkManagerImpl
 import com.composetest.core.domain.managers.AppThemeManager
 import com.composetest.core.domain.managers.BiometricManager
 import com.composetest.core.domain.managers.RemoteConfigManager
@@ -20,17 +20,27 @@ import dagger.hilt.components.SingletonComponent
 internal abstract class ManagerModule {
 
     @Binds
-    abstract fun sessionManager(sessionManagerImpl: SessionManagerImpl): SessionManager
+    abstract fun sessionManager(
+        sessionManagerImpl: SessionManagerImpl
+    ): SessionManager
 
     @Binds
-    abstract fun appThemeManager(appThemeManagerImpl: AppThemeManagerImpl): AppThemeManager
+    abstract fun appThemeManager(
+        appThemeManagerImpl: AppThemeManagerImpl
+    ): AppThemeManager
 
     @Binds
-    abstract fun workManager(workManagerImpl: WorkManagerProviderImpl): WorkManagerProvider
+    abstract fun remoteConfigManager(
+        remoteConfigManagerImpl: RemoteConfigManagerImpl
+    ): RemoteConfigManager
 
     @Binds
-    abstract fun remoteConfigManager(remoteConfigManagerImpl: RemoteConfigManagerImpl): RemoteConfigManager
+    abstract fun biometricManager(
+        biometricManagerImpl: BiometricManagerImpl
+    ): BiometricManager
 
     @Binds
-    abstract fun biometricManager(biometricManagerImpl: BiometricManagerImpl): BiometricManager
+    abstract fun workManager(
+        workManagerImpl: WorkManagerImpl
+    ): WorkManager
 }

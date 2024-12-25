@@ -1,11 +1,10 @@
 package com.composetest.core.data.managers
 
-import com.composetest.core.data.providers.WorkManagerProvider
-import com.composetest.core.data.workmanagers.workes.SessionWorker
+import com.composetest.core.data.repositories.SessionRepository
+import com.composetest.core.data.workmanager.workes.SessionWorker
 import com.composetest.core.domain.managers.SessionManager
 import com.composetest.core.domain.models.session.AuthenticationModel
 import com.composetest.core.domain.models.session.SessionModel
-import com.composetest.core.domain.repositories.SessionRepository
 import com.composetest.core.domain.repositories.UserRepository
 import java.time.Duration
 import java.time.LocalDateTime
@@ -14,14 +13,14 @@ import javax.inject.Inject
 internal class SessionManagerImpl @Inject constructor(
     private val sessionRepository: SessionRepository,
     private val userRepository: UserRepository,
-    private val workManagerProvider: WorkManagerProvider
+    private val workManager: WorkManager
 ) : SessionManager {
 
     override suspend fun createSession(authenticationModel: AuthenticationModel) {
         val session = buildSession(authenticationModel.sessionToken)
         userRepository.upsert(authenticationModel.user)
         sessionRepository.insert(session, authenticationModel.user)
-        createSessionSchedule(session.startDate, session.endDate)
+        sessionScheduling(session.startDate, session.endDate)
     }
 
     override suspend fun needsLogin() = sessionRepository.getCurrentSession() == null
@@ -31,6 +30,12 @@ internal class SessionManagerImpl @Inject constructor(
         return !currentSession.isFinished
     }
 
+    override suspend fun finishCurrentSession() {
+        sessionRepository.getCurrentSession()?.let {
+            sessionRepository.finishSession(it.id)
+        }
+    }
+
     private fun buildSession(token: String) = SessionModel(
         token = token,
         startDate = LocalDateTime.now(),
@@ -38,12 +43,12 @@ internal class SessionManagerImpl @Inject constructor(
         isFinished = false
     )
 
-    private fun createSessionSchedule(
+    private fun sessionScheduling(
         startDate: LocalDateTime,
         endDate: LocalDateTime
     ) {
         val duration = Duration.between(startDate, endDate)
-        workManagerProvider.createOneTimeWork(SessionWorker.Builder(duration))
+        workManager.enqueueOneTimeWork(SessionWorker.Builder(duration))
     }
 
     private companion object {

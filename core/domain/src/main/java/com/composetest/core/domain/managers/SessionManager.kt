@@ -9,4 +9,6 @@ interface SessionManager {
     suspend fun needsLogin(): Boolean
 
     suspend fun isSessionValid(): Boolean
+
+    suspend fun finishCurrentSession()
 }

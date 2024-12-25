@@ -1,4 +1,4 @@
-package com.composetest.core.data.remoteconfigs
+package com.composetest.core.data.remoteconfig
 
 import com.composetest.core.domain.remoteconfigs.RemoteConfig
 

@@ -1,7 +1,7 @@
 package com.composetest.core.data.managers
 
 import com.composetest.common.extensions.orFalse
-import com.composetest.core.data.remoteconfigs.RemoteConfigKey
+import com.composetest.core.data.remoteconfig.RemoteConfigKey
 import com.composetest.core.data.repositories.BiometricRepository
 import com.composetest.core.domain.managers.BiometricManager
 import com.composetest.core.domain.managers.RemoteConfigManager
@@ -18,8 +18,8 @@ internal class BiometricManagerImpl @Inject constructor(
     }
 
     override suspend fun isBiometricEnabled(): Boolean {
-        val isRemoteEnabled = remoteConfigManager.getBoolean(RemoteConfigKey.UseBiometric)
+        val useBiometricEnabled = remoteConfigManager.getBoolean(RemoteConfigKey.UseBiometric)
         val isBiometricSet = biometricRepository.biometricIsSet.firstOrNull().orFalse
-        return isRemoteEnabled && isBiometricSet
+        return useBiometricEnabled && isBiometricSet
     }
 }

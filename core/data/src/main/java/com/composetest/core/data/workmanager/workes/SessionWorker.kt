@@ -1,4 +1,4 @@
-package com.composetest.core.data.workmanagers.workes
+package com.composetest.core.data.workmanager.workes
 
 import android.content.Context
 import android.content.res.Resources.NotFoundException
@@ -9,10 +9,10 @@ import androidx.work.ExistingWorkPolicy
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkerParameters
-import com.composetest.core.data.enums.WorkManagerName
-import com.composetest.core.data.workmanagers.WorkManager
+import com.composetest.core.data.enums.Worker
+import com.composetest.core.data.workmanager.WorkManagerRequest
 import com.composetest.core.domain.analytics.ErrorAnalyticEvent
-import com.composetest.core.domain.repositories.SessionRepository
+import com.composetest.core.domain.managers.SessionManager
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -20,29 +20,27 @@ import java.time.Duration
 
 @HiltWorker
 class SessionWorker @AssistedInject constructor(
-    private val sessionRepository: SessionRepository,
+    private val sessionManager: SessionManager,
     private val sendAnalyticsUseCase: SendAnalyticsUseCase,
     @Assisted context: Context,
     @Assisted workerParams: WorkerParameters
 ) : CoroutineWorker(context, workerParams) {
 
     override suspend fun doWork() = runCatching {
-        val sessionId = sessionRepository.getCurrentSession()?.id
-            ?: throw NotFoundException("Session not initialized")
-        sessionRepository.finishSession(sessionId)
+        val sessionValid = sessionManager.isSessionValid()
+        if (!sessionValid) throw NotFoundException("Session not initialized")
+        sessionManager.finishCurrentSession()
         Result.success()
     }.getOrElse {
         sendAnalyticsUseCase(ErrorAnalyticEvent(it))
         Result.failure()
     }
 
-    class Builder(
-        initialDelay: Duration
-    ) : WorkManager.OneTimeWorkManager {
-        override val work = WorkManagerName.SESSION
+    class Builder(initialDelay: Duration) : WorkManagerRequest.OneTimeWorkManagerRequest {
+        override val worker = Worker.SESSION
         override val existingWorkPolicy = ExistingWorkPolicy.REPLACE
         override val workRequest = OneTimeWorkRequestBuilder<SessionWorker>()
-            .addTag(WorkManagerName.SESSION.name)
+            .addTag(Worker.SESSION.name)
             .setConstraints(Constraints(requiredNetworkType = NetworkType.CONNECTED))
             .setInitialDelay(initialDelay)
             .build()
