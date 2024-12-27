@@ -97,6 +97,10 @@ internal class LoginViewModel @Inject constructor(
         updateUiState { it.setSimpleDialog(null) }
     }
 
+    override fun errorOrFailureBiometric() {
+
+    }
+
     private suspend fun handleLoginError(throwable: Throwable?) {
         sendAnalyticsUseCase(LoginEventAnalytic.LoginSuccessful(false))
         updateUiState { uiState ->
@@ -125,6 +129,9 @@ internal class LoginViewModel @Inject constructor(
                     versionName = "${buildConfigProvider.get.versionName} - ${buildConfigProvider.get.versionCode}",
                     loginButtonState = loginButtonState,
                 )
+            }
+            if (loginButtonState == LoginButtonState.BIOMETRIC) {
+                launchUiEvent(LoginUiEvent.ShowBiometricPrompt)
             }
         }
     }

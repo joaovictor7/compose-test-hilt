@@ -16,6 +16,7 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -31,6 +32,7 @@ import com.composetest.core.designsystem.dimensions.Spacing
 import com.composetest.core.designsystem.extensions.screenMarginWithoutBar
 import com.composetest.core.designsystem.extensions.verticalTopBackgroundBrush
 import com.composetest.core.designsystem.theme.ComposeTestTheme
+import com.composetest.core.security.utils.showBiometricPrompt
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.interfaces.Screen
 import kotlinx.coroutines.flow.Flow
@@ -56,7 +58,7 @@ internal object LoginScreen : Screen<LoginUiState, LoginUiEvent, LoginCommandRec
             }
             VersionName(uiState = uiState)
         }
-        EffectsHandler(onExecuteCommand = onExecuteCommand)
+        EffectsHandler(loginUiEvent = uiEvent, onExecuteCommand = onExecuteCommand)
         HandleDialogs(uiState = uiState, onExecuteCommand = onExecuteCommand)
     }
 }
@@ -156,10 +158,31 @@ private fun BoxScope.VersionName(uiState: LoginUiState) {
 }
 
 @Composable
-private fun EffectsHandler(onExecuteCommand: (Command<LoginCommandReceiver>) -> Unit) {
+private fun EffectsHandler(
+    loginUiEvent: Flow<LoginUiEvent>?,
+    onExecuteCommand: (Command<LoginCommandReceiver>) -> Unit
+) {
     val currentAppTheme = LocalTheme.current
+    val context = LocalContext.current
+    stringResource(LoginResources.string.feature_login_biometric_title)
     LaunchedEffect(Unit) {
         onExecuteCommand(LoginCommand.SetCustomTheme(true, currentAppTheme))
+    }
+    LaunchedEffect(loginUiEvent) {
+        loginUiEvent?.collect {
+            when (it) {
+                is LoginUiEvent.ShowBiometricPrompt ->
+                    showBiometricPrompt(
+                        context = context,
+                        titleId = LoginResources.string.feature_login_biometric_title,
+                        subtitleId = LoginResources.string.feature_login_biometric_subtitle,
+                        onSuccess = { onExecuteCommand(LoginCommand.Login) },
+                        onFailure = { onExecuteCommand(LoginCommand.ErrorOrFailureBiometric) },
+                        onError = { _, _ -> onExecuteCommand(LoginCommand.ErrorOrFailureBiometric) }
+                    )
+                else -> Unit
+            }
+        }
     }
     DisposableEffect(Unit) {
         onDispose {

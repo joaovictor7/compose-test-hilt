@@ -39,4 +39,10 @@ internal sealed interface LoginCommand : Command<LoginCommandReceiver> {
             commandReceiver.login()
         }
     }
+
+    data object ErrorOrFailureBiometric : LoginCommand {
+        override fun execute(commandReceiver: LoginCommandReceiver) {
+            commandReceiver.errorOrFailureBiometric()
+        }
+    }
 }

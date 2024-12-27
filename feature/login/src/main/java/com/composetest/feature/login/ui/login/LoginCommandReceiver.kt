@@ -9,4 +9,5 @@ internal interface LoginCommandReceiver : CommandReceiver<LoginCommandReceiver> 
     fun checkShowInvalidEmailMsg(hasFocus: Boolean)
     fun login()
     fun dismissSimpleDialog()
+    fun errorOrFailureBiometric()
 }

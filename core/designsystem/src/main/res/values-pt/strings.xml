@@ -3,6 +3,7 @@
 
     <!-- Global Words-->
     <string name="global_word_close">Fechar</string>
+    <string name="global_word_cancel">Cancelar</string>
 
     <!-- Alert Error Dialogs -->
     <string name="error_alert_dialog_generic_title">Deu ruim 😥</string>

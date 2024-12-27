@@ -19,7 +19,7 @@ internal class BiometricManagerImpl @Inject constructor(
 
     override suspend fun isBiometricEnabled(): Boolean {
         val useBiometricEnabled = remoteConfigManager.getBoolean(RemoteConfigKey.UseBiometric)
-        val isBiometricSet = biometricRepository.biometricIsSet.firstOrNull().orFalse
-        return useBiometricEnabled && isBiometricSet
+//        val isBiometricSet = biometricRepository.biometricIsSet.firstOrNull().orFalse
+        return useBiometricEnabled //&& isBiometricSet
     }
 }
