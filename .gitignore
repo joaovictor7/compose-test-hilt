@@ -10,7 +10,6 @@
 .externalNativeBuild
 .cxx
 local.properties
-*-signing.properties
-/keys
-/api_keys
+/properties-keys
+/signing-keys
 google-services.json

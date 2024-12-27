@@ -22,8 +22,4 @@ internal sealed interface ApiSetting {
             const val API_KEY_HEADER = "x-api-key"
         }
     }
-
-    data class Bff(override val host: String, override val port: Int) : ApiSetting {
-        override val protocol = URLProtocol.HTTP
-    }
 }

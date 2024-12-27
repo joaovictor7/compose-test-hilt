@@ -4,16 +4,16 @@ import com.android.build.api.dsl.ApplicationExtension
 import enums.Signing
 import extensions.getLibrary
 import extensions.implementation
+import extensions.loadPropertiesFile
+import files.PropertiesFile
 import modularization.configureAndroid
 import modularization.setBuildTypes
-import modularization.setDefaultBuildConfigFields
 import modularization.setFlavors
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
-import java.util.Properties
 
 internal class ApplicationConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
@@ -35,10 +35,9 @@ internal class ApplicationConventionPlugin : Plugin<Project> {
                     }
                     manifestPlaceholders["appName"] = AppConfig.APP_NAME
                     manifestPlaceholders["usesCleartextTraffic"] = false
-                    setDefaultBuildConfigFields(project)
                 }
                 signingConfigs {
-                    createSigning(this, Signing.RELEASE)
+                    createSignings(this)
                 }
                 buildFeatures {
                     buildConfig = true
@@ -58,18 +57,17 @@ internal class ApplicationConventionPlugin : Plugin<Project> {
         }
     }
 
-    private fun Project.createSigning(
-        apkSigningConfig: NamedDomainObjectContainer<out ApkSigningConfig>,
-        name: Signing
-    ) {
-        val propertyFile = file("../${name.signingName}-signing.properties")
-        if (propertyFile.exists()) {
-            val property = Properties().apply { propertyFile.inputStream().use { load(it) } }
-            apkSigningConfig.create(name.signingName) {
-                storeFile = file("../keys/${name.signingName}/key-chain")
-                storePassword = property.getProperty("key.store.password")
-                keyAlias = property.getProperty("key.alias")
-                keyPassword = property.getProperty("key.alias.password")
+    private fun Project.createSignings(
+        apkSigningConfig: NamedDomainObjectContainer<out ApkSigningConfig>
+    ) = with(apkSigningConfig) {
+        Signing.values().forEach { signing ->
+            val propertiesFile = PropertiesFile.SigningKey(rootDir, signing)
+            val properties = loadPropertiesFile(propertiesFile) ?: return@forEach
+            create(signing.toString()) {
+                storeFile = file(propertiesFile.keyPath)
+                storePassword = properties.getProperty("key.store.password")
+                keyAlias = properties.getProperty("key.alias")
+                keyPassword = properties.getProperty("key.alias.password")
             }
         }
     }

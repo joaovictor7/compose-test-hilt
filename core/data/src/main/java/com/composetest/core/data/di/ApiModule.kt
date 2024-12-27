@@ -63,14 +63,4 @@ internal object ApiModule {
                 country = "us",
             )
         )
-
-    @Provides
-    @Singleton
-    @ApiQualifier(Api.BFF)
-    fun bffApi(buildConfigProvider: BuildConfigProvider): HttpClient = httpClient.configureApi(
-        ApiSetting.Bff(
-            host = buildConfigProvider.get.buildConfigFieldsModel.bffApiHost,
-            port = buildConfigProvider.get.buildConfigFieldsModel.bffApiPort
-        )
-    )
 }

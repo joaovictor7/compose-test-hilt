@@ -18,8 +18,6 @@ internal class BuildConfigProviderImpl @Inject constructor() : BuildConfigProvid
         flavor = BuildConfig.FLAVOR.getFlavor(),
         androidSdkVersion = Build.VERSION.SDK_INT,
         buildConfigFieldsModel = BuildConfigFieldsModel(
-            bffApiHost = BuildConfig.BFF_API_HOST,
-            bffApiPort = BuildConfig.BFF_API_PORT,
             newsApiKey = BuildConfig.NEWS_API_API_KEY
         )
     )
