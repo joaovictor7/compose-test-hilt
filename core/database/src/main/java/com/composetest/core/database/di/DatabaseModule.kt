@@ -7,8 +7,7 @@ import androidx.room.RoomDatabase
 import com.composetest.common.providers.BuildConfigProvider
 import com.composetest.core.database.converters.LocalDateTimeConverter
 import com.composetest.core.database.database.AppDatabase
-import com.composetest.core.domain.usecases.GetSqliteSecretKeyUseCase
-import com.composetest.core.security.providers.SqliteCipherProvider
+import com.composetest.core.database.managers.DatabaseSecurityManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,23 +28,19 @@ internal object DatabaseModule {
     fun appDatabase(
         @ApplicationContext context: Context,
         buildConfigProvider: BuildConfigProvider,
-        sqliteCipherProvider: SqliteCipherProvider,
-        getSqliteSecretKeyUseCase: GetSqliteSecretKeyUseCase
+        databaseSecurityManager: DatabaseSecurityManager
     ): AppDatabase = Room.databaseBuilder(
         context,
         AppDatabase::class.java,
         DATABASE_NAME
     )
-        .openHelperFactory(getSecretKey(getSqliteSecretKeyUseCase, sqliteCipherProvider))
+        .openHelperFactory(getHelperFactory(databaseSecurityManager))
         .addTypeConverter(LocalDateTimeConverter())
         .addLogs(buildConfigProvider)
         .build()
 
-    private fun getSecretKey(
-        getSqliteSecretKeyUseCase: GetSqliteSecretKeyUseCase,
-        sqliteCipherProvider: SqliteCipherProvider
-    ) = runBlocking {
-        getSqliteSecretKeyUseCase()?.let { sqliteCipherProvider.getFactory(it) }
+    private fun getHelperFactory(databaseSecurityManager: DatabaseSecurityManager) = runBlocking {
+        databaseSecurityManager.getDatabaseCipherFactory()
     }
 
     private fun RoomDatabase.Builder<AppDatabase>.addLogs(

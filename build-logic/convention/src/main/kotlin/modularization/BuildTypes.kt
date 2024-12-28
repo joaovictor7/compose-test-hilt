@@ -50,8 +50,6 @@ private fun ApplicationBuildType.setSigning(
     buildType: BuildTypeEnum
 ) = with(baseExtension) {
     val signing = Signing.getAssociatedBuildType(buildType) ?: return@with
-    val signingConfig = signingConfigs.find { signingConfig ->
-        signingConfig.name == signing.toString()
-    } ?: return@with
+    val signingConfig = signingConfigs.find { it.name == signing.toString() } ?: return@with
     this@setSigning.signingConfig = signingConfig
 }

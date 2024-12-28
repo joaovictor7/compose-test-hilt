@@ -12,5 +12,7 @@ dependencies {
     implementation(projects.common)
     implementation(libs.room.runtime)
     implementation(libs.room.kotlin)
+    implementation(libs.sql.cipher)
+    implementation(libs.sqlite)
     ksp(libs.room.compiler)
 }

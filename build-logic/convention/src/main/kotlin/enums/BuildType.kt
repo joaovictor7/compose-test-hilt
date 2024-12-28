@@ -1,12 +1,10 @@
 package enums
 
-internal enum class BuildType {
-    RELEASE,
-    DEBUG;
+internal enum class BuildType(val isInternal: Boolean = false, val isDebuggable: Boolean = true) {
+    RELEASE(isInternal = true, isDebuggable = false),
+    DEBUG(isInternal = true);
 
     val isDefault get() = this == DEBUG
-    val isInternal get() = this in listOf(RELEASE, DEBUG)
-    val isDebuggable get() = this in listOf(DEBUG)
 
     override fun toString() = name.lowercase()
 }

@@ -6,6 +6,7 @@ import enums.BuildType
 import enums.Flavor
 import enums.FlavorDimension
 import extensions.loadPropertiesFile
+import extensions.orEmptyToBuildConfigField
 import files.PropertiesFile
 import org.gradle.api.Project
 
@@ -26,6 +27,11 @@ internal fun ApplicationProductFlavor.setBuildConfigFields(
     buildConfigField(
         "String",
         "NEWS_API_API_KEY",
-        apiKeyProperties?.getProperty("NEWS_API").orEmpty()
+        apiKeyProperties?.getProperty("NEWS_API").orEmptyToBuildConfigField
+    )
+    buildConfigField(
+        "String",
+        "DATABASE_KEY",
+        appKeyProperties?.getProperty("DATABASE_KEY").orEmptyToBuildConfigField
     )
 }
