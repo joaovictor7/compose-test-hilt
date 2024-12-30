@@ -2,19 +2,19 @@ package com.composetest.core.data.repositories
 
 import com.composetest.core.data.datasources.local.PreferenceDataSource
 import com.composetest.core.data.preferencesdatastore.PreferencesDataKeys
-import kotlinx.coroutines.flow.Flow
+import com.composetest.core.domain.managers.BiometricRepository
 import javax.inject.Inject
 
-internal class BiometricRepository @Inject constructor(
+internal class BiometricRepositoryImpl @Inject constructor(
     private val preferenceDataSource: PreferenceDataSource
-) {
+) : BiometricRepository {
 
-    val biometricIsSet: Flow<Boolean?>
+    override val biometricIsSet
         get() = preferenceDataSource.getData { preferences ->
             preferences[PreferencesDataKeys.useBiometrics]
         }
 
-    suspend fun setUseBiometric(use: Boolean) {
+    override suspend fun setUseBiometric(use: Boolean) {
         preferenceDataSource.setData(PreferencesDataKeys.useBiometrics, use)
     }
 }

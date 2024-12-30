@@ -5,7 +5,7 @@ import com.composetest.core.designsystem.utils.getDefaultSimpleDialogErrorParam
 import com.composetest.core.domain.enums.Theme
 import com.composetest.core.domain.errors.ApiError
 import com.composetest.core.domain.managers.AppThemeManager
-import com.composetest.core.domain.managers.BiometricManager
+import com.composetest.core.security.managers.BiometricManager
 import com.composetest.core.domain.managers.RemoteConfigManager
 import com.composetest.core.domain.managers.SessionManager
 import com.composetest.core.domain.models.AuthenticationCredentialsModel

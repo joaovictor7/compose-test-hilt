@@ -1,4 +1,4 @@
-package com.composetest.core.domain.managers
+package com.composetest.core.security.managers
 
 interface BiometricManager {
     suspend fun setBiometric(use: Boolean)

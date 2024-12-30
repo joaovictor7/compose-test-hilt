@@ -1,13 +1,11 @@
 package com.composetest.core.data.di
 
 import com.composetest.core.data.managers.AppThemeManagerImpl
-import com.composetest.core.data.managers.BiometricManagerImpl
 import com.composetest.core.data.managers.RemoteConfigManagerImpl
 import com.composetest.core.data.managers.SessionManagerImpl
 import com.composetest.core.data.managers.WorkManager
 import com.composetest.core.data.managers.WorkManagerImpl
 import com.composetest.core.domain.managers.AppThemeManager
-import com.composetest.core.domain.managers.BiometricManager
 import com.composetest.core.domain.managers.RemoteConfigManager
 import com.composetest.core.domain.managers.SessionManager
 import dagger.Binds
@@ -33,11 +31,6 @@ internal abstract class ManagerModule {
     abstract fun remoteConfigManager(
         remoteConfigManagerImpl: RemoteConfigManagerImpl
     ): RemoteConfigManager
-
-    @Binds
-    abstract fun biometricManager(
-        biometricManagerImpl: BiometricManagerImpl
-    ): BiometricManager
 
     @Binds
     abstract fun workManager(

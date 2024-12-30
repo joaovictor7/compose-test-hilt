@@ -1,9 +1,8 @@
-package com.composetest.core.data.managers
+package com.composetest.core.security.managers
 
 import com.composetest.common.extensions.orFalse
 import com.composetest.core.data.remoteconfig.RemoteConfigKey
-import com.composetest.core.data.repositories.BiometricRepository
-import com.composetest.core.domain.managers.BiometricManager
+import com.composetest.core.domain.managers.BiometricRepository
 import com.composetest.core.domain.managers.RemoteConfigManager
 import com.composetest.core.security.providers.BiometricsProvider
 import kotlinx.coroutines.flow.firstOrNull
