@@ -10,6 +10,7 @@ android {
 dependencies {
     implementation(projects.core.database)
     implementation(projects.core.domain)
+    implementation(projects.core.security)
     implementation(projects.common)
     implementation(libs.kotlin.json.serializable)
     implementation(libs.androidx.dataStore)

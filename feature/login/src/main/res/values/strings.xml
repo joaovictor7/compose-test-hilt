@@ -9,4 +9,5 @@
     <string name="feature_login_invalid_credentials">Something went wrong. Try again.</string>
     <string name="feature_login_biometric_title">Authenticate to access the account</string>
     <string name="feature_login_biometric_subtitle">Use your fingerprint or face ID to authenticate</string>
+    <string name="feature_login_biometric_is_blocked">Biometric authentication is blocked</string>
 </resources>

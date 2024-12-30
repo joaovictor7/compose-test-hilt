@@ -10,7 +10,7 @@ internal class BiometricsProviderImpl @Inject constructor(
     @ApplicationContext private val context: Context
 ) : BiometricsProvider {
 
-    override val isStrongBiometricsAvailable: Boolean
+    override val isBiometricAvailable: Boolean
         get() = BiometricManager.from(context)
             .canAuthenticate(BIOMETRIC_STRONG) == BiometricManager.BIOMETRIC_SUCCESS
 }

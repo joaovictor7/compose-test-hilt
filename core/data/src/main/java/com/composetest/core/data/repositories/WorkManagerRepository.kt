@@ -1,8 +1,8 @@
 package com.composetest.core.data.repositories
 
-import javax.inject.Inject
 import androidx.work.WorkManager
 import com.composetest.core.data.workmanager.WorkManagerRequest
+import javax.inject.Inject
 
 internal class WorkManagerRepository @Inject constructor(
     private val workManager: WorkManager

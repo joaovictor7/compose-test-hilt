@@ -6,4 +6,5 @@
     <string name="feature_login_invalid_credentials">Algo deu errado. Tente novamente.</string>
     <string name="feature_login_biometric_title">Autenticar para acessar a conta</string>
     <string name="feature_login_biometric_subtitle">Use sua impressão digital ou face ID para autenticar</string>
+    <string name="feature_login_biometric_is_blocked">Autenticação por biometria está bloqueada</string>
 </resources>

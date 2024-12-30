@@ -14,7 +14,7 @@ internal class BiometricRepository @Inject constructor(
             preferences[PreferencesDataKeys.useBiometrics]
         }
 
-    suspend fun setBiometric(use: Boolean) {
+    suspend fun setUseBiometric(use: Boolean) {
         preferenceDataSource.setData(PreferencesDataKeys.useBiometrics, use)
     }
 }

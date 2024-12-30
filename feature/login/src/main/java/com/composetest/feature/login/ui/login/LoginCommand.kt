@@ -1,6 +1,7 @@
 package com.composetest.feature.login.ui.login
 
 import com.composetest.core.domain.enums.Theme
+import com.composetest.core.security.enums.BiometricError
 import com.composetest.core.ui.interfaces.Command
 
 internal sealed interface LoginCommand : Command<LoginCommandReceiver> {
@@ -28,6 +29,12 @@ internal sealed interface LoginCommand : Command<LoginCommandReceiver> {
         }
     }
 
+    data class BiometricErrorHandler(private val biometricError: BiometricError) : LoginCommand {
+        override fun execute(commandReceiver: LoginCommandReceiver) {
+            commandReceiver.biometricErrorHandler(biometricError)
+        }
+    }
+
     data object DismissSimpleDialog : LoginCommand {
         override fun execute(commandReceiver: LoginCommandReceiver) {
             commandReceiver.dismissSimpleDialog()
@@ -40,9 +47,15 @@ internal sealed interface LoginCommand : Command<LoginCommandReceiver> {
         }
     }
 
-    data object ErrorOrFailureBiometric : LoginCommand {
+    data object BiometricErrorAnimationFinished : LoginCommand {
         override fun execute(commandReceiver: LoginCommandReceiver) {
-            commandReceiver.errorOrFailureBiometric()
+            commandReceiver.biometricErrorAnimationFinished()
+        }
+    }
+
+    data object ShowBiometricPrompt : LoginCommand {
+        override fun execute(commandReceiver: LoginCommandReceiver) {
+            commandReceiver.showBiometricPrompt()
         }
     }
 }

@@ -16,11 +16,15 @@ import com.composetest.core.router.di.qualifiers.NavGraphQualifier
 import com.composetest.core.router.enums.NavGraph
 import com.composetest.core.router.enums.NavigationMode
 import com.composetest.core.router.managers.NavigationManager
+import com.composetest.core.security.enums.BiometricError
+import com.composetest.core.security.enums.BiometricError.Companion.biometricIsLockout
+import com.composetest.core.security.enums.BiometricError.Companion.userClosedPrompt
 import com.composetest.core.ui.bases.BaseViewModel
+import com.composetest.feature.login.R
 import com.composetest.feature.login.analytics.login.LoginClickEventAnalytic
 import com.composetest.feature.login.analytics.login.LoginEventAnalytic
 import com.composetest.feature.login.analytics.login.LoginScreenAnalytic
-import com.composetest.feature.login.enums.LoginButtonState
+import com.composetest.feature.login.models.BiometricModel
 import com.composetest.feature.login.remoteconfigs.LoginRemoteConfig
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -81,7 +85,7 @@ internal class LoginViewModel @Inject constructor(
         updateUiState {
             it.setLoginForm(
                 newLoginFormModel,
-                if (newLoginFormModel.loginAlready || byPassLogin) LoginButtonState.BUTTON_ENABLED else LoginButtonState.BUTTON_DISABLE
+                newLoginFormModel.loginAlready || byPassLogin
             )
         }
     }
@@ -97,8 +101,28 @@ internal class LoginViewModel @Inject constructor(
         updateUiState { it.setSimpleDialog(null) }
     }
 
-    override fun errorOrFailureBiometric() {
+    override fun biometricErrorHandler(biometricError: BiometricError) {
+        if (biometricError.userClosedPrompt) return
+        if (biometricError.biometricIsLockout) {
+            updateUiState {
+                it.setBiometricModel(
+                    BiometricModel(
+                        isAvailable = false,
+                        messageId = R.string.feature_login_biometric_is_blocked
+                    )
+                )
+            }
+        } else {
+            updateUiState { it.setBiometricModel(BiometricModel(isError = true)) }
+        }
+    }
 
+    override fun biometricErrorAnimationFinished() {
+        updateUiState { it.setBiometricModel(BiometricModel()) }
+    }
+
+    override fun showBiometricPrompt() {
+        launchUiEvent(LoginUiEvent.ShowBiometricPrompt)
     }
 
     private suspend fun handleLoginError(throwable: Throwable?) {
@@ -123,14 +147,15 @@ internal class LoginViewModel @Inject constructor(
     private fun showScreen() {
         openScreenAnalytic()
         runAsyncTask {
-            val loginButtonState = getLoginButtonState()
+            val biometricIsEnabled = biometricManager.biometricIsEnabled()
             updateUiState {
                 it.initUiState(
                     versionName = "${buildConfigProvider.get.versionName} - ${buildConfigProvider.get.versionCode}",
-                    loginButtonState = loginButtonState,
+                    loginButtonIsEnabled = byPassLogin,
+                    biometricModel = if (biometricIsEnabled) BiometricModel() else null,
                 )
             }
-            if (loginButtonState == LoginButtonState.BIOMETRIC) {
+            if (biometricIsEnabled) {
                 launchUiEvent(LoginUiEvent.ShowBiometricPrompt)
             }
         }
@@ -138,11 +163,5 @@ internal class LoginViewModel @Inject constructor(
 
     private suspend fun navigateToRoot() {
         navigationManager.asyncNavigate(RootDestination, NavigationMode.REMOVE_ALL_SCREENS_STACK)
-    }
-
-    private suspend fun getLoginButtonState() = when {
-        biometricManager.isBiometricEnabled() -> LoginButtonState.BIOMETRIC
-        byPassLogin -> LoginButtonState.BUTTON_ENABLED
-        else -> LoginButtonState.BUTTON_DISABLE
     }
 }

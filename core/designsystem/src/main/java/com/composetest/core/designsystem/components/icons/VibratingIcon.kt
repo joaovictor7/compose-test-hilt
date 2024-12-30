@@ -35,22 +35,24 @@ fun VibratingIcon(
     displacement: Float = DISPLACEMENT,
     duration: Int = DURATION,
     @DrawableRes iconId: Int,
-    iconTint: Color = LocalContentColor.current,
-    contentDescription: String? = null
+    iconTint: Color? = null,
+    contentDescription: String? = null,
+    onAnimationFinished: (() -> Unit)? = null
 ) {
     val offsetX = remember { Animatable(0f) }
-    LaunchedEffect(Unit) {
+    LaunchedEffect(amountVibrations) {
         runVibrationAnimation(
             offsetX = offsetX,
             displacement = displacement,
             duration = duration,
-            amountVibrations = amountVibrations
+            amountVibrations = amountVibrations,
+            onAnimationEnd = onAnimationFinished
         )
     }
     Icon(
         painter = painterResource(iconId),
         contentDescription = contentDescription,
-        tint = iconTint,
+        tint = iconTint ?: LocalContentColor.current,
         modifier = modifier
             .offset { IntOffset(offsetX.value.toInt(), 0) }
             .padding(horizontal = displacement.toDp)
@@ -61,7 +63,8 @@ suspend fun runVibrationAnimation(
     offsetX: Animatable<Float, AnimationVector1D>,
     displacement: Float,
     duration: Int,
-    amountVibrations: Int
+    amountVibrations: Int,
+    onAnimationEnd: (() -> Unit)?
 ) {
     val vibrationCount = if (amountVibrations == -1) Int.MAX_VALUE else amountVibrations
     repeat(vibrationCount) { count ->
@@ -75,6 +78,7 @@ suspend fun runVibrationAnimation(
         )
         if (count + 1 == vibrationCount) {
             offsetX.animateTo(0f)
+            onAnimationEnd?.invoke()
             return
         }
     }

@@ -6,6 +6,7 @@ import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import com.composetest.core.designsystem.R
+import com.composetest.core.security.enums.BiometricError
 
 fun showBiometricPrompt(
     context: Context,
@@ -13,10 +14,10 @@ fun showBiometricPrompt(
     @StringRes subtitleId: Int,
     @StringRes descriptionId: Int? = null,
     @StringRes negativeButtonTextId: Int? = null,
-    confirmationRequired: Boolean = false,
+    confirmationRequired: Boolean = true,
     onSuccess: () -> Unit,
-    onFailure: () -> Unit,
-    onError: (code: Int, message: String) -> Unit,
+    onFailure: (() -> Unit)? = null,
+    onError: ((error: BiometricError) -> Unit)? = null
 ) {
     showBiometricPrompt(
         context = context,
@@ -39,8 +40,8 @@ fun showBiometricPrompt(
     negativeButtonText: String? = null,
     confirmationRequired: Boolean = false,
     onSuccess: () -> Unit,
-    onFailure: () -> Unit,
-    onError: (code: Int, message: String) -> Unit,
+    onFailure: (() -> Unit)? = null,
+    onError: ((error: BiometricError) -> Unit)? = null
 ) {
     val fragmentActivity = context as? FragmentActivity ?: return
     val biometricPrompt = BiometricPrompt(
@@ -54,12 +55,12 @@ fun showBiometricPrompt(
 
             override fun onAuthenticationFailed() {
                 super.onAuthenticationFailed()
-                onFailure()
+                onFailure?.invoke()
             }
 
             override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
                 super.onAuthenticationError(errorCode, errString)
-                onError(errorCode, errString.toString())
+                onError?.invoke(BiometricError.getErrorByCode(errorCode))
             }
         }
     )

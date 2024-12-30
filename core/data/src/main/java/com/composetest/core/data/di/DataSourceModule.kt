@@ -8,11 +8,11 @@ import com.composetest.core.data.datasources.local.SessionDataSource
 import com.composetest.core.data.datasources.local.SessionDataSourceImpl
 import com.composetest.core.data.datasources.local.UserDataSource
 import com.composetest.core.data.datasources.local.UserDataSourceImpl
+import com.composetest.core.data.datasources.remote.AnalyticsDataSource
+import com.composetest.core.data.datasources.remote.AnalyticsDataSourceImpl
 import com.composetest.core.data.datasources.remote.AuthenticationDataSource
 import com.composetest.core.data.datasources.remote.AuthenticationDataSourceImpl
 import com.composetest.core.data.datasources.remote.AuthenticationFakeDataSourceImpl
-import com.composetest.core.data.datasources.remote.AnalyticsDataSource
-import com.composetest.core.data.datasources.remote.AnalyticsDataSourceImpl
 import com.composetest.core.data.datasources.remote.RemoteConfigDataSource
 import com.composetest.core.data.datasources.remote.RemoteConfigDataSourceImpl
 import com.composetest.core.data.mappers.AuthenticationMapper
