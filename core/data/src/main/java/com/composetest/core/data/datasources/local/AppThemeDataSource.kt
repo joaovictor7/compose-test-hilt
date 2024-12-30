@@ -1,10 +1,16 @@
 package com.composetest.core.data.datasources.local
 
 import com.composetest.core.domain.enums.Theme
-import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.update
+import javax.inject.Inject
 
-internal interface AppThemeDataSource {
-    val customAppThemeFlow: SharedFlow<Theme?>
+internal class AppThemeDataSource @Inject constructor() {
 
-    fun emitCustomAppTheme(theme: Theme?)
+    private val _customAppThemeFlow = MutableStateFlow<Theme?>(null)
+    val customAppThemeFlow = _customAppThemeFlow
+
+    fun emitCustomAppTheme(theme: Theme?) {
+        _customAppThemeFlow.update { theme }
+    }
 }

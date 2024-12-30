@@ -1,9 +1,21 @@
 package com.composetest.core.data.datasources.remote
 
-internal interface RemoteConfigDataSource {
-    fun getString(key: String): String
-    fun getBoolean(key: String): Boolean
-    fun getLong(key: String): Long
-    fun getDouble(key: String): Double
-    fun fetch()
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import javax.inject.Inject
+
+internal class RemoteConfigDataSource @Inject constructor(
+    private val firebaseRemoteConfig: FirebaseRemoteConfig,
+) {
+
+    fun getString(key: String) = firebaseRemoteConfig.getString(key)
+
+    fun getBoolean(key: String) = firebaseRemoteConfig.getBoolean(key)
+
+    fun getLong(key: String) = firebaseRemoteConfig.getLong(key)
+
+    fun getDouble(key: String) = firebaseRemoteConfig.getDouble(key)
+
+    fun fetch() {
+        firebaseRemoteConfig.fetchAndActivate()
+    }
 }

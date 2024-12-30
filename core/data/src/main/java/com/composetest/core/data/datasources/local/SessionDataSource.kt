@@ -1,12 +1,21 @@
 package com.composetest.core.data.datasources.local
 
+import com.composetest.core.database.daos.SessionEntityDao
 import com.composetest.core.database.entities.SessionEntity
 import com.composetest.core.database.entities.partialupdate.FinishedSessionEntityUpdate
+import javax.inject.Inject
 
-internal interface SessionDataSource {
-    suspend fun insert(entity: SessionEntity)
+internal class SessionDataSource @Inject constructor(
+    private val sessionEntityDao: SessionEntityDao
+) {
 
-    suspend fun update(entity: FinishedSessionEntityUpdate)
+    suspend fun insert(entity: SessionEntity) {
+        sessionEntityDao.insert(entity)
+    }
 
-    suspend fun getCurrentSession(): SessionEntity?
+    suspend fun update(entity: FinishedSessionEntityUpdate) {
+        sessionEntityDao.update(entity)
+    }
+
+    suspend fun getCurrentSession() = sessionEntityDao.getCurrentSession()
 }
