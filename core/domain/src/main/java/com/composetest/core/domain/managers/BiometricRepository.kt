@@ -5,5 +5,5 @@ import kotlinx.coroutines.flow.Flow
 interface BiometricRepository {
     val biometricIsSet: Flow<Boolean?>
 
-    suspend fun setUseBiometric(use: Boolean)
+    suspend fun setUseBiometric(useBiometric: Boolean)
 }

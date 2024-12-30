@@ -1,6 +1,7 @@
 package com.composetest.feature.configuration.ui.security
 
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
+import com.composetest.core.domain.usecases.SetUseBiometricUseCase
 import com.composetest.core.router.di.qualifiers.NavGraphQualifier
 import com.composetest.core.router.enums.NavGraph
 import com.composetest.core.router.managers.NavigationManager
@@ -11,6 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class ConfigurationSecurityViewModel @Inject constructor(
+    private val setUseBiometricUseCase: SetUseBiometricUseCase,
     override val sendAnalyticsUseCase: SendAnalyticsUseCase,
     @NavGraphQualifier(NavGraph.MAIN) override val navigationManager: NavigationManager
 ) : BaseViewModel<ConfigurationSecurityUiState, ConfigurationSecurityUiEvent>(
@@ -22,5 +24,11 @@ internal class ConfigurationSecurityViewModel @Inject constructor(
 
     override fun initUiState() {
 
+    }
+
+    override fun changeSwitchBiometric(checked: Boolean) {
+        runAsyncTask {
+            setUseBiometricUseCase(checked)
+        }
     }
 }

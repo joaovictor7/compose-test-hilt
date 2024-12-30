@@ -1,7 +1,7 @@
 package com.composetest.core.security.di
 
-import com.composetest.core.security.providers.BiometricsProvider
-import com.composetest.core.security.providers.BiometricsProviderImpl
+import com.composetest.core.domain.providers.BiometricProvider
+import com.composetest.core.security.providers.BiometricProviderImpl
 import com.composetest.core.security.providers.CipherProvider
 import com.composetest.core.security.providers.CipherProviderImpl
 import dagger.Binds
@@ -20,6 +20,6 @@ internal abstract class ProviderModule {
 
     @Binds
     abstract fun biometricsProvider(
-        biometricsProviderImpl: BiometricsProviderImpl
-    ): BiometricsProvider
+        biometricsProviderImpl: BiometricProviderImpl
+    ): BiometricProvider
 }

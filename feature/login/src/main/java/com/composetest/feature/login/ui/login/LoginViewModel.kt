@@ -5,11 +5,11 @@ import com.composetest.core.designsystem.utils.getDefaultSimpleDialogErrorParam
 import com.composetest.core.domain.enums.Theme
 import com.composetest.core.domain.errors.ApiError
 import com.composetest.core.domain.managers.AppThemeManager
-import com.composetest.core.security.managers.BiometricManager
 import com.composetest.core.domain.managers.RemoteConfigManager
 import com.composetest.core.domain.managers.SessionManager
 import com.composetest.core.domain.models.AuthenticationCredentialsModel
 import com.composetest.core.domain.usecases.AuthenticationUseCase
+import com.composetest.core.domain.usecases.BiometricIsAvailableUseCase
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
 import com.composetest.core.router.destinations.root.RootDestination
 import com.composetest.core.router.di.qualifiers.NavGraphQualifier
@@ -32,9 +32,9 @@ import javax.inject.Inject
 @HiltViewModel
 internal class LoginViewModel @Inject constructor(
     private val buildConfigProvider: BuildConfigProvider,
-    private val biometricManager: BiometricManager,
     private val appThemeManager: AppThemeManager,
     private val authenticationUseCase: AuthenticationUseCase,
+    private val biometricIsAvailableUseCase: BiometricIsAvailableUseCase,
     private val sessionManager: SessionManager,
     private val remoteConfigManager: RemoteConfigManager,
     override val sendAnalyticsUseCase: SendAnalyticsUseCase,
@@ -147,15 +147,15 @@ internal class LoginViewModel @Inject constructor(
     private fun showScreen() {
         openScreenAnalytic()
         runAsyncTask {
-            val biometricIsEnabled = biometricManager.biometricIsEnabled()
+            val biometricIsAvailable = biometricIsAvailableUseCase()
             updateUiState {
                 it.initUiState(
                     versionName = "${buildConfigProvider.get.versionName} - ${buildConfigProvider.get.versionCode}",
                     loginButtonIsEnabled = byPassLogin,
-                    biometricModel = if (biometricIsEnabled) BiometricModel() else null,
+                    biometricModel = if (biometricIsAvailable) BiometricModel() else null,
                 )
             }
-            if (biometricIsEnabled) {
+            if (biometricIsAvailable) {
                 launchUiEvent(LoginUiEvent.ShowBiometricPrompt)
             }
         }
