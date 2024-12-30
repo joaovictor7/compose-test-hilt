@@ -1,7 +1,6 @@
 package com.composetest.feature.configuration.ui.configuration
 
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
-import com.composetest.core.router.destinations.configuration.ConfigurationThemeDestination
 import com.composetest.core.router.di.qualifiers.NavGraphQualifier
 import com.composetest.core.router.enums.NavGraph
 import com.composetest.core.router.managers.NavigationManager
@@ -27,7 +26,7 @@ internal class ConfigurationViewModel @Inject constructor(
         updateUiState { it.setConfigurations(Configuration.entries) }
     }
 
-    override fun clickConfiguration(configuration: Configuration) {
-        navigationManager.navigate(ConfigurationThemeDestination)
+    override fun configurationClick(configuration: Configuration) {
+        navigationManager.navigate(configuration.destination)
     }
 }

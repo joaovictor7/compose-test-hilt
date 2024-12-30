@@ -65,7 +65,7 @@ private fun ConfigurationCard(
     configuration: Configuration
 ) {
     OutlinedCard(
-        onClick = { onExecuteCommand(ConfigurationCommand.ClickConfiguration(configuration)) }
+        onClick = { onExecuteCommand(ConfigurationCommand.ConfigurationClick(configuration)) }
     ) {
         Box(
             modifier = Modifier

@@ -4,6 +4,7 @@
     <!-- Configurations -->
     <string name="configuration_title">Configurações</string>
     <string name="configuration_theme_text">Tema</string>
+    <string name="configuration_security_text">Segurança</string>
 
     <!-- Theme Configurations -->
     <string name="configuration_theme_mode_title">Modo</string>

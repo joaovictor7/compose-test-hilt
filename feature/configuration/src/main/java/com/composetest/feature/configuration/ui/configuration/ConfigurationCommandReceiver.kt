@@ -5,5 +5,5 @@ import com.composetest.feature.configuration.enums.Configuration
 
 internal interface ConfigurationCommandReceiver : CommandReceiver<ConfigurationCommandReceiver> {
 
-    fun clickConfiguration(configuration: Configuration)
+    fun configurationClick(configuration: Configuration)
 }
