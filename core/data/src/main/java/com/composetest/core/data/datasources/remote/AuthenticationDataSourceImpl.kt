@@ -2,7 +2,6 @@ package com.composetest.core.data.datasources.remote
 
 import com.composetest.core.data.mappers.AuthenticationMapper
 import com.composetest.core.data.utils.RemoteCallUtils
-import com.composetest.core.domain.models.AuthenticationCredentialsModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.userProfileChangeRequest
 import kotlinx.coroutines.tasks.await
@@ -13,12 +12,9 @@ internal class AuthenticationDataSourceImpl(
     private val remoteCallUtils: RemoteCallUtils
 ) : AuthenticationDataSource {
 
-    override suspend fun authentication(authenticationCredentials: AuthenticationCredentialsModel) =
+    override suspend fun authentication(email: String, password: String) =
         remoteCallUtils.executeRemoteCall {
-            val authResult = firebaseAuth.signInWithEmailAndPassword(
-                authenticationCredentials.email,
-                authenticationCredentials.password
-            ).await()
+            val authResult = firebaseAuth.signInWithEmailAndPassword(email, password).await()
             val tokenResult = authResult.user?.getIdToken(true)?.await()
             authenticationMapper(authResult.user, tokenResult)
         }

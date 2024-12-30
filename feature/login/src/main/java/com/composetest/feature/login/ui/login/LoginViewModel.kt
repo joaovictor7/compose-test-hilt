@@ -7,7 +7,6 @@ import com.composetest.core.domain.errors.ApiError
 import com.composetest.core.domain.managers.AppThemeManager
 import com.composetest.core.domain.managers.RemoteConfigManager
 import com.composetest.core.domain.managers.SessionManager
-import com.composetest.core.domain.models.AuthenticationCredentialsModel
 import com.composetest.core.domain.usecases.AuthenticationByBiometricUseCase
 import com.composetest.core.domain.usecases.AuthenticationUseCase
 import com.composetest.core.domain.usecases.BiometricIsAvailableUseCase
@@ -148,9 +147,7 @@ internal class LoginViewModel @Inject constructor(
         if (byBiometric) {
             authenticationByBiometricUseCase()
         } else {
-            authenticationUseCase(
-                AuthenticationCredentialsModel(loginFormModel.email, loginFormModel.password)
-            )
+            authenticationUseCase(loginFormModel.email, loginFormModel.password)
         }
     }
 

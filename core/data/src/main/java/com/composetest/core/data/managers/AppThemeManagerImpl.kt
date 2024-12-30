@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.firstOrNull
 import javax.inject.Inject
 
 internal class AppThemeManagerImpl @Inject constructor(
-    private val appThemeRepository: AppThemeRepository
+    private val appThemeRepository: AppThemeRepository,
 ) : AppThemeManager {
 
     override val appThemeFlow
