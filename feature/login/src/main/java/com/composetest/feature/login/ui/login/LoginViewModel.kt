@@ -8,6 +8,7 @@ import com.composetest.core.domain.managers.AppThemeManager
 import com.composetest.core.domain.managers.RemoteConfigManager
 import com.composetest.core.domain.managers.SessionManager
 import com.composetest.core.domain.models.AuthenticationCredentialsModel
+import com.composetest.core.domain.usecases.AuthenticationByBiometricUseCase
 import com.composetest.core.domain.usecases.AuthenticationUseCase
 import com.composetest.core.domain.usecases.BiometricIsAvailableUseCase
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
@@ -34,6 +35,7 @@ internal class LoginViewModel @Inject constructor(
     private val buildConfigProvider: BuildConfigProvider,
     private val appThemeManager: AppThemeManager,
     private val authenticationUseCase: AuthenticationUseCase,
+    private val authenticationByBiometricUseCase: AuthenticationByBiometricUseCase,
     private val biometricIsAvailableUseCase: BiometricIsAvailableUseCase,
     private val sessionManager: SessionManager,
     private val remoteConfigManager: RemoteConfigManager,
@@ -59,16 +61,14 @@ internal class LoginViewModel @Inject constructor(
         }
     }
 
-    override fun login() {
+    override fun login(byBiometric: Boolean) {
         updateUiState { it.setLoading(true) }
         runAsyncTask(
             onError = ::handleLoginError,
             onCompletion = { updateUiState { it.setLoading(false) } }
         ) {
             sendAnalyticsUseCase(LoginClickEventAnalytic.LoginButton)
-            authenticationUseCase(
-                AuthenticationCredentialsModel(loginFormModel.email, loginFormModel.password)
-            )
+            authenticate(byBiometric)
             sendAnalyticsUseCase(LoginEventAnalytic.LoginSuccessful(true))
             navigateToRoot()
         }
@@ -141,6 +141,16 @@ internal class LoginViewModel @Inject constructor(
             showScreen()
         } else {
             navigateToRoot()
+        }
+    }
+
+    private suspend fun authenticate(byBiometric: Boolean) {
+        if (byBiometric) {
+            authenticationByBiometricUseCase()
+        } else {
+            authenticationUseCase(
+                AuthenticationCredentialsModel(loginFormModel.email, loginFormModel.password)
+            )
         }
     }
 

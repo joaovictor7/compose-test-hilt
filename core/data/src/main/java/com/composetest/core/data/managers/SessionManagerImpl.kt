@@ -21,7 +21,7 @@ internal class SessionManagerImpl @Inject constructor(
 
     override suspend fun needsLogin() = sessionRepository.getCurrentSession() == null
 
-    override suspend fun isSessionValid(): Boolean {
+    override suspend fun sessionIsLogged(): Boolean {
         val currentSession = sessionRepository.getCurrentSession() ?: return false
         return !currentSession.isFinished
     }

@@ -27,7 +27,7 @@ class SessionWorker @AssistedInject constructor(
 ) : CoroutineWorker(context, workerParams) {
 
     override suspend fun doWork() = runCatching {
-        val sessionValid = sessionManager.isSessionValid()
+        val sessionValid = sessionManager.sessionIsLogged()
         if (!sessionValid) throw NotFoundException("Session not initialized")
         sessionManager.finishCurrentSession()
         Result.success()

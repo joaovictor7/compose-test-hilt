@@ -18,4 +18,12 @@ interface UserEntityDao {
                 "LIMIT 1"
     )
     suspend fun getCurrentUser(): UserEntity?
+
+    @Query(
+        "SELECT user.* FROM user " +
+                "JOIN session ON session.userId = user.userId " +
+                "WHERE session.endDate = (SELECT MAX(endDate) FROM session WHERE isFinished = 1)" +
+                "LIMIT 1"
+    )
+    suspend fun getLastActiveUser(): UserEntity?
 }

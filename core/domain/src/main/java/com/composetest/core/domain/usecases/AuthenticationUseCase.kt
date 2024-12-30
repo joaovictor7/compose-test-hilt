@@ -13,7 +13,7 @@ class AuthenticationUseCase @Inject internal constructor(
     private val userRepository: UserRepository,
     private val sessionMapper: SessionMapper,
     private val userMapper: UserMapper,
-    private val sessionManager: SessionManager
+    private val sessionManager: SessionManager,
 ) {
 
     suspend operator fun invoke(authenticationCredentialsModel: AuthenticationCredentialsModel) {

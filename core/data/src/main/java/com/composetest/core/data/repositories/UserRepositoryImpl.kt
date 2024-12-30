@@ -17,4 +17,7 @@ internal class UserRepositoryImpl @Inject constructor(
 
     override suspend fun getCurrentUser() =
         userMapper(userDataSource.getCurrentUser())
+
+    override suspend fun getLastActiveUser() =
+        userMapper(userDataSource.getLastActiveUser())
 }

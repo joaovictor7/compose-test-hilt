@@ -140,7 +140,7 @@ private fun ButtonsArea(
             text = stringResource(LoginResources.string.feature_login_enter),
             modifier = Modifier.fillMaxWidth(),
             enabled = uiState.loginButtonIsEnabled
-        ) { onExecuteCommand(LoginCommand.Login) }
+        ) { onExecuteCommand(LoginCommand.Login(false)) }
         BiometricButton(uiState = uiState, onExecuteCommand = onExecuteCommand)
     }
 }
@@ -218,7 +218,7 @@ private fun EffectsHandler(
                     context = context,
                     titleId = LoginResources.string.feature_login_biometric_title,
                     subtitleId = LoginResources.string.feature_login_biometric_subtitle,
-                    onSuccess = { onExecuteCommand(LoginCommand.Login) },
+                    onSuccess = { onExecuteCommand(LoginCommand.Login(true)) },
                     onError = { error ->
                         onExecuteCommand(LoginCommand.BiometricErrorHandler(error))
                     }

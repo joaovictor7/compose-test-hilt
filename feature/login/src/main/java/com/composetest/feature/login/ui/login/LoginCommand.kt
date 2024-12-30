@@ -35,18 +35,17 @@ internal sealed interface LoginCommand : Command<LoginCommandReceiver> {
         }
     }
 
+    data class Login(private val byBiometric: Boolean) : LoginCommand {
+        override fun execute(commandReceiver: LoginCommandReceiver) {
+            commandReceiver.login(byBiometric)
+        }
+    }
+
     data object DismissSimpleDialog : LoginCommand {
         override fun execute(commandReceiver: LoginCommandReceiver) {
             commandReceiver.dismissSimpleDialog()
         }
     }
-
-    data object Login : LoginCommand {
-        override fun execute(commandReceiver: LoginCommandReceiver) {
-            commandReceiver.login()
-        }
-    }
-
     data object BiometricErrorAnimationFinished : LoginCommand {
         override fun execute(commandReceiver: LoginCommandReceiver) {
             commandReceiver.biometricErrorAnimationFinished()
