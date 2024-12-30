@@ -1,4 +1,4 @@
-package com.composetest.core.security.providers
+package com.composetest.core.domain.providers
 
 interface CipherProvider {
     fun encrypt(inputText: String): String

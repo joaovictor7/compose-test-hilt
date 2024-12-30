@@ -2,7 +2,7 @@ package com.composetest.core.database.managers
 
 import com.composetest.common.providers.BuildConfigProvider
 import com.composetest.core.domain.repositories.SecretKeyRepository
-import com.composetest.core.security.providers.CipherProvider
+import com.composetest.core.domain.providers.CipherProvider
 import com.composetest.core.security.utils.addPBKDF2
 import kotlinx.coroutines.flow.firstOrNull
 import net.zetetic.database.sqlcipher.SupportOpenHelperFactory

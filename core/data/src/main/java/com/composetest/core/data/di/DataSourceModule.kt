@@ -21,7 +21,7 @@ internal object DataSourceModule {
         environmentInstanceProvider: EnvironmentInstanceProvider,
         firebaseAuth: FirebaseAuth,
         authenticationMapper: AuthenticationMapper,
-        remoteCallUtils: RemoteCallUtils
+        remoteCallUtils: RemoteCallUtils,
     ): AuthenticationDataSource = environmentInstanceProvider.getInstance(
         instance = AuthenticationDataSourceImpl(
             firebaseAuth = firebaseAuth,
@@ -29,7 +29,7 @@ internal object DataSourceModule {
             remoteCallUtils = remoteCallUtils
         ),
         fakeInstance = AuthenticationFakeDataSourceImpl(
-            remoteCallUtils = remoteCallUtils
+            remoteCallUtils = remoteCallUtils,
         )
     )
 }

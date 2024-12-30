@@ -9,14 +9,16 @@ internal class UserMapper @Inject constructor() {
     operator fun invoke(model: UserModel) = UserEntity(
         id = model.id,
         name = model.name,
-        email = model.email
+        email = model.email,
+        encryptedPassword = model.encryptedPassword
     )
 
     operator fun invoke(entity: UserEntity?) = entity?.let {
         UserModel(
             id = it.id,
             email = it.email,
-            name = it.name
+            name = it.name,
+            encryptedPassword = it.encryptedPassword
         )
     }
 }
