@@ -29,8 +29,8 @@ internal object MainScreen : Screen<MainUiState, MainUiEvent, MainCommandReceive
     ) {
         LifecycleHandle(onExecuteCommand)
         ComposeTestTheme(
-            dynamicColor = uiState.appTheme.dynamicColors,
-            theme = uiState.appTheme.theme
+            dynamicColor = uiState.theme.dynamicColor,
+            theme = uiState.theme.theme
         ) {
             DialogsHandle(uiState = uiState, onExecuteCommand = onExecuteCommand)
             Navigation(

@@ -21,7 +21,7 @@ internal class ConfigurationManagerImpl @Inject constructor(
 
     override val theme = themeRepository.theme
         .combine(themeRepository.statusBarsTheme) { theme, statusBarsTheme ->
-            themeMapper(theme.theme, statusBarsTheme, theme.dynamicColors)
+            themeMapper(theme.theme, statusBarsTheme, theme.dynamicColor)
         }
 
     override suspend fun getCurrentTheme() = theme.first()
@@ -38,8 +38,8 @@ internal class ConfigurationManagerImpl @Inject constructor(
         themeRepository.setStatusBarsTheme(theme)
     }
 
-    override suspend fun setDynamicColors(dynamicColors: Boolean) {
-        themeRepository.setDynamicColor(dynamicColors)
+    override suspend fun setDynamicColors(dynamicColor: Boolean) {
+        themeRepository.setDynamicColor(dynamicColor)
     }
 
     override suspend fun setBiometricLogin(biometricLogin: Boolean) {

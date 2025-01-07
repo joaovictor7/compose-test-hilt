@@ -122,7 +122,7 @@ private fun DynamicColor(
             style = MaterialTheme.typography.bodyMedium
         )
         ThumbSwitch(
-            checked = uiState.dynamicColors,
+            checked = uiState.dynamicColor,
             type = SwitchType.CHECK,
             onCheckedChange = { onExecuteCommand(ConfigurationThemeCommand.ChangeDynamicColor(it)) }
         )
@@ -144,7 +144,7 @@ private fun Preview() {
             uiState = ConfigurationThemeUiState(
                 themes = ThemeConfiguration.entries,
                 selectedTheme = ThemeConfiguration.AUTO,
-                dynamicColors = true
+                dynamicColor = true
             ),
             uiEvent = null
         ) { }

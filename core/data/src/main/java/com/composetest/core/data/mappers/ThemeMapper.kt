@@ -9,19 +9,19 @@ internal class ThemeMapper @Inject constructor() {
 
     operator fun invoke(
         theme: String?,
-        dynamicColors: Boolean?
+        dynamicColor: Boolean?
     ) = ThemeModel(
         theme = Theme.getThemeByName(theme),
-        dynamicColors = dynamicColors.orFalse
+        dynamicColor = dynamicColor.orFalse
     )
 
     operator fun invoke(
         theme: Theme?,
         statusBarsTheme: Theme?,
-        dynamicColors: Boolean?
+        dynamicColor: Boolean?
     ) = ThemeModel(
         theme = theme ?: Theme.AUTO,
         statusBarsTheme = statusBarsTheme ?: Theme.AUTO,
-        dynamicColors = dynamicColors.orFalse,
+        dynamicColor = dynamicColor.orFalse,
     )
 }

@@ -16,8 +16,8 @@ internal class ThemeRepository @Inject constructor(
     val statusBarsTheme = statusBarsThemeDataSource.statusBarsTheme
     val theme = preferenceDataSource.getData { preferences ->
         val theme = preferences[PreferencesDataKeys.theme]
-        val dynamicColors = preferences[PreferencesDataKeys.dynamicColor]
-        themeMapper(theme, dynamicColors)
+        val dynamicColor = preferences[PreferencesDataKeys.dynamicColor]
+        themeMapper(theme, dynamicColor)
     }
 
     suspend fun setTheme(theme: Theme) {

@@ -33,7 +33,7 @@ internal class ConfigurationThemeViewModel @Inject constructor(
                 it.initUiState(
                     ThemeConfiguration.entries,
                     ThemeConfiguration.getThemeConfiguration(currentTheme.theme),
-                    currentTheme.dynamicColors
+                    currentTheme.dynamicColor
                 )
             }
         }
@@ -50,17 +50,17 @@ internal class ConfigurationThemeViewModel @Inject constructor(
     override fun changeDynamicColor(active: Boolean) {
         updateUiState { it.setDynamicColors(active) }
         runAsyncTask {
-            sendChangeThemeAnalytic(dynamicColors = active)
+            sendChangeThemeAnalytic(dynamicColor = active)
             configurationManager.setDynamicColors(active)
         }
     }
 
     private suspend fun sendChangeThemeAnalytic(
-        dynamicColors: Boolean? = null,
+        dynamicColor: Boolean? = null,
         theme: Theme? = null
     ) {
         sendAnalyticsUseCase(
-            ConfigurationThemeEventAnalytic.ChangeTheme(theme?.name, dynamicColors)
+            ConfigurationThemeEventAnalytic.ChangeTheme(theme?.name, dynamicColor)
         )
     }
 }

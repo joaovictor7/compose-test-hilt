@@ -5,5 +5,5 @@ import com.composetest.core.domain.enums.Theme
 data class ThemeModel(
     val theme: Theme = Theme.AUTO,
     val statusBarsTheme: Theme = theme,
-    val dynamicColors: Boolean = false
+    val dynamicColor: Boolean = false
 )

@@ -14,6 +14,6 @@ interface ConfigurationManager {
     suspend fun getCurrentTheme(): ThemeModel
     suspend fun setTheme(theme: Theme)
     fun setStatusBarsTheme(theme: Theme?)
-    suspend fun setDynamicColors(dynamicColors: Boolean)
+    suspend fun setDynamicColors(dynamicColor: Boolean)
     suspend fun setBiometricLogin(biometricLogin: Boolean)
 }

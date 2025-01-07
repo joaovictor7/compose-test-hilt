@@ -6,18 +6,18 @@ import com.composetest.feature.configuration.enums.ThemeConfiguration
 internal data class ConfigurationThemeUiState(
     val themes: List<ThemeConfiguration> = emptyList(),
     val selectedTheme: ThemeConfiguration = ThemeConfiguration.DARK,
-    val dynamicColors: Boolean = false
+    val dynamicColor: Boolean = false
 ) : BaseUiState {
     fun initUiState(
         themes: List<ThemeConfiguration>,
         theme: ThemeConfiguration,
-        dynamicColors: Boolean
+        dynamicColor: Boolean
     ) = copy(
         themes = themes,
         selectedTheme = theme,
-        dynamicColors = dynamicColors
+        dynamicColor = dynamicColor
     )
 
     fun setSelectedTheme(selectedTheme: ThemeConfiguration) = copy(selectedTheme = selectedTheme)
-    fun setDynamicColors(active: Boolean) = copy(dynamicColors = active)
+    fun setDynamicColors(active: Boolean) = copy(dynamicColor = active)
 }

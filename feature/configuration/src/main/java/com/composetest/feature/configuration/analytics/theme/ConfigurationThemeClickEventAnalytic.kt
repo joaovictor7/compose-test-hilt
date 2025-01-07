@@ -9,14 +9,14 @@ sealed class ConfigurationThemeEventAnalytic :
 
     data class ChangeTheme(
         private val theme: String? = null,
-        private val dynamicColors: Boolean? = null
+        private val dynamicColor: Boolean? = null
     ) : ConfigurationThemeEventAnalytic() {
         override val tag = "change_theme"
         override val params: Map<String, Any> = mutableMapOf<String, Any>().apply {
             theme?.let {
                 this["theme"] = it
             }
-            dynamicColors?.let {
+            dynamicColor?.let {
                 this["dynamic_colors"] = it
             }
         }
