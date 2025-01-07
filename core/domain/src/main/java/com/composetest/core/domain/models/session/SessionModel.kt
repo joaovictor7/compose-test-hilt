@@ -7,5 +7,5 @@ data class SessionModel(
     val token: String,
     val startDate: LocalDateTime,
     val endDate: LocalDateTime,
-    val isFinished: Boolean
+    val isActive: Boolean = true
 )

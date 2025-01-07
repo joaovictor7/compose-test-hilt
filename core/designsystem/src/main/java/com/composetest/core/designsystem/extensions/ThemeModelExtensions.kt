@@ -3,10 +3,10 @@ package com.composetest.core.designsystem.extensions
 import android.graphics.Color
 import androidx.activity.SystemBarStyle
 import com.composetest.core.domain.enums.Theme
-import com.composetest.core.domain.models.AppThemeModel
+import com.composetest.core.domain.models.ThemeModel
 
-val AppThemeModel.systemBarStyles
-    get() = when (customTheme ?: theme) {
+val ThemeModel.systemBarStyles
+    get() = when (statusBarsTheme) {
         Theme.AUTO -> SystemBarStyle.auto(Color.TRANSPARENT, Color.TRANSPARENT) to
                 SystemBarStyle.auto(Color.TRANSPARENT, Color.TRANSPARENT)
 

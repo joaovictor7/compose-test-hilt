@@ -1,7 +1,7 @@
 package com.composetest.ui
 
 import androidx.navigation.NavHostController
-import com.composetest.core.domain.managers.AppThemeManager
+import com.composetest.core.domain.managers.ConfigurationManager
 import com.composetest.core.domain.managers.RemoteConfigManager
 import com.composetest.core.domain.managers.SessionManager
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
@@ -19,7 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class MainViewModel @Inject constructor(
-    private val appThemeManager: AppThemeManager,
+    private val configurationManager: ConfigurationManager,
     private val sessionManager: SessionManager,
     private val navControllerManager: NavControllerManager,
     private val remoteConfigManager: RemoteConfigManager,
@@ -30,7 +30,7 @@ internal class MainViewModel @Inject constructor(
     override val commandReceiver = this
 
     init {
-        appThemeObservable()
+        themeObservable()
     }
 
     override fun initUiState() {
@@ -61,9 +61,9 @@ internal class MainViewModel @Inject constructor(
         updateUiState { it.setSimpleDialog(null) }
     }
 
-    private fun appThemeObservable() {
-        runFlowTask(appThemeManager.appThemeFlow) { appTheme ->
-            updateUiState { it.setAppTheme(appTheme) }
+    private fun themeObservable() {
+        runFlowTask(configurationManager.theme) { theme ->
+            updateUiState { it.setTheme(theme) }
         }
     }
 

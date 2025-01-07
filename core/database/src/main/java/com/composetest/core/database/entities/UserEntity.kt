@@ -1,6 +1,7 @@
 package com.composetest.core.database.entities
 
 import androidx.room.ColumnInfo
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -9,5 +10,5 @@ data class UserEntity(
     @PrimaryKey @ColumnInfo(name = "userId") val id: String,
     val email: String,
     val name: String? = null,
-    val encryptedPassword: String
+    val encryptedPassword: String,
 )

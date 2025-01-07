@@ -14,12 +14,12 @@ internal sealed interface LoginCommand : Command<LoginCommandReceiver> {
         }
     }
 
-    data class SetCustomTheme(
+    data class SetStatusBarsTheme(
         val enterScreen: Boolean,
         val currentAppTheme: Theme
     ) : LoginCommand {
         override fun execute(commandReceiver: LoginCommandReceiver) {
-            commandReceiver.setCustomTheme(enterScreen, currentAppTheme)
+            commandReceiver.setStatusBarsTheme(enterScreen, currentAppTheme)
         }
     }
 
@@ -46,6 +46,7 @@ internal sealed interface LoginCommand : Command<LoginCommandReceiver> {
             commandReceiver.dismissSimpleDialog()
         }
     }
+
     data object BiometricErrorAnimationFinished : LoginCommand {
         override fun execute(commandReceiver: LoginCommandReceiver) {
             commandReceiver.biometricErrorAnimationFinished()

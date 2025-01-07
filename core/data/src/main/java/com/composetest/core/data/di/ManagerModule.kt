@@ -1,11 +1,11 @@
 package com.composetest.core.data.di
 
-import com.composetest.core.data.managers.AppThemeManagerImpl
+import com.composetest.core.data.managers.ConfigurationManagerImpl
 import com.composetest.core.data.managers.RemoteConfigManagerImpl
 import com.composetest.core.data.managers.SessionManagerImpl
 import com.composetest.core.data.managers.WorkManager
 import com.composetest.core.data.managers.WorkManagerImpl
-import com.composetest.core.domain.managers.AppThemeManager
+import com.composetest.core.domain.managers.ConfigurationManager
 import com.composetest.core.domain.managers.RemoteConfigManager
 import com.composetest.core.domain.managers.SessionManager
 import dagger.Binds
@@ -23,11 +23,6 @@ internal abstract class ManagerModule {
     ): SessionManager
 
     @Binds
-    abstract fun appThemeManager(
-        appThemeManagerImpl: AppThemeManagerImpl
-    ): AppThemeManager
-
-    @Binds
     abstract fun remoteConfigManager(
         remoteConfigManagerImpl: RemoteConfigManagerImpl
     ): RemoteConfigManager
@@ -36,4 +31,9 @@ internal abstract class ManagerModule {
     abstract fun workManager(
         workManagerImpl: WorkManagerImpl
     ): WorkManager
+
+    @Binds
+    abstract fun configurationManager(
+        configurationManagerImpl: ConfigurationManagerImpl
+    ): ConfigurationManager
 }

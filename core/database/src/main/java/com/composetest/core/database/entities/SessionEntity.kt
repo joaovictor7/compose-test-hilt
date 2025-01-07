@@ -21,6 +21,6 @@ data class SessionEntity(
     val token: String,
     val startDate: LocalDateTime,
     val endDate: LocalDateTime,
-    val isFinished: Boolean = false,
+    val isActive: Boolean = true,
     val userId: String
 )

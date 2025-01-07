@@ -2,12 +2,12 @@ package com.composetest.core.data.di
 
 import com.composetest.core.data.repositories.AnalyticsRepositoryImpl
 import com.composetest.core.data.repositories.AuthenticationRepositoryImpl
-import com.composetest.core.data.repositories.BiometricRepositoryImpl
+import com.composetest.core.data.repositories.ConfigurationRepositoryImpl
 import com.composetest.core.data.repositories.SecretKeyRepositoryImpl
 import com.composetest.core.data.repositories.UserRepositoryImpl
-import com.composetest.core.domain.managers.BiometricRepository
 import com.composetest.core.domain.repositories.AnalyticsRepository
 import com.composetest.core.domain.repositories.AuthenticationRepository
+import com.composetest.core.domain.repositories.ConfigurationRepository
 import com.composetest.core.domain.repositories.SecretKeyRepository
 import com.composetest.core.domain.repositories.UserRepository
 import dagger.Binds
@@ -36,10 +36,9 @@ internal abstract class RepositoryModule {
     ): SecretKeyRepository
 
     @Binds
-    abstract fun biometricRepository(
-        biometricRepositoryImpl: BiometricRepositoryImpl
-    ): BiometricRepository
-
+    abstract fun configurationRepository(
+        configurationRepositoryImpl: ConfigurationRepositoryImpl
+    ): ConfigurationRepository
 
     // Remotes
     @Binds

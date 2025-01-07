@@ -13,7 +13,7 @@ interface UserEntityDao {
     @Query(
         "SELECT user.* FROM user " +
                 "JOIN session ON user.userId = session.userId " +
-                "WHERE session.isFinished == 0 " +
+                "WHERE session.isActive == 1 " +
                 "ORDER BY session.sessionId DESC " +
                 "LIMIT 1"
     )
@@ -22,8 +22,8 @@ interface UserEntityDao {
     @Query(
         "SELECT user.* FROM user " +
                 "JOIN session ON session.userId = user.userId " +
-                "WHERE session.endDate = (SELECT MAX(endDate) FROM session WHERE isFinished = 1)" +
+                "WHERE session.endDate = (SELECT MAX(endDate) FROM session WHERE isActive = 0)" +
                 "LIMIT 1"
     )
-    suspend fun getLastActiveUser(): UserEntity?
+    suspend fun getLastUser(): UserEntity?
 }

@@ -9,7 +9,7 @@ import com.composetest.common.providers.BuildConfigProvider
 import com.composetest.core.designsystem.components.dialogs.CommonSimpleDialog
 import com.composetest.core.domain.analytics.CommonAnalyticEvent
 import com.composetest.core.domain.errors.ApiError
-import com.composetest.core.domain.managers.AppThemeManager
+import com.composetest.core.domain.managers.ConfigurationManager
 import com.composetest.core.domain.managers.RemoteConfigManager
 import com.composetest.core.domain.managers.SessionManager
 import com.composetest.core.domain.usecases.AuthenticationUseCase
@@ -53,7 +53,7 @@ private class LoginViewModelTest : CoroutinesTest {
     private val remoteConfigManager: RemoteConfigManager = mockk(relaxed = true) {
         every { getBoolean(LoginRemoteConfig.ByPassLogin) } returns false
     }
-    private val appThemeManager: AppThemeManager = mockk(relaxed = true)
+    private val configurationManager: ConfigurationManager = mockk(relaxed = true)
     private val sendAnalyticsUseCase: SendAnalyticsUseCase = mockk(relaxed = true)
 
     private lateinit var viewModel: LoginViewModel
@@ -284,7 +284,7 @@ private class LoginViewModelTest : CoroutinesTest {
 
     private fun initViewModel() = LoginViewModel(
         buildConfigProvider = buildConfigProvider,
-        appThemeManager = appThemeManager,
+        userConfigurationManager = configurationManager,
         authenticationUseCase = authenticationUseCase,
         sessionManager = sessionManager,
         remoteConfigManager = remoteConfigManager,

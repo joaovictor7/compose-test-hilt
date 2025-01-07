@@ -15,6 +15,6 @@
     <string name="configuration_theme_dynamic_colors">Cores dinâmicas</string>
 
     <!-- Security Configurations -->
-    <string name="configuration_security_biometric_label_text">Login com biometria</string>
+    <string name="configuration_security_biometric_label_text">Fazer login usando biometria</string>
 
 </resources>

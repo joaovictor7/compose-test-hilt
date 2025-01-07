@@ -13,7 +13,7 @@ internal class SessionMapper @Inject constructor() {
             token = it.token,
             startDate = it.startDate,
             endDate = it.endDate,
-            isFinished = it.isFinished
+            isActive = it.isActive
         )
     }
 
@@ -24,6 +24,7 @@ internal class SessionMapper @Inject constructor() {
         token = session.token,
         startDate = session.startDate,
         endDate = session.endDate,
-        userId = user.id
+        isActive = session.isActive,
+        userId = user.id,
     )
 }

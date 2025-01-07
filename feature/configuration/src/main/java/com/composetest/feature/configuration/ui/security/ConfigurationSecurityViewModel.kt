@@ -1,7 +1,7 @@
 package com.composetest.feature.configuration.ui.security
 
+import com.composetest.core.domain.managers.ConfigurationManager
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
-import com.composetest.core.domain.usecases.SetUseBiometricUseCase
 import com.composetest.core.router.di.qualifiers.NavGraphQualifier
 import com.composetest.core.router.enums.NavGraph
 import com.composetest.core.router.managers.NavigationManager
@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class ConfigurationSecurityViewModel @Inject constructor(
-    private val setUseBiometricUseCase: SetUseBiometricUseCase,
+    private val configurationManager: ConfigurationManager,
     override val sendAnalyticsUseCase: SendAnalyticsUseCase,
     @NavGraphQualifier(NavGraph.MAIN) override val navigationManager: NavigationManager
 ) : BaseViewModel<ConfigurationSecurityUiState, ConfigurationSecurityUiEvent>(
@@ -20,15 +20,23 @@ internal class ConfigurationSecurityViewModel @Inject constructor(
     ConfigurationSecurityUiState()
 ), ConfigurationSecurityCommandReceiver {
 
+    private val currentConfiguration get() = configurationManager.currentConfiguration
+
     override val commandReceiver = this
 
     override fun initUiState() {
-
+        runAsyncTask {
+            configurationManager.fetchConfiguration()
+            updateUiState {
+                it.initUiState(currentConfiguration?.biometricLogin)
+            }
+        }
     }
 
     override fun changeSwitchBiometric(checked: Boolean) {
         runAsyncTask {
-            setUseBiometricUseCase(checked)
+            configurationManager.setBiometricLogin(checked)
+            updateUiState { it.copy(biometricIsEnabled = checked) }
         }
     }
 }

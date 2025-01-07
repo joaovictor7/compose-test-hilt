@@ -172,6 +172,7 @@ private fun BiometricButton(
     biometric.messageId?.let {
         Text(
             text = stringResource(it),
+            textAlign = TextAlign.Center,
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.error
         )
@@ -209,7 +210,7 @@ private fun EffectsHandler(
     val currentAppTheme = LocalTheme.current
     stringResource(LoginResources.string.feature_login_biometric_title)
     LaunchedEffect(Unit) {
-        onExecuteCommand(LoginCommand.SetCustomTheme(true, currentAppTheme))
+        onExecuteCommand(LoginCommand.SetStatusBarsTheme(true, currentAppTheme))
     }
     LaunchedEffect(loginUiEvent) {
         loginUiEvent?.collect {
@@ -228,7 +229,7 @@ private fun EffectsHandler(
     }
     DisposableEffect(Unit) {
         onDispose {
-            onExecuteCommand(LoginCommand.SetCustomTheme(false, currentAppTheme))
+            onExecuteCommand(LoginCommand.SetStatusBarsTheme(false, currentAppTheme))
         }
     }
 }

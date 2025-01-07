@@ -11,7 +11,5 @@ internal class LocalDateTimeConverter {
         value?.let { LocalDateTime.parse(it) }
 
     @TypeConverter
-    fun toTimestamp(date: LocalDateTime?): String? {
-        return date?.toString()
-    }
+    fun toTimestamp(date: LocalDateTime?) = date?.toString()
 }

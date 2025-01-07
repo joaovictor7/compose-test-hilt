@@ -15,6 +15,6 @@
     <string name="configuration_theme_dynamic_colors">Dynamic colors</string>
 
     <!-- Security Configurations -->
-    <string name="configuration_security_biometric_label_text">Login with biometry</string>
+    <string name="configuration_security_biometric_label_text">Log in using biometry</string>
 
 </resources>

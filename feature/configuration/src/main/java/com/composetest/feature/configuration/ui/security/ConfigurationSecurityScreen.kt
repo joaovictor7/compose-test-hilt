@@ -7,6 +7,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.composetest.core.designsystem.components.scaffolds.ScreenScaffold
 import com.composetest.core.designsystem.components.switches.LabelSwitch
 import com.composetest.core.designsystem.components.topbar.LeftTopBar
+import com.composetest.core.designsystem.enums.switches.SwitchType
 import com.composetest.core.designsystem.extensions.screenMargin
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.ui.interfaces.Command
@@ -29,8 +30,9 @@ internal object ConfigurationSecurityScreen :
             Column(modifier = Modifier.screenMargin()) {
                 LabelSwitch(
                     labelTextId = R.string.configuration_security_biometric_label_text,
-                    checked = uiState.biometricIsEnabled
-                ) { }
+                    checked = uiState.biometricIsEnabled,
+                    switchType = SwitchType.CHECK
+                ) { onExecuteCommand(ConfigurationSecurityCommand.ChangeSwitchBiometric(it)) }
             }
         }
     }

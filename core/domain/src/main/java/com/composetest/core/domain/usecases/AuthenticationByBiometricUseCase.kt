@@ -11,7 +11,7 @@ class AuthenticationByBiometricUseCase @Inject internal constructor(
 ) {
 
     suspend operator fun invoke() {
-        userRepository.getLastActiveUser()?.let { user ->
+        userRepository.getLastUser()?.let { user ->
             authenticationUseCase(user.email, cipherProvider.decrypt(user.encryptedPassword))
         }
     }

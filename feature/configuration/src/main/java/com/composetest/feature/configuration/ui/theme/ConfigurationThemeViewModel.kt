@@ -1,7 +1,7 @@
 package com.composetest.feature.configuration.ui.theme
 
 import com.composetest.core.domain.enums.Theme
-import com.composetest.core.domain.managers.AppThemeManager
+import com.composetest.core.domain.managers.ConfigurationManager
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
 import com.composetest.core.router.di.qualifiers.NavGraphQualifier
 import com.composetest.core.router.enums.NavGraph
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class ConfigurationThemeViewModel @Inject constructor(
-    private val appThemeManager: AppThemeManager,
+    private val configurationManager: ConfigurationManager,
     override val sendAnalyticsUseCase: SendAnalyticsUseCase,
     @NavGraphQualifier(NavGraph.MAIN) override val navigationManager: NavigationManager
 ) : BaseViewModel<ConfigurationThemeUiState, ConfigurationThemeUiEvent>(
@@ -27,14 +27,14 @@ internal class ConfigurationThemeViewModel @Inject constructor(
 
     override fun initUiState() {
         runAsyncTask {
-            appThemeManager.getAppTheme()?.let { appTheme ->
-                updateUiState {
-                    it.initUiState(
-                        ThemeConfiguration.entries,
-                        ThemeConfiguration.getThemeConfiguration(appTheme.theme),
-                        appTheme.dynamicColors
-                    )
-                }
+            configurationManager.fetchConfiguration()
+            val currentTheme = configurationManager.getCurrentTheme()
+            updateUiState {
+                it.initUiState(
+                    ThemeConfiguration.entries,
+                    ThemeConfiguration.getThemeConfiguration(currentTheme.theme),
+                    currentTheme.dynamicColors
+                )
             }
         }
     }
@@ -43,7 +43,7 @@ internal class ConfigurationThemeViewModel @Inject constructor(
         updateUiState { it.setSelectedTheme(selectedTheme) }
         runAsyncTask {
             sendChangeThemeAnalytic(theme = selectedTheme.theme)
-            appThemeManager.setTheme(selectedTheme.theme)
+            configurationManager.setTheme(selectedTheme.theme)
         }
     }
 
@@ -51,7 +51,7 @@ internal class ConfigurationThemeViewModel @Inject constructor(
         updateUiState { it.setDynamicColors(active) }
         runAsyncTask {
             sendChangeThemeAnalytic(dynamicColors = active)
-            appThemeManager.setDynamicColor(active)
+            configurationManager.setDynamicColors(active)
         }
     }
 

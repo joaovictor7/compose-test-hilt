@@ -4,7 +4,7 @@ import com.composetest.common.providers.BuildConfigProvider
 import com.composetest.core.designsystem.utils.getDefaultSimpleDialogErrorParam
 import com.composetest.core.domain.enums.Theme
 import com.composetest.core.domain.errors.ApiError
-import com.composetest.core.domain.managers.AppThemeManager
+import com.composetest.core.domain.managers.ConfigurationManager
 import com.composetest.core.domain.managers.RemoteConfigManager
 import com.composetest.core.domain.managers.SessionManager
 import com.composetest.core.domain.usecases.AuthenticationByBiometricUseCase
@@ -32,7 +32,7 @@ import javax.inject.Inject
 @HiltViewModel
 internal class LoginViewModel @Inject constructor(
     private val buildConfigProvider: BuildConfigProvider,
-    private val appThemeManager: AppThemeManager,
+    private val configurationManager: ConfigurationManager,
     private val authenticationUseCase: AuthenticationUseCase,
     private val authenticationByBiometricUseCase: AuthenticationByBiometricUseCase,
     private val biometricIsAvailableUseCase: BiometricIsAvailableUseCase,
@@ -89,11 +89,11 @@ internal class LoginViewModel @Inject constructor(
         }
     }
 
-    override fun setCustomTheme(enterScreen: Boolean, currentAppTheme: Theme) {
+    override fun setStatusBarsTheme(enterScreen: Boolean, currentAppTheme: Theme) {
         val theme = if (enterScreen && currentAppTheme != Theme.DARK)
             Theme.DARK
         else null
-        appThemeManager.setCustomTheme(theme)
+        configurationManager.setStatusBarsTheme(theme)
     }
 
     override fun dismissSimpleDialog() {

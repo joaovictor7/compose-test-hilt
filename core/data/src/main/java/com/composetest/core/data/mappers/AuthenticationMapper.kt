@@ -2,16 +2,14 @@ package com.composetest.core.data.mappers
 
 import com.composetest.common.utils.convertFromSeconds
 import com.composetest.core.data.api.responses.AuthenticationResponse
-import com.composetest.core.domain.models.UserModel
 import com.composetest.core.domain.models.session.AuthenticationModel
-import com.composetest.core.domain.providers.CipherProvider
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GetTokenResult
 import java.time.LocalDateTime
 import javax.inject.Inject
 
 internal class AuthenticationMapper @Inject constructor(
-    private val cipherProvider: CipherProvider
+    private val userMapper: UserMapper
 ) {
 
     operator fun invoke(
@@ -32,11 +30,6 @@ internal class AuthenticationMapper @Inject constructor(
     ) = AuthenticationModel(
         sessionToken = authenticationResponse.sessionToken,
         sessionStartDateTime = authenticationResponse.sessionStartDateTime,
-        user = UserModel(
-            id = authenticationResponse.userId,
-            email = authenticationResponse.userEmail,
-            encryptedPassword = cipherProvider.encrypt(password),
-            name = authenticationResponse.userName
-        )
+        user = userMapper(authenticationResponse, password)
     )
 }

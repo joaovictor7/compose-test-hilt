@@ -3,21 +3,19 @@ package com.composetest.core.database.daos
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import androidx.room.Update
 import com.composetest.core.database.entities.SessionEntity
-import com.composetest.core.database.entities.partialupdate.FinishedSessionEntityUpdate
 
 @Dao
 interface SessionEntityDao {
     @Insert
     suspend fun insert(sessionEntity: SessionEntity)
 
-    @Update(entity = SessionEntity::class)
-    suspend fun update(finishedSessionEntityUpdate: FinishedSessionEntityUpdate)
+    @Query("UPDATE session SET isActive = 0 WHERE sessionId = :sessionId")
+    suspend fun finishSession(sessionId: Long)
 
     @Query(
         "SELECT * FROM session " +
-                "WHERE isFinished = 0 " +
+                "WHERE isActive = 1 " +
                 "ORDER BY sessionId DESC " +
                 "LIMIT 1"
     )

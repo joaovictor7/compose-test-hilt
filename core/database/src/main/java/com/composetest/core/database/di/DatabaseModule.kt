@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.composetest.common.providers.BuildConfigProvider
 import com.composetest.core.database.converters.LocalDateTimeConverter
-import com.composetest.core.database.database.AppDatabase
+import com.composetest.core.database.database.Database
 import com.composetest.core.database.managers.DatabaseSecurityManager
 import dagger.Module
 import dagger.Provides
@@ -29,9 +29,9 @@ internal object DatabaseModule {
         @ApplicationContext context: Context,
         buildConfigProvider: BuildConfigProvider,
         databaseSecurityManager: DatabaseSecurityManager
-    ): AppDatabase = Room.databaseBuilder(
+    ): Database = Room.databaseBuilder(
         context,
-        AppDatabase::class.java,
+        Database::class.java,
         DATABASE_NAME
     )
         .openHelperFactory(getHelperFactory(databaseSecurityManager))
@@ -43,7 +43,7 @@ internal object DatabaseModule {
         databaseSecurityManager.getDatabaseCipherFactory()
     }
 
-    private fun RoomDatabase.Builder<AppDatabase>.addLogs(
+    private fun RoomDatabase.Builder<Database>.addLogs(
         buildConfigProvider: BuildConfigProvider
     ) = also {
         if (buildConfigProvider.get.isRelease && buildConfigProvider.get.isProduction) return@also
