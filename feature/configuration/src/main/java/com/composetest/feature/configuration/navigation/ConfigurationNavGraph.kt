@@ -22,10 +22,6 @@ import com.composetest.feature.configuration.ui.theme.ConfigurationThemeUiState
 import com.composetest.feature.configuration.ui.theme.ConfigurationThemeViewModel
 
 fun NavGraphBuilder.configurationNavGraph() {
-    buildComposable<ConfigurationDestination, ConfigurationViewModel, ConfigurationUiState, ConfigurationUiEvent, ConfigurationCommandReceiver>(
-        screen = ConfigurationScreen,
-        navigateBackHandler = false
-    )
     buildComposable<ConfigurationThemeDestination, ConfigurationThemeViewModel, ConfigurationThemeUiState, ConfigurationThemeUiEvent, ConfigurationThemeCommandReceiver>(
         screen = ConfigurationThemeScreen
     )

@@ -24,6 +24,7 @@ dependencies {
     implementation(projects.feature.home)
     implementation(projects.feature.profile)
     implementation(projects.feature.configuration)
+    implementation(projects.feature.weatherforecast)
     implementation(libs.androidx.hilt.work)
     implementation(libs.androidx.splash.screen)
     implementation(libs.androidx.appcompat)

@@ -16,4 +16,5 @@ dependencies {
     implementation(projects.feature.home)
     implementation(projects.feature.configuration)
     implementation(projects.feature.profile)
+    implementation(projects.feature.weatherforecast)
 }

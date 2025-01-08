@@ -13,7 +13,6 @@ internal data class RootUiState(
     val userModalDrawerModel: UserModalDrawerModel = UserModalDrawerModel()
 ) : BaseUiState {
 
-    val currentScreenTitle get() = bottomNavigationFeatures.find { it.selected }?.feature?.textId
     val showEditProfile get() = modalDrawerNavigationFeatures.any { it == NavigationFeature.PROFILE }
     val modalDrawerNavigationFeaturesToList get() = modalDrawerNavigationFeatures.filterNot { it.noText }
 

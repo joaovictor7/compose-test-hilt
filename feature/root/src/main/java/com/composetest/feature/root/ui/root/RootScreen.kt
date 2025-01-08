@@ -49,6 +49,7 @@ import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.router.destinations.home.HomeDestination
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.interfaces.Screen
+import com.composetest.feature.configuration.navigation.configurationRootNavGraph
 import com.composetest.feature.home.navigation.homeRootNavGraph
 import com.composetest.feature.root.enums.NavigationFeature
 import com.composetest.feature.root.models.BottomFeatureNavigationModel
@@ -66,28 +67,15 @@ internal object RootScreen : Screen<RootUiState, RootUiEvent, RootCommandReceive
     ) {
         val context = LocalContext.current
         val drawerState = rememberDrawerState(DrawerValue.Closed)
-        val screenTitle = uiState.currentScreenTitle
         ModalNavigationDrawer(
             drawerState = drawerState,
             drawerContent = getModalDrawerContent(uiState, onExecuteCommand),
         ) {
-            if (screenTitle == null) return@ModalNavigationDrawer
             ScreenScaffold(
-                topBar = {
-                    CentralizedTopBar(
-                        titleId = screenTitle,
-                        navigationAction = TopBarAction.MENU,
-                        onClickNavigationAction = {
-                            onExecuteCommand(RootCommand.ModalDrawerManager(DrawerValue.Open))
-                        }
-                    )
-                },
+                topBar = getTopBar(onExecuteCommand),
                 bottomBar = getBottomBar(uiState, onExecuteCommand)
             ) {
-                Navigation(
-                    uiState = uiState,
-                    onExecuteCommand = onExecuteCommand
-                )
+                Navigation(uiState = uiState, onExecuteCommand = onExecuteCommand)
                 BackHandler {
                     if (drawerState.isOpen) {
                         onExecuteCommand(RootCommand.ModalDrawerManager(DrawerValue.Closed))
@@ -119,11 +107,9 @@ private fun Navigation(
     if (uiState.firstDestination == null) return
     val navController = rememberNavController()
     onExecuteCommand(RootCommand.SetRootNavGraph(navController))
-    NavHost(
-        navController = navController,
-        startDestination = uiState.firstDestination
-    ) {
+    NavHost(navController = navController, startDestination = uiState.firstDestination) {
         homeRootNavGraph()
+        configurationRootNavGraph()
     }
 }
 
@@ -154,7 +140,8 @@ private fun ModalDrawerHeader(
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(Spacing.twelve)
+            horizontalArrangement = Arrangement.spacedBy(Spacing.twelve),
+            modifier = Modifier.weight(0.85f)
         ) {
             Image(
                 modifier = Modifier
@@ -180,7 +167,10 @@ private fun ModalDrawerHeader(
             }
         }
         if (uiState.showEditProfile) {
-            IconButton(onClick = { onExecuteCommand(RootCommand.NavigateToFeature(NavigationFeature.PROFILE)) }) {
+            IconButton(
+                onClick = { onExecuteCommand(RootCommand.NavigateToFeature(NavigationFeature.PROFILE)) },
+                modifier = Modifier.weight(0.15f)
+            ) {
                 Icon(
                     painter = painterResource(DesignSystemResources.drawable.ic_edit_medium),
                     contentDescription = null
@@ -218,6 +208,16 @@ private fun ModalDrawerItems(
             )
         }
     }
+}
+
+private fun getTopBar(onExecuteCommand: (Command<RootCommandReceiver>) -> Unit) = @Composable {
+    CentralizedTopBar(
+        title = String(),
+        navigationAction = TopBarAction.MENU,
+        onClickNavigationAction = {
+            onExecuteCommand(RootCommand.ModalDrawerManager(DrawerValue.Open))
+        }
+    )
 }
 
 private fun getBottomBar(

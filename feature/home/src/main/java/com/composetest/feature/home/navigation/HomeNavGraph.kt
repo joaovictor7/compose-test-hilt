@@ -26,14 +26,14 @@ fun NavGraphBuilder.homeRootNavGraph() {
         screen = HomeScreen,
         navigateBackHandler = false
     )
-    buildComposable<Home2Destination, Home2ViewModel, Home2UiState, Home2UiEvent, Home2CommandReceiver>(
-        screen = Home2Screen,
-        navigateBackHandler = false
-    )
 }
 
 fun NavGraphBuilder.homeNavGraph() {
     buildComposable<Home3Destination, Home3ViewModel, Home3UiState, Home3UiEvent, Home3CommandReceiver>(
         screen = Home3Screen
+    )
+    buildComposable<Home2Destination, Home2ViewModel, Home2UiState, Home2UiEvent, Home2CommandReceiver>(
+        screen = Home2Screen,
+        navigateBackHandler = false
     )
 }

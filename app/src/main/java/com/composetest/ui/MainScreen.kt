@@ -18,6 +18,7 @@ import com.composetest.feature.home.navigation.homeNavGraph
 import com.composetest.feature.login.navigation.loginNavGraph
 import com.composetest.feature.profile.navigation.profileNavGraph
 import com.composetest.feature.root.navigation.rootNavGraph
+import com.composetest.feature.weatherforecast.navigation.weatherForecastNavGraph
 import kotlinx.coroutines.flow.Flow
 
 internal object MainScreen : Screen<MainUiState, MainUiEvent, MainCommandReceiver> {
@@ -57,6 +58,7 @@ private fun Navigation(
         homeNavGraph()
         profileNavGraph()
         configurationNavGraph()
+        weatherForecastNavGraph()
     }
 }
 

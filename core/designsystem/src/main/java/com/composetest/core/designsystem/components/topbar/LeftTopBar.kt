@@ -4,6 +4,7 @@ import androidx.annotation.StringRes
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.composetest.core.designsystem.R
 import com.composetest.core.designsystem.enums.topbar.TopBarAction
@@ -30,7 +31,7 @@ fun LeftTopBar(
             )
         },
         actions = getTopBarActions(actionIcons, onClickAction),
-        title = getTopBarTitle(titleId)
+        title = getTopBarTitle(stringResource(titleId))
     )
 }
 
