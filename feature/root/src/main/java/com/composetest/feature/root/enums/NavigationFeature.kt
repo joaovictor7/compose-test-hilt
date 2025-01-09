@@ -15,6 +15,7 @@ import com.composetest.feature.configuration.R as ConfigurationResources
 import com.composetest.feature.home.R as HomeResources
 import com.composetest.feature.profile.R as ProfileResources
 import com.composetest.feature.weatherforecast.R as WeatherForecastResources
+import com.composetest.feature.news.R as NewsResources
 
 internal enum class NavigationFeature(
     val feature: Feature,
@@ -55,8 +56,8 @@ internal enum class NavigationFeature(
         Feature.NEWS,
         NewsListDestination,
         NavigationLocal.MODAL_DRAWER,
-        DesignSystemResources.drawable.ic_partly_cloudy_big,
-        WeatherForecastResources.string.weather_forecast_title
+        DesignSystemResources.drawable.ic_news_big,
+        NewsResources.string.news_title
     ),
     PROFILE(
         Feature.PROFILE,
