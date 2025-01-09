@@ -13,6 +13,10 @@ internal sealed interface RemoteConfigKey : RemoteConfig {
         override val key = "feature_weather_forecast"
     }
 
+    data object News : RemoteConfigKey {
+        override val key = "feature_news"
+    }
+
     data object FeatureProfile : RemoteConfigKey {
         override val key = "feature_profile"
     }

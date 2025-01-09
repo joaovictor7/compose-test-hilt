@@ -1,4 +1,4 @@
-package com.composetest.feature.news.ui.news.fully
+package com.composetest.feature.news.ui.news.full
 
 import com.composetest.core.ui.interfaces.Command
 

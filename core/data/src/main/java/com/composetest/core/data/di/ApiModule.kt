@@ -37,7 +37,7 @@ internal object ApiModule {
         .configureApi(
             ApiSetting.NewsApi(
                 apiKey = buildConfigProvider.get.buildConfigFieldsModel.newsApiKey,
-                host = buildConfigProvider.get.buildConfigFieldsModel.newsApiKey,
+                host = buildConfigProvider.get.buildConfigFieldsModel.newsApiHost,
                 country = "us",
             )
         )

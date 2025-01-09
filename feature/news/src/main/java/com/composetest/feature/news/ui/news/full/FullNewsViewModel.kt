@@ -1,4 +1,4 @@
-package com.composetest.feature.news.ui.news.fully
+package com.composetest.feature.news.ui.news.full
 
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
 import com.composetest.core.router.destinations.news.FullNewsDestination

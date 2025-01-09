@@ -13,7 +13,7 @@ internal fun ApplicationBuildType.setBuildConfigFields(
     project: Project,
     buildType: BuildType
 ) = with(project) {
-    val appProperties = loadPropertiesFile(PropertiesFile.App(buildType::class))
+    val appProperties = loadPropertiesFile(PropertiesFile.App(buildType.toString()))
     buildConfigField(
         "String",
         "DATABASE_KEY",
@@ -25,7 +25,12 @@ internal fun ApplicationProductFlavor.setBuildConfigFields(
     project: Project,
     flavor: Flavor
 ) = with(project) {
-    val appProperties = loadPropertiesFile(PropertiesFile.App(flavor::class))
+    val appProperties = loadPropertiesFile(PropertiesFile.App(flavor.toString()))
+    buildConfigField(
+        "String",
+        "NEWS_API_HOST",
+        appProperties.getPropertyOrEmpty("NEWS_API_HOST")
+    )
     buildConfigField(
         "String",
         "NEWS_API_KEY",

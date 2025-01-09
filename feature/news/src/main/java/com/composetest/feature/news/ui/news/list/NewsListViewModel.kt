@@ -23,6 +23,10 @@ internal class NewsListViewModel @Inject constructor(
 
     override val commandReceiver = this
 
+    override fun initUiState() {
+        getArticles()
+    }
+
     override fun navigateToFullNews(article: ArticleModel) {
         navigationManager.navigate(
             FullNewsDestination(

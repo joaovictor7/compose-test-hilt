@@ -6,6 +6,7 @@ import com.composetest.core.domain.enums.Feature
 import com.composetest.core.router.destinations.configuration.ConfigurationDestination
 import com.composetest.core.router.destinations.home.Home2Destination
 import com.composetest.core.router.destinations.home.HomeDestination
+import com.composetest.core.router.destinations.news.NewsListDestination
 import com.composetest.core.router.destinations.profile.ProfileDestination
 import com.composetest.core.router.destinations.weatherforecast.WeatherForecastDestination
 import com.composetest.core.router.interfaces.Destination
@@ -46,6 +47,13 @@ internal enum class NavigationFeature(
     WEATHER_FORECAST(
         Feature.WEATHER_FORECAST,
         WeatherForecastDestination,
+        NavigationLocal.MODAL_DRAWER,
+        DesignSystemResources.drawable.ic_partly_cloudy_big,
+        WeatherForecastResources.string.weather_forecast_title
+    ),
+    NEWS(
+        Feature.NEWS,
+        NewsListDestination,
         NavigationLocal.MODAL_DRAWER,
         DesignSystemResources.drawable.ic_partly_cloudy_big,
         WeatherForecastResources.string.weather_forecast_title
