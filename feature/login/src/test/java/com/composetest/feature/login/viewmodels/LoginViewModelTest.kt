@@ -2,7 +2,6 @@ package com.composetest.feature.login.viewmodels
 
 import com.composetest.common.enums.BuildType
 import com.composetest.common.enums.Flavor
-import com.composetest.common.enums.FlavorDimension
 import com.composetest.common.models.BuildConfigFieldsModel
 import com.composetest.common.models.BuildConfigModel
 import com.composetest.common.providers.BuildConfigProvider
@@ -12,14 +11,15 @@ import com.composetest.core.domain.errors.ApiError
 import com.composetest.core.domain.managers.ConfigurationManager
 import com.composetest.core.domain.managers.RemoteConfigManager
 import com.composetest.core.domain.managers.SessionManager
+import com.composetest.core.domain.usecases.AuthenticationByBiometricUseCase
 import com.composetest.core.domain.usecases.AuthenticationUseCase
+import com.composetest.core.domain.usecases.BiometricIsAvailableUseCase
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
 import com.composetest.core.router.destinations.root.RootDestination
 import com.composetest.core.router.enums.NavigationMode
 import com.composetest.core.router.managers.NavigationManager
 import com.composetest.core.test.extensions.runFlowTest
 import com.composetest.core.test.interfaces.CoroutinesTest
-import com.composetest.feature.login.R
 import com.composetest.feature.login.analytics.login.LoginClickEventAnalytic
 import com.composetest.feature.login.analytics.login.LoginEventAnalytic
 import com.composetest.feature.login.analytics.login.LoginScreenAnalytic
@@ -38,7 +38,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-private class LoginViewModelTest : CoroutinesTest {
+internal class LoginViewModelTest : CoroutinesTest {
 
     override lateinit var testDispatcher: TestDispatcher
 
@@ -55,6 +55,9 @@ private class LoginViewModelTest : CoroutinesTest {
     }
     private val configurationManager: ConfigurationManager = mockk(relaxed = true)
     private val sendAnalyticsUseCase: SendAnalyticsUseCase = mockk(relaxed = true)
+    private val authenticationByBiometricUseCase: AuthenticationByBiometricUseCase =
+        mockk(relaxed = true)
+    private val biometricIsAvailableUseCase: BiometricIsAvailableUseCase = mockk(relaxed = true)
 
     private lateinit var viewModel: LoginViewModel
 
@@ -73,7 +76,6 @@ private class LoginViewModelTest : CoroutinesTest {
                 LoginUiState(),
                 LoginUiState(
                     needsLogin = true,
-                    distributionTextId = R.string.feature_login_full_distribution,
                     versionName = "1.0.0 - 0"
                 )
             ),
@@ -104,10 +106,10 @@ private class LoginViewModelTest : CoroutinesTest {
     @Test
     fun `misleading credentials login`() =
         runFlowTest(viewModel.uiState) { onCancelJob, collectedStates ->
-            coEvery { authenticationUseCase(any()) } throws ApiError.Unauthorized()
+            coEvery { authenticationUseCase(any(), any()) } throws ApiError.Unauthorized()
 
             viewModel.executeCommand(LoginCommand.WriteData("teste@teste.com", "password"))
-            viewModel.executeCommand(LoginCommand.Login)
+            viewModel.executeCommand(LoginCommand.Login(false))
             onCancelJob()
 
             assertEquals(
@@ -116,13 +118,13 @@ private class LoginViewModelTest : CoroutinesTest {
                     LoginUiState(
                         versionName = "1.0.0 - 0",
                         needsLogin = true,
-                        distributionTextId = R.string.feature_login_full_distribution,
-                    ),
+
+                        ),
                     LoginUiState(
                         versionName = "1.0.0 - 0",
                         needsLogin = true,
-                        distributionTextId = R.string.feature_login_full_distribution,
-                        enableLoginButton = true,
+
+                        loginButtonIsEnabled = true,
                         loginFormModel = LoginFormModel(
                             email = "teste@teste.com",
                             password = "password"
@@ -131,8 +133,8 @@ private class LoginViewModelTest : CoroutinesTest {
                     LoginUiState(
                         needsLogin = true,
                         versionName = "1.0.0 - 0",
-                        enableLoginButton = true,
-                        distributionTextId = R.string.feature_login_full_distribution,
+                        loginButtonIsEnabled = true,
+
                         isLoading = true,
                         loginFormModel = LoginFormModel(
                             email = "teste@teste.com",
@@ -142,8 +144,8 @@ private class LoginViewModelTest : CoroutinesTest {
                     LoginUiState(
                         needsLogin = true,
                         versionName = "1.0.0 - 0",
-                        enableLoginButton = true,
-                        distributionTextId = R.string.feature_login_full_distribution,
+                        loginButtonIsEnabled = true,
+
                         invalidCredentials = true,
                         loginFormModel = LoginFormModel(
                             email = "teste@teste.com",
@@ -163,7 +165,7 @@ private class LoginViewModelTest : CoroutinesTest {
         runFlowTest(viewModel.uiState) { onCancelJob, collectedStates ->
             viewModel.executeCommand(LoginCommand.WriteData(email = "teste@teste.com"))
             viewModel.executeCommand(LoginCommand.WriteData(password = "password"))
-            viewModel.executeCommand(LoginCommand.Login)
+            viewModel.executeCommand(LoginCommand.Login(false))
             onCancelJob()
 
             assertEquals(
@@ -172,19 +174,16 @@ private class LoginViewModelTest : CoroutinesTest {
                     LoginUiState(
                         versionName = "1.0.0 - 0",
                         needsLogin = true,
-                        distributionTextId = R.string.feature_login_full_distribution,
                     ),
                     LoginUiState(
                         versionName = "1.0.0 - 0",
                         needsLogin = true,
-                        distributionTextId = R.string.feature_login_full_distribution,
                         loginFormModel = LoginFormModel(email = "teste@teste.com")
                     ),
                     LoginUiState(
                         versionName = "1.0.0 - 0",
                         needsLogin = true,
-                        distributionTextId = R.string.feature_login_full_distribution,
-                        enableLoginButton = true,
+                        loginButtonIsEnabled = true,
                         loginFormModel = LoginFormModel(
                             email = "teste@teste.com",
                             password = "password"
@@ -193,8 +192,7 @@ private class LoginViewModelTest : CoroutinesTest {
                     LoginUiState(
                         needsLogin = true,
                         versionName = "1.0.0 - 0",
-                        enableLoginButton = true,
-                        distributionTextId = R.string.feature_login_full_distribution,
+                        loginButtonIsEnabled = true,
                         isLoading = true,
                         loginFormModel = LoginFormModel(
                             email = "teste@teste.com",
@@ -204,8 +202,7 @@ private class LoginViewModelTest : CoroutinesTest {
                     LoginUiState(
                         needsLogin = true,
                         versionName = "1.0.0 - 0",
-                        enableLoginButton = true,
-                        distributionTextId = R.string.feature_login_full_distribution,
+                        loginButtonIsEnabled = true,
                         loginFormModel = LoginFormModel(
                             email = "teste@teste.com",
                             password = "password"
@@ -228,10 +225,10 @@ private class LoginViewModelTest : CoroutinesTest {
     @Test
     fun `error network`() =
         runFlowTest(viewModel.uiState) { onCancelJob, collectedStates ->
-            coEvery { authenticationUseCase(any()) } throws ApiError.Network()
+            coEvery { authenticationUseCase(any(), any()) } throws ApiError.Network()
 
             viewModel.executeCommand(LoginCommand.WriteData("teste@teste.com", "password"))
-            viewModel.executeCommand(LoginCommand.Login)
+            viewModel.executeCommand(LoginCommand.Login(false))
             onCancelJob()
 
             assertEquals(
@@ -240,13 +237,11 @@ private class LoginViewModelTest : CoroutinesTest {
                     LoginUiState(
                         versionName = "1.0.0 - 0",
                         needsLogin = true,
-                        distributionTextId = R.string.feature_login_full_distribution,
                     ),
                     LoginUiState(
                         versionName = "1.0.0 - 0",
                         needsLogin = true,
-                        distributionTextId = R.string.feature_login_full_distribution,
-                        enableLoginButton = true,
+                        loginButtonIsEnabled = true,
                         loginFormModel = LoginFormModel(
                             email = "teste@teste.com",
                             password = "password"
@@ -255,8 +250,7 @@ private class LoginViewModelTest : CoroutinesTest {
                     LoginUiState(
                         needsLogin = true,
                         versionName = "1.0.0 - 0",
-                        enableLoginButton = true,
-                        distributionTextId = R.string.feature_login_full_distribution,
+                        loginButtonIsEnabled = true,
                         isLoading = true,
                         loginFormModel = LoginFormModel(
                             email = "teste@teste.com",
@@ -266,8 +260,7 @@ private class LoginViewModelTest : CoroutinesTest {
                     LoginUiState(
                         needsLogin = true,
                         versionName = "1.0.0 - 0",
-                        enableLoginButton = true,
-                        distributionTextId = R.string.feature_login_full_distribution,
+                        loginButtonIsEnabled = true,
                         simpleDialogParam = CommonSimpleDialog.NetworkError,
                         loginFormModel = LoginFormModel(
                             email = "teste@teste.com",
@@ -284,12 +277,14 @@ private class LoginViewModelTest : CoroutinesTest {
 
     private fun initViewModel() = LoginViewModel(
         buildConfigProvider = buildConfigProvider,
-        userConfigurationManager = configurationManager,
         authenticationUseCase = authenticationUseCase,
         sessionManager = sessionManager,
         remoteConfigManager = remoteConfigManager,
         sendAnalyticsUseCase = sendAnalyticsUseCase,
         navigationManager = navigationManager,
+        configurationManager = configurationManager,
+        authenticationByBiometricUseCase = authenticationByBiometricUseCase,
+        biometricIsAvailableUseCase = biometricIsAvailableUseCase
     )
 
     private companion object {
@@ -298,13 +293,15 @@ private class LoginViewModelTest : CoroutinesTest {
             versionName = "1.0.0",
             versionCode = 0,
             buildType = BuildType.DEBUG,
-            flavorDimension = FlavorDimension.DEVELOP,
-            flavor = Flavor.FULL,
+            flavor = Flavor.DEVELOP,
             androidSdkVersion = 34,
             buildConfigFields = BuildConfigFieldsModel(
-                bffApiHost = String(),
-                bffApiPort = 0,
-                newsApiKey = String()
+                databaseKey = String(),
+                newsApiHost = String(),
+                newsApiKey = String(),
+                openWeatherApiHost = String(),
+                openWeatherIconHost = String(),
+                openWeatherApiKey = String(),
             )
         )
     }
