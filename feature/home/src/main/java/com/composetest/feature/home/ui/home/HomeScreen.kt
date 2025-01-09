@@ -1,17 +1,21 @@
 package com.composetest.feature.home.ui.home
 
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Button
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import com.composetest.core.designsystem.constants.screenMargin
 import com.composetest.core.designsystem.extensions.horizontalScreenMargin
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.interfaces.Screen
+import com.composetest.feature.home.R
 import kotlinx.coroutines.flow.Flow
 
 internal object HomeScreen : Screen<HomeUiState, HomeUiEvent, HomeCommandReceiver> {
@@ -22,20 +26,18 @@ internal object HomeScreen : Screen<HomeUiState, HomeUiEvent, HomeCommandReceive
         uiEvent: Flow<HomeUiEvent>?,
         onExecuteCommand: (Command<HomeCommandReceiver>) -> Unit
     ) {
-        LazyColumn(
-            modifier = Modifier.horizontalScreenMargin(),
-            contentPadding = PaddingValues(top = screenMargin)
+        Column(
+            modifier = Modifier
+                .horizontalScreenMargin()
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
         ) {
-            item {
-                Text(
-                    text = "Home11111111111111111111",
-                )
-            }
-            items(30) {
-                Button(onClick = { onExecuteCommand(HomeCommand.NavigateToHome2) }) {
-                    Text(text = "Go to Home 2")
-                }
-            }
+            Text(
+                text = stringResource(R.string.home_text),
+                style = MaterialTheme.typography.headlineSmall,
+                textAlign = TextAlign.Center
+            )
         }
     }
 }

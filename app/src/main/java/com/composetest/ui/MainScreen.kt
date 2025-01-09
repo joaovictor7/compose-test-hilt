@@ -14,7 +14,6 @@ import com.composetest.core.router.interfaces.Destination
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.interfaces.Screen
 import com.composetest.feature.configuration.navigation.configurationNavGraph
-import com.composetest.feature.home.navigation.homeNavGraph
 import com.composetest.feature.login.navigation.loginNavGraph
 import com.composetest.feature.news.navigation.newsNavGraph
 import com.composetest.feature.profile.navigation.profileNavGraph
@@ -56,7 +55,6 @@ private fun Navigation(
     ) {
         loginNavGraph()
         rootNavGraph()
-        homeNavGraph()
         profileNavGraph()
         configurationNavGraph()
         weatherForecastNavGraph()

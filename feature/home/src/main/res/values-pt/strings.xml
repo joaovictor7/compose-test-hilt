@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="home_title">Início</string>
+    <string name="home_text">Esse aplicativo é destinado ao meu porfólio</string>
 </resources>

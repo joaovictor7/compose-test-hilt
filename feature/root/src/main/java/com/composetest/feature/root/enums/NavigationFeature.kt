@@ -4,7 +4,6 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.composetest.core.domain.enums.Feature
 import com.composetest.core.router.destinations.configuration.ConfigurationDestination
-import com.composetest.core.router.destinations.home.Home2Destination
 import com.composetest.core.router.destinations.home.HomeDestination
 import com.composetest.core.router.destinations.news.NewsListDestination
 import com.composetest.core.router.destinations.profile.ProfileDestination
@@ -27,13 +26,6 @@ internal enum class NavigationFeature(
     HOME(
         Feature.HOME,
         HomeDestination,
-        NavigationLocal.BOTTOM,
-        DesignSystemResources.drawable.ic_house_filled,
-        HomeResources.string.home_title
-    ),
-    HOME2(
-        Feature.HOME2,
-        Home2Destination,
         NavigationLocal.BOTTOM,
         DesignSystemResources.drawable.ic_house_filled,
         HomeResources.string.home_title
