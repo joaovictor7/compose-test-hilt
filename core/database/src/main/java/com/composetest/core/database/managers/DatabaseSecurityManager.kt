@@ -28,7 +28,7 @@ internal class DatabaseSecurityManager @Inject constructor(
     private suspend fun getOrCreateDatabaseKey(): String {
         val encryptedDatabaseKey = secretKeyRepository.getSqliteSecretKey().firstOrNull()
         return if (encryptedDatabaseKey == null) {
-            addPBKDF2(buildConfigProvider.get.buildConfigFieldsModel.databaseKey).also {
+            addPBKDF2(buildConfigProvider.get.buildConfigFields.databaseKey).also {
                 secretKeyRepository.setSqliteSecretKey(cipherProvider.encrypt(it))
             }
         } else {

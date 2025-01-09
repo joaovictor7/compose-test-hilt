@@ -17,11 +17,12 @@ internal class BuildConfigProviderImpl @Inject constructor() : BuildConfigProvid
         buildType = BuildConfig.BUILD_TYPE.getBuildType(),
         flavor = BuildConfig.FLAVOR.getFlavor(),
         androidSdkVersion = Build.VERSION.SDK_INT,
-        buildConfigFieldsModel = BuildConfigFieldsModel(
+        buildConfigFields = BuildConfigFieldsModel(
             databaseKey = BuildConfig.DATABASE_KEY,
             newsApiHost = BuildConfig.NEWS_API_HOST,
             newsApiKey = BuildConfig.NEWS_API_KEY,
             openWeatherApiHost = BuildConfig.OPEN_WEATHER_API_HOST,
+            openWeatherIconHost = BuildConfig.OPEN_WEATHER_ICON_HOST,
             openWeatherApiKey = BuildConfig.OPEN_WEATHER_API_KEY,
         )
     )

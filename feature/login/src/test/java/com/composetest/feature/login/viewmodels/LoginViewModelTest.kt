@@ -301,7 +301,7 @@ private class LoginViewModelTest : CoroutinesTest {
             flavorDimension = FlavorDimension.DEVELOP,
             flavor = Flavor.FULL,
             androidSdkVersion = 34,
-            buildConfigFieldsModel = BuildConfigFieldsModel(
+            buildConfigFields = BuildConfigFieldsModel(
                 bffApiHost = String(),
                 bffApiPort = 0,
                 newsApiKey = String()

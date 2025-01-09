@@ -10,7 +10,7 @@ data class BuildConfigModel(
     val buildType: BuildType,
     val flavor: Flavor,
     val androidSdkVersion: Int,
-    val buildConfigFieldsModel: BuildConfigFieldsModel
+    val buildConfigFields: BuildConfigFieldsModel
 ) {
     val isRelease get() = buildType == BuildType.RELEASE
     val isProduction get() = flavor == Flavor.PRODUCTION

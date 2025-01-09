@@ -36,8 +36,8 @@ internal object ApiModule {
     fun newsApi(buildConfigProvider: BuildConfigProvider): HttpClient = httpClient
         .configureApi(
             ApiSetting.NewsApi(
-                apiKey = buildConfigProvider.get.buildConfigFieldsModel.newsApiKey,
-                host = buildConfigProvider.get.buildConfigFieldsModel.newsApiHost,
+                apiKey = buildConfigProvider.get.buildConfigFields.newsApiKey,
+                host = buildConfigProvider.get.buildConfigFields.newsApiHost,
                 country = "us",
             )
         )
@@ -48,8 +48,8 @@ internal object ApiModule {
     fun openWeatherApi(buildConfigProvider: BuildConfigProvider): HttpClient = httpClient
         .configureApi(
             ApiSetting.OpenWeatherApi(
-                apiId = buildConfigProvider.get.buildConfigFieldsModel.openWeatherApiKey,
-                host = buildConfigProvider.get.buildConfigFieldsModel.openWeatherApiHost,
+                apiId = buildConfigProvider.get.buildConfigFields.openWeatherApiKey,
+                host = buildConfigProvider.get.buildConfigFields.openWeatherApiHost,
             )
         )
 }
