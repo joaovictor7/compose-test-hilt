@@ -25,6 +25,7 @@ workManager = "2.10.0"
 ktor = "3.0.3"
 slf4j = "2.0.16"
 splashScreen = "1.0.1"
+coil = "3.0.4"
 
 [libraries]
 # Kotlin
@@ -92,6 +93,10 @@ ktor-client-logging = { group = "io.ktor", name = "ktor-client-logging", version
 # SLF4J
 slf4j-api = { group = "org.slf4j", name = "slf4j-api", version.ref = "slf4j" }
 slf4j-simple = { group = "org.slf4j", name = "slf4j-simple", version.ref = "slf4j" }
+
+# Coil
+coil = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
+coil-network = { group = "io.coil-kt.coil3", name = "coil-network-ktor3", version.ref = "coil" }
 
 [plugins]
 # Convention plugins

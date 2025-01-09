@@ -37,7 +37,7 @@ abstract class BaseViewModel<UiState : BaseUiState, UiEvent : BaseUiEvent>(
     private val _uiEvent = Channel<UiEvent>(Channel.BUFFERED)
     val uiEvent = _uiEvent.receiveAsFlow()
 
-    abstract fun initUiState()
+    protected open fun initUiState() {}
 
     open fun navigateBack() {
         navigationManager.navigateBack()

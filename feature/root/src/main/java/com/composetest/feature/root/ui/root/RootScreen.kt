@@ -41,6 +41,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.composetest.core.designsystem.components.scaffolds.ScreenScaffold
 import com.composetest.core.designsystem.components.topbar.CentralizedTopBar
+import com.composetest.core.designsystem.components.topbar.TopBarWithoutTitle
 import com.composetest.core.designsystem.dimensions.Spacing
 import com.composetest.core.designsystem.enums.topbar.TopBarAction
 import com.composetest.core.designsystem.extensions.asActivity
@@ -211,8 +212,7 @@ private fun ModalDrawerItems(
 }
 
 private fun getTopBar(onExecuteCommand: (Command<RootCommandReceiver>) -> Unit) = @Composable {
-    CentralizedTopBar(
-        title = String(),
+    TopBarWithoutTitle(
         navigationAction = TopBarAction.MENU,
         onClickNavigationAction = {
             onExecuteCommand(RootCommand.ModalDrawerManager(DrawerValue.Open))
