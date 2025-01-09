@@ -6,7 +6,7 @@ import java.io.File
 internal sealed class PropertiesFile {
     abstract val path: String
     abstract val file: String
-    val fullyPath get() = "$path/$file"
+    val fullPath get() = "$path/$file"
 
     data class SigningKey(
         private val rootDir: File,

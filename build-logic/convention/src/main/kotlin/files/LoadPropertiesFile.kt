@@ -7,8 +7,10 @@ import java.util.Properties
 
 internal class LoadPropertiesFile(
     private val project: Project,
-    private val propertiesFile: PropertiesFile
+    propertiesFile: PropertiesFile
 ) {
+    private val fullPathProperties = getProperties(propertiesFile.fullPath)
+    private val pathProperties = getProperties(propertiesFile.file)
 
     constructor(
         project: Project,
@@ -20,21 +22,15 @@ internal class LoadPropertiesFile(
         buildType: BuildType
     ) : this(project, PropertiesFile.App(buildType.toString()))
 
-    private val rootPropertiesDir = "${project.rootDir}/app-properties"
+    fun getProperty(key: String) = fullPathProperties?.getProperty(key)
+        ?: pathProperties?.getProperty(key)
+        ?: EMPTY_VALUE
 
-    fun getProperty(key: String): String {
-        var property = getPropertyIfExists("$rootPropertiesDir/${propertiesFile.fullyPath}", key)
-        if (property != null) return property
-        property = getPropertyIfExists("$rootPropertiesDir/${propertiesFile.file}", key)
-        return property ?: EMPTY_VALUE
-    }
-
-    private fun getPropertyIfExists(path: String, key: String): String? {
-        val file = project.file(path)
-        val properties = if (file.exists()) {
+    private fun getProperties(path: String): Properties? {
+        val file = project.file("${project.rootDir}/app-properties/$path")
+        return if (file.exists()) {
             Properties().apply { load(file.inputStream()) }
         } else null
-        return properties?.getProperty(key)
     }
 
     private companion object {
