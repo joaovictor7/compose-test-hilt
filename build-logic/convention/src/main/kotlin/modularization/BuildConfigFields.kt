@@ -26,8 +26,14 @@ internal fun ApplicationProductFlavor.setBuildConfigFields(
     val appKeyProperties = loadPropertiesFile(PropertiesFile.AppKey(flavor))
     buildConfigField(
         "String",
-        "NEWS_API_API_KEY",
-        apiKeyProperties?.getProperty("NEWS_API").orEmptyToBuildConfigField
+        "NEWS_API_KEY",
+        apiKeyProperties?.getProperty("NEWS_API_KEY").orEmptyToBuildConfigField
+    )
+    buildConfigField("String", "OPEN_WEATHER_API_HOST", "\"api.openweathermap.org/data/2.5\"")
+    buildConfigField(
+        "String",
+        "OPEN_WEATHER_API_KEY",
+        apiKeyProperties?.getProperty("OPEN_WEATHER_API_KEY").orEmptyToBuildConfigField
     )
     buildConfigField(
         "String",

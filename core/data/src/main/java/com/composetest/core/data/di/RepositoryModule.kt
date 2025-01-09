@@ -5,11 +5,13 @@ import com.composetest.core.data.repositories.AuthenticationRepositoryImpl
 import com.composetest.core.data.repositories.ConfigurationRepositoryImpl
 import com.composetest.core.data.repositories.SecretKeyRepositoryImpl
 import com.composetest.core.data.repositories.UserRepositoryImpl
+import com.composetest.core.data.repositories.WeatherForecastRepositoryImpl
 import com.composetest.core.domain.repositories.AnalyticsRepository
 import com.composetest.core.domain.repositories.AuthenticationRepository
 import com.composetest.core.domain.repositories.ConfigurationRepository
 import com.composetest.core.domain.repositories.SecretKeyRepository
 import com.composetest.core.domain.repositories.UserRepository
+import com.composetest.core.domain.repositories.WeatherForecastRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -45,4 +47,9 @@ internal abstract class RepositoryModule {
     abstract fun authenticationRepository(
         authenticationRepositoryImpl: AuthenticationRepositoryImpl
     ): AuthenticationRepository
+
+    @Binds
+    abstract fun weatherForecastRepository(
+        weatherForecastRepositoryImpl: WeatherForecastRepositoryImpl
+    ): WeatherForecastRepository
 }

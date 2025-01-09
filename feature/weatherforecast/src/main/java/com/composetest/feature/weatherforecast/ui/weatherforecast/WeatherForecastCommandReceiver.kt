@@ -4,4 +4,6 @@ import com.composetest.core.ui.interfaces.CommandReceiver
 
 internal interface WeatherForecastCommandReceiver :
     CommandReceiver<WeatherForecastCommandReceiver> {
+
+    fun refresh()
 }

@@ -30,28 +30,6 @@ import kotlin.time.Duration.Companion.seconds
 @InstallIn(SingletonComponent::class)
 internal object ApiModule {
 
-    private val httpClient = HttpClient(Android) {
-        expectSuccess = true
-        defaultRequest {
-            contentType(ContentType.Application.Json)
-        }
-        install(HttpTimeout) {
-            requestTimeoutMillis = 20.seconds.inWholeMilliseconds
-        }
-        install(ContentNegotiation) {
-            json(Json {
-                prettyPrint = true
-                isLenient = true
-                ignoreUnknownKeys = true
-            })
-        }
-        install(Logging) {
-            logger = Logger.ANDROID
-            level = LogLevel.ALL
-            sanitizeHeader { header -> header == HttpHeaders.Authorization }
-        }
-    }
-
     @Provides
     @Singleton
     @ApiQualifier(Api.NEWS_API)
@@ -63,4 +41,37 @@ internal object ApiModule {
                 country = "us",
             )
         )
+
+    @Provides
+    @Singleton
+    @ApiQualifier(Api.OPEN_WEATHER)
+    fun openWeatherApi(buildConfigProvider: BuildConfigProvider): HttpClient = httpClient
+        .configureApi(
+            ApiSetting.OpenWeatherApi(
+                apiId = buildConfigProvider.get.buildConfigFieldsModel.openWeatherApiKey,
+                host = buildConfigProvider.get.buildConfigFieldsModel.openWeatherApiHost,
+            )
+        )
+}
+
+private val httpClient = HttpClient(Android) {
+    expectSuccess = true
+    defaultRequest {
+        contentType(ContentType.Application.Json)
+    }
+    install(HttpTimeout) {
+        requestTimeoutMillis = 20.seconds.inWholeMilliseconds
+    }
+    install(ContentNegotiation) {
+        json(Json {
+            prettyPrint = true
+            isLenient = true
+            ignoreUnknownKeys = true
+        })
+    }
+    install(Logging) {
+        logger = Logger.ANDROID
+        level = LogLevel.ALL
+        sanitizeHeader { header -> header == HttpHeaders.Authorization }
+    }
 }

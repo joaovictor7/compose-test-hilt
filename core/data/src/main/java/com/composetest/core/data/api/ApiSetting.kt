@@ -22,4 +22,15 @@ internal sealed interface ApiSetting {
             const val API_KEY_HEADER = "x-api-key"
         }
     }
+
+    data class OpenWeatherApi(
+        private val apiId: String,
+        override val host: String,
+    ) : ApiSetting {
+        override val params = mapOf(API_ID_PARAM to apiId)
+
+        private companion object {
+            const val API_ID_PARAM = "appid"
+        }
+    }
 }

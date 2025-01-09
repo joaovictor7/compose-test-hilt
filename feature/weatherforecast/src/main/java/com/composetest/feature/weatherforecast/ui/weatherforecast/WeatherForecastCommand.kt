@@ -4,4 +4,9 @@ import com.composetest.core.ui.interfaces.Command
 
 internal sealed interface WeatherForecastCommand : Command<WeatherForecastCommandReceiver> {
 
+    data object Refresh : WeatherForecastCommand {
+        override fun execute(commandReceiver: WeatherForecastCommandReceiver) {
+            commandReceiver.refresh()
+        }
+    }
 }
