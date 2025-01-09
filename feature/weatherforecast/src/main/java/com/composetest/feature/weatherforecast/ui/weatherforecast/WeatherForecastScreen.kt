@@ -25,6 +25,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.composetest.core.designsystem.components.asyncimage.AsyncImage
+import com.composetest.core.designsystem.components.dialogs.SimpleDialog
 import com.composetest.core.designsystem.components.graphics.SimpleScatterPlotGraphic
 import com.composetest.core.designsystem.components.scaffolds.ScreenScaffold
 import com.composetest.core.designsystem.components.topbar.LeftTopBar
@@ -57,11 +59,11 @@ internal object WeatherForecastScreen :
                     modifier = Modifier
                         .screenMargin()
                         .fillMaxSize(),
-                    verticalArrangement = Arrangement.spacedBy(Spacing.thirtyTwo)
+                    verticalArrangement = Arrangement.spacedBy(Spacing.twentyFour)
                 ) {
                     WeatherNow(uiState = uiState)
                     WeatherForecastGraphic(uiState = uiState)
-                    LazyColumn(verticalArrangement = Arrangement.spacedBy(Spacing.sixteen)) {
+                    LazyColumn(verticalArrangement = Arrangement.spacedBy(Spacing.twelve)) {
                         items(uiState.futureWeatherForecasts) {
                             FutureWeatherForecast(futureWeatherForecastScreen = it)
                         }
@@ -69,34 +71,38 @@ internal object WeatherForecastScreen :
                 }
             }
         }
+        AlertDialogHandler(uiState = uiState, onExecuteCommand = onExecuteCommand)
     }
 }
 
 @Composable
-private fun WeatherNow(uiState: WeatherForecastUiState) {
+private fun WeatherNow(uiState: WeatherForecastUiState) = with(uiState.weatherNowModel) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.Top
     ) {
         Column(horizontalAlignment = AbsoluteAlignment.Right) {
             Text(
-                text = stringResource(R.string.weather_forecast_city)
-                    .plus(" ${uiState.weatherNowModel.city}"),
+                text = stringResource(R.string.weather_forecast_city).plus(" $city"),
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.widthIn(max = 150.dp),
                 textAlign = TextAlign.Right,
                 maxLines = 2
             )
             Text(
-                text = uiState.weatherNowModel.description,
+                text = description,
                 style = MaterialTheme.typography.titleMedium
             )
         }
         Spacer(Modifier.padding(horizontal = Spacing.eight))
         Text(
-            text = uiState.weatherNowModel.temperature,
+            text = temperature,
             style = MaterialTheme.typography.displaySmall
+        )
+        AsyncImage(
+            url = iconUrl,
+            alignment = Alignment.TopCenter
         )
     }
 }
@@ -143,6 +149,7 @@ private fun FutureWeatherForecast(futureWeatherForecastScreen: FutureWeatherFore
         ) {
             futureWeatherForecastScreen.futureDailyWeatherForecasts.forEach {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    AsyncImage(url = it.iconUrl)
                     Text(
                         text = it.temperature,
                         style = MaterialTheme.typography.bodyLarge
@@ -155,6 +162,16 @@ private fun FutureWeatherForecast(futureWeatherForecastScreen: FutureWeatherFore
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun AlertDialogHandler(
+    uiState: WeatherForecastUiState,
+    onExecuteCommand: (Command<WeatherForecastCommandReceiver>) -> Unit
+) = uiState.simpleDialogParam?.let {
+    SimpleDialog(param = it) {
+        onExecuteCommand(WeatherForecastCommand.DismissSimpleDialog)
     }
 }
 

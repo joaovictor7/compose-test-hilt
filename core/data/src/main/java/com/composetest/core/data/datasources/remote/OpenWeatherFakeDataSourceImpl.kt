@@ -3,7 +3,8 @@ package com.composetest.core.data.datasources.remote
 import com.composetest.core.data.api.requests.WeatherForecastRequest
 import com.composetest.core.data.api.responses.weatherforecast.WeatherForecastDataResponse
 import com.composetest.core.data.api.responses.weatherforecast.WeatherForecastResponse
-import com.composetest.core.data.api.responses.weatherforecast.WeatherForecastTemperatureResponse
+import com.composetest.core.data.api.responses.weatherforecast.TemperatureDataResponse
+import com.composetest.core.data.api.responses.weatherforecast.WeatherDataResponse
 import com.composetest.core.data.api.responses.weatherforecast.WeatherNowDataResponse
 import com.composetest.core.data.api.responses.weatherforecast.WeatherNowResponse
 import com.composetest.core.data.api.responses.weatherforecast.WeatherNowTemperatureResponse
@@ -32,27 +33,30 @@ internal class OpenWeatherFakeDataSourceImpl(
             dataList = listOf(
                 WeatherForecastDataResponse(
                     dateTime = 1,
-                    temperatureData = WeatherForecastTemperatureResponse(
+                    temperatureData = TemperatureDataResponse(
                         temperature = 2f,
                         minTemperature = 1f,
                         maxTemperature = 5f
-                    )
+                    ),
+                    weatherData = listOf(WeatherDataResponse(icon = ""))
                 ),
                 WeatherForecastDataResponse(
                     dateTime = 1,
-                    temperatureData = WeatherForecastTemperatureResponse(
+                    temperatureData = TemperatureDataResponse(
                         temperature = 2f,
                         minTemperature = 1f,
                         maxTemperature = 5f
-                    )
+                    ),
+                    weatherData = listOf(WeatherDataResponse(icon = ""))
                 ),
                 WeatherForecastDataResponse(
                     dateTime = 1,
-                    temperatureData = WeatherForecastTemperatureResponse(
+                    temperatureData = TemperatureDataResponse(
                         temperature = 2f,
                         minTemperature = 1f,
                         maxTemperature = 5f
-                    )
+                    ),
+                    weatherData = listOf(WeatherDataResponse(icon = ""))
                 )
             )
         )

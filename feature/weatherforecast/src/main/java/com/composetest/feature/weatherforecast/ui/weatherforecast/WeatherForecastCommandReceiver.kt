@@ -6,4 +6,5 @@ internal interface WeatherForecastCommandReceiver :
     CommandReceiver<WeatherForecastCommandReceiver> {
 
     fun refresh()
+    fun dismissSimpleDialog()
 }

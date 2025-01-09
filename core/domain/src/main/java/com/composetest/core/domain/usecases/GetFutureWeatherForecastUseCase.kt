@@ -20,7 +20,7 @@ class GetFutureWeatherForecastUseCase @Inject constructor(
                     DailyWeatherForecastModel(
                         dateTime = it.dateTime,
                         temperature = it.forecastTemperature.temperature,
-                        iconId = String()
+                        iconId = it.forecastTemperature.iconId
                     )
                 }
             )

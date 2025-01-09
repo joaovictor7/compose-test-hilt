@@ -1,5 +1,6 @@
 package com.composetest.feature.weatherforecast.ui.weatherforecast
 
+import com.composetest.core.designsystem.params.alertdialogs.SimpleDialogParam
 import com.composetest.core.domain.models.weatherforecast.TodayWeatherForecastModel
 import com.composetest.core.ui.interfaces.BaseUiState
 import com.composetest.feature.weatherforecast.models.FutureWeatherForecastScreenModel
@@ -10,6 +11,7 @@ internal data class WeatherForecastUiState(
     val weatherNowModel: WeatherNowScreenModel = WeatherNowScreenModel(),
     val todayWeatherForecast: TodayWeatherForecastScreenModel? = TodayWeatherForecastScreenModel(),
     val futureWeatherForecasts: List<FutureWeatherForecastScreenModel> = emptyList(),
+    val simpleDialogParam: SimpleDialogParam? = null,
     override val isLoading: Boolean = false
 ) : BaseUiState {
 
@@ -32,4 +34,7 @@ internal data class WeatherForecastUiState(
     )
 
     fun setLoading(isLoading: Boolean) = copy(isLoading = isLoading)
+
+    fun setSimpleAlertDialog(simpleDialogParam: SimpleDialogParam?) =
+        copy(simpleDialogParam = simpleDialogParam)
 }

@@ -9,4 +9,10 @@ internal sealed interface WeatherForecastCommand : Command<WeatherForecastComman
             commandReceiver.refresh()
         }
     }
+
+    data object DismissSimpleDialog : WeatherForecastCommand {
+        override fun execute(commandReceiver: WeatherForecastCommandReceiver) {
+            commandReceiver.dismissSimpleDialog()
+        }
+    }
 }

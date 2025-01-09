@@ -25,6 +25,7 @@ internal class WeatherForecastMapper @Inject constructor() {
             WeatherForecastModel(
                 dateTime = it.dateTime.unixToLocalDateTime,
                 forecastTemperature = ForecastTemperatureModel(
+                    iconId = it.weatherData.first().icon,
                     temperature = it.temperatureData.temperature,
                     minTemperature = it.temperatureData.minTemperature,
                     maxTemperature = it.temperatureData.maxTemperature
