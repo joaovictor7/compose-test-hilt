@@ -33,7 +33,6 @@ import com.composetest.core.designsystem.constants.screenMargin
 import com.composetest.core.designsystem.constants.topScreenMarginList
 import com.composetest.core.designsystem.dimensions.Spacing
 import com.composetest.core.designsystem.extensions.horizontalScreenMargin
-import com.composetest.core.designsystem.params.alertdialogs.SimpleDialogParam
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.domain.models.ArticleModel
 import com.composetest.core.ui.interfaces.Command
@@ -82,7 +81,7 @@ internal object NewsListScreen : Screen<NewsListUiState, NewsListUiEvent, NewsLi
                 }
             }
         }
-        AlertDialogHandler(uiState.simpleDialogParam)
+        AlertDialogHandler(uiState = uiState, onExecuteCommand = onExecuteCommand)
     }
 }
 
@@ -122,10 +121,14 @@ private fun NewsCard(
 }
 
 @Composable
-private fun AlertDialogHandler(simpleDialogParam: SimpleDialogParam?) =
-    simpleDialogParam?.let {
-        SimpleDialog(param = it)
+private fun AlertDialogHandler(
+    uiState: NewsListUiState,
+    onExecuteCommand: (Command<NewsListCommandReceiver>) -> Unit
+) = uiState.simpleDialogParam?.let {
+    SimpleDialog(param = it) {
+        onExecuteCommand(NewsListCommand.DismissSimpleDialog)
     }
+}
 
 
 @Preview

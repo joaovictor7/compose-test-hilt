@@ -13,6 +13,6 @@ internal data class NewsListUiState(
     fun setIsLoading(isLoading: Boolean) =
         copy(isLoading = isLoading, showScreen = if (isLoading) true else showScreen)
 
-    fun setArticles(articles: List<ArticleModel>) = copy(articles = articles, isLoading = false)
+    fun setArticles(articles: List<ArticleModel>) = copy(articles = articles)
     fun setAlertDialogParam(param: SimpleDialogParam? = null) = copy(simpleDialogParam = param)
 }

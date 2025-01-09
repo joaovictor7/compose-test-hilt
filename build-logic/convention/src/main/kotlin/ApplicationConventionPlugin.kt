@@ -4,7 +4,7 @@ import com.android.build.api.dsl.ApplicationExtension
 import enums.Signing
 import extensions.getLibrary
 import extensions.implementation
-import extensions.loadPropertiesFile
+import files.LoadPropertiesFile
 import files.PropertiesFile
 import modularization.configureAndroid
 import modularization.setBuildTypes
@@ -62,7 +62,7 @@ internal class ApplicationConventionPlugin : Plugin<Project> {
     ) = with(apkSigningConfig) {
         Signing.values().forEach { signing ->
             val propertiesFile = PropertiesFile.SigningKey(rootDir, signing)
-            val properties = loadPropertiesFile(propertiesFile) ?: return@forEach
+            val properties = LoadPropertiesFile(this@createSignings, propertiesFile)
             create(signing.toString()) {
                 storeFile = file(propertiesFile.keyPath)
                 storePassword = properties.getProperty("key.store.password")

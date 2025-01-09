@@ -15,4 +15,10 @@ internal sealed interface NewsListCommand : Command<NewsListCommandReceiver> {
             commandReceiver.refresh()
         }
     }
+
+    data object DismissSimpleDialog : NewsListCommand {
+        override fun execute(commandReceiver: NewsListCommandReceiver) {
+            commandReceiver.dismissSimpleDialog()
+        }
+    }
 }
