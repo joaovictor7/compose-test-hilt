@@ -1,8 +1,8 @@
 package files
 
-import enums.Flavor
 import enums.Signing
 import java.io.File
+import kotlin.reflect.KClass
 
 internal sealed class PropertiesFile {
     abstract val path: String
@@ -18,13 +18,8 @@ internal sealed class PropertiesFile {
         val keyPath = "$rootDir/signing-keys/$path/key"
     }
 
-    data class ApiKey(private val flavor: Flavor) : PropertiesFile() {
-        override val file = "api-key.properties"
-        override val path = flavor.toString()
-    }
-
-    data class AppKey(private val flavor: Flavor) : PropertiesFile() {
-        override val file = "app-key.properties"
-        override val path = flavor.toString()
+    data class App(private val buildTypeOrFlavor: KClass<*>) : PropertiesFile() {
+        override val file = "app.properties"
+        override val path = buildTypeOrFlavor.toString()
     }
 }

@@ -18,7 +18,7 @@ internal fun Project.setFlavors(application: Boolean) = extensions.configure<Bas
                     this.isDefault = flavor.isDefault
                     if (application) {
                         setNonProductionFields(dimension, flavor)
-                        setBuildConfigFields(this@setFlavors, dimension, flavor)
+                        setBuildConfigFields(this@setFlavors, flavor)
                     }
                 }
             }

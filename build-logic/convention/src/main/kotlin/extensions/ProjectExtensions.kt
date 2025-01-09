@@ -10,7 +10,7 @@ internal fun Project.getLibrary(id: String) =
     extensions.getByType<VersionCatalogsExtension>().named("libs").findLibrary(id).get()
 
 internal fun Project.loadPropertiesFile(propertiesFile: PropertiesFile): Properties? {
-    val rootPropertiesDir = "$rootDir/properties-keys"
+    val rootPropertiesDir = "$rootDir/app-properties"
     val file = file("$rootPropertiesDir/${propertiesFile.fullyPath}").takeIf { it.exists() }
         ?: file("$rootPropertiesDir/${propertiesFile.file}")
     return if (file.exists()) {

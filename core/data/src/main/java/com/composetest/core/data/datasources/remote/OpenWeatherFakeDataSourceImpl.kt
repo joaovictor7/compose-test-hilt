@@ -7,7 +7,6 @@ import com.composetest.core.data.api.responses.weatherforecast.WeatherForecastTe
 import com.composetest.core.data.api.responses.weatherforecast.WeatherNowDataResponse
 import com.composetest.core.data.api.responses.weatherforecast.WeatherNowResponse
 import com.composetest.core.data.api.responses.weatherforecast.WeatherNowTemperatureResponse
-import com.composetest.core.data.datasources.remote.OpenWeatherDataSource
 import com.composetest.core.data.utils.RemoteCallUtils
 
 internal class OpenWeatherFakeDataSourceImpl(
