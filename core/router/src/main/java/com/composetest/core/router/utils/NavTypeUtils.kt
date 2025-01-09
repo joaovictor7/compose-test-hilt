@@ -2,7 +2,6 @@ package com.composetest.core.router.utils
 
 import android.os.Bundle
 import androidx.navigation.NavType
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlin.reflect.KType
 import kotlin.reflect.full.companionObjectInstance

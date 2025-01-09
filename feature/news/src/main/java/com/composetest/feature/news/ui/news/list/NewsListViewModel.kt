@@ -50,7 +50,8 @@ internal class NewsListViewModel @Inject constructor(
         updateUiState { it.setIsLoading(true) }
         runAsyncTask(
             onCompletion = { updateUiState { it.setIsLoading(false) } },
-            onError = ::handleRequestError) {
+            onError = ::handleRequestError
+        ) {
             val articles = getTopHeadlinesUseCase()
             updateUiState { it.setArticles(articles) }
         }

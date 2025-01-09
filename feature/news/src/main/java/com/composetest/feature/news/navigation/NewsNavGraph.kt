@@ -1,8 +1,8 @@
 package com.composetest.feature.news.navigation
 
 import androidx.navigation.NavGraphBuilder
-import com.composetest.core.router.destinations.news.NewsListDestination
 import com.composetest.core.router.destinations.news.FullNewsDestination
+import com.composetest.core.router.destinations.news.NewsListDestination
 import com.composetest.core.ui.extensions.buildComposable
 import com.composetest.feature.news.ui.news.full.FullNewsCommandReceiver
 import com.composetest.feature.news.ui.news.full.FullNewsScreen

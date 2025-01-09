@@ -1,8 +1,8 @@
 package com.composetest.core.security.di
 
 import com.composetest.core.domain.providers.BiometricProvider
-import com.composetest.core.security.providers.BiometricProviderImpl
 import com.composetest.core.domain.providers.CipherProvider
+import com.composetest.core.security.providers.BiometricProviderImpl
 import com.composetest.core.security.providers.CipherProviderImpl
 import dagger.Binds
 import dagger.Module
