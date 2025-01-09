@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -75,14 +76,11 @@ internal object RootScreen : Screen<RootUiState, RootUiEvent, RootCommandReceive
                 topBar = getTopBar(onExecuteCommand),
                 bottomBar = getBottomBar(uiState, onExecuteCommand)
             ) {
-                Navigation(uiState = uiState, onExecuteCommand = onExecuteCommand)
-                BackHandler {
-                    if (drawerState.isOpen) {
-                        onExecuteCommand(RootCommand.ModalDrawerManager(DrawerValue.Closed))
-                    } else {
-                        onExecuteCommand(RootCommand.BackHandler)
-                    }
-                }
+                Navigation(
+                    drawerState = drawerState,
+                    uiState = uiState,
+                    onExecuteCommand = onExecuteCommand
+                )
             }
         }
         LaunchedEffect(Unit) {
@@ -101,6 +99,7 @@ internal object RootScreen : Screen<RootUiState, RootUiEvent, RootCommandReceive
 
 @Composable
 private fun Navigation(
+    drawerState: DrawerState,
     uiState: RootUiState,
     onExecuteCommand: (Command<RootCommandReceiver>) -> Unit
 ) {
@@ -110,6 +109,13 @@ private fun Navigation(
     NavHost(navController = navController, startDestination = uiState.firstDestination) {
         homeRootNavGraph()
         configurationRootNavGraph()
+    }
+    BackHandler {
+        if (drawerState.isOpen) {
+            onExecuteCommand(RootCommand.ModalDrawerManager(DrawerValue.Closed))
+        } else {
+            onExecuteCommand(RootCommand.BackHandler)
+        }
     }
 }
 

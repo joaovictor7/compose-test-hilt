@@ -11,7 +11,6 @@ import com.composetest.feature.weatherforecast.ui.weatherforecast.WeatherForecas
 
 fun NavGraphBuilder.weatherForecastNavGraph() {
     buildComposable<WeatherForecastDestination, WeatherForecastViewModel, WeatherForecastUiState, WeatherForecastUiEvent, WeatherForecastCommandReceiver>(
-        screen = WeatherForecastScreen,
-        navigateBackHandler = false
+        screen = WeatherForecastScreen
     )
 }
