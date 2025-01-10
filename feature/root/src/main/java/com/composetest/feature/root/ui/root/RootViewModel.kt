@@ -2,9 +2,11 @@ package com.composetest.feature.root.ui.root
 
 import androidx.compose.material3.DrawerValue
 import androidx.navigation.NavHostController
+import com.composetest.core.domain.managers.SessionManager
 import com.composetest.core.domain.usecases.GetAvailableFeaturesUseCase
 import com.composetest.core.domain.usecases.GetUserUseCase
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
+import com.composetest.core.router.destinations.login.LoginDestination
 import com.composetest.core.router.di.qualifiers.NavGraphQualifier
 import com.composetest.core.router.enums.NavGraph
 import com.composetest.core.router.enums.NavigationMode
@@ -22,6 +24,7 @@ import javax.inject.Inject
 @HiltViewModel
 internal class RootViewModel @Inject constructor(
     private val navControllerManager: NavControllerManager,
+    private val sessionManager: SessionManager,
     private val getUserUseCase: GetUserUseCase,
     private val userModalDrawerMapper: UserModalDrawerMapper,
     @NavGraphQualifier(NavGraph.MAIN) private val mainNavigationManager: NavigationManager,
@@ -83,6 +86,16 @@ internal class RootViewModel @Inject constructor(
 
     override fun modalDrawerManager(drawerValue: DrawerValue) {
         launchUiEvent(RootUiEvent.ManagerModalDrawer(drawerValue))
+    }
+
+    override fun logout() {
+        runAsyncTask {
+            sessionManager.finishCurrentSession()
+            mainNavigationManager.asyncNavigate(
+                LoginDestination,
+                NavigationMode.REMOVE_ALL_SCREENS_STACK
+            )
+        }
     }
 
     private fun navigateToBottomFeature(navigationFeature: NavigationFeature) {

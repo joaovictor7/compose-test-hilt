@@ -29,4 +29,10 @@ internal sealed interface RootCommand : Command<RootCommandReceiver> {
             commandReceiver.modalDrawerManager(drawerValue)
         }
     }
+
+    data object Logout : RootCommand {
+        override fun execute(commandReceiver: RootCommandReceiver) {
+            commandReceiver.logout()
+        }
+    }
 }

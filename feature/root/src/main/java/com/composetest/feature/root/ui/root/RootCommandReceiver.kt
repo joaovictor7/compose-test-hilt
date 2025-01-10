@@ -10,4 +10,5 @@ internal interface RootCommandReceiver : CommandReceiver<RootCommandReceiver> {
     fun setRootNavGraph(navController: NavHostController)
     fun backHandler()
     fun modalDrawerManager(drawerValue: DrawerValue)
+    fun logout()
 }

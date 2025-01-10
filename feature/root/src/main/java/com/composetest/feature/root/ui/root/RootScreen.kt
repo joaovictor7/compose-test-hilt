@@ -5,10 +5,13 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -25,6 +28,7 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -46,12 +50,14 @@ import com.composetest.core.designsystem.dimensions.Spacing
 import com.composetest.core.designsystem.enums.topbar.TopBarAction
 import com.composetest.core.designsystem.extensions.asActivity
 import com.composetest.core.designsystem.extensions.horizontalScreenMargin
+import com.composetest.core.designsystem.extensions.screenMargin
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.router.destinations.home.HomeDestination
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.interfaces.Screen
 import com.composetest.feature.configuration.navigation.configurationRootNavGraph
 import com.composetest.feature.home.navigation.homeRootNavGraph
+import com.composetest.feature.root.R
 import com.composetest.feature.root.enums.NavigationFeature
 import com.composetest.feature.root.models.BottomFeatureNavigationModel
 import com.composetest.feature.root.ui.dimensions.Component
@@ -128,6 +134,8 @@ private fun getModalDrawerContent(
             ModalDrawerHeader(uiState = uiState, onExecuteCommand = onExecuteCommand)
             HorizontalDivider()
             ModalDrawerItems(uiState = uiState, onExecuteCommand = onExecuteCommand)
+            Spacer(Modifier.weight(1f))
+            LogoutButton(onExecuteCommand = onExecuteCommand)
         }
     }
 }
@@ -212,6 +220,28 @@ private fun ModalDrawerItems(
                     onExecuteCommand(RootCommand.NavigateToFeature(item))
                 }
             )
+        }
+    }
+}
+
+@Composable
+private fun LogoutButton(onExecuteCommand: (Command<RootCommandReceiver>) -> Unit) {
+    Row(
+        modifier = Modifier
+            .windowInsetsPadding(WindowInsets.navigationBars)
+            .screenMargin(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(Spacing.twelve)
+    ) {
+        TextButton(
+            onClick = { onExecuteCommand(RootCommand.Logout) }
+        ) {
+            Icon(
+                painter = painterResource(DesignSystemResources.drawable.ic_logout_big),
+                contentDescription = null
+            )
+            Spacer(Modifier.width(Spacing.twelve))
+            Text(text = stringResource(R.string.logout), style = MaterialTheme.typography.bodyLarge)
         }
     }
 }
