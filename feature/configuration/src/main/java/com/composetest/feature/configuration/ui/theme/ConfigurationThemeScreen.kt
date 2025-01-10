@@ -46,15 +46,14 @@ internal object ConfigurationThemeScreen :
         onExecuteCommand: (Command<ConfigurationThemeCommandReceiver>) -> Unit
     ) {
         ScreenScaffold(
+            modifier = Modifier.screenMargin(),
             topBar = { LeftTopBar(titleId = ConfigurationResources.string.configuration_theme_text) }
         ) {
-            Column(modifier = Modifier.screenMargin()) {
-                Section(titleId = ConfigurationResources.string.configuration_theme_mode_title) {
-                    Theme(uiState = uiState, onExecuteCommand = onExecuteCommand)
-                }
-                Section(titleId = ConfigurationResources.string.configuration_theme_colors_title) {
-                    DynamicColor(uiState = uiState, onExecuteCommand = onExecuteCommand)
-                }
+            Section(titleId = ConfigurationResources.string.configuration_theme_mode_title) {
+                Theme(uiState = uiState, onExecuteCommand = onExecuteCommand)
+            }
+            Section(titleId = ConfigurationResources.string.configuration_theme_colors_title) {
+                DynamicColor(uiState = uiState, onExecuteCommand = onExecuteCommand)
             }
         }
     }

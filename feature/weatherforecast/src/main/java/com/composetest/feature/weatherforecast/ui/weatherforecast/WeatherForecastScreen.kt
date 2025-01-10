@@ -5,11 +5,15 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
@@ -28,10 +32,9 @@ import androidx.compose.ui.unit.dp
 import com.composetest.core.designsystem.components.asyncimage.AsyncImage
 import com.composetest.core.designsystem.components.dialogs.SimpleDialog
 import com.composetest.core.designsystem.components.graphics.SimpleScatterPlotGraphic
-import com.composetest.core.designsystem.components.scaffolds.ScreenScaffold
 import com.composetest.core.designsystem.components.topbar.LeftTopBar
 import com.composetest.core.designsystem.dimensions.Spacing
-import com.composetest.core.designsystem.extensions.screenMargin
+import com.composetest.core.designsystem.extensions.horizontalScreenMargin
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.interfaces.Screen
@@ -49,16 +52,17 @@ internal object WeatherForecastScreen :
         uiEvent: Flow<WeatherForecastUiEvent>?,
         onExecuteCommand: (Command<WeatherForecastCommandReceiver>) -> Unit
     ) {
-        ScreenScaffold(topBar = { LeftTopBar(titleId = R.string.weather_forecast_title) }) {
+        Column(modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars)) {
+            LeftTopBar(titleId = R.string.weather_forecast_title)
             PullToRefreshBox(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .horizontalScreenMargin()
+                    .fillMaxSize(),
                 isRefreshing = uiState.isLoading,
                 onRefresh = { onExecuteCommand(WeatherForecastCommand.Refresh) }
             ) {
                 Column(
-                    modifier = Modifier
-                        .screenMargin()
-                        .fillMaxSize(),
+                    modifier = Modifier.fillMaxSize(),
                     verticalArrangement = Arrangement.spacedBy(Spacing.twentyFour)
                 ) {
                     WeatherNow(uiState = uiState)
@@ -66,6 +70,9 @@ internal object WeatherForecastScreen :
                     LazyColumn(verticalArrangement = Arrangement.spacedBy(Spacing.twelve)) {
                         items(uiState.futureWeatherForecasts) {
                             FutureWeatherForecast(futureWeatherForecastScreen = it)
+                        }
+                        item {
+                            Spacer(Modifier.windowInsetsPadding(WindowInsets.navigationBars))
                         }
                     }
                 }

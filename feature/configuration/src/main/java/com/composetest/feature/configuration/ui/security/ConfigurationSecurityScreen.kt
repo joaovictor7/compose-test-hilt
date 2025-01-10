@@ -1,6 +1,5 @@
 package com.composetest.feature.configuration.ui.security
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -25,15 +24,14 @@ internal object ConfigurationSecurityScreen :
         onExecuteCommand: (Command<ConfigurationSecurityCommandReceiver>) -> Unit
     ) {
         ScreenScaffold(
+            modifier = Modifier.screenMargin(),
             topBar = { LeftTopBar(titleId = R.string.configuration_security_text) }
         ) {
-            Column(modifier = Modifier.screenMargin()) {
-                LabelSwitch(
-                    labelTextId = R.string.configuration_security_biometric_label_text,
-                    checked = uiState.biometricIsEnabled,
-                    switchType = SwitchType.CHECK
-                ) { onExecuteCommand(ConfigurationSecurityCommand.ChangeSwitchBiometric(it)) }
-            }
+            LabelSwitch(
+                labelTextId = R.string.configuration_security_biometric_label_text,
+                checked = uiState.biometricIsEnabled,
+                switchType = SwitchType.CHECK
+            ) { onExecuteCommand(ConfigurationSecurityCommand.ChangeSwitchBiometric(it)) }
         }
     }
 }
