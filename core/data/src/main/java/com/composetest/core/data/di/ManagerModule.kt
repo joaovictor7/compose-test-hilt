@@ -1,5 +1,6 @@
 package com.composetest.core.data.di
 
+import com.composetest.core.data.managers.AsyncTaskManagerImpl
 import com.composetest.core.data.managers.ConfigurationManagerImpl
 import com.composetest.core.data.managers.RemoteConfigManagerImpl
 import com.composetest.core.data.managers.SessionManagerImpl
@@ -35,5 +36,10 @@ internal abstract class ManagerModule {
     @Binds
     abstract fun configurationManager(
         configurationManagerImpl: ConfigurationManagerImpl
+    ): ConfigurationManager
+
+    @Binds
+    abstract fun asyncTaskManager(
+        asyncTaskManagerImpl: AsyncTaskManagerImpl
     ): ConfigurationManager
 }

@@ -1,5 +1,6 @@
 package com.composetest.feature.login.ui.login
 
+import com.composetest.common.analytics.CommonAnalyticEvent
 import com.composetest.common.providers.BuildConfigProvider
 import com.composetest.core.designsystem.utils.getDefaultSimpleDialogErrorParam
 import com.composetest.core.domain.enums.Theme
@@ -43,10 +44,10 @@ internal class LoginViewModel @Inject constructor(
 ) : BaseViewModel<LoginUiState, LoginUiEvent>(LoginScreenAnalytic, LoginUiState()),
     LoginCommandReceiver {
 
-    override val commandReceiver = this
-
     private val loginFormModel get() = uiState.value.loginFormModel
     private val byPassLogin by lazy { remoteConfigManager.getBoolean(LoginRemoteConfig.ByPassLogin) }
+
+    override val commandReceiver = this
 
     override fun initUiState() {
         checkNeedsLogin()
@@ -170,5 +171,9 @@ internal class LoginViewModel @Inject constructor(
 
     private suspend fun navigateToRoot() {
         navigationManager.asyncNavigate(RootDestination, NavigationMode.REMOVE_ALL_SCREENS_STACK)
+    }
+
+    private fun openScreenAnalytic() {
+        runAsyncTask { sendAnalyticsUseCase(CommonAnalyticEvent.OpenScreen(LoginScreenAnalytic)) }
     }
 }

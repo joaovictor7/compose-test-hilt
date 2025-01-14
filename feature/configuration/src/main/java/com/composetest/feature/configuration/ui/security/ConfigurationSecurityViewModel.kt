@@ -16,13 +16,13 @@ internal class ConfigurationSecurityViewModel @Inject constructor(
     override val sendAnalyticsUseCase: SendAnalyticsUseCase,
     @NavGraphQualifier(NavGraph.MAIN) override val navigationManager: NavigationManager
 ) : BaseViewModel<ConfigurationSecurityUiState, ConfigurationSecurityUiEvent>(
-    ConfigurationThemeScreenAnalytic,
     ConfigurationSecurityUiState()
 ), ConfigurationSecurityCommandReceiver {
 
     private val currentConfiguration get() = configurationManager.currentConfiguration
 
     override val commandReceiver = this
+    override val analyticScreen = ConfigurationThemeScreenAnalytic
 
     override fun initUiState() {
         runAsyncTask {

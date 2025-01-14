@@ -15,9 +15,10 @@ internal class FullNewsViewModel @Inject constructor(
     private val destination: FullNewsDestination,
     @NavGraphQualifier(NavGraph.MAIN) override val navigationManager: NavigationManager,
     override val sendAnalyticsUseCase: SendAnalyticsUseCase
-) : BaseViewModel<FullNewsUiState, FullNewsUiEvent>(FullNewsScreenAnalytic, FullNewsUiState()),
-    FullNewsCommandReceiver {
+) : BaseViewModel<FullNewsUiState, FullNewsUiEvent>(FullNewsUiState()), FullNewsCommandReceiver {
+
     override val commandReceiver = this
+    override val analyticScreen = FullNewsScreenAnalytic
 
     override fun initUiState() {
         updateUiState {

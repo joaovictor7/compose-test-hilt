@@ -15,10 +15,10 @@ import javax.inject.Inject
 internal class HomeViewModel @Inject constructor(
     override val sendAnalyticsUseCase: SendAnalyticsUseCase,
     @NavGraphQualifier(NavGraph.MAIN) override val navigationManager: NavigationManager
-) : BaseViewModel<HomeUiState, HomeUiEvent>(HomeScreenAnalytic, HomeUiState()),
-    HomeCommandReceiver {
+) : BaseViewModel<HomeUiState, HomeUiEvent>(HomeUiState()), HomeCommandReceiver {
 
     override val commandReceiver = this
+    override val analyticScreen = HomeScreenAnalytic
 
     override fun initUiState() {
         openScreenAnalytic()

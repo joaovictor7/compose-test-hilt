@@ -1,8 +1,8 @@
 package com.composetest.feature.login.analytics.login
 
-import com.composetest.core.domain.analytics.AnalyticEvent
-import com.composetest.core.domain.analytics.AnalyticScreen
-import com.composetest.core.domain.analytics.CommonAnalyticEvent
+import com.composetest.common.analytics.AnalyticEvent
+import com.composetest.common.analytics.AnalyticScreen
+import com.composetest.common.analytics.CommonAnalyticEvent
 
 internal sealed class LoginClickEventAnalytic(
     event: String,

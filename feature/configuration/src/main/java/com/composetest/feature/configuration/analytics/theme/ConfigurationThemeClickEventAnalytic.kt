@@ -1,7 +1,7 @@
 package com.composetest.feature.configuration.analytics.theme
 
-import com.composetest.core.domain.analytics.AnalyticEvent
-import com.composetest.core.domain.analytics.AnalyticScreen
+import com.composetest.common.analytics.AnalyticEvent
+import com.composetest.common.analytics.AnalyticScreen
 
 sealed class ConfigurationThemeEventAnalytic :
     AnalyticEvent,

@@ -1,7 +1,5 @@
 package com.composetest.feature.root.analytics.root
 
-import com.composetest.core.domain.analytics.AnalyticScreen
-
-internal object RootScreenAnalytic : AnalyticScreen {
+internal object RootScreenAnalytic : com.composetest.common.analytics.AnalyticScreen {
     override val screen = "root"
 }

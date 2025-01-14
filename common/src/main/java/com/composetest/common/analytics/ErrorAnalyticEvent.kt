@@ -1,4 +1,4 @@
-package com.composetest.core.domain.analytics
+package com.composetest.common.analytics
 
 open class ErrorAnalyticEvent(
     val error: Throwable,

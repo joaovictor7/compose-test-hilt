@@ -18,10 +18,10 @@ internal class NewsListViewModel @Inject constructor(
     private val getTopHeadlinesUseCase: GetTopHeadlinesUseCase,
     @NavGraphQualifier(NavGraph.MAIN) override val navigationManager: NavigationManager,
     override val sendAnalyticsUseCase: SendAnalyticsUseCase,
-) : BaseViewModel<NewsListUiState, NewsListUiEvent>(NewsListScreenAnalytic, NewsListUiState()),
-    NewsListCommandReceiver {
+) : BaseViewModel<NewsListUiState, NewsListUiEvent>(NewsListUiState()), NewsListCommandReceiver {
 
     override val commandReceiver = this
+    override val analyticScreen = NewsListScreenAnalytic
 
     override fun initUiState() {
         getArticles()

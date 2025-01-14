@@ -1,4 +1,4 @@
-package com.composetest.core.domain.analytics
+package com.composetest.common.analytics
 
 interface AnalyticEvent : AnalyticScreen {
     val tag: String
