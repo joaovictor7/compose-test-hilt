@@ -6,7 +6,7 @@ import com.composetest.core.ui.interfaces.CommandReceiver
 import com.composetest.feature.root.enums.NavigationFeature
 
 internal interface RootCommandReceiver : CommandReceiver<RootCommandReceiver> {
-    fun navigateToFeature(feature: NavigationFeature)
+    fun navigateToFeature(navigationFeature: NavigationFeature)
     fun setRootNavGraph(navController: NavHostController)
     fun backHandler()
     fun modalDrawerManager(drawerValue: DrawerValue)

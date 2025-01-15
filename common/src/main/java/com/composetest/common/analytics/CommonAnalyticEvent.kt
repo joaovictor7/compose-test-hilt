@@ -1,4 +1,4 @@
-package com.composetest.core.domain.analytics
+package com.composetest.common.analytics
 
 sealed class CommonAnalyticEvent(
     analyticScreen: AnalyticScreen
@@ -8,15 +8,5 @@ sealed class CommonAnalyticEvent(
     ) : CommonAnalyticEvent(analyticScreen) {
         override val tag = "screen_view"
         override val params: Map<String, Any> = emptyMap()
-    }
-
-    open class CLickButton(
-        analyticScreen: AnalyticScreen,
-        buttonName: String,
-    ) : CommonAnalyticEvent(analyticScreen) {
-        override val tag = "click"
-        override val params = mapOf(
-            "button_name" to buttonName
-        )
     }
 }

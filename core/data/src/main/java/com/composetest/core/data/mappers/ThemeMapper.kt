@@ -21,7 +21,7 @@ internal class ThemeMapper @Inject constructor() {
         dynamicColor: Boolean?
     ) = ThemeModel(
         theme = theme ?: Theme.AUTO,
-        statusBarsTheme = statusBarsTheme ?: Theme.AUTO,
+        statusBarsTheme = statusBarsTheme ?: theme ?: Theme.AUTO,
         dynamicColor = dynamicColor.orFalse,
     )
 }

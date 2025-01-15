@@ -9,6 +9,7 @@ android {
 }
 
 dependencies {
+    implementation(projects.common)
     implementation(projects.core.router)
     implementation(projects.core.designsystem)
     implementation(projects.core.domain)

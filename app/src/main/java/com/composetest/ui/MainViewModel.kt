@@ -25,9 +25,10 @@ internal class MainViewModel @Inject constructor(
     private val remoteConfigManager: RemoteConfigManager,
     override val sendAnalyticsUseCase: SendAnalyticsUseCase,
     @NavGraphQualifier(NavGraph.MAIN) override val navigationManager: NavigationManager
-) : BaseViewModel<MainUiState, MainUiEvent>(MainAnalytic, MainUiState()), MainCommandReceiver {
+) : BaseViewModel<MainUiState, MainUiEvent>(MainUiState()), MainCommandReceiver {
 
     override val commandReceiver = this
+    override val analyticScreen = MainAnalytic
 
     init {
         themeObservable()

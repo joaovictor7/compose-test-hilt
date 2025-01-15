@@ -21,7 +21,6 @@ import com.composetest.core.security.enums.BiometricError.Companion.biometricIsL
 import com.composetest.core.security.enums.BiometricError.Companion.userClosedPrompt
 import com.composetest.core.ui.bases.BaseViewModel
 import com.composetest.feature.login.R
-import com.composetest.feature.login.analytics.login.LoginClickEventAnalytic
 import com.composetest.feature.login.analytics.login.LoginEventAnalytic
 import com.composetest.feature.login.analytics.login.LoginScreenAnalytic
 import com.composetest.feature.login.models.BiometricModel
@@ -40,13 +39,14 @@ internal class LoginViewModel @Inject constructor(
     private val remoteConfigManager: RemoteConfigManager,
     override val sendAnalyticsUseCase: SendAnalyticsUseCase,
     @NavGraphQualifier(NavGraph.MAIN) override val navigationManager: NavigationManager
-) : BaseViewModel<LoginUiState, LoginUiEvent>(LoginScreenAnalytic, LoginUiState()),
+) : BaseViewModel<LoginUiState, LoginUiEvent>(LoginUiState()),
     LoginCommandReceiver {
-
-    override val commandReceiver = this
 
     private val loginFormModel get() = uiState.value.loginFormModel
     private val byPassLogin by lazy { remoteConfigManager.getBoolean(LoginRemoteConfig.ByPassLogin) }
+
+    override val commandReceiver = this
+    override val analyticScreen = LoginScreenAnalytic
 
     override fun initUiState() {
         checkNeedsLogin()
@@ -66,7 +66,6 @@ internal class LoginViewModel @Inject constructor(
             onError = ::handleLoginError,
             onCompletion = { updateUiState { it.setLoading(false) } }
         ) {
-            sendAnalyticsUseCase(LoginClickEventAnalytic.LoginButton)
             authenticate(byBiometric)
             sendAnalyticsUseCase(LoginEventAnalytic.LoginSuccessful(true))
             navigateToRoot()

@@ -15,14 +15,13 @@ internal class ConfigurationViewModel @Inject constructor(
     override val sendAnalyticsUseCase: SendAnalyticsUseCase,
     @NavGraphQualifier(NavGraph.MAIN) override val navigationManager: NavigationManager
 ) : BaseViewModel<ConfigurationUiState, ConfigurationUiEvent>(
-    ConfigurationScreenAnalytic,
     ConfigurationUiState()
 ), ConfigurationCommandReceiver {
 
     override val commandReceiver = this
+    override val analyticScreen = ConfigurationScreenAnalytic
 
     override fun initUiState() {
-        openScreenAnalytic()
         updateUiState { it.setConfigurations(Configuration.entries) }
     }
 

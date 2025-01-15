@@ -6,9 +6,9 @@ import com.composetest.core.ui.interfaces.Command
 import com.composetest.feature.root.enums.NavigationFeature
 
 internal sealed interface RootCommand : Command<RootCommandReceiver> {
-    data class NavigateToFeature(private val feature: NavigationFeature) : RootCommand {
+    data class NavigateToFeature(private val navigationFeature: NavigationFeature) : RootCommand {
         override fun execute(commandReceiver: RootCommandReceiver) {
-            commandReceiver.navigateToFeature(feature)
+            commandReceiver.navigateToFeature(navigationFeature)
         }
     }
 

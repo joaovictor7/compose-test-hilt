@@ -1,6 +1,6 @@
 package com.composetest.feature.configuration.analytics.configuration
 
-import com.composetest.core.domain.analytics.AnalyticScreen
+import com.composetest.common.analytics.AnalyticScreen
 
 internal object ConfigurationScreenAnalytic : AnalyticScreen {
     override val screen = "configuration"

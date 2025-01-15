@@ -2,9 +2,9 @@ package com.composetest.core.ui.bases
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.composetest.core.domain.analytics.AnalyticScreen
-import com.composetest.core.domain.analytics.CommonAnalyticEvent
-import com.composetest.core.domain.analytics.ErrorAnalyticEvent
+import com.composetest.common.analytics.AnalyticScreen
+import com.composetest.common.analytics.CommonAnalyticEvent
+import com.composetest.common.analytics.ErrorAnalyticEvent
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
 import com.composetest.core.router.managers.NavigationManager
 import com.composetest.core.ui.interfaces.BaseUiEvent
@@ -22,17 +22,17 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 abstract class BaseViewModel<UiState : BaseUiState, UiEvent : BaseUiEvent>(
-    private val analyticScreen: AnalyticScreen,
-    uiState: UiState
+    initialUiState: UiState
 ) : ViewModel() {
 
-    abstract val sendAnalyticsUseCase: SendAnalyticsUseCase
-    abstract val navigationManager: NavigationManager
+    protected abstract val navigationManager: NavigationManager
+    protected abstract val analyticScreen: AnalyticScreen
+    protected abstract val sendAnalyticsUseCase: SendAnalyticsUseCase
 
-    private val _uiState = MutableStateFlow(uiState)
+    private val _uiState = MutableStateFlow(initialUiState)
     val uiState = _uiState
         .onStart { initUiState() }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), uiState)
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), initialUiState)
 
     private val _uiEvent = Channel<UiEvent>(Channel.BUFFERED)
     val uiEvent = _uiEvent.receiveAsFlow()
@@ -67,10 +67,10 @@ abstract class BaseViewModel<UiState : BaseUiState, UiEvent : BaseUiEvent>(
         viewModelScope.launch {
             runCatching {
                 flow.onStart { onStart?.invoke() }
-                    .catch { errorHandle(it, onError) }
+                    .catch { errorHandler(it, onError) }
                     .onCompletion { onCompletion?.invoke() }
                     .collect(onCollect)
-            }.onFailure { errorHandle(it) }
+            }.onFailure { errorHandler(it) }
         }
     }
 
@@ -84,15 +84,15 @@ abstract class BaseViewModel<UiState : BaseUiState, UiEvent : BaseUiEvent>(
                 try {
                     onAsyncTask()
                 } catch (e: Throwable) {
-                    errorHandle(e, onError)
+                    errorHandler(e, onError)
                 } finally {
                     onCompletion?.invoke()
                 }
-            }.onFailure { errorHandle(it) }
+            }.onFailure { errorHandler(it) }
         }
     }
 
-    private suspend fun errorHandle(
+    private suspend fun errorHandler(
         error: Throwable,
         onError: (suspend (Throwable) -> Unit)? = null
     ) {

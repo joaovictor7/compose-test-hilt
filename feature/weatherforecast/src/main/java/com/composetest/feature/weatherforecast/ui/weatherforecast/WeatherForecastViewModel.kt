@@ -26,15 +26,13 @@ internal class WeatherForecastViewModel @Inject constructor(
     private val futureWeatherForecastScreenModelsMapper: FutureWeatherForecastScreenModelsMapper,
     override val sendAnalyticsUseCase: SendAnalyticsUseCase,
     @NavGraphQualifier(NavGraph.MAIN) override val navigationManager: NavigationManager
-) : BaseViewModel<WeatherForecastUiState, WeatherForecastUiEvent>(
-    WeatherForecastScreenAnalytic,
-    WeatherForecastUiState()
-), WeatherForecastCommandReceiver {
+) : BaseViewModel<WeatherForecastUiState, WeatherForecastUiEvent>(WeatherForecastUiState()),
+    WeatherForecastCommandReceiver {
 
     override val commandReceiver = this
+    override val analyticScreen = WeatherForecastScreenAnalytic
 
     override fun initUiState() {
-        openScreenAnalytic()
         getWeatherForecastData()
     }
 

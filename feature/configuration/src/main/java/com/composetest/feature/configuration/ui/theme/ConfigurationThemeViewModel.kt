@@ -19,11 +19,11 @@ internal class ConfigurationThemeViewModel @Inject constructor(
     override val sendAnalyticsUseCase: SendAnalyticsUseCase,
     @NavGraphQualifier(NavGraph.MAIN) override val navigationManager: NavigationManager
 ) : BaseViewModel<ConfigurationThemeUiState, ConfigurationThemeUiEvent>(
-    ConfigurationThemeScreenAnalytic,
     ConfigurationThemeUiState()
 ), ConfigurationThemeCommandReceiver {
 
     override val commandReceiver = this
+    override val analyticScreen = ConfigurationThemeScreenAnalytic
 
     override fun initUiState() {
         runAsyncTask {

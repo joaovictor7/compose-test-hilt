@@ -13,6 +13,7 @@ import com.composetest.core.router.enums.NavigationMode
 import com.composetest.core.router.managers.NavControllerManager
 import com.composetest.core.router.managers.NavigationManager
 import com.composetest.core.ui.bases.BaseViewModel
+import com.composetest.feature.root.analytics.root.RootEventAnalytic
 import com.composetest.feature.root.analytics.root.RootScreenAnalytic
 import com.composetest.feature.root.enums.NavigationFeature
 import com.composetest.feature.root.enums.NavigationLocal
@@ -30,15 +31,15 @@ internal class RootViewModel @Inject constructor(
     @NavGraphQualifier(NavGraph.MAIN) private val mainNavigationManager: NavigationManager,
     getAvailableFeaturesUseCase: GetAvailableFeaturesUseCase,
     override val sendAnalyticsUseCase: SendAnalyticsUseCase,
-    @NavGraphQualifier(NavGraph.ROOT) override val navigationManager: NavigationManager
-) : BaseViewModel<RootUiState, RootUiEvent>(RootScreenAnalytic, RootUiState()),
-    RootCommandReceiver {
+    @NavGraphQualifier(NavGraph.ROOT) override val navigationManager: NavigationManager,
+) : BaseViewModel<RootUiState, RootUiEvent>(RootUiState()), RootCommandReceiver {
 
     private val availableFeatures = getAvailableFeaturesUseCase()
     private val bottomNavigationFeaturesOrder = mutableListOf<NavigationFeature>()
     private var firstBottomNavigationFeature: NavigationFeature? = null
 
     override val commandReceiver = this
+    override val analyticScreen = RootScreenAnalytic
 
     override fun initUiState() {
         openScreenAnalytic()
@@ -71,11 +72,12 @@ internal class RootViewModel @Inject constructor(
         }
     }
 
-    override fun navigateToFeature(feature: NavigationFeature) {
-        if (feature.navigationLocal == NavigationLocal.MODAL_DRAWER) {
-            navigateToModalDrawerFeature(feature)
+    override fun navigateToFeature(navigationFeature: NavigationFeature) {
+        sendNavigateToFeatureAnalytic(navigationFeature)
+        if (navigationFeature.navigationLocal == NavigationLocal.MODAL_DRAWER) {
+            navigateToModalDrawerFeature(navigationFeature)
         } else {
-            navigateToBottomFeature(feature)
+            navigateToBottomFeature(navigationFeature)
         }
     }
 
@@ -138,6 +140,12 @@ internal class RootViewModel @Inject constructor(
         }
         return bottomFeatures.map {
             BottomFeatureNavigationModel(it, it == firstBottomNavigationFeature)
+        }
+    }
+
+    private fun sendNavigateToFeatureAnalytic(navigationFeature: NavigationFeature) {
+        runAsyncTask {
+            sendAnalyticsUseCase(RootEventAnalytic.NavigateToFeature(navigationFeature.feature))
         }
     }
 }

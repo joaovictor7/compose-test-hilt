@@ -11,7 +11,7 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkerParameters
 import com.composetest.core.data.enums.Worker
 import com.composetest.core.data.workmanager.WorkManagerRequest
-import com.composetest.core.domain.analytics.ErrorAnalyticEvent
+import com.composetest.common.analytics.ErrorAnalyticEvent
 import com.composetest.core.domain.managers.SessionManager
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
 import dagger.assisted.Assisted
