@@ -20,7 +20,6 @@ import com.composetest.core.router.enums.NavigationMode
 import com.composetest.core.router.managers.NavigationManager
 import com.composetest.core.test.extensions.runFlowTest
 import com.composetest.core.test.interfaces.CoroutinesTest
-import com.composetest.feature.login.analytics.login.LoginClickEventAnalytic
 import com.composetest.feature.login.analytics.login.LoginEventAnalytic
 import com.composetest.feature.login.analytics.login.LoginScreenAnalytic
 import com.composetest.feature.login.models.LoginFormModel
@@ -213,7 +212,6 @@ internal class LoginViewModelTest : CoroutinesTest {
             )
             coVerifySequence {
                 sendAnalyticsUseCase(CommonAnalyticEvent.OpenScreen(LoginScreenAnalytic))
-                sendAnalyticsUseCase(LoginClickEventAnalytic.LoginButton)
                 sendAnalyticsUseCase(LoginEventAnalytic.LoginSuccessful(true))
                 navigationManager.asyncNavigate(
                     RootDestination,

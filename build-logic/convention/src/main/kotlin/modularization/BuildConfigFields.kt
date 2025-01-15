@@ -26,27 +26,27 @@ internal fun ApplicationProductFlavor.setBuildConfigFields(
     val properties = LoadPropertiesFile(project, flavor)
     buildConfigField(
         "String",
-        "NEWS_API_HOST",
-        properties.getProperty("NEWS_API_HOST"),
+        "NEWS_API_URL",
+        "\"https://newsapi.org/v2\"",
     )
     buildConfigField(
         "String",
         "NEWS_API_KEY",
-        properties.getProperty("NEWS_API_KEY")
+        properties.getProperty("NEWS_API_KEY"),
     )
     buildConfigField(
         "String",
-        "OPEN_WEATHER_ICON_HOST",
-        properties.getProperty("OPEN_WEATHER_ICON_HOST")
+        "OPEN_WEATHER_ICON_URL",
+        "\"https://openweathermap.org/img/wn/%1s@2x.png\"",
     )
     buildConfigField(
         "String",
-        "OPEN_WEATHER_API_HOST",
-        properties.getProperty("OPEN_WEATHER_API_HOST")
+        "OPEN_WEATHER_API_URL",
+        "\"https://api.openweathermap.org/data/2.5/weather\"",
     )
     buildConfigField(
         "String",
         "OPEN_WEATHER_API_KEY",
-        properties.getProperty("OPEN_WEATHER_API_KEY")
+        properties.getProperty("OPEN_WEATHER_API_KEY"),
     )
 }

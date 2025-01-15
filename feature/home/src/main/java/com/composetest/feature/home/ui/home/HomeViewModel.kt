@@ -1,8 +1,6 @@
 package com.composetest.feature.home.ui.home
 
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
-import com.composetest.core.router.destinations.home.Home3Destination
-import com.composetest.core.router.destinations.home.InnerHome
 import com.composetest.core.router.di.qualifiers.NavGraphQualifier
 import com.composetest.core.router.enums.NavGraph
 import com.composetest.core.router.managers.NavigationManager
@@ -22,9 +20,5 @@ internal class HomeViewModel @Inject constructor(
 
     override fun initUiState() {
         openScreenAnalytic()
-    }
-
-    override fun navigateToHome2() {
-        navigationManager.navigate(Home3Destination("fdf", "sds", InnerHome("teste")))
     }
 }

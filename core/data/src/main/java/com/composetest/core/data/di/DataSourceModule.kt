@@ -1,20 +1,21 @@
 package com.composetest.core.data.di
 
 import com.composetest.common.providers.DateTimeProvider
-import com.composetest.core.data.datasources.remote.AuthenticationDataSource
+import com.composetest.core.data.datasources.AuthenticationDataSource
+import com.composetest.core.data.datasources.NewsApiDataSource
+import com.composetest.core.data.datasources.OpenWeatherDataSource
+import com.composetest.core.data.datasources.local.AuthenticationFakeDataSourceImpl
+import com.composetest.core.data.datasources.local.NewsApiFakeDataSourceImpl
+import com.composetest.core.data.datasources.local.OpenWeatherFakeDataSourceImpl
 import com.composetest.core.data.datasources.remote.AuthenticationDataSourceImpl
-import com.composetest.core.data.datasources.remote.AuthenticationFakeDataSourceImpl
-import com.composetest.core.data.datasources.remote.NewsApiDataSource
 import com.composetest.core.data.datasources.remote.NewsApiDataSourceImpl
-import com.composetest.core.data.datasources.remote.NewsApiFakeDataSourceImpl
-import com.composetest.core.data.datasources.remote.OpenWeatherDataSource
 import com.composetest.core.data.datasources.remote.OpenWeatherDataSourceImpl
-import com.composetest.core.data.datasources.remote.OpenWeatherFakeDataSourceImpl
 import com.composetest.core.data.di.qualifiers.ApiQualifier
 import com.composetest.core.data.enums.Api
 import com.composetest.core.data.mappers.AuthenticationMapper
+import com.composetest.core.data.providers.AssetsProvider
 import com.composetest.core.data.providers.EnvironmentInstanceProvider
-import com.composetest.core.data.utils.RemoteCallUtils
+import com.composetest.core.data.utils.ApiCallUtils
 import com.google.firebase.auth.FirebaseAuth
 import dagger.Module
 import dagger.Provides
@@ -30,48 +31,54 @@ internal object DataSourceModule {
     fun authenticationDataSource(
         environmentInstanceProvider: EnvironmentInstanceProvider,
         dateTimeProvider: DateTimeProvider,
+        assetsProvider: AssetsProvider,
         firebaseAuth: FirebaseAuth,
         authenticationMapper: AuthenticationMapper,
-        remoteCallUtils: RemoteCallUtils,
+        apiCallUtils: ApiCallUtils,
     ): AuthenticationDataSource = environmentInstanceProvider.getInstance(
         instance = AuthenticationDataSourceImpl(
             firebaseAuth = firebaseAuth,
             authenticationMapper = authenticationMapper,
-            remoteCallUtils = remoteCallUtils
+            apiCallUtils = apiCallUtils
         ),
         fakeInstance = AuthenticationFakeDataSourceImpl(
-            remoteCallUtils = remoteCallUtils,
-            dateTimeProvider = dateTimeProvider
+            apiCallUtils = apiCallUtils,
+            dateTimeProvider = dateTimeProvider,
+            assetsProvider = assetsProvider
         )
     )
 
     @Provides
     fun openWeatherDataSource(
         environmentInstanceProvider: EnvironmentInstanceProvider,
-        remoteCallUtils: RemoteCallUtils,
+        apiCallUtils: ApiCallUtils,
+        assetsProvider: AssetsProvider,
         @ApiQualifier(Api.OPEN_WEATHER) openWeatherApi: HttpClient
     ): OpenWeatherDataSource = environmentInstanceProvider.getInstance(
         instance = OpenWeatherDataSourceImpl(
-            remoteCallUtils = remoteCallUtils,
+            apiCallUtils = apiCallUtils,
             openWeatherApi = openWeatherApi,
         ),
         fakeInstance = OpenWeatherFakeDataSourceImpl(
-            remoteCallUtils = remoteCallUtils,
+            apiCallUtils = apiCallUtils,
+            assetsProvider = assetsProvider
         )
     )
 
     @Provides
     fun newsApiDataSource(
         environmentInstanceProvider: EnvironmentInstanceProvider,
-        remoteCallUtils: RemoteCallUtils,
+        apiCallUtils: ApiCallUtils,
+        assetsProvider: AssetsProvider,
         @ApiQualifier(Api.NEWS_API) newsApi: HttpClient
     ): NewsApiDataSource = environmentInstanceProvider.getInstance(
         instance = NewsApiDataSourceImpl(
-            remoteCallUtils = remoteCallUtils,
+            apiCallUtils = apiCallUtils,
             newsApi = newsApi
         ),
         fakeInstance = NewsApiFakeDataSourceImpl(
-            remoteCallUtils = remoteCallUtils
+            apiCallUtils = apiCallUtils,
+            assetsProvider = assetsProvider
         )
     )
 }

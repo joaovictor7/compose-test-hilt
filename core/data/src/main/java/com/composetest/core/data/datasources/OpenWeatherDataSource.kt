@@ -1,4 +1,4 @@
-package com.composetest.core.data.datasources.remote
+package com.composetest.core.data.datasources
 
 import com.composetest.core.data.api.requests.WeatherForecastRequest
 import com.composetest.core.data.api.responses.weatherforecast.WeatherForecastResponse

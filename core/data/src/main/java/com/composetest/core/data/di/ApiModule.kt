@@ -37,7 +37,7 @@ internal object ApiModule {
         .configureApi(
             ApiSetting.NewsApi(
                 apiKey = buildConfigProvider.get.buildConfigFields.newsApiKey,
-                host = buildConfigProvider.get.buildConfigFields.newsApiHost,
+                url = buildConfigProvider.get.buildConfigFields.newsApiHost,
                 country = "us",
             )
         )
@@ -49,7 +49,7 @@ internal object ApiModule {
         .configureApi(
             ApiSetting.OpenWeatherApi(
                 apiId = buildConfigProvider.get.buildConfigFields.openWeatherApiKey,
-                host = buildConfigProvider.get.buildConfigFields.openWeatherApiHost,
+                url = buildConfigProvider.get.buildConfigFields.openWeatherApiHost,
             )
         )
 }

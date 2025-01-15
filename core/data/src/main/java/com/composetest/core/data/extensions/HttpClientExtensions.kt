@@ -8,12 +8,13 @@ import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.get
 import io.ktor.client.request.headers
 import io.ktor.client.request.post
+import io.ktor.http.URLProtocol
 
 internal fun HttpClient.configureApi(apiSetting: ApiSetting) = config {
     defaultRequest {
         url {
-            protocol = apiSetting.protocol
-            host = apiSetting.host
+            val protocol = apiSetting.url.removePrefix("${URLProtocol.HTTP.name}://")
+            host = apiSetting.url
             port = apiSetting.port
             apiSetting.params.forEach {
                 parameters.append(it.key, it.value)

@@ -1,18 +1,19 @@
 package com.composetest.core.data.datasources.remote
 
 import com.composetest.core.data.api.responses.newsapi.NewsApiResponse
+import com.composetest.core.data.datasources.NewsApiDataSource
 import com.composetest.core.data.di.qualifiers.ApiQualifier
 import com.composetest.core.data.enums.Api
 import com.composetest.core.data.extensions.get
-import com.composetest.core.data.utils.RemoteCallUtils
+import com.composetest.core.data.utils.ApiCallUtils
 import io.ktor.client.HttpClient
 
 internal class NewsApiDataSourceImpl(
-    private val remoteCallUtils: RemoteCallUtils,
+    private val apiCallUtils: ApiCallUtils,
     @ApiQualifier(Api.NEWS_API) private val newsApi: HttpClient
 ) : NewsApiDataSource {
 
-    override suspend fun getTopHeadlinesNews() = remoteCallUtils.executeRemoteCall {
+    override suspend fun getTopHeadlinesNews() = apiCallUtils.executeApiCall {
         newsApi.get<NewsApiResponse>(TOP_HEADLINE_PATH)
     }
 

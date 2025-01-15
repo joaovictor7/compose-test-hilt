@@ -1,10 +1,7 @@
 package com.composetest.core.data.api
 
-import io.ktor.http.URLProtocol
-
 internal sealed interface ApiSetting {
-    val host: String
-    val protocol: URLProtocol get() = URLProtocol.HTTPS
+    val url: String
     val port: Int get() = 0
     val headers: Map<String, String> get() = emptyMap()
     val params: Map<String, String> get() = emptyMap()
@@ -12,7 +9,7 @@ internal sealed interface ApiSetting {
     data class NewsApi(
         private val apiKey: String,
         private val country: String,
-        override val host: String
+        override val url: String
     ) : ApiSetting {
         override val headers = mapOf(API_KEY_HEADER to apiKey)
         override val params = mapOf(COUNTRY_PARAM to country)
@@ -25,7 +22,7 @@ internal sealed interface ApiSetting {
 
     data class OpenWeatherApi(
         private val apiId: String,
-        override val host: String,
+        override val url: String,
     ) : ApiSetting {
         override val params = mapOf(API_ID_PARAM to apiId)
 

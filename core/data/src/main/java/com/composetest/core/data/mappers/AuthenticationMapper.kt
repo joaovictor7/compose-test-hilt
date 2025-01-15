@@ -6,6 +6,7 @@ import com.composetest.core.data.api.responses.AuthenticationResponse
 import com.composetest.core.domain.models.session.AuthenticationModel
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GetTokenResult
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 internal class AuthenticationMapper @Inject constructor(
@@ -18,8 +19,7 @@ internal class AuthenticationMapper @Inject constructor(
         tokenResult: GetTokenResult?,
     ) = AuthenticationResponse(
         sessionToken = tokenResult?.token.orEmpty(),
-        sessionStartDateTime = tokenResult
-            ?.authTimestamp?.let(::convertFromSeconds) ?: dateTimeProvider.currentDateTime,
+        sessionStartDateTime = tokenResult.formatDateTime(),
         userId = firebaseUser?.uid.orEmpty(),
         userEmail = firebaseUser?.email.orEmpty(),
         userName = firebaseUser?.displayName,
@@ -30,7 +30,11 @@ internal class AuthenticationMapper @Inject constructor(
         password: String
     ) = AuthenticationModel(
         sessionToken = authenticationResponse.sessionToken,
-        sessionStartDateTime = authenticationResponse.sessionStartDateTime,
+        sessionStartDateTime = LocalDateTime.parse(authenticationResponse.sessionStartDateTime),
         user = userMapper(authenticationResponse, password)
     )
+
+    private fun GetTokenResult?.formatDateTime() =
+        this?.authTimestamp?.let(::convertFromSeconds)?.toString()
+            ?: dateTimeProvider.currentDateTime.toString()
 }

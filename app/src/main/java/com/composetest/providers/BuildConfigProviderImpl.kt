@@ -19,10 +19,10 @@ internal class BuildConfigProviderImpl @Inject constructor() : BuildConfigProvid
         androidSdkVersion = Build.VERSION.SDK_INT,
         buildConfigFields = BuildConfigFieldsModel(
             databaseKey = BuildConfig.DATABASE_KEY,
-            newsApiHost = BuildConfig.NEWS_API_HOST,
+            newsApiHost = BuildConfig.NEWS_API_URL,
             newsApiKey = BuildConfig.NEWS_API_KEY,
-            openWeatherApiHost = BuildConfig.OPEN_WEATHER_API_HOST,
-            openWeatherIconHost = BuildConfig.OPEN_WEATHER_ICON_HOST,
+            openWeatherApiHost = BuildConfig.OPEN_WEATHER_API_URL,
+            openWeatherIconHost = BuildConfig.OPEN_WEATHER_ICON_URL,
             openWeatherApiKey = BuildConfig.OPEN_WEATHER_API_KEY,
         )
     )

@@ -1,6 +1,6 @@
 package com.composetest.core.data.repositories
 
-import com.composetest.core.data.datasources.remote.AuthenticationDataSource
+import com.composetest.core.data.datasources.AuthenticationDataSource
 import com.composetest.core.data.mappers.AuthenticationMapper
 import com.composetest.core.domain.errors.ApiError
 import com.composetest.core.domain.repositories.AuthenticationRepository

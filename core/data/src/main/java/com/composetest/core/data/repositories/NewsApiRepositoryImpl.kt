@@ -1,6 +1,6 @@
 package com.composetest.core.data.repositories
 
-import com.composetest.core.data.datasources.remote.NewsApiDataSource
+import com.composetest.core.data.datasources.NewsApiDataSource
 import com.composetest.core.data.mappers.ArticleMapper
 import com.composetest.core.domain.models.ArticleModel
 import com.composetest.core.domain.repositories.NewsApiRepository

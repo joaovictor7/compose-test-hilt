@@ -12,12 +12,12 @@ import kotlinx.coroutines.withContext
 import kotlinx.io.IOException
 import javax.inject.Inject
 
-internal class RemoteCallUtils @Inject constructor(
+internal class ApiCallUtils @Inject constructor(
     private val buildConfigProvider: BuildConfigProvider,
     private val dispatcherProvider: DispatcherProvider
 ) {
 
-    suspend fun <T> executeRemoteCall(onRemoteCall: suspend () -> T) = runCatching {
+    suspend fun <T> executeApiCall(onRemoteCall: suspend () -> T) = runCatching {
         call { onRemoteCall() }
     }.getOrElse {
         throw errorHandle(it)

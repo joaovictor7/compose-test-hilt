@@ -2,7 +2,7 @@ package com.composetest.core.data.repositories
 
 import com.composetest.common.providers.LocaleProvider
 import com.composetest.core.data.api.requests.WeatherForecastRequest
-import com.composetest.core.data.datasources.remote.OpenWeatherDataSource
+import com.composetest.core.data.datasources.OpenWeatherDataSource
 import com.composetest.core.data.mappers.WeatherForecastMapper
 import com.composetest.core.domain.models.weatherforecast.WeatherForecastModel
 import com.composetest.core.domain.models.weatherforecast.WeatherNowModel
