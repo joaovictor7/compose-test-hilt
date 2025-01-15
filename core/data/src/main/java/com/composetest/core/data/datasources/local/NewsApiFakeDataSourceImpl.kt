@@ -11,6 +11,6 @@ internal class NewsApiFakeDataSourceImpl(
 ) : NewsApiDataSource {
 
     override suspend fun getTopHeadlinesNews() = apiCallUtils.executeApiCall {
-        assetsProvider.getObjectFromJson<NewsApiResponse>("news-api")
+        assetsProvider.readJsonAs<NewsApiResponse>("news-api")
     }
 }

@@ -15,12 +15,12 @@ internal class OpenWeatherFakeDataSourceImpl(
     override suspend fun getWeatherNow(
         request: WeatherForecastRequest
     ) = apiCallUtils.executeApiCall {
-        assetsProvider.getObjectFromJson<WeatherNowResponse>("open-weather")
+        assetsProvider.readJsonAs<WeatherNowResponse>("open-weather")
     }
 
     override suspend fun getWeatherForecasts(
         request: WeatherForecastRequest
     ) = apiCallUtils.executeApiCall {
-        assetsProvider.getObjectFromJson<WeatherForecastResponse>("open-weather-forecast")
+        assetsProvider.readJsonAs<WeatherForecastResponse>("open-weather-forecast")
     }
 }

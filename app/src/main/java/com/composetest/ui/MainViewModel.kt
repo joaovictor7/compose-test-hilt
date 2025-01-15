@@ -42,9 +42,10 @@ internal class MainViewModel @Inject constructor(
         with(navigationManager) {
             runAsyncTask {
                 val validSession = sessionManager.sessionIsLogged()
-                if (!validSession && currentRoute != LoginDestination().asRoute) {
+                val loginDestination = LoginDestination()
+                if (!validSession && currentRoute != loginDestination.asRoute) {
                     showAlertDialogSession()
-                    navigate(LoginDestination(), NavigationMode.REMOVE_ALL_SCREENS_STACK)
+                    navigate(loginDestination, NavigationMode.REMOVE_ALL_SCREENS_STACK)
                 }
             }
         }

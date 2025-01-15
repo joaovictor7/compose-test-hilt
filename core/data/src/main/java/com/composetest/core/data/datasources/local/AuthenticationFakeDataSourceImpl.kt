@@ -14,7 +14,7 @@ internal class AuthenticationFakeDataSourceImpl(
 
     override suspend fun authentication(email: String, password: String) =
         apiCallUtils.executeApiCall {
-            assetsProvider.getObjectFromJson<AuthenticationResponse>("authentication")
+            assetsProvider.readJsonAs<AuthenticationResponse>("authentication")
                 .copy(sessionStartDateTime = dateTimeProvider.currentDateTime.toString())
         }
 

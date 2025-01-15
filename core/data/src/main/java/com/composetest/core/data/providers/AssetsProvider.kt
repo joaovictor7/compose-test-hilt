@@ -13,7 +13,7 @@ internal class AssetsProvider @Inject constructor(
         ignoreUnknownKeys = true
     }
 
-    inline fun <reified T> getObjectFromJson(jsonFile: String): T {
+    inline fun <reified T> readJsonAs(jsonFile: String): T {
         val json = loadJson(jsonFile)
         return jsonBuilder.decodeFromString<T>(json)
     }
