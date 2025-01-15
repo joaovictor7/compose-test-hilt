@@ -50,14 +50,14 @@ internal class NewsListViewModel @Inject constructor(
         updateUiState { it.setIsLoading(true) }
         runAsyncTask(
             onCompletion = { updateUiState { it.setIsLoading(false) } },
-            onError = ::handleRequestError
+            onError = ::requestErrorHandler
         ) {
             val articles = getTopHeadlinesUseCase()
             updateUiState { it.setArticles(articles) }
         }
     }
 
-    private fun handleRequestError(error: Throwable) {
+    private fun requestErrorHandler(error: Throwable) {
         updateUiState { uiState ->
             uiState.setAlertDialogParam(getDefaultSimpleDialogErrorParam(error))
         }

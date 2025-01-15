@@ -2,6 +2,7 @@ package com.composetest.feature.weatherforecast.ui.weatherforecast
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -17,14 +18,18 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.AbsoluteAlignment
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -38,9 +43,10 @@ import com.composetest.core.designsystem.extensions.horizontalScreenMargin
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.interfaces.Screen
-import com.composetest.feature.weatherforecast.R
 import com.composetest.feature.weatherforecast.models.FutureWeatherForecastScreenModel
 import kotlinx.coroutines.flow.Flow
+import com.composetest.core.designsystem.R as DesignSystemResources
+import com.composetest.feature.weatherforecast.R as WeatherForecastResources
 
 internal object WeatherForecastScreen :
     Screen<WeatherForecastUiState, WeatherForecastUiEvent, WeatherForecastCommandReceiver> {
@@ -53,27 +59,21 @@ internal object WeatherForecastScreen :
         onExecuteCommand: (Command<WeatherForecastCommandReceiver>) -> Unit
     ) {
         Column(modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars)) {
-            LeftTopBar(titleId = R.string.weather_forecast_title)
-            PullToRefreshBox(
+            LeftTopBar(titleId = WeatherForecastResources.string.weather_forecast_title)
+            Column(
                 modifier = Modifier
                     .horizontalScreenMargin()
                     .fillMaxSize(),
-                isRefreshing = uiState.isLoading,
-                onRefresh = { onExecuteCommand(WeatherForecastCommand.Refresh) }
+                verticalArrangement = Arrangement.spacedBy(Spacing.twentyFour)
             ) {
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.spacedBy(Spacing.twentyFour)
-                ) {
-                    WeatherNow(uiState = uiState)
-                    WeatherForecastGraphic(uiState = uiState)
-                    LazyColumn(verticalArrangement = Arrangement.spacedBy(Spacing.twelve)) {
-                        items(uiState.futureWeatherForecasts) {
-                            FutureWeatherForecast(futureWeatherForecastScreen = it)
-                        }
-                        item {
-                            Spacer(Modifier.windowInsetsPadding(WindowInsets.navigationBars))
-                        }
+                WeatherNow(uiState = uiState, onExecuteCommand = onExecuteCommand)
+                WeatherForecastGraphic(uiState = uiState)
+                LazyColumn(verticalArrangement = Arrangement.spacedBy(Spacing.twelve)) {
+                    items(uiState.futureWeatherForecasts) {
+                        FutureWeatherForecast(futureWeatherForecastScreen = it)
+                    }
+                    item {
+                        Spacer(Modifier.windowInsetsPadding(WindowInsets.navigationBars))
                     }
                 }
             }
@@ -83,34 +83,65 @@ internal object WeatherForecastScreen :
 }
 
 @Composable
-private fun WeatherNow(uiState: WeatherForecastUiState) = with(uiState.weatherNowModel) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.Top
+private fun BoxScope.RefreshButton(
+    uiState: WeatherForecastUiState,
+    onExecuteCommand: (Command<WeatherForecastCommandReceiver>) -> Unit
+) {
+    Box(
+        Modifier
+            .align(Alignment.CenterEnd)
+            .padding(end = Spacing.twelve)
     ) {
-        Column(horizontalAlignment = AbsoluteAlignment.Right) {
+        if (uiState.isLoading) {
+            CircularProgressIndicator()
+        } else {
+            IconButton(onClick = { onExecuteCommand(WeatherForecastCommand.Refresh) }) {
+                Icon(
+                    painter = painterResource(DesignSystemResources.drawable.ic_refresh_big),
+                    contentDescription = null
+                )
+            }
+        }
+    }
+}
+
+
+@Composable
+private fun WeatherNow(
+    uiState: WeatherForecastUiState,
+    onExecuteCommand: (Command<WeatherForecastCommandReceiver>) -> Unit
+) = with(uiState.weatherNowModel) {
+    Box(modifier = Modifier.fillMaxWidth()) {
+        Row(
+            modifier = Modifier.align(Alignment.Center),
+            horizontalArrangement = Arrangement.spacedBy(Spacing.twelve),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(horizontalAlignment = AbsoluteAlignment.Right) {
+                Text(
+                    text = stringResource(WeatherForecastResources.string.weather_forecast_city)
+                        .plus(" $city"),
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.widthIn(max = 150.dp),
+                    textAlign = TextAlign.Right,
+                    maxLines = 2
+                )
+                Text(
+                    text = description,
+                    style = MaterialTheme.typography.titleMedium
+                )
+            }
             Text(
-                text = stringResource(R.string.weather_forecast_city).plus(" $city"),
-                style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.widthIn(max = 150.dp),
-                textAlign = TextAlign.Right,
-                maxLines = 2
+                text = temperature,
+                style = MaterialTheme.typography.displaySmall
             )
-            Text(
-                text = description,
-                style = MaterialTheme.typography.titleMedium
+            AsyncImage(
+                modifier = Modifier.scale(2f),
+                url = iconUrl,
+                alignment = Alignment.TopCenter
             )
         }
-        Spacer(Modifier.padding(horizontal = Spacing.eight))
-        Text(
-            text = temperature,
-            style = MaterialTheme.typography.displaySmall
-        )
-        AsyncImage(
-            url = iconUrl,
-            alignment = Alignment.TopCenter
-        )
+        RefreshButton(uiState = uiState, onExecuteCommand = onExecuteCommand)
     }
 }
 
@@ -135,7 +166,7 @@ private fun WeatherForecastGraphic(uiState: WeatherForecastUiState) {
                 )
             } else {
                 Text(
-                    text = stringResource(R.string.weather_forecast_unavailable_forecast_msg),
+                    text = stringResource(WeatherForecastResources.string.weather_forecast_unavailable_forecast_msg),
                     style = MaterialTheme.typography.bodyLarge
                 )
             }
@@ -156,7 +187,7 @@ private fun FutureWeatherForecast(futureWeatherForecastScreen: FutureWeatherFore
         ) {
             futureWeatherForecastScreen.futureDailyWeatherForecasts.forEach {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    AsyncImage(url = it.iconUrl)
+                    AsyncImage(modifier = Modifier.scale(1.5f), url = it.iconUrl)
                     Text(
                         text = it.temperature,
                         style = MaterialTheme.typography.bodyLarge

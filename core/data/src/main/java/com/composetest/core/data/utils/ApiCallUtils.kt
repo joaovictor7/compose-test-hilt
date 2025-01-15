@@ -20,7 +20,7 @@ internal class ApiCallUtils @Inject constructor(
     suspend fun <T> executeApiCall(onRemoteCall: suspend () -> T) = runCatching {
         call { onRemoteCall() }
     }.getOrElse {
-        throw errorHandle(it)
+        throw errorHandler(it)
     }
 
     private suspend fun <T> call(onRemoteCall: suspend () -> T) =
@@ -31,7 +31,7 @@ internal class ApiCallUtils @Inject constructor(
             onRemoteCall()
         }
 
-    private fun errorHandle(error: Throwable) = when (error) {
+    private fun errorHandler(error: Throwable) = when (error) {
         is ClientRequestException -> {
             if (error.response.status == HttpStatusCode.Unauthorized)
                 ApiError.Unauthorized()

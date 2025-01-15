@@ -8,13 +8,11 @@ import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.get
 import io.ktor.client.request.headers
 import io.ktor.client.request.post
-import io.ktor.http.URLProtocol
 
 internal fun HttpClient.configureApi(apiSetting: ApiSetting) = config {
     defaultRequest {
         url {
-            val protocol = apiSetting.url.removePrefix("${URLProtocol.HTTP.name}://")
-            host = apiSetting.url
+            url(apiSetting.url.takeIf { it.endsWith("/") } ?: apiSetting.url.plus("/"))
             port = apiSetting.port
             apiSetting.params.forEach {
                 parameters.append(it.key, it.value)
@@ -29,11 +27,11 @@ internal fun HttpClient.configureApi(apiSetting: ApiSetting) = config {
 }
 
 internal suspend inline fun <reified Response> HttpClient.post(
-    url: String,
+    path: String,
     request: HttpRequestBuilder.() -> Unit
-) = post(url, request).body<Response>()
+) = post(path, request)
 
 internal suspend inline fun <reified Response> HttpClient.get(
-    url: String,
+    path: String,
     request: HttpRequestBuilder.() -> Unit = {}
-) = get(url, request).body<Response>()
+) = get(path, request).body<Response>()

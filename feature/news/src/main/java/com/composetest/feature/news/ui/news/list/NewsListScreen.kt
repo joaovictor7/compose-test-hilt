@@ -1,6 +1,7 @@
 package com.composetest.feature.news.ui.news.list
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -24,7 +25,10 @@ import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.composetest.core.designsystem.components.asyncimage.AsyncImage
@@ -37,6 +41,7 @@ import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.domain.models.ArticleModel
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.interfaces.Screen
+import com.composetest.feature.news.R
 import kotlinx.coroutines.flow.Flow
 import java.time.LocalDateTime
 
@@ -50,6 +55,9 @@ internal object NewsListScreen : Screen<NewsListUiState, NewsListUiEvent, NewsLi
         onExecuteCommand: (Command<NewsListCommandReceiver>) -> Unit
     ) {
         if (!uiState.showScreen) return
+        if (uiState.showWithoutNewsMsg) {
+            WithoutNews()
+        }
         val pullToRefreshState = rememberPullToRefreshState()
         PullToRefreshBox(
             modifier = Modifier.fillMaxSize(),
@@ -130,12 +138,27 @@ private fun AlertDialogHandler(
     }
 }
 
+@Composable
+private fun WithoutNews() {
+    Box(modifier = Modifier.fillMaxSize()) {
+        Text(
+            modifier = Modifier
+                .alpha(0.6f)
+                .align(Alignment.Center),
+            text = stringResource(R.string.without_news_msg),
+            style = MaterialTheme.typography.titleLarge,
+            textAlign = TextAlign.Center
+        )
+    }
+}
+
 @Preview
 @Composable
 private fun Preview() {
     ComposeTestTheme {
         NewsListScreen(
             uiState = NewsListUiState(
+                showScreen = true,
                 articles = listOf(
                     ArticleModel(
                         provider = "Teste",

@@ -42,7 +42,11 @@ fun SimpleScatterPlotGraphic(
             .fillMaxWidth()
     ) {
         val spacingPx = spacing.toPx()
-        val spacePerHour = (size.width - spacingPx) / (yPoints.size - 1)
+        val spacePerHour = if (yPoints.size > 1) {
+            (size.width - spacingPx) / (yPoints.size - 1)
+        } else {
+            0f
+        }
         val normX = mutableListOf<Float>()
         val normY = mutableListOf<Float>()
         val strokePath = Path().apply {
@@ -137,7 +141,7 @@ private fun Preview() {
         SimpleScatterPlotGraphic(
             modifier = Modifier.height(200.dp),
             yPoints = listOf(
-                22f, 25f, 27f, 28f, 29f, 30f
+                22f
             ),
             labelCount = 5f,
             minLabel = 20f,

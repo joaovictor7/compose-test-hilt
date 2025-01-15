@@ -2,5 +2,6 @@
 <resources>
 
     <string name="news_title">News</string>
+    <string name="without_news_msg">Without news 🤷\nRefresh page</string>
 
 </resources>
