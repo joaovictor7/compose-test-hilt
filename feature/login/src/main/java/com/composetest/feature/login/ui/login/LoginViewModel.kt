@@ -11,6 +11,7 @@ import com.composetest.core.domain.usecases.AuthenticationByBiometricUseCase
 import com.composetest.core.domain.usecases.AuthenticationUseCase
 import com.composetest.core.domain.usecases.BiometricIsAvailableUseCase
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
+import com.composetest.core.router.destinations.login.LoginDestination
 import com.composetest.core.router.destinations.root.RootDestination
 import com.composetest.core.router.di.qualifiers.NavGraphQualifier
 import com.composetest.core.router.enums.NavGraph
@@ -38,9 +39,9 @@ internal class LoginViewModel @Inject constructor(
     private val sessionManager: SessionManager,
     private val remoteConfigManager: RemoteConfigManager,
     override val sendAnalyticsUseCase: SendAnalyticsUseCase,
+    private val loginDestination: LoginDestination,
     @NavGraphQualifier(NavGraph.MAIN) override val navigationManager: NavigationManager
-) : BaseViewModel<LoginUiState, LoginUiEvent>(LoginUiState()),
-    LoginCommandReceiver {
+) : BaseViewModel<LoginUiState, LoginUiEvent>(LoginUiState()), LoginCommandReceiver {
 
     private val loginFormModel get() = uiState.value.loginFormModel
     private val byPassLogin by lazy { remoteConfigManager.getBoolean(LoginRemoteConfig.ByPassLogin) }
@@ -161,7 +162,7 @@ internal class LoginViewModel @Inject constructor(
                     biometricModel = if (biometricIsAvailable) BiometricModel() else null,
                 )
             }
-            if (biometricIsAvailable) {
+            if (!loginDestination.isLogout && biometricIsAvailable) {
                 launchUiEvent(LoginUiEvent.ShowBiometricPrompt)
             }
         }

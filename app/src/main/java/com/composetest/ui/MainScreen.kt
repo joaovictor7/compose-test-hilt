@@ -35,7 +35,7 @@ internal object MainScreen : Screen<MainUiState, MainUiEvent, MainCommandReceive
         ) {
             DialogsHandle(uiState = uiState, onExecuteCommand = onExecuteCommand)
             Navigation(
-                firstScreenDestination = LoginDestination,
+                firstScreenDestination = LoginDestination(),
                 onExecuteCommand = onExecuteCommand
             )
         }

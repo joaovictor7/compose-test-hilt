@@ -4,4 +4,4 @@ import com.composetest.core.router.interfaces.Destination
 import kotlinx.serialization.Serializable
 
 @Serializable
-object LoginDestination : Destination
+data class LoginDestination(val isLogout: Boolean = false) : Destination

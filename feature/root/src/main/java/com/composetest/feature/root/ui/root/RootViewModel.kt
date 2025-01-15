@@ -94,7 +94,7 @@ internal class RootViewModel @Inject constructor(
         runAsyncTask {
             sessionManager.finishCurrentSession()
             mainNavigationManager.asyncNavigate(
-                LoginDestination,
+                LoginDestination(isLogout = true),
                 NavigationMode.REMOVE_ALL_SCREENS_STACK
             )
         }
