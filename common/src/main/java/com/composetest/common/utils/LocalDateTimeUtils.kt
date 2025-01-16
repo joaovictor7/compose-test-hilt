@@ -4,7 +4,7 @@ import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
 
-fun convertFromSeconds(seconds: Long): LocalDateTime = LocalDateTime.ofInstant(
-    Instant.ofEpochMilli(seconds),
+fun convertFromSeconds(seconds: Long) = LocalDateTime.ofInstant(
+    Instant.ofEpochSecond(seconds),
     ZoneId.systemDefault()
 )

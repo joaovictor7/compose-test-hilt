@@ -64,13 +64,11 @@ abstract class BaseViewModel<UiState : BaseUiState, UiEvent : BaseUiEvent>(
         onError: (suspend (e: Throwable) -> Unit)? = null,
         onCollect: (param: T) -> Unit
     ) {
-        viewModelScope.launch {
-            runCatching {
-                flow.onStart { onStart?.invoke() }
-                    .catch { errorHandler(it, onError) }
-                    .onCompletion { onCompletion?.invoke() }
-                    .collect(onCollect)
-            }.onFailure { errorHandler(it) }
+        runAsyncTask(onError, onCompletion) {
+            flow.onStart { onStart?.invoke() }
+                .catch { errorHandler(it, onError) }
+                .onCompletion { onCompletion?.invoke() }
+                .collect(onCollect)
         }
     }
 

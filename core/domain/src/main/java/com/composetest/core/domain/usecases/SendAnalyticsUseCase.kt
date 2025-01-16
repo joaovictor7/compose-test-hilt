@@ -2,9 +2,9 @@ package com.composetest.core.domain.usecases
 
 import android.os.Bundle
 import androidx.core.os.bundleOf
-import com.composetest.common.providers.BuildConfigProvider
 import com.composetest.common.analytics.AnalyticEvent
 import com.composetest.common.analytics.ErrorAnalyticEvent
+import com.composetest.common.providers.BuildConfigProvider
 import com.composetest.core.domain.repositories.AnalyticsRepository
 import com.composetest.core.domain.repositories.UserRepository
 import java.time.ZonedDateTime
@@ -34,6 +34,7 @@ class SendAnalyticsUseCase @Inject constructor(
             DATE_TIME to ZonedDateTime.now().toString(),
             APP_VERSION to buildConfigProvider.get.versionName,
             ANDROID_SDK_VERSION to buildConfigProvider.get.androidSdkVersion.toString(),
+            platform,
             *event.params.map { it.key to it.value.toString() }.toTypedArray()
         ).apply {
             event.screen?.let { putString(SCREEN, it) }
@@ -47,5 +48,6 @@ class SendAnalyticsUseCase @Inject constructor(
         const val APP_VERSION = "app_version"
         const val ANDROID_SDK_VERSION = "android_sdk_version"
         const val SCREEN = "screen"
+        val platform = "platform" to "android"
     }
 }
