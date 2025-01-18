@@ -1,6 +1,7 @@
 package com.composetest.feature.root.ui.root
 
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -37,7 +38,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -48,7 +48,6 @@ import com.composetest.core.designsystem.components.scaffolds.ScreenScaffold
 import com.composetest.core.designsystem.components.topbar.TopBarWithoutTitle
 import com.composetest.core.designsystem.dimensions.Spacing
 import com.composetest.core.designsystem.enums.topbar.TopBarAction
-import com.composetest.core.designsystem.extensions.asActivity
 import com.composetest.core.designsystem.extensions.horizontalScreenMargin
 import com.composetest.core.designsystem.extensions.screenMargin
 import com.composetest.core.designsystem.theme.ComposeTestTheme
@@ -72,7 +71,7 @@ internal object RootScreen : Screen<RootUiState, RootUiEvent, RootCommandReceive
         uiEvent: Flow<RootUiEvent>?,
         onExecuteCommand: (Command<RootCommandReceiver>) -> Unit
     ) {
-        val context = LocalContext.current
+        val activity = LocalActivity.current
         val drawerState = rememberDrawerState(DrawerValue.Closed)
         ModalNavigationDrawer(
             drawerState = drawerState,
@@ -92,7 +91,7 @@ internal object RootScreen : Screen<RootUiState, RootUiEvent, RootCommandReceive
         LaunchedEffect(Unit) {
             uiEvent?.collect {
                 when (it) {
-                    is RootUiEvent.FinishApp -> context.asActivity?.finish()
+                    is RootUiEvent.FinishApp -> activity?.finish()
                     is RootUiEvent.ManagerModalDrawer -> when (it.drawerValue) {
                         DrawerValue.Open -> drawerState.open()
                         DrawerValue.Closed -> drawerState.close()
