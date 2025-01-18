@@ -206,7 +206,7 @@ private fun ModalDrawerItems(
                 label = {
                     Text(
                         text = label,
-                        style = MaterialTheme.typography.bodyLarge
+                        style = MaterialTheme.typography.bodyMedium
                     )
                 },
                 icon = {
@@ -236,11 +236,11 @@ private fun LogoutButton(onExecuteCommand: (Command<RootCommandReceiver>) -> Uni
             onClick = { onExecuteCommand(RootCommand.Logout) }
         ) {
             Icon(
-                painter = painterResource(DesignSystemResources.drawable.ic_logout_big),
+                painter = painterResource(DesignSystemResources.drawable.ic_logout_medium),
                 contentDescription = null
             )
             Spacer(Modifier.width(Spacing.twelve))
-            Text(text = stringResource(R.string.logout), style = MaterialTheme.typography.bodyLarge)
+            Text(text = stringResource(R.string.logout), style = MaterialTheme.typography.bodyMedium)
         }
     }
 }

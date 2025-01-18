@@ -41,14 +41,14 @@ internal enum class NavigationFeature(
         Feature.WEATHER_FORECAST,
         WeatherForecastDestination,
         NavigationLocal.MODAL_DRAWER,
-        DesignSystemResources.drawable.ic_partly_cloudy_big,
+        DesignSystemResources.drawable.ic_partly_cloudy_medium,
         WeatherForecastResources.string.weather_forecast_title
     ),
     NEWS(
         Feature.NEWS,
         NewsListDestination,
         NavigationLocal.MODAL_DRAWER,
-        DesignSystemResources.drawable.ic_news_big,
+        DesignSystemResources.drawable.ic_news_medium,
         NewsResources.string.news_title
     ),
     PROFILE(
