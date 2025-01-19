@@ -3,4 +3,7 @@
     <string name="weather_forecast_title">Previsão do tempo</string>
     <string name="weather_forecast_city">Cidade</string>
     <string name="weather_forecast_unavailable_forecast_msg">Previsão de hoje indisponível</string>
+    <string name="weather_forecast_required_permission_msg">Precisamos da sua permissão para que essa feature funcione</string>
+    <string name="weather_forecast_active_permissions">Ativar permissão</string>
+    <string name="weather_forecast_active_permissions_blocked">Ir para configurações</string>
 </resources>

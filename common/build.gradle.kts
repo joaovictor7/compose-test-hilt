@@ -5,3 +5,7 @@ plugins {
 android {
     namespace = "com.composetest.common"
 }
+
+dependencies {
+    api(libs.android.permissions)
+}

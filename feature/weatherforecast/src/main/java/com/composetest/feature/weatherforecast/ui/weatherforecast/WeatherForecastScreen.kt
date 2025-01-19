@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalPermissionsApi::class)
+
 package com.composetest.feature.weatherforecast.ui.weatherforecast
 
 import androidx.compose.foundation.layout.Arrangement
@@ -19,31 +21,39 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.AbsoluteAlignment
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.composetest.common.enums.Permission
+import com.composetest.common.extensions.hasAnyPermissionsGranted
 import com.composetest.core.designsystem.components.asyncimage.AsyncImage
+import com.composetest.core.designsystem.components.buttons.Button
 import com.composetest.core.designsystem.components.dialogs.SimpleDialog
 import com.composetest.core.designsystem.components.graphics.SimpleScatterPlotGraphic
 import com.composetest.core.designsystem.components.topbar.LeftTopBar
 import com.composetest.core.designsystem.dimensions.Spacing
 import com.composetest.core.designsystem.extensions.horizontalScreenMargin
 import com.composetest.core.designsystem.theme.ComposeTestTheme
+import com.composetest.core.router.extensions.navigateToApplicationDetailSettings
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.interfaces.Screen
 import com.composetest.feature.weatherforecast.models.FutureWeatherForecastScreenModel
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.MultiplePermissionsState
+import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import kotlinx.coroutines.flow.Flow
 import com.composetest.core.designsystem.R as DesignSystemResources
 import com.composetest.feature.weatherforecast.R as WeatherForecastResources
@@ -52,12 +62,14 @@ internal object WeatherForecastScreen :
     Screen<WeatherForecastUiState, WeatherForecastUiEvent, WeatherForecastCommandReceiver> {
 
     @Composable
-    @OptIn(ExperimentalMaterial3Api::class)
-    override fun invoke(
+    override operator fun invoke(
         uiState: WeatherForecastUiState,
         uiEvent: Flow<WeatherForecastUiEvent>?,
         onExecuteCommand: (Command<WeatherForecastCommandReceiver>) -> Unit
     ) {
+        val permissionState = rememberMultiplePermissionsState(Permission.LOCALIZATION.manifest)
+        LaunchedEffectHandler(permissionState = permissionState)
+        AlertDialogHandler(uiState = uiState, onExecuteCommand = onExecuteCommand)
         Column(modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars)) {
             LeftTopBar(titleId = WeatherForecastResources.string.weather_forecast_title)
             Column(
@@ -66,6 +78,10 @@ internal object WeatherForecastScreen :
                     .fillMaxSize(),
                 verticalArrangement = Arrangement.spacedBy(Spacing.twentyFour)
             ) {
+                if (!permissionState.hasAnyPermissionsGranted(Permission.LOCALIZATION)) {
+                    RequiredPermission(permissionState = permissionState)
+                    return
+                }
                 WeatherNow(uiState = uiState, onExecuteCommand = onExecuteCommand)
                 WeatherForecastGraphic(uiState = uiState)
                 LazyColumn(verticalArrangement = Arrangement.spacedBy(Spacing.twelve)) {
@@ -78,7 +94,38 @@ internal object WeatherForecastScreen :
                 }
             }
         }
-        AlertDialogHandler(uiState = uiState, onExecuteCommand = onExecuteCommand)
+    }
+}
+
+@Composable
+private fun RequiredPermission(permissionState: MultiplePermissionsState) {
+    val context = LocalContext.current
+    val buttonText = if (permissionState.shouldShowRationale) {
+        WeatherForecastResources.string.weather_forecast_active_permissions
+    } else {
+        WeatherForecastResources.string.weather_forecast_active_permissions_blocked
+    }
+    Box(
+        Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(Spacing.eight),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = stringResource(WeatherForecastResources.string.weather_forecast_required_permission_msg),
+                style = MaterialTheme.typography.bodyLarge,
+                textAlign = TextAlign.Center
+            )
+            Button(text = stringResource(buttonText)) {
+                if (permissionState.shouldShowRationale) {
+                    permissionState.launchMultiplePermissionRequest()
+                } else {
+                    context.navigateToApplicationDetailSettings()
+                }
+            }
+        }
     }
 }
 
@@ -104,7 +151,6 @@ private fun BoxScope.RefreshButton(
         }
     }
 }
-
 
 @Composable
 private fun WeatherNow(
@@ -210,6 +256,15 @@ private fun AlertDialogHandler(
 ) = uiState.simpleDialogParam?.let {
     SimpleDialog(param = it) {
         onExecuteCommand(WeatherForecastCommand.DismissSimpleDialog)
+    }
+}
+
+@Composable
+private fun LaunchedEffectHandler(permissionState: MultiplePermissionsState) {
+    LaunchedEffect(Unit) {
+        if (!permissionState.allPermissionsGranted) {
+            permissionState.launchMultiplePermissionRequest()
+        }
     }
 }
 
