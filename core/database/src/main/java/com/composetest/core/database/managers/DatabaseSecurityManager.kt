@@ -2,9 +2,9 @@ package com.composetest.core.database.managers
 
 import com.composetest.common.providers.BuildConfigProvider
 import com.composetest.core.domain.providers.CipherProvider
-import com.composetest.core.domain.repositories.SecretKeyRepository
+import com.composetest.core.domain.repositories.DatabaseRepository
 import com.composetest.core.security.utils.addPBKDF2
-import kotlinx.coroutines.flow.firstOrNull
+import com.composetest.core.security.utils.generateSecureKey
 import net.zetetic.database.sqlcipher.SupportOpenHelperFactory
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -13,7 +13,7 @@ import javax.inject.Singleton
 internal class DatabaseSecurityManager @Inject constructor(
     private val cipherProvider: CipherProvider,
     private val buildConfigProvider: BuildConfigProvider,
-    private val secretKeyRepository: SecretKeyRepository
+    private val databaseRepository: DatabaseRepository
 ) {
 
     init {
@@ -26,10 +26,11 @@ internal class DatabaseSecurityManager @Inject constructor(
     } else null
 
     private suspend fun getOrCreateDatabaseKey(): String {
-        val encryptedDatabaseKey = secretKeyRepository.getSqliteSecretKey().firstOrNull()
+        val encryptedDatabaseKey = databaseRepository.getSqliteSecretKey()
         return if (encryptedDatabaseKey == null) {
-            addPBKDF2(buildConfigProvider.get.buildConfigFields.databaseKey).also {
-                secretKeyRepository.setSqliteSecretKey(cipherProvider.encrypt(it))
+            val secureKey = generateSecureKey(1000)
+            addPBKDF2(secureKey).also {
+                databaseRepository.setSqliteSecretKey(cipherProvider.encrypt(it))
             }
         } else {
             cipherProvider.decrypt(encryptedDatabaseKey)

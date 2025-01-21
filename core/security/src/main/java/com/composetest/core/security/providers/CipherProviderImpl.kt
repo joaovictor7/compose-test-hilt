@@ -21,10 +21,10 @@ internal class CipherProviderImpl @Inject constructor() : CipherProvider {
         existingKey?.secretKey ?: createKey()
     }
 
-    override fun encrypt(inputText: String): String {
+    override fun encrypt(decryptedData: String): String {
         val cipher = Cipher.getInstance(TRANSFORMATION)
         cipher.init(Cipher.ENCRYPT_MODE, secretKey)
-        val encryptedBytes = cipher.doFinal(inputText.toByteArray())
+        val encryptedBytes = cipher.doFinal(decryptedData.toByteArray())
         val iv = cipher.iv
         val encryptedDataWithIV = ByteArray(iv.size + encryptedBytes.size)
         System.arraycopy(iv, 0, encryptedDataWithIV, 0, iv.size)
@@ -32,16 +32,17 @@ internal class CipherProviderImpl @Inject constructor() : CipherProvider {
         return Base64.encodeToString(encryptedDataWithIV, Base64.DEFAULT)
     }
 
-    override fun decrypt(data: String): String {
-        val encryptedDataWithIV = Base64.decode(data, Base64.DEFAULT)
+    override fun decrypt(encryptedData: String): String {
+        if (encryptedData.isBlank()) return String()
+        val encryptedDataWithIV = Base64.decode(encryptedData, Base64.DEFAULT)
         val cipher = Cipher.getInstance(TRANSFORMATION)
         val iv = encryptedDataWithIV.copyOfRange(0, cipher.blockSize)
         cipher.init(Cipher.DECRYPT_MODE, secretKey, IvParameterSpec(iv))
-        val encryptedData = encryptedDataWithIV.copyOfRange(
+        val encryptedBytes = encryptedDataWithIV.copyOfRange(
             cipher.blockSize,
             encryptedDataWithIV.size
         )
-        val decryptedBytes = cipher.doFinal(encryptedData)
+        val decryptedBytes = cipher.doFinal(encryptedBytes)
         return String(decryptedBytes, Charsets.UTF_8)
     }
 

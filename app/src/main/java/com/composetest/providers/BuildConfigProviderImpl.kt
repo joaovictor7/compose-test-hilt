@@ -10,6 +10,7 @@ import com.composetest.common.providers.BuildConfigProvider
 import javax.inject.Inject
 
 internal class BuildConfigProviderImpl @Inject constructor() : BuildConfigProvider {
+
     override val get = BuildConfigModel(
         applicationId = BuildConfig.APPLICATION_ID,
         versionName = BuildConfig.VERSION_NAME,
@@ -18,7 +19,6 @@ internal class BuildConfigProviderImpl @Inject constructor() : BuildConfigProvid
         flavor = BuildConfig.FLAVOR.getFlavor(),
         androidSdkVersion = Build.VERSION.SDK_INT,
         buildConfigFields = BuildConfigFieldsModel(
-            databaseKey = BuildConfig.DATABASE_KEY,
             newsApiHost = BuildConfig.NEWS_API_URL,
             newsApiKey = BuildConfig.NEWS_API_KEY,
             openWeatherApiHost = BuildConfig.OPEN_WEATHER_API_URL,

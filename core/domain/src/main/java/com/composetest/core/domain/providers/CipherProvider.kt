@@ -1,7 +1,7 @@
 package com.composetest.core.domain.providers
 
 interface CipherProvider {
-    fun encrypt(inputText: String): String
+    fun encrypt(decryptedData: String): String
 
-    fun decrypt(data: String): String
+    fun decrypt(encryptedData: String): String
 }

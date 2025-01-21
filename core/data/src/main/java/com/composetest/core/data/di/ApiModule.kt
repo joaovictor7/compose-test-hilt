@@ -23,7 +23,6 @@ import io.ktor.http.HttpHeaders
 import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
-import javax.inject.Singleton
 import kotlin.time.Duration.Companion.seconds
 
 @Module
@@ -31,7 +30,6 @@ import kotlin.time.Duration.Companion.seconds
 internal object ApiModule {
 
     @Provides
-    @Singleton
     @ApiQualifier(Api.NEWS_API)
     fun newsApi(buildConfigProvider: BuildConfigProvider): HttpClient = httpClient
         .configureApi(
@@ -43,7 +41,6 @@ internal object ApiModule {
         )
 
     @Provides
-    @Singleton
     @ApiQualifier(Api.OPEN_WEATHER)
     fun openWeatherApi(buildConfigProvider: BuildConfigProvider): HttpClient = httpClient
         .configureApi(
