@@ -24,8 +24,8 @@ import com.composetest.core.ui.bases.BaseViewModel
 import com.composetest.feature.login.R
 import com.composetest.feature.login.analytics.login.LoginEventAnalytic
 import com.composetest.feature.login.analytics.login.LoginScreenAnalytic
+import com.composetest.feature.login.enums.LoginRemoteConfig
 import com.composetest.feature.login.models.BiometricModel
-import com.composetest.feature.login.remoteconfigs.LoginRemoteConfig
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -44,7 +44,7 @@ internal class LoginViewModel @Inject constructor(
 ) : BaseViewModel<LoginUiState, LoginUiEvent>(LoginUiState()), LoginCommandReceiver {
 
     private val loginFormModel get() = uiState.value.loginFormModel
-    private val byPassLogin by lazy { remoteConfigManager.getBoolean(LoginRemoteConfig.ByPassLogin) }
+    private val byPassLogin by lazy { remoteConfigManager.getBoolean(LoginRemoteConfig.BY_PASS_LOGIN) }
 
     override val commandReceiver = this
     override val analyticScreen = LoginScreenAnalytic

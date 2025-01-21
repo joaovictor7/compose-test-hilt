@@ -1,8 +1,8 @@
 package com.composetest.core.data.managers
 
+import com.composetest.common.remoteconfig.RemoteConfig
 import com.composetest.core.data.repositories.RemoteConfigRepository
 import com.composetest.core.domain.managers.RemoteConfigManager
-import com.composetest.core.domain.remoteconfigs.RemoteConfig
 import com.composetest.core.domain.usecases.CheckRemoteConfigUseCase
 import javax.inject.Inject
 
