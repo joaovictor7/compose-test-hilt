@@ -27,6 +27,7 @@ slf4j = "2.0.16"
 splashScreen = "1.0.1"
 coil = "3.0.4"
 permissions = "0.37.0"
+location = "21.3.0"
 
 [libraries]
 # Kotlin
@@ -40,6 +41,7 @@ kotlin-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coro
 # Android
 android-tools-build-gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
 android-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "permissions" }
+android-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "location" }
 
 # AndroidX
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntime" }

@@ -206,7 +206,7 @@ private fun ModalDrawerItems(
                 label = {
                     Text(
                         text = label,
-                        style = MaterialTheme.typography.bodyMedium
+                        style = MaterialTheme.typography.bodyLarge
                     )
                 },
                 icon = {

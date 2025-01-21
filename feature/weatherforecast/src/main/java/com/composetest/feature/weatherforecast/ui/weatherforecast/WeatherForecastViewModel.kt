@@ -32,19 +32,7 @@ internal class WeatherForecastViewModel @Inject constructor(
     override val commandReceiver = this
     override val analyticScreen = WeatherForecastScreenAnalytic
 
-    override fun initUiState() {
-        getWeatherForecastData()
-    }
-
-    override fun refresh() {
-        getWeatherForecastData()
-    }
-
-    override fun dismissSimpleDialog() {
-        updateUiState { it.setSimpleAlertDialog(null) }
-    }
-
-    private fun getWeatherForecastData() {
+    override fun getWeatherForecastData() {
         updateUiState { it.setLoading(true) }
         runAsyncTask(
             onError = ::handleRequestError,
@@ -53,6 +41,10 @@ internal class WeatherForecastViewModel @Inject constructor(
             setWeatherNow()
             setWeatherForecasts()
         }
+    }
+
+    override fun dismissSimpleDialog() {
+        updateUiState { it.setSimpleAlertDialog(null) }
     }
 
     private suspend fun setWeatherNow() {

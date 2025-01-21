@@ -38,7 +38,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.composetest.common.enums.Permission
-import com.composetest.common.extensions.hasAnyPermissionsGranted
 import com.composetest.core.designsystem.components.asyncimage.AsyncImage
 import com.composetest.core.designsystem.components.buttons.Button
 import com.composetest.core.designsystem.components.dialogs.SimpleDialog
@@ -51,6 +50,7 @@ import com.composetest.core.router.extensions.navigateToApplicationDetailSetting
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.interfaces.Screen
 import com.composetest.feature.weatherforecast.models.FutureWeatherForecastScreenModel
+import com.composetest.feature.weatherforecast.models.WeatherNowScreenModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.MultiplePermissionsState
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
@@ -68,7 +68,10 @@ internal object WeatherForecastScreen :
         onExecuteCommand: (Command<WeatherForecastCommandReceiver>) -> Unit
     ) {
         val permissionState = rememberMultiplePermissionsState(Permission.LOCALIZATION.manifest)
-        LaunchedEffectHandler(permissionState = permissionState)
+        LaunchedEffectHandler(
+            permissionState = permissionState,
+            onExecuteCommand = onExecuteCommand
+        )
         AlertDialogHandler(uiState = uiState, onExecuteCommand = onExecuteCommand)
         Column(modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars)) {
             LeftTopBar(titleId = WeatherForecastResources.string.weather_forecast_title)
@@ -78,10 +81,10 @@ internal object WeatherForecastScreen :
                     .fillMaxSize(),
                 verticalArrangement = Arrangement.spacedBy(Spacing.twentyFour)
             ) {
-                if (!permissionState.hasAnyPermissionsGranted(Permission.LOCALIZATION)) {
-                    RequiredPermission(permissionState = permissionState)
-                    return
-                }
+//                if (!permissionState.allPermissionsGranted) {
+//                    RequiredPermission(permissionState = permissionState)
+//                    return
+//                }
                 WeatherNow(uiState = uiState, onExecuteCommand = onExecuteCommand)
                 WeatherForecastGraphic(uiState = uiState)
                 LazyColumn(verticalArrangement = Arrangement.spacedBy(Spacing.twelve)) {
@@ -142,9 +145,9 @@ private fun BoxScope.RefreshButton(
         if (uiState.isLoading) {
             CircularProgressIndicator()
         } else {
-            IconButton(onClick = { onExecuteCommand(WeatherForecastCommand.Refresh) }) {
+            IconButton(onClick = { onExecuteCommand(WeatherForecastCommand.GetWeatherForecastData) }) {
                 Icon(
-                    painter = painterResource(DesignSystemResources.drawable.ic_refresh_big),
+                    painter = painterResource(DesignSystemResources.drawable.ic_refresh_medium),
                     contentDescription = null
                 )
             }
@@ -156,7 +159,7 @@ private fun BoxScope.RefreshButton(
 private fun WeatherNow(
     uiState: WeatherForecastUiState,
     onExecuteCommand: (Command<WeatherForecastCommandReceiver>) -> Unit
-) = with(uiState.weatherNowModel) {
+) = with(uiState.weatherNow) {
     Box(modifier = Modifier.fillMaxWidth()) {
         Row(
             modifier = Modifier.align(Alignment.Center),
@@ -173,8 +176,9 @@ private fun WeatherNow(
                     maxLines = 2
                 )
                 Text(
+                    modifier = Modifier.widthIn(max = 100.dp),
                     text = description,
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.titleMedium,
                 )
             }
             Text(
@@ -260,10 +264,15 @@ private fun AlertDialogHandler(
 }
 
 @Composable
-private fun LaunchedEffectHandler(permissionState: MultiplePermissionsState) {
+private fun LaunchedEffectHandler(
+    permissionState: MultiplePermissionsState,
+    onExecuteCommand: (Command<WeatherForecastCommandReceiver>) -> Unit
+) {
     LaunchedEffect(Unit) {
         if (!permissionState.allPermissionsGranted) {
             permissionState.launchMultiplePermissionRequest()
+        } else {
+            onExecuteCommand(WeatherForecastCommand.GetWeatherForecastData)
         }
     }
 }
@@ -273,7 +282,14 @@ private fun LaunchedEffectHandler(permissionState: MultiplePermissionsState) {
 private fun Preview() {
     ComposeTestTheme {
         WeatherForecastScreen(
-            uiState = WeatherForecastUiState(),
+            uiState = WeatherForecastUiState(
+                weatherNow = WeatherNowScreenModel(
+                    city = "Porto",
+                    description = "descriptiondffdfdfdfdsfsdfdsfdsfdsfdsf",
+                    temperature = "30º",
+                    iconUrl = ""
+                )
+            ),
             uiEvent = null
         ) { }
     }

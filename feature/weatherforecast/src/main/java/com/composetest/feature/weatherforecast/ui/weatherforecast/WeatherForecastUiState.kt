@@ -8,7 +8,7 @@ import com.composetest.feature.weatherforecast.models.TodayWeatherForecastScreen
 import com.composetest.feature.weatherforecast.models.WeatherNowScreenModel
 
 internal data class WeatherForecastUiState(
-    val weatherNowModel: WeatherNowScreenModel = WeatherNowScreenModel(),
+    val weatherNow: WeatherNowScreenModel = WeatherNowScreenModel(),
     val todayWeatherForecast: TodayWeatherForecastScreenModel? = TodayWeatherForecastScreenModel(),
     val futureWeatherForecasts: List<FutureWeatherForecastScreenModel> = emptyList(),
     val simpleDialogParam: SimpleDialogParam? = null,
@@ -16,7 +16,7 @@ internal data class WeatherForecastUiState(
 ) : BaseUiState {
 
     fun setWeatherNow(weatherNowModel: WeatherNowScreenModel) = copy(
-        weatherNowModel = weatherNowModel
+        weatherNow = weatherNowModel
     )
 
     fun setWeatherForecasts(
