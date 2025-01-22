@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="weather_forecast_title">Weather Forecast</string>
-    <string name="weather_forecast_city">City</string>
     <string name="weather_forecast_unavailable_forecast_msg">Unavailable today forecast</string>
     <string name="weather_forecast_required_permission_msg">We need your permission to use this feature</string>
     <string name="weather_forecast_active_permissions">Activate permission</string>

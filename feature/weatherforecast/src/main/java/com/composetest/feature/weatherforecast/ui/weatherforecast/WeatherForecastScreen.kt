@@ -4,7 +4,6 @@ package com.composetest.feature.weatherforecast.ui.weatherforecast
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
@@ -133,17 +133,17 @@ private fun RequiredPermission(permissionState: MultiplePermissionsState) {
 }
 
 @Composable
-private fun BoxScope.RefreshButton(
+private fun RefreshButton(
+    modifier: Modifier,
     uiState: WeatherForecastUiState,
     onExecuteCommand: (Command<WeatherForecastCommandReceiver>) -> Unit
 ) {
     Box(
-        Modifier
-            .align(Alignment.CenterEnd)
-            .padding(end = Spacing.twelve)
+        modifier = modifier.padding(end = Spacing.twelve),
+        contentAlignment = AbsoluteAlignment.CenterRight
     ) {
         if (uiState.isLoading) {
-            CircularProgressIndicator()
+            CircularProgressIndicator(modifier = Modifier.size(24.dp))
         } else {
             IconButton(onClick = { onExecuteCommand(WeatherForecastCommand.GetWeatherForecastData) }) {
                 Icon(
@@ -160,38 +160,52 @@ private fun WeatherNow(
     uiState: WeatherForecastUiState,
     onExecuteCommand: (Command<WeatherForecastCommandReceiver>) -> Unit
 ) = with(uiState.weatherNow) {
-    Box(modifier = Modifier.fillMaxWidth()) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
         Row(
-            modifier = Modifier.align(Alignment.Center),
-            horizontalArrangement = Arrangement.spacedBy(Spacing.twelve),
-            verticalAlignment = Alignment.CenterVertically
+            modifier = Modifier.weight(0.75f),
+            horizontalArrangement = Arrangement.End
         ) {
-            Column(horizontalAlignment = AbsoluteAlignment.Right) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(Spacing.twelve)
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.End,
+                    verticalArrangement = Arrangement.spacedBy(Spacing.eight)
+                ) {
+                    Text(
+                        text = city,
+                        style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier.widthIn(max = 150.dp),
+                        textAlign = TextAlign.Right,
+                        maxLines = 2
+                    )
+                    Text(
+                        modifier = Modifier.widthIn(max = 180.dp),
+                        text = description,
+                        style = MaterialTheme.typography.titleMedium,
+                        textAlign = TextAlign.End
+                    )
+                }
                 Text(
-                    text = stringResource(WeatherForecastResources.string.weather_forecast_city)
-                        .plus(" $city"),
-                    style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier.widthIn(max = 150.dp),
-                    textAlign = TextAlign.Right,
-                    maxLines = 2
+                    text = temperature,
+                    style = MaterialTheme.typography.displaySmall
                 )
-                Text(
-                    modifier = Modifier.widthIn(max = 100.dp),
-                    text = description,
-                    style = MaterialTheme.typography.titleMedium,
+                AsyncImage(
+                    modifier = Modifier.scale(2f),
+                    url = iconUrl,
+                    alignment = Alignment.Center
                 )
             }
-            Text(
-                text = temperature,
-                style = MaterialTheme.typography.displaySmall
-            )
-            AsyncImage(
-                modifier = Modifier.scale(2f),
-                url = iconUrl,
-                alignment = Alignment.TopCenter
-            )
         }
-        RefreshButton(uiState = uiState, onExecuteCommand = onExecuteCommand)
+        RefreshButton(
+            modifier = Modifier.weight(0.25f),
+            uiState = uiState,
+            onExecuteCommand = onExecuteCommand
+        )
     }
 }
 
@@ -285,7 +299,7 @@ private fun Preview() {
             uiState = WeatherForecastUiState(
                 weatherNow = WeatherNowScreenModel(
                     city = "Porto",
-                    description = "descriptiondffdfdfdfdsfsdfdsfdsfdsfdsf",
+                    description = "Nuvens carregadas e trovoadas",
                     temperature = "30º",
                     iconUrl = ""
                 )

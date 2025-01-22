@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import coil3.compose.SubcomposeAsyncImage
+import coil3.compose.SubcomposeAsyncImageContent
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 
@@ -18,16 +19,20 @@ fun AsyncImage(
     contentScale: ContentScale = ContentScale.None
 ) {
     SubcomposeAsyncImage(
-        modifier = modifier,
         model = ImageRequest.Builder(LocalContext.current)
             .data(url)
             .crossfade(true)
             .build(),
         contentDescription = null,
-        contentScale = contentScale,
         alignment = alignment,
         loading = {
             CircularProgressIndicator()
+        },
+        success = {
+            SubcomposeAsyncImageContent(
+                modifier = modifier,
+                contentScale = contentScale
+            )
         },
     )
 }
