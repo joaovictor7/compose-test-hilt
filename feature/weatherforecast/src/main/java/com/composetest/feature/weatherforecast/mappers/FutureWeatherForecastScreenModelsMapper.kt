@@ -1,33 +1,34 @@
 package com.composetest.feature.weatherforecast.mappers
 
-import com.composetest.common.providers.BuildConfigProvider
 import com.composetest.core.domain.models.weatherforecast.FutureWeatherForecastModel
+import com.composetest.core.domain.usecases.GetWeatherForecastIconUrlUseCase
 import com.composetest.feature.weatherforecast.models.FutureDailyWeatherForecastScreenModel
 import com.composetest.feature.weatherforecast.models.FutureWeatherForecastScreenModel
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 internal class FutureWeatherForecastScreenModelsMapper @Inject constructor(
-    private val buildConfigProvider: BuildConfigProvider
+    private val getWeatherForecastIconUrlUseCase: GetWeatherForecastIconUrlUseCase
 ) {
 
     private val dateToHourFormatter = DateTimeFormatter.ofPattern("HH")
     private val dateToStringFormatter = DateTimeFormatter.ofPattern("EEEE, dd MMMM yyyy")
 
-    operator fun invoke(futureWeatherForecastModel: List<FutureWeatherForecastModel>) =
-        futureWeatherForecastModel.map { futureWeatherForecast ->
+    operator fun invoke(
+        futureWeatherForecastModel: List<FutureWeatherForecastModel>
+    ): List<FutureWeatherForecastScreenModel> {
+        val iconUrl = getWeatherForecastIconUrlUseCase()
+        return futureWeatherForecastModel.map { futureWeatherForecast ->
             FutureWeatherForecastScreenModel(
                 day = futureWeatherForecast.date.format(dateToStringFormatter),
                 futureDailyWeatherForecasts = futureWeatherForecast.dailyWeatherForecasts.map {
                     FutureDailyWeatherForecastScreenModel(
                         hour = "${it.dateTime.format(dateToHourFormatter)}h",
                         temperature = "${it.temperature.toInt()}º",
-                        iconUrl = getIconUrl(it.iconId)
+                        iconUrl = iconUrl.format(it.iconId)
                     )
                 }
             )
         }
-
-    private fun getIconUrl(iconId: String) =
-        buildConfigProvider.get.buildConfigFields.openWeatherIconHost.format(iconId)
+    }
 }

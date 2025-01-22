@@ -1,7 +1,5 @@
 package files
 
-import enums.BuildType
-import enums.Flavor
 import org.gradle.api.Project
 import java.util.Properties
 
@@ -11,16 +9,6 @@ internal class LoadPropertiesFile(
 ) {
     private val fullPathProperties = getProperties(propertiesFile.fullPath)
     private val pathProperties = getProperties(propertiesFile.file)
-
-    constructor(
-        project: Project,
-        flavor: Flavor
-    ) : this(project, PropertiesFile.App(flavor.toString()))
-
-    constructor(
-        project: Project,
-        buildType: BuildType
-    ) : this(project, PropertiesFile.App(buildType.toString()))
 
     fun getProperty(key: String) = fullPathProperties?.getProperty(key)
         ?: pathProperties?.getProperty(key)

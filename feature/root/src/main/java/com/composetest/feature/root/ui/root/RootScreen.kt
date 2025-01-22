@@ -240,7 +240,10 @@ private fun LogoutButton(onExecuteCommand: (Command<RootCommandReceiver>) -> Uni
                 contentDescription = null
             )
             Spacer(Modifier.width(Spacing.twelve))
-            Text(text = stringResource(R.string.logout), style = MaterialTheme.typography.bodyMedium)
+            Text(
+                text = stringResource(R.string.logout),
+                style = MaterialTheme.typography.bodyMedium
+            )
         }
     }
 }

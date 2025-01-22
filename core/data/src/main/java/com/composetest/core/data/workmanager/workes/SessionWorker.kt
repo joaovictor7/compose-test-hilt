@@ -9,9 +9,9 @@ import androidx.work.ExistingWorkPolicy
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkerParameters
+import com.composetest.common.analytics.ErrorAnalyticEvent
 import com.composetest.core.data.enums.Worker
 import com.composetest.core.data.workmanager.WorkManagerRequest
-import com.composetest.common.analytics.ErrorAnalyticEvent
 import com.composetest.core.domain.managers.SessionManager
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
 import dagger.assisted.Assisted

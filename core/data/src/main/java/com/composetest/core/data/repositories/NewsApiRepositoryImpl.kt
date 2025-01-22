@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 internal class NewsApiRepositoryImpl @Inject constructor(
     private val newsApiDataSource: NewsApiDataSource,
-    private val articleMapper: ArticleMapper
+    private val articleMapper: ArticleMapper,
 ) : NewsApiRepository {
 
     override suspend fun getTopHeadlinesNews(): List<ArticleModel> {

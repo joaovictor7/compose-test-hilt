@@ -4,7 +4,6 @@ import android.os.Build
 import com.composetest.BuildConfig
 import com.composetest.common.enums.BuildType.Companion.getBuildType
 import com.composetest.common.enums.Flavor.Companion.getFlavor
-import com.composetest.common.models.BuildConfigFieldsModel
 import com.composetest.common.models.BuildConfigModel
 import com.composetest.common.providers.BuildConfigProvider
 import javax.inject.Inject
@@ -18,12 +17,5 @@ internal class BuildConfigProviderImpl @Inject constructor() : BuildConfigProvid
         buildType = BuildConfig.BUILD_TYPE.getBuildType(),
         flavor = BuildConfig.FLAVOR.getFlavor(),
         androidSdkVersion = Build.VERSION.SDK_INT,
-        buildConfigFields = BuildConfigFieldsModel(
-            newsApiHost = BuildConfig.NEWS_API_URL,
-            newsApiKey = BuildConfig.NEWS_API_KEY,
-            openWeatherApiHost = BuildConfig.OPEN_WEATHER_API_URL,
-            openWeatherIconHost = BuildConfig.OPEN_WEATHER_ICON_URL,
-            openWeatherApiKey = BuildConfig.OPEN_WEATHER_API_KEY,
-        )
     )
 }

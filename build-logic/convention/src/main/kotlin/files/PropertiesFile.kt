@@ -16,8 +16,4 @@ internal sealed class PropertiesFile {
         override val path = signing.toString()
         val keyPath = "$rootDir/signing-keys/$path/key"
     }
-
-    data class App(override val path: String) : PropertiesFile() {
-        override val file = "app.properties"
-    }
 }

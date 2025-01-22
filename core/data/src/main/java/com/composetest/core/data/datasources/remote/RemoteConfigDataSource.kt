@@ -9,8 +9,6 @@ internal class RemoteConfigDataSource @Inject constructor(
 
     fun getString(key: String) = firebaseRemoteConfig.getString(key)
 
-    fun getBoolean(key: String) = firebaseRemoteConfig.getBoolean(key)
-
     fun getLong(key: String) = firebaseRemoteConfig.getLong(key)
 
     fun getDouble(key: String) = firebaseRemoteConfig.getDouble(key)

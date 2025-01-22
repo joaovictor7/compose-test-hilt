@@ -1,5 +1,6 @@
 package com.composetest.core.data.api
 
+import com.composetest.core.data.utils.jsonConfig
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android
 import io.ktor.client.plugins.HttpTimeout
@@ -14,7 +15,6 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
-import kotlinx.serialization.json.Json
 import kotlin.time.Duration.Companion.seconds
 
 internal object HttpClientBuilder {
@@ -27,11 +27,7 @@ internal object HttpClientBuilder {
             requestTimeoutMillis = 20.seconds.inWholeMilliseconds
         }
         install(ContentNegotiation) {
-            json(Json {
-                prettyPrint = true
-                isLenient = true
-                ignoreUnknownKeys = true
-            })
+            json(jsonConfig)
         }
         install(Logging) {
             logger = Logger.ANDROID
