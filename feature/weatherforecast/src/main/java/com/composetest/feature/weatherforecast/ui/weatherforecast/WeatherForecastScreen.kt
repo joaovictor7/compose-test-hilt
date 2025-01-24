@@ -37,7 +37,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.composetest.common.enums.Permission
 import com.composetest.core.designsystem.components.asyncimage.AsyncImage
 import com.composetest.core.designsystem.components.buttons.Button
 import com.composetest.core.designsystem.components.dialogs.SimpleDialog
@@ -47,6 +46,7 @@ import com.composetest.core.designsystem.dimensions.Spacing
 import com.composetest.core.designsystem.extensions.horizontalScreenMargin
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.router.extensions.navigateToApplicationDetailSettings
+import com.composetest.core.ui.enums.Permission
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.interfaces.Screen
 import com.composetest.feature.weatherforecast.models.FutureWeatherForecastScreenModel
@@ -67,7 +67,12 @@ internal object WeatherForecastScreen :
         uiEvent: Flow<WeatherForecastUiEvent>?,
         onExecuteCommand: (Command<WeatherForecastCommandReceiver>) -> Unit
     ) {
-        val permissionState = rememberMultiplePermissionsState(Permission.LOCALIZATION.manifest)
+        val permissionState = rememberMultiplePermissionsState(
+            permissions = Permission.localization,
+            onPermissionsResult = {
+                onExecuteCommand(WeatherForecastCommand.CheckPermissionsResult(it))
+            }
+        )
         LaunchedEffectHandler(
             permissionState = permissionState,
             onExecuteCommand = onExecuteCommand
@@ -81,10 +86,10 @@ internal object WeatherForecastScreen :
                     .fillMaxSize(),
                 verticalArrangement = Arrangement.spacedBy(Spacing.twentyFour)
             ) {
-//                if (!permissionState.allPermissionsGranted) {
-//                    RequiredPermission(permissionState = permissionState)
-//                    return
-//                }
+                if (!uiState.thereIsPermission) {
+                    RequiredPermission(permissionState = permissionState)
+                    return
+                }
                 WeatherNow(uiState = uiState, onExecuteCommand = onExecuteCommand)
                 WeatherForecastGraphic(uiState = uiState)
                 LazyColumn(verticalArrangement = Arrangement.spacedBy(Spacing.twelve)) {
@@ -285,8 +290,6 @@ private fun LaunchedEffectHandler(
     LaunchedEffect(Unit) {
         if (!permissionState.allPermissionsGranted) {
             permissionState.launchMultiplePermissionRequest()
-        } else {
-            onExecuteCommand(WeatherForecastCommand.GetWeatherForecastData)
         }
     }
 }

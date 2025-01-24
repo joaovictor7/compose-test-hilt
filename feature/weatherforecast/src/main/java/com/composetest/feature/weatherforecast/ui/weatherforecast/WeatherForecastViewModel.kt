@@ -32,6 +32,12 @@ internal class WeatherForecastViewModel @Inject constructor(
     override val commandReceiver = this
     override val analyticScreen = WeatherForecastScreenAnalytic
 
+    override fun checkPermissionsResult(permissions: Map<String, Boolean>) {
+        if (permissions.any { it.value }) {
+            getWeatherForecastData()
+        }
+    }
+
     override fun getWeatherForecastData() {
         updateUiState { it.setLoading(true) }
         runAsyncTask(
