@@ -4,6 +4,7 @@ import com.composetest.common.providers.LocaleProvider
 import com.composetest.core.data.api.requests.WeatherForecastRequest
 import com.composetest.core.data.datasources.OpenWeatherDataSource
 import com.composetest.core.data.mappers.WeatherForecastMapper
+import com.composetest.core.data.utils.apiErrorHandler
 import com.composetest.core.domain.models.weatherforecast.WeatherForecastModel
 import com.composetest.core.domain.models.weatherforecast.WeatherNowModel
 import com.composetest.core.domain.repositories.WeatherForecastRepository
@@ -16,12 +17,14 @@ internal class WeatherForecastRepositoryImpl @Inject constructor(
 ) : WeatherForecastRepository {
 
     override suspend fun getWeatherNow(): WeatherNowModel {
-        val response = openWeatherDataSource.getWeatherNow(createRequest())
+        val response = apiErrorHandler { openWeatherDataSource.getWeatherNow(createRequest()) }
         return weatherForecastMapper(response)
     }
 
     override suspend fun getWeatherForecasts(): List<WeatherForecastModel> {
-        val response = openWeatherDataSource.getWeatherForecasts(createRequest())
+        val response = apiErrorHandler {
+            openWeatherDataSource.getWeatherForecasts(createRequest())
+        }
         return weatherForecastMapper(response)
     }
 

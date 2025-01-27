@@ -2,6 +2,7 @@ package com.composetest.core.data.repositories
 
 import com.composetest.core.data.datasources.AuthenticationDataSource
 import com.composetest.core.data.mappers.AuthenticationMapper
+import com.composetest.core.data.utils.apiErrorHandler
 import com.composetest.core.domain.errors.ApiError
 import com.composetest.core.domain.repositories.AuthenticationRepository
 import com.google.firebase.FirebaseNetworkException
@@ -14,7 +15,7 @@ internal class AuthenticationRepositoryImpl @Inject constructor(
 ) : AuthenticationRepository {
 
     override suspend fun authentication(email: String, password: String) = runCatching {
-        val response = authenticationDataSource.authentication(email, password)
+        val response = apiErrorHandler { authenticationDataSource.authentication(email, password) }
         authenticationMapper(response, password)
     }.getOrElse {
         throw when (it.cause) {

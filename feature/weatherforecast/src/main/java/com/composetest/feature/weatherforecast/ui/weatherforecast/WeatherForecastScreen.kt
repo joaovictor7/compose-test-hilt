@@ -73,10 +73,7 @@ internal object WeatherForecastScreen :
                 onExecuteCommand(WeatherForecastCommand.CheckPermissionsResult(it))
             }
         )
-        LaunchedEffectHandler(
-            permissionState = permissionState,
-            onExecuteCommand = onExecuteCommand
-        )
+        LaunchedEffectHandler(permissionState = permissionState)
         AlertDialogHandler(uiState = uiState, onExecuteCommand = onExecuteCommand)
         Column(modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars)) {
             LeftTopBar(titleId = WeatherForecastResources.string.weather_forecast_title)
@@ -283,10 +280,7 @@ private fun AlertDialogHandler(
 }
 
 @Composable
-private fun LaunchedEffectHandler(
-    permissionState: MultiplePermissionsState,
-    onExecuteCommand: (Command<WeatherForecastCommandReceiver>) -> Unit
-) {
+private fun LaunchedEffectHandler(permissionState: MultiplePermissionsState) {
     LaunchedEffect(Unit) {
         if (!permissionState.allPermissionsGranted) {
             permissionState.launchMultiplePermissionRequest()

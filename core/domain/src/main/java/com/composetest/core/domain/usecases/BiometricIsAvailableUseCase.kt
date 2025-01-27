@@ -1,7 +1,7 @@
 package com.composetest.core.domain.usecases
 
 import com.composetest.common.extensions.orFalse
-import com.composetest.core.domain.enums.DomainRemoteConfig
+import com.composetest.core.domain.enums.RemoteConfigKey
 import com.composetest.core.domain.managers.RemoteConfigManager
 import com.composetest.core.domain.providers.BiometricProvider
 import com.composetest.core.domain.repositories.ConfigurationRepository
@@ -15,6 +15,5 @@ class BiometricIsAvailableUseCase @Inject constructor(
     suspend operator fun invoke() =
         configurationRepository.getLastConfiguration()?.biometricLogin.orFalse &&
                 biometricProvider.isBiometricAvailable &&
-                remoteConfigManager.getBoolean(DomainRemoteConfig.USE_BIOMETRIC)
-
+                remoteConfigManager.getBoolean(RemoteConfigKey.USE_BIOMETRIC)
 }
