@@ -5,13 +5,10 @@ import java.util.Properties
 
 internal class LoadPropertiesFile(
     private val project: Project,
-    propertiesFile: PropertiesFile
+    private val propertiesFile: PropertiesFile
 ) {
-    private val fullPathProperties = getProperties(propertiesFile.fullPath)
-    private val pathProperties = getProperties(propertiesFile.file)
-
-    fun getProperty(key: String) = fullPathProperties?.getProperty(key)
-        ?: pathProperties?.getProperty(key)
+    fun getProperty(key: String) = getProperties(propertiesFile.fullPath)?.getProperty(key)
+        ?: getProperties(propertiesFile.file)?.getProperty(key)
         ?: EMPTY_VALUE
 
     private fun getProperties(path: String): Properties? {

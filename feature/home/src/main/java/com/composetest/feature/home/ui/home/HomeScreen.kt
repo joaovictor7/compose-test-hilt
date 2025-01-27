@@ -46,6 +46,6 @@ internal object HomeScreen : Screen<HomeUiState, HomeUiEvent, HomeCommandReceive
 @Composable
 private fun Preview() {
     ComposeTestTheme {
-        HomeScreen(uiState = HomeUiState(), uiEvent = null) { }
+        HomeScreen(uiState = HomeUiState, uiEvent = null) { }
     }
 }

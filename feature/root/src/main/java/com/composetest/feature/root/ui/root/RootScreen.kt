@@ -42,6 +42,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.composetest.core.designsystem.components.scaffolds.ScreenScaffold
@@ -59,7 +60,6 @@ import com.composetest.feature.home.navigation.homeRootNavGraph
 import com.composetest.feature.root.R
 import com.composetest.feature.root.enums.NavigationFeature
 import com.composetest.feature.root.models.BottomFeatureNavigationModel
-import com.composetest.feature.root.ui.dimensions.Component
 import kotlinx.coroutines.flow.Flow
 import com.composetest.core.designsystem.R as DesignSystemResources
 
@@ -71,8 +71,8 @@ internal object RootScreen : Screen<RootUiState, RootUiEvent, RootCommandReceive
         uiEvent: Flow<RootUiEvent>?,
         onExecuteCommand: (Command<RootCommandReceiver>) -> Unit
     ) {
-        val activity = LocalActivity.current
         val drawerState = rememberDrawerState(DrawerValue.Closed)
+        LaunchedEffectsHandler(uiEvent = uiEvent, drawerState = drawerState)
         ModalNavigationDrawer(
             drawerState = drawerState,
             drawerContent = getModalDrawerContent(uiState, onExecuteCommand),
@@ -86,17 +86,6 @@ internal object RootScreen : Screen<RootUiState, RootUiEvent, RootCommandReceive
                     uiState = uiState,
                     onExecuteCommand = onExecuteCommand
                 )
-            }
-        }
-        LaunchedEffect(Unit) {
-            uiEvent?.collect {
-                when (it) {
-                    is RootUiEvent.FinishApp -> activity?.finish()
-                    is RootUiEvent.ManagerModalDrawer -> when (it.drawerValue) {
-                        DrawerValue.Open -> drawerState.open()
-                        DrawerValue.Closed -> drawerState.close()
-                    }
-                }
             }
         }
     }
@@ -157,9 +146,7 @@ private fun ModalDrawerHeader(
             modifier = Modifier.weight(0.85f)
         ) {
             Image(
-                modifier = Modifier
-                    .size(Component.modelDrawerUserImageSize)
-                    .clip(CircleShape),
+                modifier = Modifier.size(50.dp).clip(CircleShape),
                 painter = painterResource(DesignSystemResources.drawable.ic_person_off),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
@@ -279,6 +266,22 @@ private fun getBottomBar(
                     )
                 }
             )
+        }
+    }
+}
+
+@Composable
+private fun LaunchedEffectsHandler(uiEvent: Flow<RootUiEvent>?, drawerState: DrawerState) {
+    val activity = LocalActivity.current
+    LaunchedEffect(Unit) {
+        uiEvent?.collect {
+            when (it) {
+                is RootUiEvent.FinishApp -> activity?.finish()
+                is RootUiEvent.ManagerModalDrawer -> when (it.drawerValue) {
+                    DrawerValue.Open -> drawerState.open()
+                    DrawerValue.Closed -> drawerState.close()
+                }
+            }
         }
     }
 }

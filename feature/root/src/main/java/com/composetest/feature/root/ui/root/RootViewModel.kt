@@ -41,8 +41,11 @@ internal class RootViewModel @Inject constructor(
     override val commandReceiver = this
     override val analyticScreen = RootScreenAnalytic
 
-    override fun initUiState() {
+    init {
         openScreenAnalytic()
+    }
+
+    override fun initUiState() {
         val modalDrawerNavigationFeatures = getModalDrawerNavigationFeatures()
         val bottomNavigationFeatures = getBottomNavigationFeatures()
         runAsyncTask {

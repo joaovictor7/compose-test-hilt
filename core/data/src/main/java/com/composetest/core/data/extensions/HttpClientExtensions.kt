@@ -11,7 +11,15 @@ internal suspend inline fun <reified Response> HttpClient.post(
     request: HttpRequestBuilder.() -> Unit
 ) = post(path, request)
 
+internal suspend inline fun <reified Response> HttpClient.post(
+    request: HttpRequestBuilder.() -> Unit
+) = post(request)
+
 internal suspend inline fun <reified Response> HttpClient.get(
     path: String,
     request: HttpRequestBuilder.() -> Unit = {}
 ) = get(path, request).body<Response>()
+
+internal suspend inline fun <reified Response> HttpClient.get(
+    request: HttpRequestBuilder.() -> Unit = {}
+) = get(request).body<Response>()

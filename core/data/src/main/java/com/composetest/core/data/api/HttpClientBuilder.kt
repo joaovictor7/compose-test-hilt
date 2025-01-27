@@ -13,11 +13,14 @@ import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.headers
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
+import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
 import kotlin.time.Duration.Companion.seconds
 
 internal object HttpClientBuilder {
+    private const val SCAPE_CHARACTERS = "/"
+
     private val httpClient = HttpClient(Android) {
         expectSuccess = true
         defaultRequest {
@@ -36,12 +39,20 @@ internal object HttpClientBuilder {
         }
     }
 
+    private val String.urlTreatment
+        get() = takeIf { it.endsWith(SCAPE_CHARACTERS) } ?: plus(SCAPE_CHARACTERS)
+
     fun build(apiSetting: ApiSetting) = httpClient.config {
         defaultRequest {
             url {
-                url(apiSetting.url.takeIf { it.endsWith("/") } ?: apiSetting.url.plus("/"))
+                url(apiSetting.url.urlTreatment)
                 port = apiSetting.port
-                apiSetting.params.forEach {
+                apiSetting.pathParameters.forEachIndexed { index, value ->
+                    appendPathSegments(
+                        value.pathSegmentTreatment(index, apiSetting.pathParameters.lastIndex)
+                    )
+                }
+                apiSetting.queryParameters.forEach {
                     parameters.append(it.key, it.value)
                 }
             }
@@ -51,5 +62,9 @@ internal object HttpClientBuilder {
                 }
             }
         }
+    }
+
+    private fun String.pathSegmentTreatment(index: Int, lastIndex: Int) = also {
+        if (index == lastIndex) return plus(SCAPE_CHARACTERS)
     }
 }

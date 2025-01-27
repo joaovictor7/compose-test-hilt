@@ -32,8 +32,11 @@ internal class ProfileViewModel @Inject constructor(
     override val commandReceiver = this
     override val analyticScreen = ProfileScreenAnalytic
 
-    override fun initUiState() {
+    init {
         openScreenAnalytic()
+    }
+
+    override fun initUiState() {
         runAsyncTask {
             getUserUseCase()?.let { userModel ->
                 val profileScreenModel = getModelToScreen(userModel)

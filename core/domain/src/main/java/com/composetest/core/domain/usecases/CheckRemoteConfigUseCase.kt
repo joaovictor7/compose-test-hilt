@@ -13,6 +13,6 @@ class CheckRemoteConfigUseCase @Inject constructor(
         val boolean = versionOrBoolean.toBooleanStrictOrNull()
         val remoteConfigVersionName = versionOrBoolean.digits.toIntOrZero
         val localVersionName = buildConfigProvider.get.fullyVersion.digits.toIntOrZero
-        return boolean ?: (remoteConfigVersionName >= localVersionName)
+        return boolean ?: (localVersionName >= remoteConfigVersionName)
     }
 }

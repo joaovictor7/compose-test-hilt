@@ -1,4 +1,4 @@
-package com.composetest.core.router.extensions
+package com.composetest.common.extensions
 
 import android.content.Context
 import android.content.Intent

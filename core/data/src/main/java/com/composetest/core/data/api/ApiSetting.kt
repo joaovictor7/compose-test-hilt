@@ -4,7 +4,8 @@ internal sealed interface ApiSetting {
     val url: String
     val port: Int get() = 0
     val headers: Map<String, String> get() = emptyMap()
-    val params: Map<String, String> get() = emptyMap()
+    val pathParameters: List<String> get() = emptyList()
+    val queryParameters: Map<String, String> get() = emptyMap()
 
     data class NewsApi(
         private val apiKey: String,
@@ -12,7 +13,7 @@ internal sealed interface ApiSetting {
         override val url: String
     ) : ApiSetting {
         override val headers = mapOf(API_KEY_HEADER to apiKey)
-        override val params = mapOf(COUNTRY_PARAM to country)
+        override val queryParameters = mapOf(COUNTRY_PARAM to country)
 
         private companion object {
             const val COUNTRY_PARAM = "country"
@@ -24,7 +25,7 @@ internal sealed interface ApiSetting {
         private val apiId: String,
         override val url: String,
     ) : ApiSetting {
-        override val params = mapOf(API_ID_PARAM to apiId)
+        override val queryParameters = mapOf(API_ID_PARAM to apiId)
 
         private companion object {
             const val API_ID_PARAM = "appid"

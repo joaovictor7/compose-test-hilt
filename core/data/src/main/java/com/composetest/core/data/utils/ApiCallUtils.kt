@@ -11,6 +11,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import kotlinx.io.IOException
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.seconds
 
 internal class ApiCallUtils @Inject constructor(
     private val buildConfigProvider: BuildConfigProvider,
@@ -26,7 +27,7 @@ internal class ApiCallUtils @Inject constructor(
     private suspend fun <T> call(onRemoteCall: suspend () -> T) =
         withContext(dispatcherProvider.io) {
             if (buildConfigProvider.get.flavor == Flavor.DEVELOP) {
-                delay(FAKE_CALL_DELAY)
+                delay(fakeCallDelay)
             }
             onRemoteCall()
         }
@@ -45,6 +46,6 @@ internal class ApiCallUtils @Inject constructor(
     }
 
     private companion object {
-        const val FAKE_CALL_DELAY = 2000L
+        val fakeCallDelay = 2.seconds
     }
 }

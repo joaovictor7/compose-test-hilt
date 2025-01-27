@@ -45,7 +45,7 @@ import com.composetest.core.designsystem.components.topbar.LeftTopBar
 import com.composetest.core.designsystem.dimensions.Spacing
 import com.composetest.core.designsystem.extensions.horizontalScreenMargin
 import com.composetest.core.designsystem.theme.ComposeTestTheme
-import com.composetest.core.router.extensions.navigateToApplicationDetailSettings
+import com.composetest.common.extensions.navigateToApplicationDetailSettings
 import com.composetest.core.ui.enums.Permission
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.interfaces.Screen

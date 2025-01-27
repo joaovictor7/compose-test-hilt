@@ -29,8 +29,11 @@ internal class EditProfileViewModel @Inject constructor(
     override val commandReceiver = this
     override val analyticScreen = ProfileScreenAnalytic
 
-    override fun initUiState() {
+    init {
         openScreenAnalytic()
+    }
+
+    override fun initUiState() {
         runAsyncTask {
             getUserUseCase()?.let { userModel ->
                 updateUiState {
