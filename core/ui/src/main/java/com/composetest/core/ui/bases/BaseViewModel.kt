@@ -12,14 +12,14 @@ import com.composetest.core.ui.interfaces.BaseUiState
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.seconds
 
 abstract class BaseViewModel<UiState : BaseUiState, UiEvent : BaseUiEvent>(
     initialUiState: UiState
@@ -30,9 +30,7 @@ abstract class BaseViewModel<UiState : BaseUiState, UiEvent : BaseUiEvent>(
     protected abstract val sendAnalyticsUseCase: SendAnalyticsUseCase
 
     private val _uiState = MutableStateFlow(initialUiState)
-    val uiState = _uiState
-        .onStart { initUiState() }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), initialUiState)
+    val uiState = _uiState.asStateFlow()
 
     private val _uiEvent = Channel<UiEvent>(Channel.BUFFERED)
     val uiEvent = _uiEvent.receiveAsFlow()
@@ -40,8 +38,6 @@ abstract class BaseViewModel<UiState : BaseUiState, UiEvent : BaseUiEvent>(
     open fun navigateBack() {
         navigationManager.navigateBack()
     }
-
-    protected open fun initUiState() {}
 
     protected fun updateUiState(onNewUiState: (UiState) -> UiState) {
         _uiState.update(onNewUiState)
@@ -96,5 +92,9 @@ abstract class BaseViewModel<UiState : BaseUiState, UiEvent : BaseUiEvent>(
     ) {
         sendAnalyticsUseCase(ErrorAnalyticEvent(error, analyticScreen))
         onError?.invoke(error)
+    }
+
+    private companion object {
+        val uiStateSubscribedTime = 5.seconds
     }
 }

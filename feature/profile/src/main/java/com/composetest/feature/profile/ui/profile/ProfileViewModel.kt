@@ -34,20 +34,21 @@ internal class ProfileViewModel @Inject constructor(
 
     init {
         openScreenAnalytic()
-    }
-
-    override fun initUiState() {
-        runAsyncTask {
-            getUserUseCase()?.let { userModel ->
-                val profileScreenModel = getModelToScreen(userModel)
-                updateUiState { it.setProfileScreenModels(profileScreenModel) }
-            }
-        }
+        initUiState()
     }
 
     override fun toolbarActionCLick(action: TopBarAction) {
         if (action == TopBarAction.EDIT) {
             navigationManager.navigate(EditProfileDestination)
+        }
+    }
+
+    private fun initUiState() {
+        runAsyncTask {
+            getUserUseCase()?.let { userModel ->
+                val profileScreenModel = getModelToScreen(userModel)
+                updateUiState { it.setProfileScreenModels(profileScreenModel) }
+            }
         }
     }
 

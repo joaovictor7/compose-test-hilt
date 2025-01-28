@@ -1,6 +1,6 @@
 package com.composetest.feature.news.ui.news.list
 
-import com.composetest.core.designsystem.utils.getDefaultSimpleDialogErrorParam
+import com.composetest.core.designsystem.utils.getCommonSimpleDialogErrorParam
 import com.composetest.core.domain.models.ArticleModel
 import com.composetest.core.domain.usecases.GetTopHeadlinesUseCase
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
@@ -23,7 +23,7 @@ internal class NewsListViewModel @Inject constructor(
     override val commandReceiver = this
     override val analyticScreen = NewsListScreenAnalytic
 
-    override fun initUiState() {
+    init {
         getArticles()
     }
 
@@ -43,7 +43,7 @@ internal class NewsListViewModel @Inject constructor(
     }
 
     override fun dismissSimpleDialog() {
-        updateUiState { it.setAlertDialogParam(null) }
+        updateUiState { it.setSimpleDialogParam(null) }
     }
 
     private fun getArticles() {
@@ -59,7 +59,7 @@ internal class NewsListViewModel @Inject constructor(
 
     private fun requestErrorHandler(error: Throwable) {
         updateUiState { uiState ->
-            uiState.setAlertDialogParam(getDefaultSimpleDialogErrorParam(error))
+            uiState.setSimpleDialogParam(getCommonSimpleDialogErrorParam(error))
         }
     }
 }

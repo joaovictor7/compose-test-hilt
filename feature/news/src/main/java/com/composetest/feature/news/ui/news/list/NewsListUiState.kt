@@ -18,7 +18,7 @@ internal data class NewsListUiState(
     )
 
     fun setArticles(articles: List<ArticleModel>) = copy(articles = articles)
-    fun setAlertDialogParam(param: SimpleDialogParam? = null) = copy(
+    fun setSimpleDialogParam(param: SimpleDialogParam? = null) = copy(
         simpleDialogParam = param,
         showWithoutNewsMsg = if (param != null) true else showWithoutNewsMsg
     )

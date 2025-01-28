@@ -32,10 +32,7 @@ internal class MainViewModel @Inject constructor(
 
     init {
         themeObservable()
-    }
-
-    override fun initUiState() {
-        updateUiState { it.splashScreenFinished() }
+        initUiState()
     }
 
     override fun verifySession() {
@@ -61,6 +58,10 @@ internal class MainViewModel @Inject constructor(
 
     override fun dismissAlertDialog() {
         updateUiState { it.setSimpleDialog(null) }
+    }
+
+    private fun initUiState() {
+        updateUiState { it.splashScreenFinished() }
     }
 
     private fun themeObservable() {

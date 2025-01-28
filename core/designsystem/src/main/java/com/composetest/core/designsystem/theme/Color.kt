@@ -76,6 +76,8 @@ val surfaceContainerDark = Color(0xFF221F1E)
 val surfaceContainerHighDark = Color(0xFF2D2928)
 val surfaceContainerHighestDark = Color(0xFF383432)
 
+val linkColor = Color(0xFF0078D4)
+
 internal val lightColorScheme = lightColorScheme(
     primary = primaryLight,
     onPrimary = onPrimaryLight,

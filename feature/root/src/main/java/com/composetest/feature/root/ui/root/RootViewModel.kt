@@ -43,22 +43,7 @@ internal class RootViewModel @Inject constructor(
 
     init {
         openScreenAnalytic()
-    }
-
-    override fun initUiState() {
-        val modalDrawerNavigationFeatures = getModalDrawerNavigationFeatures()
-        val bottomNavigationFeatures = getBottomNavigationFeatures()
-        runAsyncTask {
-            val user = getUserUseCase()
-            updateUiState {
-                it.initUiState(
-                    firstBottomNavigationFeature?.destination,
-                    modalDrawerNavigationFeatures,
-                    bottomNavigationFeatures,
-                    userModalDrawerMapper(user)
-                )
-            }
-        }
+        iniUiState()
     }
 
     override fun backHandler() {
@@ -100,6 +85,22 @@ internal class RootViewModel @Inject constructor(
                 LoginDestination(isLogout = true),
                 NavigationMode.REMOVE_ALL_SCREENS_STACK
             )
+        }
+    }
+
+    private fun iniUiState() {
+        val modalDrawerNavigationFeatures = getModalDrawerNavigationFeatures()
+        val bottomNavigationFeatures = getBottomNavigationFeatures()
+        runAsyncTask {
+            val user = getUserUseCase()
+            updateUiState {
+                it.initUiState(
+                    firstBottomNavigationFeature?.destination,
+                    modalDrawerNavigationFeatures,
+                    bottomNavigationFeatures,
+                    userModalDrawerMapper(user)
+                )
+            }
         }
     }
 

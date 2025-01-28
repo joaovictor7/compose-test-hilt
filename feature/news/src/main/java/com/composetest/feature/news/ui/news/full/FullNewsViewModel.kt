@@ -20,7 +20,11 @@ internal class FullNewsViewModel @Inject constructor(
     override val commandReceiver = this
     override val analyticScreen = FullNewsScreenAnalytic
 
-    override fun initUiState() {
+    init {
+        initUiState()
+    }
+
+    private fun initUiState() {
         updateUiState {
             it.copy(
                 imageUrl = destination.imageUrl,

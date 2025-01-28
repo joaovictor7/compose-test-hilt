@@ -31,16 +31,7 @@ internal class EditProfileViewModel @Inject constructor(
 
     init {
         openScreenAnalytic()
-    }
-
-    override fun initUiState() {
-        runAsyncTask {
-            getUserUseCase()?.let { userModel ->
-                updateUiState {
-                    it.copy(profileForm = profileFormMapper(userModel))
-                }
-            }
-        }
+        initUiState()
     }
 
     override fun setFormData(profileFormModel: ProfileFormModel) {
@@ -57,5 +48,15 @@ internal class EditProfileViewModel @Inject constructor(
 
     override fun saveProfile() {
 
+    }
+
+    private fun initUiState() {
+        runAsyncTask {
+            getUserUseCase()?.let { userModel ->
+                updateUiState {
+                    it.copy(profileForm = profileFormMapper(userModel))
+                }
+            }
+        }
     }
 }

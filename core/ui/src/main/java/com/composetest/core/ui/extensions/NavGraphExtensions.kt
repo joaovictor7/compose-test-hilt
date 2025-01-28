@@ -11,13 +11,13 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavDeepLink
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.composetest.core.designsystem.utils.isPreview
 import com.composetest.core.router.interfaces.Destination
 import com.composetest.core.router.utils.getNavTypes
 import com.composetest.core.ui.bases.BaseViewModel
 import com.composetest.core.ui.interfaces.BaseUiState
 import com.composetest.core.ui.interfaces.CommandReceiver
 import com.composetest.core.ui.interfaces.Screen
+import com.composetest.core.designsystem.utils.isPreview
 
 inline fun <reified D, reified VM, US, UE, CR> NavGraphBuilder.buildComposable(
     screen: Screen<US, UE, CR>,

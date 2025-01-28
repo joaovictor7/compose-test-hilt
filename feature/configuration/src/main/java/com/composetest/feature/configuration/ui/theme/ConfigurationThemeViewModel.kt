@@ -25,18 +25,8 @@ internal class ConfigurationThemeViewModel @Inject constructor(
     override val commandReceiver = this
     override val analyticScreen = ConfigurationThemeScreenAnalytic
 
-    override fun initUiState() {
-        runAsyncTask {
-            configurationManager.fetchConfiguration()
-            val currentTheme = configurationManager.getCurrentTheme()
-            updateUiState {
-                it.initUiState(
-                    ThemeConfiguration.entries,
-                    ThemeConfiguration.getThemeConfiguration(currentTheme.theme),
-                    currentTheme.dynamicColor
-                )
-            }
-        }
+    init {
+        initUiState()
     }
 
     override fun changeTheme(selectedTheme: ThemeConfiguration) {
@@ -52,6 +42,20 @@ internal class ConfigurationThemeViewModel @Inject constructor(
         runAsyncTask {
             sendChangeThemeAnalytic(dynamicColor = active)
             configurationManager.setDynamicColors(active)
+        }
+    }
+
+    private fun initUiState() {
+        runAsyncTask {
+            configurationManager.fetchConfiguration()
+            val currentTheme = configurationManager.getCurrentTheme()
+            updateUiState {
+                it.initUiState(
+                    ThemeConfiguration.entries,
+                    ThemeConfiguration.getThemeConfiguration(currentTheme.theme),
+                    currentTheme.dynamicColor
+                )
+            }
         }
     }
 

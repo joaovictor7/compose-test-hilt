@@ -1,6 +1,6 @@
 package com.composetest.core.data.mappers
 
-import com.composetest.common.extensions.unixToLocalDateTime
+import com.composetest.common.extensions.convertedFromUnix
 import com.composetest.core.data.api.responses.weatherforecast.WeatherForecastResponse
 import com.composetest.core.data.api.responses.weatherforecast.WeatherNowResponse
 import com.composetest.core.domain.models.weatherforecast.ForecastTemperatureModel
@@ -23,7 +23,7 @@ internal class WeatherForecastMapper @Inject constructor() {
     operator fun invoke(response: WeatherForecastResponse): List<WeatherForecastModel> {
         return response.dataList.map {
             WeatherForecastModel(
-                dateTime = it.dateTime.unixToLocalDateTime,
+                dateTime = it.dateTime.convertedFromUnix,
                 forecastTemperature = ForecastTemperatureModel(
                     iconId = it.weatherData.first().icon,
                     temperature = it.temperatureData.temperature,

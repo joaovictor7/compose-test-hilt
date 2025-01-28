@@ -11,3 +11,8 @@ fun Context.navigateToApplicationDetailSettings() {
     }
     startActivity(intent)
 }
+
+fun Context.navigateToWebUrl(url: String) {
+    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+    startActivity(intent)
+}

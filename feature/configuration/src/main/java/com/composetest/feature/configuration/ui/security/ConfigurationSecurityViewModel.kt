@@ -24,19 +24,23 @@ internal class ConfigurationSecurityViewModel @Inject constructor(
     override val commandReceiver = this
     override val analyticScreen = ConfigurationThemeScreenAnalytic
 
-    override fun initUiState() {
-        runAsyncTask {
-            configurationManager.fetchConfiguration()
-            updateUiState {
-                it.initUiState(currentConfiguration?.biometricLogin)
-            }
-        }
+    init {
+        initUiState()
     }
 
     override fun changeSwitchBiometric(checked: Boolean) {
         runAsyncTask {
             configurationManager.setBiometricLogin(checked)
             updateUiState { it.copy(biometricIsEnabled = checked) }
+        }
+    }
+
+    private fun initUiState() {
+        runAsyncTask {
+            configurationManager.fetchConfiguration()
+            updateUiState {
+                it.initUiState(currentConfiguration?.biometricLogin)
+            }
         }
     }
 }

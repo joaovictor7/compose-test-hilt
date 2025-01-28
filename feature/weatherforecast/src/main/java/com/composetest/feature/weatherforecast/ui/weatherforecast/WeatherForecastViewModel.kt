@@ -1,6 +1,6 @@
 package com.composetest.feature.weatherforecast.ui.weatherforecast
 
-import com.composetest.core.designsystem.utils.getDefaultSimpleDialogErrorParam
+import com.composetest.core.designsystem.utils.getCommonSimpleDialogErrorParam
 import com.composetest.core.domain.usecases.GeTodayWeatherForecastUseCase
 import com.composetest.core.domain.usecases.GetFutureWeatherForecastUseCase
 import com.composetest.core.domain.usecases.GetWeatherForecastsUseCase
@@ -74,7 +74,7 @@ internal class WeatherForecastViewModel @Inject constructor(
 
     private fun handleRequestError(error: Throwable) {
         updateUiState { uiState ->
-            uiState.setSimpleAlertDialog(getDefaultSimpleDialogErrorParam(error))
+            uiState.setSimpleAlertDialog(getCommonSimpleDialogErrorParam(error))
         }
     }
 }

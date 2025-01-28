@@ -1,7 +1,7 @@
 package com.composetest.feature.login.ui.login
 
 import com.composetest.common.providers.BuildConfigProvider
-import com.composetest.core.designsystem.utils.getDefaultSimpleDialogErrorParam
+import com.composetest.core.designsystem.utils.getCommonSimpleDialogErrorParam
 import com.composetest.core.domain.enums.Theme
 import com.composetest.core.domain.errors.ApiError
 import com.composetest.core.domain.managers.ConfigurationManager
@@ -49,7 +49,7 @@ internal class LoginViewModel @Inject constructor(
     override val commandReceiver = this
     override val analyticScreen = LoginScreenAnalytic
 
-    override fun initUiState() {
+    init {
         checkNeedsLogin()
     }
 
@@ -130,7 +130,7 @@ internal class LoginViewModel @Inject constructor(
             if (throwable is ApiError.Unauthorized) {
                 uiState.setShowInvalidCredentialsMsg(true)
             } else {
-                uiState.setSimpleDialog(getDefaultSimpleDialogErrorParam(throwable))
+                uiState.setSimpleDialog(getCommonSimpleDialogErrorParam(throwable))
             }
         }
     }
