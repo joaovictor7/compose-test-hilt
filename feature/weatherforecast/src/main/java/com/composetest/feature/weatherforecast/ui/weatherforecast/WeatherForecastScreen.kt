@@ -282,9 +282,7 @@ private fun AlertDialogHandler(
 @Composable
 private fun LaunchedEffectHandler(permissionState: MultiplePermissionsState) {
     LaunchedEffect(Unit) {
-        if (!permissionState.allPermissionsGranted) {
-            permissionState.launchMultiplePermissionRequest()
-        }
+        permissionState.launchMultiplePermissionRequest()
     }
 }
 

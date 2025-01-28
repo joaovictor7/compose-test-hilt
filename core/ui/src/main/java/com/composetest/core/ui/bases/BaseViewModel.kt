@@ -19,7 +19,6 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlin.time.Duration.Companion.seconds
 
 abstract class BaseViewModel<UiState : BaseUiState, UiEvent : BaseUiEvent>(
     initialUiState: UiState
@@ -92,9 +91,5 @@ abstract class BaseViewModel<UiState : BaseUiState, UiEvent : BaseUiEvent>(
     ) {
         sendAnalyticsUseCase(ErrorAnalyticEvent(error, analyticScreen))
         onError?.invoke(error)
-    }
-
-    private companion object {
-        val uiStateSubscribedTime = 5.seconds
     }
 }

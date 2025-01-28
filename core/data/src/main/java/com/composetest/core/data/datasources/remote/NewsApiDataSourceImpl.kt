@@ -3,10 +3,11 @@ package com.composetest.core.data.datasources.remote
 import com.composetest.core.data.api.responses.newsapi.NewsApiResponse
 import com.composetest.core.data.datasources.NewsApiDataSource
 import com.composetest.core.data.di.qualifiers.ApiQualifier
-import com.composetest.core.data.enums.Api
+import com.composetest.core.domain.enums.Api
 import com.composetest.core.data.extensions.get
 import com.composetest.core.data.utils.ApiCallUtils
 import io.ktor.client.HttpClient
+import io.ktor.http.parameters
 
 internal class NewsApiDataSourceImpl(
     private val apiCallUtils: ApiCallUtils,
@@ -14,7 +15,11 @@ internal class NewsApiDataSourceImpl(
 ) : NewsApiDataSource {
 
     override suspend fun getTopHeadlinesNews() = apiCallUtils.executeApiCall {
-        newsApi.get<NewsApiResponse>(TOP_HEADLINE_PATH)
+        newsApi.get<NewsApiResponse>(TOP_HEADLINE_PATH) {
+            url {
+                parameters.append("country", "us")
+            }
+        }
     }
 
     private companion object {

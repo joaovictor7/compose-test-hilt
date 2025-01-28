@@ -19,7 +19,7 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlin.time.Duration.Companion.seconds
 
 internal object HttpClientBuilder {
-    private const val SCAPE_CHARACTERS = "/"
+    private const val SCAPE_CHARACTER = "/"
 
     private val httpClient = HttpClient(Android) {
         expectSuccess = true
@@ -39,19 +39,15 @@ internal object HttpClientBuilder {
         }
     }
 
-    private val String.urlTreatment
-        get() = takeIf { it.endsWith(SCAPE_CHARACTERS) } ?: plus(SCAPE_CHARACTERS)
+    private val String.scapeCharacterTreatment
+        get() = takeIf { it.isBlank() || it.endsWith(SCAPE_CHARACTER) } ?: plus(SCAPE_CHARACTER)
 
     fun build(apiSetting: ApiSetting) = httpClient.config {
         defaultRequest {
             url {
-                url(apiSetting.url.urlTreatment)
+                url(apiSetting.url.scapeCharacterTreatment)
+                appendPathSegments(apiSetting.path.scapeCharacterTreatment)
                 port = apiSetting.port
-                apiSetting.pathParameters.forEachIndexed { index, value ->
-                    appendPathSegments(
-                        value.pathSegmentTreatment(index, apiSetting.pathParameters.lastIndex)
-                    )
-                }
                 apiSetting.queryParameters.forEach {
                     parameters.append(it.key, it.value)
                 }
@@ -62,9 +58,5 @@ internal object HttpClientBuilder {
                 }
             }
         }
-    }
-
-    private fun String.pathSegmentTreatment(index: Int, lastIndex: Int) = also {
-        if (index == lastIndex) return plus(SCAPE_CHARACTERS)
     }
 }

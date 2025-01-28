@@ -3,7 +3,7 @@ package com.composetest.core.data.di
 import com.composetest.core.data.api.ApiSetting
 import com.composetest.core.data.api.HttpClientBuilder
 import com.composetest.core.data.di.qualifiers.ApiQualifier
-import com.composetest.core.data.enums.Api
+import com.composetest.core.domain.enums.Api
 import com.composetest.core.domain.repositories.ApiSettingsRepository
 import dagger.Module
 import dagger.Provides
@@ -18,12 +18,11 @@ internal object ApiModule {
     @Provides
     @ApiQualifier(Api.NEWS_API)
     fun newsApi(apiSettingsRepository: ApiSettingsRepository): HttpClient {
-        val newsApiSettings = apiSettingsRepository.getNewsApiSettings()
+        val apiSettings = apiSettingsRepository.getApiSettings(Api.NEWS_API)
         return HttpClientBuilder.build(
             ApiSetting.NewsApi(
-                apiKey = newsApiSettings.apiKey,
-                url = newsApiSettings.url,
-                country = "us",
+                apiKey = apiSettings.apiKey,
+                url = apiSettings.url,
             )
         )
     }
@@ -34,8 +33,20 @@ internal object ApiModule {
         val weatherForecastApiSettings = apiSettingsRepository.getWeatherForecastApiSettings()
         return HttpClientBuilder.build(
             ApiSetting.OpenWeatherApi(
-                apiId = weatherForecastApiSettings.apiId,
-                url = weatherForecastApiSettings.url,
+                apiId = weatherForecastApiSettings.apiSettings.apiKey,
+                url = weatherForecastApiSettings.apiSettings.url,
+            )
+        )
+    }
+
+    @Provides
+    @ApiQualifier(Api.COIN_API)
+    fun coinApi(apiSettingsRepository: ApiSettingsRepository): HttpClient {
+        val apiSettings = apiSettingsRepository.getApiSettings(Api.COIN_API)
+        return HttpClientBuilder.build(
+            ApiSetting.CoinApi(
+                apiKey = apiSettings.apiKey,
+                url = apiSettings.url,
             )
         )
     }

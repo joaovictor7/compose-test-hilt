@@ -5,9 +5,14 @@ import com.composetest.core.data.utils.decodeJson
 import com.composetest.core.domain.models.WeatherForecastApiSettings
 import javax.inject.Inject
 
-internal class WeatherForecastApiSettingsMapper @Inject constructor() {
+internal class WeatherForecastApiSettingsMapper @Inject constructor(
+    private val apiSettingsMapper: ApiSettingsMapper
+) {
 
     operator fun invoke(json: String) = decodeJson<WeatherForecastApiSettingsResponse>(json).let {
-        WeatherForecastApiSettings(apiId = it.apiId, url = it.url, iconUrl = it.iconUrl)
+        WeatherForecastApiSettings(
+            apiSettings = apiSettingsMapper(it.apiSettings),
+            iconUrl = it.iconUrl
+        )
     }
 }

@@ -11,7 +11,7 @@ import com.composetest.core.data.datasources.remote.AuthenticationDataSourceImpl
 import com.composetest.core.data.datasources.remote.NewsApiDataSourceImpl
 import com.composetest.core.data.datasources.remote.OpenWeatherDataSourceImpl
 import com.composetest.core.data.di.qualifiers.ApiQualifier
-import com.composetest.core.data.enums.Api
+import com.composetest.core.domain.enums.Api
 import com.composetest.core.data.mappers.AuthenticationMapper
 import com.composetest.core.data.providers.AssetsProvider
 import com.composetest.core.data.providers.EnvironmentInstanceProvider
