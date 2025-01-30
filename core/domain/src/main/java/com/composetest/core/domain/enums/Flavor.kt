@@ -1,4 +1,4 @@
-package com.composetest.common.enums
+package com.composetest.core.domain.enums
 
 enum class Flavor {
     DEVELOP, STAGING, PRODUCTION;

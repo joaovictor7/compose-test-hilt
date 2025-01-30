@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -37,15 +36,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.composetest.common.extensions.navigateToApplicationDetailSettings
 import com.composetest.core.designsystem.components.asyncimage.AsyncImage
 import com.composetest.core.designsystem.components.buttons.Button
 import com.composetest.core.designsystem.components.dialogs.SimpleDialog
 import com.composetest.core.designsystem.components.graphics.SimpleScatterPlotGraphic
+import com.composetest.core.designsystem.components.scaffolds.ScreenScaffold
 import com.composetest.core.designsystem.components.topbar.LeftTopBar
 import com.composetest.core.designsystem.dimensions.Spacing
-import com.composetest.core.designsystem.extensions.horizontalScreenMargin
+import com.composetest.core.designsystem.extensions.screenMargin
 import com.composetest.core.designsystem.theme.ComposeTestTheme
-import com.composetest.common.extensions.navigateToApplicationDetailSettings
 import com.composetest.core.ui.enums.Permission
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.interfaces.Screen
@@ -75,17 +75,16 @@ internal object WeatherForecastScreen :
         )
         LaunchedEffectHandler(permissionState = permissionState)
         AlertDialogHandler(uiState = uiState, onExecuteCommand = onExecuteCommand)
-        Column(modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars)) {
-            LeftTopBar(titleId = WeatherForecastResources.string.weather_forecast_title)
-            Column(
-                modifier = Modifier
-                    .horizontalScreenMargin()
-                    .fillMaxSize(),
-                verticalArrangement = Arrangement.spacedBy(Spacing.twentyFour)
-            ) {
+        ScreenScaffold(
+            topBar = { LeftTopBar(titleId = WeatherForecastResources.string.weather_forecast_title) },
+            modifier = Modifier
+                .screenMargin()
+                .fillMaxSize()
+        ) {
+            Column(verticalArrangement = Arrangement.spacedBy(Spacing.twentyFour)) {
                 if (!uiState.thereIsPermission) {
                     RequiredPermission(permissionState = permissionState)
-                    return
+                    return@Column
                 }
                 WeatherNow(uiState = uiState, onExecuteCommand = onExecuteCommand)
                 WeatherForecastGraphic(uiState = uiState)

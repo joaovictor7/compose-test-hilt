@@ -1,15 +1,17 @@
-package com.composetest.common.di
+package com.composetest.core.data.di
 
 import com.composetest.common.providers.DateTimeProvider
-import com.composetest.common.providers.DateTimeProviderImpl
 import com.composetest.common.providers.DispatcherProvider
-import com.composetest.common.providers.DispatcherProviderImpl
 import com.composetest.common.providers.LocaleProvider
-import com.composetest.common.providers.LocaleProviderImpl
+import com.composetest.common.providers.LocationProvider
 import com.composetest.common.providers.NetworkProvider
-import com.composetest.common.providers.NetworkProviderImpl
 import com.composetest.common.providers.StringResourceProvider
-import com.composetest.common.providers.StringResourceProviderImpl
+import com.composetest.core.data.providers.DateTimeProviderImpl
+import com.composetest.core.data.providers.DispatcherProviderImpl
+import com.composetest.core.data.providers.LocaleProviderImpl
+import com.composetest.core.data.providers.LocationProviderImpl
+import com.composetest.core.data.providers.NetworkProviderImpl
+import com.composetest.core.data.providers.StringResourceProviderImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -43,4 +45,9 @@ internal abstract class ProviderModule {
     abstract fun dateTimeProvider(
         dateTimeProviderImpl: DateTimeProviderImpl
     ): DateTimeProvider
+
+    @Binds
+    abstract fun locationProvider(
+        locationProviderImpl: LocationProviderImpl
+    ): LocationProvider
 }

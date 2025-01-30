@@ -1,12 +1,12 @@
 package com.composetest.feature.login.viewmodels
 
 import com.composetest.common.analytics.CommonAnalyticEvent
-import com.composetest.common.enums.BuildType
-import com.composetest.common.enums.Flavor
-import com.composetest.common.models.BuildConfigModel
-import com.composetest.common.providers.BuildConfigProvider
+import com.composetest.core.domain.enums.BuildType
+import com.composetest.core.domain.enums.Flavor
+import com.composetest.core.domain.models.BuildConfigModel
+import com.composetest.core.domain.providers.BuildConfigProvider
 import com.composetest.core.designsystem.components.dialogs.CommonSimpleDialog
-import com.composetest.core.domain.errors.ApiError
+import com.composetest.common.errors.ApiError
 import com.composetest.core.domain.managers.ConfigurationManager
 import com.composetest.core.domain.managers.RemoteConfigManager
 import com.composetest.core.domain.managers.SessionManager

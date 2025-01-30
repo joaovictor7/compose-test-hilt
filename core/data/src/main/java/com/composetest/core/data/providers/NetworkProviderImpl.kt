@@ -1,8 +1,10 @@
-package com.composetest.common.providers
+package com.composetest.core.data.providers
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import com.composetest.common.providers.NetworkProvider
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
@@ -11,6 +13,7 @@ internal class NetworkProviderImpl @Inject constructor(
 ) : NetworkProvider {
 
     override val internetIsConnected: Boolean
+        @SuppressLint("MissingPermission")
         get() {
             val connectivityManager =
                 context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager

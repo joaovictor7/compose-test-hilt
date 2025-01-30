@@ -1,7 +1,7 @@
 package com.composetest.core.data.providers
 
-import com.composetest.common.enums.Flavor
-import com.composetest.common.providers.BuildConfigProvider
+import com.composetest.core.domain.enums.Flavor
+import com.composetest.core.domain.providers.BuildConfigProvider
 import javax.inject.Inject
 
 internal class EnvironmentInstanceProvider @Inject constructor(

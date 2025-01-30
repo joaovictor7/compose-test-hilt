@@ -1,9 +1,9 @@
 package com.composetest.feature.login.ui.login
 
-import com.composetest.common.providers.BuildConfigProvider
+import com.composetest.core.domain.providers.BuildConfigProvider
 import com.composetest.core.designsystem.utils.getCommonSimpleDialogErrorParam
 import com.composetest.core.domain.enums.Theme
-import com.composetest.core.domain.errors.ApiError
+import com.composetest.common.errors.ApiError
 import com.composetest.core.domain.managers.ConfigurationManager
 import com.composetest.core.domain.managers.RemoteConfigManager
 import com.composetest.core.domain.managers.SessionManager

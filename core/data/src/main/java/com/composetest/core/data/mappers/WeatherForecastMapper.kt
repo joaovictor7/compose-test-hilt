@@ -1,9 +1,11 @@
 package com.composetest.core.data.mappers
 
 import com.composetest.common.extensions.convertedFromUnix
+import com.composetest.core.data.api.requests.WeatherForecastRequest
 import com.composetest.core.data.api.responses.weatherforecast.WeatherForecastResponse
 import com.composetest.core.data.api.responses.weatherforecast.WeatherNowResponse
 import com.composetest.core.domain.models.weatherforecast.ForecastTemperatureModel
+import com.composetest.core.domain.models.weatherforecast.WeatherForecastLocationModel
 import com.composetest.core.domain.models.weatherforecast.WeatherForecastModel
 import com.composetest.core.domain.models.weatherforecast.WeatherNowModel
 import javax.inject.Inject
@@ -33,4 +35,11 @@ internal class WeatherForecastMapper @Inject constructor() {
             )
         }
     }
+
+    operator fun invoke(model: WeatherForecastLocationModel) = WeatherForecastRequest(
+        latitude = model.latitude.toString(),
+        longitude = model.longitude.toString(),
+        language = model.language,
+        metric = model.metric
+    )
 }

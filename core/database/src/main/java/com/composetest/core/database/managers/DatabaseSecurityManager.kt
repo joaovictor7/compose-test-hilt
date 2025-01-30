@@ -1,6 +1,6 @@
 package com.composetest.core.database.managers
 
-import com.composetest.common.providers.BuildConfigProvider
+import com.composetest.core.domain.providers.BuildConfigProvider
 import com.composetest.core.domain.providers.CipherProvider
 import com.composetest.core.domain.repositories.DatabaseRepository
 import com.composetest.core.security.utils.addPBKDF2

@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.composetest.common.providers.BuildConfigProvider
+import com.composetest.core.domain.providers.BuildConfigProvider
 import com.composetest.core.database.converters.LocalDateTimeConverter
 import com.composetest.core.database.database.Database
 import com.composetest.core.database.managers.DatabaseSecurityManager

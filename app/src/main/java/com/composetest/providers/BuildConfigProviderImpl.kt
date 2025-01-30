@@ -2,10 +2,10 @@ package com.composetest.providers
 
 import android.os.Build
 import com.composetest.BuildConfig
-import com.composetest.common.enums.BuildType.Companion.getBuildType
-import com.composetest.common.enums.Flavor.Companion.getFlavor
-import com.composetest.common.models.BuildConfigModel
-import com.composetest.common.providers.BuildConfigProvider
+import com.composetest.core.domain.enums.BuildType.Companion.getBuildType
+import com.composetest.core.domain.enums.Flavor.Companion.getFlavor
+import com.composetest.core.domain.models.BuildConfigModel
+import com.composetest.core.domain.providers.BuildConfigProvider
 import javax.inject.Inject
 
 internal class BuildConfigProviderImpl @Inject constructor() : BuildConfigProvider {

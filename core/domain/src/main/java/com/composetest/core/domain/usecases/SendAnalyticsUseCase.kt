@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.core.os.bundleOf
 import com.composetest.common.analytics.AnalyticEvent
 import com.composetest.common.analytics.ErrorAnalyticEvent
-import com.composetest.common.providers.BuildConfigProvider
+import com.composetest.core.domain.providers.BuildConfigProvider
 import com.composetest.core.domain.repositories.AnalyticsRepository
 import com.composetest.core.domain.repositories.UserRepository
 import java.time.ZonedDateTime

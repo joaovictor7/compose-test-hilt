@@ -1,5 +1,7 @@
 package com.composetest.feature.weatherforecast.ui.weatherforecast
 
+import android.location.Location
+import com.composetest.common.providers.LocationProvider
 import com.composetest.core.designsystem.utils.getCommonSimpleDialogErrorParam
 import com.composetest.core.domain.usecases.GeTodayWeatherForecastUseCase
 import com.composetest.core.domain.usecases.GetFutureWeatherForecastUseCase
@@ -24,6 +26,7 @@ internal class WeatherForecastViewModel @Inject constructor(
     private val getFutureWeatherForecastsUseCase: GetFutureWeatherForecastUseCase,
     private val weatherNowScreenModelMapper: WeatherNowScreenModelMapper,
     private val futureWeatherForecastScreenModelsMapper: FutureWeatherForecastScreenModelsMapper,
+    private val locationProvider: LocationProvider,
     override val sendAnalyticsUseCase: SendAnalyticsUseCase,
     @NavGraphQualifier(NavGraph.MAIN) override val navigationManager: NavigationManager
 ) : BaseViewModel<WeatherForecastUiState, WeatherForecastUiEvent>(WeatherForecastUiState()),
@@ -44,8 +47,9 @@ internal class WeatherForecastViewModel @Inject constructor(
             onError = ::handleRequestError,
             onCompletion = { updateUiState { it.setLoading(false) } }
         ) {
-            setWeatherNow()
-            setWeatherForecasts()
+            val location = locationProvider.getLastLocation()
+            setWeatherNow(location)
+            setWeatherForecasts(location)
         }
     }
 
@@ -53,15 +57,15 @@ internal class WeatherForecastViewModel @Inject constructor(
         updateUiState { it.setSimpleAlertDialog(null) }
     }
 
-    private suspend fun setWeatherNow() {
-        val weatherNowForecast = getWeatherNowUseCase()
+    private suspend fun setWeatherNow(location: Location) {
+        val weatherNowForecast = getWeatherNowUseCase(location.latitude, location.longitude)
         updateUiState {
             it.setWeatherNow(weatherNowScreenModelMapper(weatherNowForecast))
         }
     }
 
-    private suspend fun setWeatherForecasts() {
-        val weatherForecast = getWeatherForecastsUseCase()
+    private suspend fun setWeatherForecasts(location: Location) {
+        val weatherForecast = getWeatherForecastsUseCase(location.latitude, location.longitude)
         val todayWeatherForecast = getTodayWeatherForecastUseCase(weatherForecast)
         val futureWeatherForecasts = getFutureWeatherForecastsUseCase(weatherForecast)
         updateUiState {

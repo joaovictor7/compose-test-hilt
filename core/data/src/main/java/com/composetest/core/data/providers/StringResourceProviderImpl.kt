@@ -1,7 +1,8 @@
-package com.composetest.common.providers
+package com.composetest.core.data.providers
 
 import android.content.Context
 import androidx.annotation.StringRes
+import com.composetest.common.providers.StringResourceProvider
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 

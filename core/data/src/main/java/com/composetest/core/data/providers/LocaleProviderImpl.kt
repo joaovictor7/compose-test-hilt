@@ -1,5 +1,6 @@
-package com.composetest.common.providers
+package com.composetest.core.data.providers
 
+import com.composetest.common.providers.LocaleProvider
 import java.util.Locale
 import javax.inject.Inject
 
