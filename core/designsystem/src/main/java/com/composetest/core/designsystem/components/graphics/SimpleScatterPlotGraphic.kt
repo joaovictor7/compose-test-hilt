@@ -35,6 +35,7 @@ fun SimpleScatterPlotGraphic(
     val drawCircleColor = MaterialTheme.colorScheme.secondary
     val labelTextColor = MaterialTheme.colorScheme.onSurface
     val spacing = 40.dp
+    val isSingleValue = maxLabel == minLabel
 
     Canvas(
         modifier = modifier
@@ -52,8 +53,11 @@ fun SimpleScatterPlotGraphic(
         val strokePath = Path().apply {
             for (i in yPoints.indices) {
                 val currentX = spacingPx + i * spacePerHour
-                val normalizedY =
+                val normalizedY = if (isSingleValue) {
+                    size.height / 2f
+                } else {
                     size.height - (yPoints[i] - minLabel) / (maxLabel - minLabel) * size.height
+                }
 
                 if (i == 0) {
                     moveTo(currentX, normalizedY)
@@ -100,7 +104,11 @@ fun SimpleScatterPlotGraphic(
 
         // Draw Y axis labels
         val labelCountDec = labelCount.dec()
-        val labelSpacing = (maxLabel - minLabel) / labelCountDec
+        val labelSpacing = if (isSingleValue) {
+            0f
+        } else {
+            (maxLabel - minLabel) / labelCountDec
+        }
         for (i in 0..labelCountDec.toInt()) {
             val yValue = minLabel + i * labelSpacing
             val yValueFormatted = if (yValue % 1.0 == 0.0) {
@@ -108,7 +116,11 @@ fun SimpleScatterPlotGraphic(
             } else {
                 "%.1f".format(yValue).replace(",", ".")
             }
-            val yPosition = size.height - (yValue - minLabel) / (maxLabel - minLabel) * size.height
+            val yPosition = if (isSingleValue) {
+                size.height / 2f
+            } else {
+                size.height - (yValue - minLabel) / (maxLabel - minLabel) * size.height
+            }
 
             drawContext.canvas.nativeCanvas.apply {
                 drawText(
@@ -145,7 +157,7 @@ private fun Preview() {
             ),
             labelCount = 5f,
             minLabel = 20f,
-            maxLabel = 44f,
+            maxLabel = 20f,
             labelFormat = "%sº"
         )
     }

@@ -3,18 +3,16 @@ package com.composetest.core.data.providers
 import android.annotation.SuppressLint
 import android.content.Context
 import com.composetest.common.errors.LocationError
-import com.composetest.common.providers.DispatcherProvider
 import com.composetest.common.providers.LocationProvider
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.suspendCancellableCoroutine
 import javax.inject.Inject
 import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
+import kotlin.coroutines.resumeWithException
 
 internal class LocationProviderImpl @Inject constructor(
-    private val dispatcherProvider: DispatcherProvider,
     @ApplicationContext private val context: Context
 ) : LocationProvider {
 
@@ -22,12 +20,16 @@ internal class LocationProviderImpl @Inject constructor(
         LocationServices.getFusedLocationProviderClient(context)
 
     @SuppressLint("MissingPermission")
-    override suspend fun getLastLocation() =
-        withContext(dispatcherProvider.io) {
-            suspendCoroutine {
-                val result = fusedLocationClient.lastLocation.result
-                    ?: throw LocationError.LocationNotFound()
-                it.resume(result)
+    override suspend fun getLastLocation() = suspendCancellableCoroutine {
+        fusedLocationClient.lastLocation
+            .addOnSuccessListener { location ->
+                if (location != null) {
+                    it.resume(location)
+                } else {
+                    it.resumeWithException(LocationError.LocationNotFound())
+                }
+            }.addOnFailureListener { error ->
+                it.resumeWithException(LocationError.LocationUnknownError(error))
             }
-        }
+    }
 }
