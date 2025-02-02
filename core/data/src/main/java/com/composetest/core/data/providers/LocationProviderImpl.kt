@@ -2,6 +2,7 @@ package com.composetest.core.data.providers
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.location.Location
 import com.composetest.common.errors.LocationError
 import com.composetest.common.providers.LocationProvider
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -20,7 +21,7 @@ internal class LocationProviderImpl @Inject constructor(
         LocationServices.getFusedLocationProviderClient(context)
 
     @SuppressLint("MissingPermission")
-    override suspend fun getLastLocation() = suspendCancellableCoroutine {
+    override suspend fun getLastLocation(): Location = suspendCancellableCoroutine {
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location ->
                 if (location != null) {

@@ -1,7 +1,8 @@
-package com.composetest.core.designsystem.utils
+package com.composetest.core.designsystem.components.lifecycle
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -12,7 +13,10 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.compose.LocalLifecycleOwner
 
 @Composable
-fun lifecycleEvent(lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current): Lifecycle.Event {
+fun LifecycleEvent(
+    lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
+    onEvent: (Lifecycle.Event) -> Unit
+) {
     var lifecycleEvent by remember { mutableStateOf(Lifecycle.Event.ON_ANY) }
     DisposableEffect(lifecycleOwner) {
         val lifecycleObserver = LifecycleEventObserver { _, event ->
@@ -25,5 +29,7 @@ fun lifecycleEvent(lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current)
             lifecycleOwner.lifecycle.removeObserver(lifecycleObserver)
         }
     }
-    return lifecycleEvent
+    LaunchedEffect(lifecycleEvent) {
+        onEvent(lifecycleEvent)
+    }
 }

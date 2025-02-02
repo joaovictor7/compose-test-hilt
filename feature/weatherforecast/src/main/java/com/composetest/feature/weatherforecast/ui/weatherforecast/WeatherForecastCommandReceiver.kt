@@ -5,7 +5,7 @@ import com.composetest.core.ui.interfaces.CommandReceiver
 internal interface WeatherForecastCommandReceiver :
     CommandReceiver<WeatherForecastCommandReceiver> {
 
-    fun checkPermissionsResult(permissions: Map<String, Boolean>)
+    fun checkPermissionsResult()
     fun getWeatherForecastData()
     fun dismissSimpleDialog()
 }

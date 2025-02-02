@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -26,7 +25,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.AbsoluteAlignment
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
@@ -36,12 +34,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
 import com.composetest.common.extensions.navigateToApplicationDetailSettings
 import com.composetest.core.designsystem.components.asyncimage.AsyncImage
 import com.composetest.core.designsystem.components.buttons.Button
 import com.composetest.core.designsystem.components.dialogs.SimpleDialog
 import com.composetest.core.designsystem.components.graphics.SimpleScatterPlotGraphic
-import com.composetest.core.designsystem.components.scaffolds.ScreenScaffold
+import com.composetest.core.designsystem.components.lifecycle.LifecycleEvent
 import com.composetest.core.designsystem.components.topbar.LeftTopBar
 import com.composetest.core.designsystem.dimensions.Spacing
 import com.composetest.core.designsystem.extensions.screenMargin
@@ -49,11 +48,12 @@ import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.ui.enums.Permission
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.interfaces.Screen
+import com.composetest.core.ui.utils.getMultiplePermissionState
+import com.composetest.feature.weatherforecast.enums.WeatherForecastScreenStatus
 import com.composetest.feature.weatherforecast.models.FutureWeatherForecastScreenModel
 import com.composetest.feature.weatherforecast.models.WeatherNowScreenModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.MultiplePermissionsState
-import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import kotlinx.coroutines.flow.Flow
 import com.composetest.core.designsystem.R as DesignSystemResources
 import com.composetest.feature.weatherforecast.R as WeatherForecastResources
@@ -67,24 +67,24 @@ internal object WeatherForecastScreen :
         uiEvent: Flow<WeatherForecastUiEvent>?,
         onExecuteCommand: (Command<WeatherForecastCommandReceiver>) -> Unit
     ) {
-        val permissionState = rememberMultiplePermissionsState(
-            permissions = Permission.localization,
-            onPermissionsResult = {
-                onExecuteCommand(WeatherForecastCommand.CheckPermissionsResult(it))
-            }
-        )
-        LaunchedEffectHandler(permissionState = permissionState)
+        val permissionState = getMultiplePermissionState(Permission.localization)
+        LaunchedEffectHandler(uiEvent = uiEvent, permissionState = permissionState)
         AlertDialogHandler(uiState = uiState, onExecuteCommand = onExecuteCommand)
-        ScreenScaffold(
-            topBar = { LeftTopBar(titleId = WeatherForecastResources.string.weather_forecast_title) },
-            modifier = Modifier
-                .screenMargin()
-                .fillMaxSize()
-        ) {
-            Column(verticalArrangement = Arrangement.spacedBy(Spacing.twentyFour)) {
-                if (!uiState.thereIsPermission) {
-                    RequiredPermission(permissionState = permissionState)
-                    return@Column
+        LifecycleEventHandler(onExecuteCommand = onExecuteCommand)
+        Column(modifier = Modifier.fillMaxSize()) {
+            LeftTopBar(titleId = WeatherForecastResources.string.weather_forecast_title)
+            if (uiState.screenIsInitial) return
+            Column(
+                modifier = Modifier.screenMargin(),
+                verticalArrangement = Arrangement.spacedBy(Spacing.twentyFour)
+            ) {
+                if (!uiState.screenIsReady) {
+                    FullScreenMessage(
+                        uiState = uiState,
+                        onExecuteCommand = onExecuteCommand,
+                        permissionState = permissionState
+                    )
+                    return
                 }
                 WeatherNow(uiState = uiState, onExecuteCommand = onExecuteCommand)
                 WeatherForecastGraphic(uiState = uiState)
@@ -102,13 +102,11 @@ internal object WeatherForecastScreen :
 }
 
 @Composable
-private fun RequiredPermission(permissionState: MultiplePermissionsState) {
-    val context = LocalContext.current
-    val buttonText = if (permissionState.shouldShowRationale) {
-        WeatherForecastResources.string.weather_forecast_active_permissions
-    } else {
-        WeatherForecastResources.string.weather_forecast_active_permissions_blocked
-    }
+private fun FullScreenMessage(
+    uiState: WeatherForecastUiState,
+    onExecuteCommand: (Command<WeatherForecastCommandReceiver>) -> Unit,
+    permissionState: MultiplePermissionsState,
+) {
     Box(
         Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -118,17 +116,37 @@ private fun RequiredPermission(permissionState: MultiplePermissionsState) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = stringResource(WeatherForecastResources.string.weather_forecast_required_permission_msg),
+                text = uiState.screenFullMessageId?.let { stringResource(it) }.orEmpty(),
                 style = MaterialTheme.typography.bodyLarge,
                 textAlign = TextAlign.Center
             )
-            Button(text = stringResource(buttonText)) {
-                if (permissionState.shouldShowRationale) {
-                    permissionState.launchMultiplePermissionRequest()
-                } else {
-                    context.navigateToApplicationDetailSettings()
+            if (uiState.screenStatus == WeatherForecastScreenStatus.TRY_AGAIN) {
+                IconButton(onClick = { onExecuteCommand(WeatherForecastCommand.GetWeatherForecastData) }) {
+                    Icon(
+                        painter = painterResource(DesignSystemResources.drawable.ic_refresh_medium),
+                        contentDescription = null
+                    )
                 }
+            } else {
+                NeedsPermissionButton(permissionState = permissionState)
             }
+        }
+    }
+}
+
+@Composable
+private fun NeedsPermissionButton(permissionState: MultiplePermissionsState) {
+    val context = LocalContext.current
+    val buttonText = if (permissionState.shouldShowRationale) {
+        WeatherForecastResources.string.weather_forecast_active_permissions
+    } else {
+        WeatherForecastResources.string.weather_forecast_active_permissions_blocked
+    }
+    Button(text = stringResource(buttonText)) {
+        if (permissionState.shouldShowRationale) {
+            permissionState.launchMultiplePermissionRequest()
+        } else {
+            context.navigateToApplicationDetailSettings()
         }
     }
 }
@@ -141,10 +159,10 @@ private fun RefreshButton(
 ) {
     Box(
         modifier = modifier.padding(end = Spacing.twelve),
-        contentAlignment = AbsoluteAlignment.CenterRight
+        contentAlignment = Alignment.CenterEnd
     ) {
         if (uiState.isLoading) {
-            CircularProgressIndicator(modifier = Modifier.size(24.dp))
+            CircularProgressIndicator()
         } else {
             IconButton(onClick = { onExecuteCommand(WeatherForecastCommand.GetWeatherForecastData) }) {
                 Icon(
@@ -279,11 +297,32 @@ private fun AlertDialogHandler(
 }
 
 @Composable
-private fun LaunchedEffectHandler(permissionState: MultiplePermissionsState) {
+private fun LaunchedEffectHandler(
+    uiEvent: Flow<WeatherForecastUiEvent>?,
+    permissionState: MultiplePermissionsState,
+) {
     LaunchedEffect(Unit) {
-        permissionState.launchMultiplePermissionRequest()
+        uiEvent?.collect {
+            when (it) {
+                WeatherForecastUiEvent.LaunchPermissionRequest -> {
+                    permissionState.launchMultiplePermissionRequest()
+                }
+            }
+        }
     }
 }
+
+@Composable
+private fun LifecycleEventHandler(
+    onExecuteCommand: (Command<WeatherForecastCommandReceiver>) -> Unit
+) {
+    LifecycleEvent {
+        if (it == Lifecycle.Event.ON_RESUME) {
+            onExecuteCommand(WeatherForecastCommand.CheckPermissionsResult)
+        }
+    }
+}
+
 
 @Composable
 @Preview
@@ -291,6 +330,8 @@ private fun Preview() {
     ComposeTestTheme {
         WeatherForecastScreen(
             uiState = WeatherForecastUiState(
+                screenStatus = WeatherForecastScreenStatus.READY,
+                isLoading = true,
                 weatherNow = WeatherNowScreenModel(
                     city = "Porto",
                     description = "Nuvens carregadas e trovoadas",

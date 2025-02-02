@@ -4,11 +4,9 @@ import com.composetest.core.ui.interfaces.Command
 
 internal sealed interface WeatherForecastCommand : Command<WeatherForecastCommandReceiver> {
 
-    data class CheckPermissionsResult(
-        private val permissions: Map<String, Boolean>
-    ) : WeatherForecastCommand {
+    data object CheckPermissionsResult : WeatherForecastCommand {
         override fun execute(commandReceiver: WeatherForecastCommandReceiver) {
-            commandReceiver.checkPermissionsResult(permissions)
+            commandReceiver.checkPermissionsResult()
         }
     }
 

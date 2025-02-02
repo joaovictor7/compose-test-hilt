@@ -1,14 +1,13 @@
 package com.composetest.ui
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.composetest.core.designsystem.components.dialogs.SimpleDialog
+import com.composetest.core.designsystem.components.lifecycle.LifecycleEvent
 import com.composetest.core.designsystem.theme.ComposeTestTheme
-import com.composetest.core.designsystem.utils.lifecycleEvent
 import com.composetest.core.router.destinations.login.LoginDestination
 import com.composetest.core.router.interfaces.Destination
 import com.composetest.core.ui.interfaces.Command
@@ -64,9 +63,8 @@ private fun Navigation(
 
 @Composable
 private fun LifecycleHandle(onExecuteCommand: (Command<MainCommandReceiver>) -> Unit) {
-    val event = lifecycleEvent()
-    LaunchedEffect(event) {
-        if (event == Lifecycle.Event.ON_RESUME) {
+    LifecycleEvent {
+        if (it == Lifecycle.Event.ON_RESUME) {
             onExecuteCommand(MainCommand.VerifySession)
         }
     }

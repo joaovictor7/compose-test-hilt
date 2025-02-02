@@ -1,6 +1,7 @@
 package com.composetest.feature.weatherforecast.ui.weatherforecast
 
 import android.location.Location
+import com.composetest.common.errors.LocationError
 import com.composetest.common.providers.LocationProvider
 import com.composetest.core.designsystem.utils.getCommonSimpleDialogErrorParam
 import com.composetest.core.domain.usecases.GeTodayWeatherForecastUseCase
@@ -12,7 +13,10 @@ import com.composetest.core.router.di.qualifiers.NavGraphQualifier
 import com.composetest.core.router.enums.NavGraph
 import com.composetest.core.router.managers.NavigationManager
 import com.composetest.core.ui.bases.BaseViewModel
+import com.composetest.core.ui.enums.Permission
+import com.composetest.core.ui.providers.PermissionProvider
 import com.composetest.feature.weatherforecast.analytics.weatherforecast.WeatherForecastScreenAnalytic
+import com.composetest.feature.weatherforecast.enums.WeatherForecastScreenStatus
 import com.composetest.feature.weatherforecast.mappers.FutureWeatherForecastScreenModelsMapper
 import com.composetest.feature.weatherforecast.mappers.WeatherNowScreenModelMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,6 +31,7 @@ internal class WeatherForecastViewModel @Inject constructor(
     private val weatherNowScreenModelMapper: WeatherNowScreenModelMapper,
     private val futureWeatherForecastScreenModelsMapper: FutureWeatherForecastScreenModelsMapper,
     private val locationProvider: LocationProvider,
+    private val permissionProvider: PermissionProvider,
     override val sendAnalyticsUseCase: SendAnalyticsUseCase,
     @NavGraphQualifier(NavGraph.MAIN) override val navigationManager: NavigationManager
 ) : BaseViewModel<WeatherForecastUiState, WeatherForecastUiEvent>(WeatherForecastUiState()),
@@ -35,9 +40,18 @@ internal class WeatherForecastViewModel @Inject constructor(
     override val commandReceiver = this
     override val analyticScreen = WeatherForecastScreenAnalytic
 
-    override fun checkPermissionsResult(permissions: Map<String, Boolean>) {
-        if (permissions.any { it.value }) {
+    init {
+        openScreenAnalytic()
+        checkPermissions()
+    }
+
+    override fun checkPermissionsResult() {
+        if (uiState.value.screenIsReady) return
+        if (permissionProvider.somePermissionIsGranted(Permission.localization)) {
+            updateUiState { it.setScreenStatus(WeatherForecastScreenStatus.READY) }
             getWeatherForecastData()
+        } else {
+            updateUiState { it.setScreenStatus(WeatherForecastScreenStatus.PERMISSION_NOT_GRANTED) }
         }
     }
 
@@ -55,6 +69,12 @@ internal class WeatherForecastViewModel @Inject constructor(
 
     override fun dismissSimpleDialog() {
         updateUiState { it.setSimpleAlertDialog(null) }
+    }
+
+    private fun checkPermissions() {
+        if (!permissionProvider.permissionIsGranted(Permission.localization)) {
+            launchUiEvent(WeatherForecastUiEvent.LaunchPermissionRequest)
+        }
     }
 
     private suspend fun setWeatherNow(location: Location) {
@@ -78,7 +98,11 @@ internal class WeatherForecastViewModel @Inject constructor(
 
     private fun handleRequestError(error: Throwable) {
         updateUiState { uiState ->
-            uiState.setSimpleAlertDialog(getCommonSimpleDialogErrorParam(error))
+            if (error is LocationError.LocationNotFound) {
+                uiState.setScreenStatus(WeatherForecastScreenStatus.TRY_AGAIN)
+            } else {
+                uiState.setSimpleAlertDialog(getCommonSimpleDialogErrorParam(error))
+            }
         }
     }
 }

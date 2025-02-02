@@ -7,6 +7,6 @@ enum class Permission(val manifest: String) {
     COARSE_LOCALIZATION(Manifest.permission.ACCESS_COARSE_LOCATION);
 
     companion object {
-        val localization = listOf(FINE_LOCALIZATION.manifest, COARSE_LOCALIZATION.manifest)
+        val localization = listOf(FINE_LOCALIZATION, COARSE_LOCALIZATION)
     }
 }
