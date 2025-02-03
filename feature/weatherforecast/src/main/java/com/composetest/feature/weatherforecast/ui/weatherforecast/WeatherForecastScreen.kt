@@ -36,6 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import com.composetest.common.extensions.navigateToApplicationDetailSettings
+import com.composetest.core.designsystem.components.ShimmerEffect
 import com.composetest.core.designsystem.components.asyncimage.AsyncImage
 import com.composetest.core.designsystem.components.buttons.Button
 import com.composetest.core.designsystem.components.dialogs.SimpleDialog
@@ -179,6 +180,10 @@ private fun WeatherNow(
     uiState: WeatherForecastUiState,
     onExecuteCommand: (Command<WeatherForecastCommandReceiver>) -> Unit
 ) = with(uiState.weatherNow) {
+    if (uiState.isLoading) {
+        WeatherNowShimmer(uiState = uiState)
+        return
+    }
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
@@ -226,6 +231,15 @@ private fun WeatherNow(
             onExecuteCommand = onExecuteCommand
         )
     }
+}
+
+@Composable
+private fun WeatherNowShimmer(uiState: WeatherForecastUiState) {
+    ShimmerEffect(
+        modifier = Modifier
+            .height(100.dp)
+            .fillMaxWidth()
+    )
 }
 
 @Composable

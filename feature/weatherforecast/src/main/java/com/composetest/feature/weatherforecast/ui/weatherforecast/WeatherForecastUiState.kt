@@ -15,6 +15,7 @@ internal data class WeatherForecastUiState(
     val todayWeatherForecast: TodayWeatherForecastScreenModel? = TodayWeatherForecastScreenModel(),
     val futureWeatherForecasts: List<FutureWeatherForecastScreenModel> = emptyList(),
     val simpleDialogParam: SimpleDialogParam? = null,
+    val forecastIsLoading: Boolean = false,
     override val isLoading: Boolean = false
 ) : BaseUiState {
 

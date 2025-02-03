@@ -152,9 +152,7 @@ private fun Preview() {
     ComposeTestTheme {
         SimpleScatterPlotGraphic(
             modifier = Modifier.height(200.dp),
-            yPoints = listOf(
-                22f
-            ),
+            yPoints = listOf(22f),
             labelCount = 5f,
             minLabel = 20f,
             maxLabel = 20f,
