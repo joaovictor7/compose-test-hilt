@@ -1,9 +1,7 @@
 package com.composetest.feature.weatherforecast.ui.weatherforecast
 
 import android.location.Location
-import com.composetest.common.errors.LocationError
 import com.composetest.common.providers.LocationProvider
-import com.composetest.core.designsystem.utils.getCommonSimpleDialogErrorParam
 import com.composetest.core.domain.usecases.GeTodayWeatherForecastUseCase
 import com.composetest.core.domain.usecases.GetFutureWeatherForecastUseCase
 import com.composetest.core.domain.usecases.GetWeatherForecastsUseCase
@@ -17,6 +15,7 @@ import com.composetest.core.ui.enums.Permission
 import com.composetest.core.ui.providers.PermissionProvider
 import com.composetest.feature.weatherforecast.analytics.weatherforecast.WeatherForecastScreenAnalytic
 import com.composetest.feature.weatherforecast.enums.WeatherForecastScreenStatus
+import com.composetest.feature.weatherforecast.enums.WeatherForecastStatus
 import com.composetest.feature.weatherforecast.mappers.FutureWeatherForecastScreenModelsMapper
 import com.composetest.feature.weatherforecast.mappers.WeatherNowScreenModelMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -37,6 +36,8 @@ internal class WeatherForecastViewModel @Inject constructor(
 ) : BaseViewModel<WeatherForecastUiState, WeatherForecastUiEvent>(WeatherForecastUiState()),
     WeatherForecastCommandReceiver {
 
+    private var location: Location? = null
+
     override val commandReceiver = this
     override val analyticScreen = WeatherForecastScreenAnalytic
 
@@ -46,29 +47,25 @@ internal class WeatherForecastViewModel @Inject constructor(
     }
 
     override fun checkPermissionsResult() {
-        if (uiState.value.screenIsReady) return
+        if (uiState.value.screenStatus == WeatherForecastScreenStatus.READY) return
         if (permissionProvider.somePermissionIsGranted(Permission.localization)) {
             updateUiState { it.setScreenStatus(WeatherForecastScreenStatus.READY) }
-            getWeatherForecastData()
+            getLocationAndWeatherForecastsData()
         } else {
             updateUiState { it.setScreenStatus(WeatherForecastScreenStatus.PERMISSION_NOT_GRANTED) }
         }
     }
 
-    override fun getWeatherForecastData() {
-        updateUiState { it.setLoading(true) }
-        runAsyncTask(
-            onError = ::handleRequestError,
-            onCompletion = { updateUiState { it.setLoading(false) } }
-        ) {
-            val location = locationProvider.getLastLocation()
-            setWeatherNow(location)
-            setWeatherForecasts(location)
+    override fun getLocationAndWeatherForecastsData() {
+        runAsyncTask(onError = { error -> updateUiState { it.setLocationError(error) } }) {
+            location = locationProvider.getLastLocation()
+            getWeatherForecastNowData()
+            getWeatherForecastsData()
         }
     }
 
     override fun dismissSimpleDialog() {
-        updateUiState { it.setSimpleAlertDialog(null) }
+        updateUiState { it.dismissSimpleDialog() }
     }
 
     private fun checkPermissions() {
@@ -77,31 +74,28 @@ internal class WeatherForecastViewModel @Inject constructor(
         }
     }
 
-    private suspend fun setWeatherNow(location: Location) {
-        val weatherNowForecast = getWeatherNowUseCase(location.latitude, location.longitude)
-        updateUiState {
-            it.setWeatherNow(weatherNowScreenModelMapper(weatherNowForecast))
+    private fun getWeatherForecastNowData() = location?.let { location ->
+        updateUiState { it.copy(weatherNowStatus = WeatherForecastStatus.LOADING) }
+        runAsyncTask(onError = { error -> updateUiState { it.setWeatherNowError(error) } }) {
+            val weatherNowForecast = getWeatherNowUseCase(location.latitude, location.longitude)
+            updateUiState { uiState ->
+                uiState.setWeatherNow(weatherNowScreenModelMapper(weatherNowForecast))
+            }
         }
     }
 
-    private suspend fun setWeatherForecasts(location: Location) {
-        val weatherForecast = getWeatherForecastsUseCase(location.latitude, location.longitude)
-        val todayWeatherForecast = getTodayWeatherForecastUseCase(weatherForecast)
-        val futureWeatherForecasts = getFutureWeatherForecastsUseCase(weatherForecast)
-        updateUiState {
-            it.setWeatherForecasts(
-                todayWeatherForecast,
-                futureWeatherForecastScreenModelsMapper(futureWeatherForecasts)
-            )
-        }
-    }
-
-    private fun handleRequestError(error: Throwable) {
-        updateUiState { uiState ->
-            if (error is LocationError.LocationNotFound) {
-                uiState.setScreenStatus(WeatherForecastScreenStatus.TRY_AGAIN)
-            } else {
-                uiState.setSimpleAlertDialog(getCommonSimpleDialogErrorParam(error))
+    private fun getWeatherForecastsData() = location?.let { location ->
+        updateUiState { it.copy(weatherForecastsStatus = WeatherForecastStatus.LOADING) }
+        runAsyncTask(onError = { error -> updateUiState { it.setWeatherForecastsError(error) } }) {
+            val weatherForecast =
+                getWeatherForecastsUseCase(location.latitude, location.longitude)
+            val todayWeatherForecast = getTodayWeatherForecastUseCase(weatherForecast)
+            val futureWeatherForecasts = getFutureWeatherForecastsUseCase(weatherForecast)
+            updateUiState { uiState ->
+                uiState.setWeatherForecasts(
+                    todayWeatherForecast,
+                    futureWeatherForecastScreenModelsMapper(futureWeatherForecasts)
+                )
             }
         }
     }

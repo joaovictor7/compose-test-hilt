@@ -6,6 +6,6 @@ internal interface WeatherForecastCommandReceiver :
     CommandReceiver<WeatherForecastCommandReceiver> {
 
     fun checkPermissionsResult()
-    fun getWeatherForecastData()
+    fun getLocationAndWeatherForecastsData()
     fun dismissSimpleDialog()
 }

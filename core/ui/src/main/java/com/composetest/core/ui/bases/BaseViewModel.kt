@@ -1,5 +1,6 @@
 package com.composetest.core.ui.bases
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.composetest.common.analytics.AnalyticScreen
@@ -89,6 +90,7 @@ abstract class BaseViewModel<UiState : BaseUiState, UiEvent : BaseUiEvent>(
         error: Throwable,
         onError: (suspend (Throwable) -> Unit)? = null
     ) {
+        Log.e("BaseViewModel", error.message, error)
         sendAnalyticsUseCase(ErrorAnalyticEvent(error, analyticScreen))
         onError?.invoke(error)
     }

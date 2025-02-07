@@ -10,9 +10,9 @@ internal sealed interface WeatherForecastCommand : Command<WeatherForecastComman
         }
     }
 
-    data object GetWeatherForecastData : WeatherForecastCommand {
+    data object GetLocationAndWeatherForecastsData : WeatherForecastCommand {
         override fun execute(commandReceiver: WeatherForecastCommandReceiver) {
-            commandReceiver.getWeatherForecastData()
+            commandReceiver.getLocationAndWeatherForecastsData()
         }
     }
 

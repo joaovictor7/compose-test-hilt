@@ -3,6 +3,7 @@
 
     <!-- Global Words -->
     <string name="global_word_close">Close</string>
+    <string name="global_word_try_again">Try again</string>
 
     <!-- Alert Error Dialogs -->
     <string name="error_alert_dialog_generic_title">It went bad 😥</string>

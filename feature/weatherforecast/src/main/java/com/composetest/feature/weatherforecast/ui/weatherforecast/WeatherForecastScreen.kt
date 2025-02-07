@@ -2,17 +2,21 @@
 
 package com.composetest.feature.weatherforecast.ui.weatherforecast
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -36,12 +40,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import com.composetest.common.extensions.navigateToApplicationDetailSettings
-import com.composetest.core.designsystem.components.ShimmerEffect
 import com.composetest.core.designsystem.components.asyncimage.AsyncImage
 import com.composetest.core.designsystem.components.buttons.Button
+import com.composetest.core.designsystem.components.buttons.TryAgainButton
 import com.composetest.core.designsystem.components.dialogs.SimpleDialog
 import com.composetest.core.designsystem.components.graphics.SimpleScatterPlotGraphic
 import com.composetest.core.designsystem.components.lifecycle.LifecycleEvent
+import com.composetest.core.designsystem.components.shimmer.ShimmerEffect
 import com.composetest.core.designsystem.components.topbar.LeftTopBar
 import com.composetest.core.designsystem.dimensions.Spacing
 import com.composetest.core.designsystem.extensions.screenMargin
@@ -50,7 +55,10 @@ import com.composetest.core.ui.enums.Permission
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.interfaces.Screen
 import com.composetest.core.ui.utils.getMultiplePermissionState
+import com.composetest.feature.weatherforecast.R
 import com.composetest.feature.weatherforecast.enums.WeatherForecastScreenStatus
+import com.composetest.feature.weatherforecast.enums.WeatherForecastStatus
+import com.composetest.feature.weatherforecast.models.FutureDailyWeatherForecastScreenModel
 import com.composetest.feature.weatherforecast.models.FutureWeatherForecastScreenModel
 import com.composetest.feature.weatherforecast.models.WeatherNowScreenModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -74,12 +82,11 @@ internal object WeatherForecastScreen :
         LifecycleEventHandler(onExecuteCommand = onExecuteCommand)
         Column(modifier = Modifier.fillMaxSize()) {
             LeftTopBar(titleId = WeatherForecastResources.string.weather_forecast_title)
-            if (uiState.screenIsInitial) return
             Column(
                 modifier = Modifier.screenMargin(),
                 verticalArrangement = Arrangement.spacedBy(Spacing.twentyFour)
             ) {
-                if (!uiState.screenIsReady) {
+                if (uiState.showFullScreenMsg) {
                     FullScreenMessage(
                         uiState = uiState,
                         onExecuteCommand = onExecuteCommand,
@@ -88,20 +95,13 @@ internal object WeatherForecastScreen :
                     return
                 }
                 WeatherNow(uiState = uiState, onExecuteCommand = onExecuteCommand)
-                WeatherForecastGraphic(uiState = uiState)
-                LazyColumn(verticalArrangement = Arrangement.spacedBy(Spacing.twelve)) {
-                    items(uiState.futureWeatherForecasts) {
-                        FutureWeatherForecast(futureWeatherForecastScreen = it)
-                    }
-                    item {
-                        Spacer(Modifier.windowInsetsPadding(WindowInsets.navigationBars))
-                    }
-                }
+                WeatherForecasts(uiState = uiState, onExecuteCommand = onExecuteCommand)
             }
         }
     }
 }
 
+// region Full Screen Message
 @Composable
 private fun FullScreenMessage(
     uiState: WeatherForecastUiState,
@@ -116,20 +116,20 @@ private fun FullScreenMessage(
             verticalArrangement = Arrangement.spacedBy(Spacing.eight),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(
-                text = uiState.screenFullMessageId?.let { stringResource(it) }.orEmpty(),
-                style = MaterialTheme.typography.bodyLarge,
-                textAlign = TextAlign.Center
-            )
-            if (uiState.screenStatus == WeatherForecastScreenStatus.TRY_AGAIN) {
-                IconButton(onClick = { onExecuteCommand(WeatherForecastCommand.GetWeatherForecastData) }) {
-                    Icon(
-                        painter = painterResource(DesignSystemResources.drawable.ic_refresh_medium),
-                        contentDescription = null
-                    )
-                }
-            } else {
+            if (uiState.screenStatus == WeatherForecastScreenStatus.PERMISSION_NOT_GRANTED) {
+                Text(
+                    text = stringResource(R.string.weather_forecast_required_permission_msg),
+                    style = MaterialTheme.typography.bodyLarge,
+                    textAlign = TextAlign.Center
+                )
                 NeedsPermissionButton(permissionState = permissionState)
+            } else {
+                TryAgainButton(
+                    modifier = Modifier
+                        .background(color = MaterialTheme.colorScheme.surface)
+                        .fillMaxSize(),
+                    onExecuteCommand = onExecuteCommand
+                )
             }
         }
     }
@@ -151,6 +151,79 @@ private fun NeedsPermissionButton(permissionState: MultiplePermissionsState) {
         }
     }
 }
+// endregion
+
+// region WeatherNow
+@Composable
+private fun WeatherNow(
+    uiState: WeatherForecastUiState,
+    onExecuteCommand: (Command<WeatherForecastCommandReceiver>) -> Unit
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        when (uiState.weatherNowStatus) {
+            WeatherForecastStatus.LOADING -> WeatherNowShimmer()
+            WeatherForecastStatus.ERROR -> TryAgainButton(
+                modifier = Modifier
+                    .fillMaxHeight(0.1f)
+                    .fillMaxWidth(),
+                onExecuteCommand = onExecuteCommand
+            )
+            else -> WeatherNowContent(uiState = uiState, onExecuteCommand = onExecuteCommand)
+        }
+    }
+}
+
+@Composable
+private fun RowScope.WeatherNowContent(
+    uiState: WeatherForecastUiState,
+    onExecuteCommand: (Command<WeatherForecastCommandReceiver>) -> Unit
+) {
+    Row(
+        modifier = Modifier.weight(0.75f),
+        horizontalArrangement = Arrangement.End
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(Spacing.twelve)
+        ) {
+            Column(
+                horizontalAlignment = Alignment.End,
+                verticalArrangement = Arrangement.spacedBy(Spacing.eight)
+            ) {
+                Text(
+                    text = uiState.weatherNow.city,
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.widthIn(max = 150.dp),
+                    textAlign = TextAlign.Right,
+                    maxLines = 2
+                )
+                Text(
+                    modifier = Modifier.widthIn(max = 180.dp),
+                    text = uiState.weatherNow.description,
+                    style = MaterialTheme.typography.titleMedium,
+                    textAlign = TextAlign.End
+                )
+            }
+            Text(
+                text = uiState.weatherNow.temperature,
+                style = MaterialTheme.typography.displaySmall
+            )
+            AsyncImage(
+                modifier = Modifier.scale(2f),
+                url = uiState.weatherNow.iconUrl,
+                alignment = Alignment.Center
+            )
+        }
+    }
+    RefreshButton(
+        modifier = Modifier.weight(0.25f),
+        uiState = uiState,
+        onExecuteCommand = onExecuteCommand
+    )
+}
 
 @Composable
 private fun RefreshButton(
@@ -165,7 +238,7 @@ private fun RefreshButton(
         if (uiState.isLoading) {
             CircularProgressIndicator()
         } else {
-            IconButton(onClick = { onExecuteCommand(WeatherForecastCommand.GetWeatherForecastData) }) {
+            IconButton(onClick = { onExecuteCommand(WeatherForecastCommand.GetLocationAndWeatherForecastsData) }) {
                 Icon(
                     painter = painterResource(DesignSystemResources.drawable.ic_refresh_medium),
                     contentDescription = null
@@ -174,72 +247,37 @@ private fun RefreshButton(
         }
     }
 }
+// endregion
 
+// region WeatherForecasts
 @Composable
-private fun WeatherNow(
+private fun WeatherForecasts(
     uiState: WeatherForecastUiState,
-    onExecuteCommand: (Command<WeatherForecastCommandReceiver>) -> Unit
-) = with(uiState.weatherNow) {
-    if (uiState.isLoading) {
-        WeatherNowShimmer(uiState = uiState)
-        return
-    }
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Row(
-            modifier = Modifier.weight(0.75f),
-            horizontalArrangement = Arrangement.End
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(Spacing.twelve)
-            ) {
-                Column(
-                    horizontalAlignment = Alignment.End,
-                    verticalArrangement = Arrangement.spacedBy(Spacing.eight)
-                ) {
-                    Text(
-                        text = city,
-                        style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier.widthIn(max = 150.dp),
-                        textAlign = TextAlign.Right,
-                        maxLines = 2
-                    )
-                    Text(
-                        modifier = Modifier.widthIn(max = 180.dp),
-                        text = description,
-                        style = MaterialTheme.typography.titleMedium,
-                        textAlign = TextAlign.End
-                    )
-                }
-                Text(
-                    text = temperature,
-                    style = MaterialTheme.typography.displaySmall
-                )
-                AsyncImage(
-                    modifier = Modifier.scale(2f),
-                    url = iconUrl,
-                    alignment = Alignment.Center
-                )
-            }
-        }
-        RefreshButton(
-            modifier = Modifier.weight(0.25f),
-            uiState = uiState,
+    onExecuteCommand: (Command<WeatherForecastCommandReceiver>) -> Unit,
+) {
+    when (uiState.weatherForecastsStatus) {
+        WeatherForecastStatus.LOADING -> WeatherForecastsShimmer()
+        WeatherForecastStatus.ERROR -> TryAgainButton(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp),
             onExecuteCommand = onExecuteCommand
         )
+        else -> WeatherForecastsContent(uiState = uiState)
     }
 }
 
 @Composable
-private fun WeatherNowShimmer(uiState: WeatherForecastUiState) {
-    ShimmerEffect(
-        modifier = Modifier
-            .height(100.dp)
-            .fillMaxWidth()
-    )
+private fun WeatherForecastsContent(uiState: WeatherForecastUiState) {
+    WeatherForecastGraphic(uiState = uiState)
+    LazyColumn(verticalArrangement = Arrangement.spacedBy(Spacing.twelve)) {
+        items(uiState.futureWeatherForecasts) {
+            FutureWeatherForecast(futureWeatherForecastScreen = it)
+        }
+        item {
+            Spacer(Modifier.windowInsetsPadding(WindowInsets.navigationBars))
+        }
+    }
 }
 
 @Composable
@@ -299,7 +337,56 @@ private fun FutureWeatherForecast(futureWeatherForecastScreen: FutureWeatherFore
         }
     }
 }
+// endregion
 
+// region Shimmers
+@Composable
+private fun WeatherNowShimmer() {
+    ShimmerEffect(
+        modifier = Modifier
+            .fillMaxHeight(0.1f)
+            .fillMaxWidth()
+    )
+}
+
+@Composable
+private fun WeatherForecastsShimmer() {
+    ShimmerEffect(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(200.dp)
+    )
+    Column(verticalArrangement = Arrangement.spacedBy(Spacing.twelve)) {
+        repeat(4) {
+            ShimmerEffect(
+                modifier = Modifier
+                    .fillMaxWidth(0.6f)
+                    .height(24.dp)
+            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                repeat(8) {
+                    ShimmerEffect(modifier = Modifier.size(30.dp, 50.dp))
+                }
+            }
+        }
+    }
+}
+// endregion
+
+@Composable
+private fun TryAgainButton(
+    modifier: Modifier,
+    onExecuteCommand: (Command<WeatherForecastCommandReceiver>) -> Unit
+) {
+    TryAgainButton(modifier = modifier) {
+        onExecuteCommand(WeatherForecastCommand.GetLocationAndWeatherForecastsData)
+    }
+}
+
+// region Handlers
 @Composable
 private fun AlertDialogHandler(
     uiState: WeatherForecastUiState,
@@ -336,7 +423,7 @@ private fun LifecycleEventHandler(
         }
     }
 }
-
+// endregion
 
 @Composable
 @Preview
@@ -345,12 +432,39 @@ private fun Preview() {
         WeatherForecastScreen(
             uiState = WeatherForecastUiState(
                 screenStatus = WeatherForecastScreenStatus.READY,
-                isLoading = true,
+                weatherNowStatus = WeatherForecastStatus.ERROR,
                 weatherNow = WeatherNowScreenModel(
                     city = "Porto",
                     description = "Nuvens carregadas e trovoadas",
                     temperature = "30º",
                     iconUrl = ""
+                ),
+                futureWeatherForecasts = listOf(
+                    FutureWeatherForecastScreenModel(
+                        day = "Segunda",
+                        futureDailyWeatherForecasts = listOf(
+                            FutureDailyWeatherForecastScreenModel(
+                                temperature = "30º",
+                                hour = "12:00",
+                                iconUrl = ""
+                            ),
+                            FutureDailyWeatherForecastScreenModel(
+                                temperature = "30º",
+                                hour = "12:00",
+                                iconUrl = ""
+                            ),
+                            FutureDailyWeatherForecastScreenModel(
+                                temperature = "30º",
+                                hour = "12:00",
+                                iconUrl = ""
+                            ),
+                            FutureDailyWeatherForecastScreenModel(
+                                temperature = "30º",
+                                hour = "12:00",
+                                iconUrl = ""
+                            )
+                        )
+                    )
                 )
             ),
             uiEvent = null
