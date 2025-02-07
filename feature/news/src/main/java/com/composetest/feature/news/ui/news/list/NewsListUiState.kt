@@ -9,7 +9,7 @@ internal data class NewsListUiState(
     val articles: List<ArticleModel> = emptyList(),
     val simpleDialogParam: SimpleDialogParam? = null,
     val showWithoutNewsMsg: Boolean = false,
-    override val isLoading: Boolean = false
+    val isLoading: Boolean = false
 ) : BaseUiState {
     fun setIsLoading(isLoading: Boolean) = copy(
         isLoading = isLoading,

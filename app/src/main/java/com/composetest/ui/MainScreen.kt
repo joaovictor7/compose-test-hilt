@@ -32,7 +32,7 @@ internal object MainScreen : Screen<MainUiState, MainUiEvent, MainCommandReceive
             dynamicColor = uiState.theme.dynamicColor,
             theme = uiState.theme.theme
         ) {
-            DialogsHandle(uiState = uiState, onExecuteCommand = onExecuteCommand)
+            DialogsHandler(uiState = uiState, onExecuteCommand = onExecuteCommand)
             Navigation(
                 firstScreenDestination = LoginDestination(),
                 onExecuteCommand = onExecuteCommand
@@ -71,7 +71,7 @@ private fun LifecycleHandle(onExecuteCommand: (Command<MainCommandReceiver>) -> 
 }
 
 @Composable
-private fun DialogsHandle(
+private fun DialogsHandler(
     uiState: MainUiState,
     onExecuteCommand: (Command<MainCommandReceiver>) -> Unit
 ) = uiState.simpleDialogParam?.let {

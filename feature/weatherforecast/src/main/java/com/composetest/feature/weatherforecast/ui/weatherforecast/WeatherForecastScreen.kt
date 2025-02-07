@@ -22,7 +22,6 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -78,7 +77,7 @@ internal object WeatherForecastScreen :
     ) {
         val permissionState = getMultiplePermissionState(Permission.localization)
         LaunchedEffectHandler(uiEvent = uiEvent, permissionState = permissionState)
-        AlertDialogHandler(uiState = uiState, onExecuteCommand = onExecuteCommand)
+        DialogsHandler(uiState = uiState, onExecuteCommand = onExecuteCommand)
         LifecycleEventHandler(onExecuteCommand = onExecuteCommand)
         Column(modifier = Modifier.fillMaxSize()) {
             LeftTopBar(titleId = WeatherForecastResources.string.weather_forecast_title)
@@ -153,7 +152,7 @@ private fun NeedsPermissionButton(permissionState: MultiplePermissionsState) {
 }
 // endregion
 
-// region WeatherNow
+// region Weather Now
 @Composable
 private fun WeatherNow(
     uiState: WeatherForecastUiState,
@@ -220,7 +219,6 @@ private fun RowScope.WeatherNowContent(
     }
     RefreshButton(
         modifier = Modifier.weight(0.25f),
-        uiState = uiState,
         onExecuteCommand = onExecuteCommand
     )
 }
@@ -228,28 +226,23 @@ private fun RowScope.WeatherNowContent(
 @Composable
 private fun RefreshButton(
     modifier: Modifier,
-    uiState: WeatherForecastUiState,
     onExecuteCommand: (Command<WeatherForecastCommandReceiver>) -> Unit
 ) {
     Box(
         modifier = modifier.padding(end = Spacing.twelve),
         contentAlignment = Alignment.CenterEnd
     ) {
-        if (uiState.isLoading) {
-            CircularProgressIndicator()
-        } else {
-            IconButton(onClick = { onExecuteCommand(WeatherForecastCommand.GetLocationAndWeatherForecastsData) }) {
-                Icon(
-                    painter = painterResource(DesignSystemResources.drawable.ic_refresh_medium),
-                    contentDescription = null
-                )
-            }
+        IconButton(onClick = { onExecuteCommand(WeatherForecastCommand.GetLocationAndWeatherForecastsData) }) {
+            Icon(
+                painter = painterResource(DesignSystemResources.drawable.ic_refresh_medium),
+                contentDescription = null
+            )
         }
     }
 }
 // endregion
 
-// region WeatherForecasts
+// region Weather Forecasts
 @Composable
 private fun WeatherForecasts(
     uiState: WeatherForecastUiState,
@@ -388,7 +381,7 @@ private fun TryAgainButton(
 
 // region Handlers
 @Composable
-private fun AlertDialogHandler(
+private fun DialogsHandler(
     uiState: WeatherForecastUiState,
     onExecuteCommand: (Command<WeatherForecastCommandReceiver>) -> Unit
 ) = uiState.simpleDialogParam?.let {

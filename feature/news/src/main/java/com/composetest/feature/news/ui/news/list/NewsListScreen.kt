@@ -89,7 +89,7 @@ internal object NewsListScreen : Screen<NewsListUiState, NewsListUiEvent, NewsLi
                 }
             }
         }
-        AlertDialogHandler(uiState = uiState, onExecuteCommand = onExecuteCommand)
+        DialogsHandler(uiState = uiState, onExecuteCommand = onExecuteCommand)
     }
 }
 
@@ -129,7 +129,7 @@ private fun NewsCard(
 }
 
 @Composable
-private fun AlertDialogHandler(
+private fun DialogsHandler(
     uiState: NewsListUiState,
     onExecuteCommand: (Command<NewsListCommandReceiver>) -> Unit
 ) = uiState.simpleDialogParam?.let {

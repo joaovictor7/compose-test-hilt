@@ -16,13 +16,13 @@ internal class ApiSettingsSettingsRepositoryImpl @Inject constructor(
     private val weatherForecastApiSettingsMapper: WeatherForecastApiSettingsMapper,
 ) : ApiSettingsRepository {
 
-    override fun getApiSettings(api: Api): ApiSettings {
+    override fun getApiSettings(api: Api) = runCatching {
         val json = remoteConfigDataSource.getString(api.remoteConfig.key)
-        return apiSettingsMapper(json)
-    }
+        apiSettingsMapper(json)
+    }.getOrDefault(ApiSettings())
 
-    override fun getWeatherForecastApiSettings(): WeatherForecastApiSettings {
+    override fun getWeatherForecastApiSettings() = runCatching {
         val json = remoteConfigDataSource.getString(ApiRemoteConfig.WEATHER_FORECAST.key)
-        return weatherForecastApiSettingsMapper(json)
-    }
+        weatherForecastApiSettingsMapper(json)
+    }.getOrDefault(WeatherForecastApiSettings())
 }

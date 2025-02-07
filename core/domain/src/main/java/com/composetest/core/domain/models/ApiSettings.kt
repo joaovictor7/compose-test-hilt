@@ -1,6 +1,6 @@
 package com.composetest.core.domain.models
 
 data class ApiSettings(
-    val apiKey: String,
-    val url: String,
+    val apiKey: String = String(),
+    val url: String = String(),
 )

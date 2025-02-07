@@ -6,8 +6,8 @@ import io.ktor.client.plugins.ServerResponseException
 import io.ktor.http.HttpStatusCode
 import kotlinx.io.IOException
 
-internal suspend fun <T> apiErrorHandler(call: suspend () -> T): T =
-    runCatching { call() }.getOrElse {
+internal suspend fun <T> apiErrorHandler(call: suspend () -> T) = runCatching { call() }
+    .getOrElse {
         throw when (it) {
             is ClientRequestException -> {
                 if (it.response.status == HttpStatusCode.Unauthorized)

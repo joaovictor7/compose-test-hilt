@@ -16,7 +16,7 @@ internal data class LoginUiState(
     val invalidCredentials: Boolean = false,
     val biometricModel: BiometricModel? = null,
     val simpleDialogParam: SimpleDialogParam? = null,
-    override var isLoading: Boolean = false
+    val isLoading: Boolean = false
 ) : BaseUiState {
     val emailTrailingIcon get() = if (invalidEmail) TextFieldIcon.ERROR else null
     val emailSupporting get() = if (invalidEmail) R.string.feature_login_invalid_email else null
