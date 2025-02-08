@@ -11,6 +11,13 @@ sealed interface CommonSimpleDialog : SimpleDialogParam {
         override val dismissButtonTextId = R.string.global_word_close
     }
 
+    data object FailedUpdateError: CommonSimpleDialog {
+        override val iconId = R.drawable.ic_error_big
+        override val titleId = R.string.error_alert_dialog_generic_title
+        override val textId: Int = R.string.error_alert_dialog_generic_text_update_failed
+        override val dismissButtonTextId = R.string.global_word_close
+    }
+
     data object NetworkError : CommonSimpleDialog {
         override val iconId = R.drawable.ic_error_big
         override val titleId = R.string.error_alert_dialog_network_title

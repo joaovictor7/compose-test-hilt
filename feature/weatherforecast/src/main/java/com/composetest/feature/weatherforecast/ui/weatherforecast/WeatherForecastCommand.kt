@@ -16,6 +16,18 @@ internal sealed interface WeatherForecastCommand : Command<WeatherForecastComman
         }
     }
 
+    data object GetWeatherForecastNowData : WeatherForecastCommand {
+        override fun execute(commandReceiver: WeatherForecastCommandReceiver) {
+            commandReceiver.getWeatherForecastNowData()
+        }
+    }
+
+    data object GetWeatherForecastsData : WeatherForecastCommand {
+        override fun execute(commandReceiver: WeatherForecastCommandReceiver) {
+            commandReceiver.getWeatherForecastsData()
+        }
+    }
+
     data object DismissSimpleDialog : WeatherForecastCommand {
         override fun execute(commandReceiver: WeatherForecastCommandReceiver) {
             commandReceiver.dismissSimpleDialog()

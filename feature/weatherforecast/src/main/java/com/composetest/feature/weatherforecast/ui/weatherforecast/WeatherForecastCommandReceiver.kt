@@ -7,5 +7,7 @@ internal interface WeatherForecastCommandReceiver :
 
     fun checkPermissionsResult()
     fun getLocationAndWeatherForecastsData()
+    fun getWeatherForecastNowData()
+    fun getWeatherForecastsData()
     fun dismissSimpleDialog()
 }
