@@ -6,8 +6,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.sizeIn
@@ -26,6 +28,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -33,6 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.composetest.core.designsystem.components.asyncimage.AsyncImage
 import com.composetest.core.designsystem.components.dialogs.SimpleDialog
+import com.composetest.core.designsystem.components.shimmer.ShimmerEffect
 import com.composetest.core.designsystem.constants.screenMargin
 import com.composetest.core.designsystem.constants.topScreenMarginList
 import com.composetest.core.designsystem.dimensions.Spacing
@@ -81,11 +85,17 @@ internal object NewsListScreen : Screen<NewsListUiState, NewsListUiEvent, NewsLi
                 contentPadding = topScreenMarginList,
                 verticalArrangement = Arrangement.spacedBy(Spacing.twentyEight)
             ) {
-                items(uiState.articles) {
-                    NewsCard(articleModel = it, onExecuteCommand = onExecuteCommand)
-                }
-                item {
-                    Spacer(modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars))
+                if (uiState.isLoading) {
+                    items(4) {
+                        ListItemShimmer()
+                    }
+                } else {
+                    items(uiState.articles) {
+                        NewsCard(articleModel = it, onExecuteCommand = onExecuteCommand)
+                    }
+                    item {
+                        Spacer(modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars))
+                    }
                 }
             }
         }
@@ -106,6 +116,7 @@ private fun NewsCard(
             articleModel.urlToImage?.let {
                 AsyncImage(
                     modifier = Modifier.sizeIn(maxHeight = 180.dp),
+                    loadingModifier = Modifier.padding(vertical = Spacing.twentyEight),
                     url = it,
                     alignment = Alignment.TopCenter,
                     contentScale = ContentScale.None
@@ -129,16 +140,6 @@ private fun NewsCard(
 }
 
 @Composable
-private fun DialogsHandler(
-    uiState: NewsListUiState,
-    onExecuteCommand: (Command<NewsListCommandReceiver>) -> Unit
-) = uiState.simpleDialogParam?.let {
-    SimpleDialog(param = it) {
-        onExecuteCommand(NewsListCommand.DismissSimpleDialog)
-    }
-}
-
-@Composable
 private fun WithoutNews() {
     Box(modifier = Modifier.fillMaxSize()) {
         Text(
@@ -152,6 +153,26 @@ private fun WithoutNews() {
     }
 }
 
+@Composable
+private fun ListItemShimmer() {
+    ShimmerEffect(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(200.dp)
+            .clip(MaterialTheme.shapes.medium),
+    )
+}
+
+@Composable
+private fun DialogsHandler(
+    uiState: NewsListUiState,
+    onExecuteCommand: (Command<NewsListCommandReceiver>) -> Unit
+) = uiState.simpleDialogParam?.let {
+    SimpleDialog(param = it) {
+        onExecuteCommand(NewsListCommand.DismissSimpleDialog)
+    }
+}
+
 @Preview
 @Composable
 private fun Preview() {
@@ -159,6 +180,7 @@ private fun Preview() {
         NewsListScreen(
             uiState = NewsListUiState(
                 showScreen = true,
+                isLoading = true,
                 articles = listOf(
                     ArticleModel(
                         provider = "Teste",

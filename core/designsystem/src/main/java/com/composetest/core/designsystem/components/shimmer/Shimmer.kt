@@ -45,7 +45,7 @@ fun ShimmerEffect(modifier: Modifier) {
     )
 
     Box(
-        modifier = modifier.clip(MaterialTheme.shapes.small),
+        modifier = modifier.clip(MaterialTheme.shapes.medium),
     ) {
         Spacer(
             modifier = Modifier

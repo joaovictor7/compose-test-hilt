@@ -315,7 +315,6 @@ private fun WeatherNowShimmer() {
 private fun WeatherForecastsShimmer() {
     ShimmerEffect(
         modifier = Modifier
-            .clip(MaterialTheme.shapes.medium)
             .fillMaxWidth()
             .height(200.dp)
     )

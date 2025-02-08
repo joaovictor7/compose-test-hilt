@@ -14,6 +14,7 @@ import coil3.request.crossfade
 @Composable
 fun AsyncImage(
     modifier: Modifier = Modifier,
+    loadingModifier: Modifier = Modifier,
     url: String,
     alignment: Alignment = Alignment.Center,
     contentScale: ContentScale = ContentScale.None
@@ -26,7 +27,7 @@ fun AsyncImage(
         contentDescription = null,
         alignment = alignment,
         loading = {
-            CircularProgressIndicator()
+            CircularProgressIndicator(modifier = loadingModifier)
         },
         success = {
             SubcomposeAsyncImageContent(
