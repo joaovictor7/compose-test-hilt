@@ -4,6 +4,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.composetest.core.domain.enums.Feature
 import com.composetest.core.router.destinations.configuration.ConfigurationDestination
+import com.composetest.core.router.destinations.exchange.ExchangeListDestination
 import com.composetest.core.router.destinations.home.HomeDestination
 import com.composetest.core.router.destinations.news.NewsListDestination
 import com.composetest.core.router.destinations.profile.ProfileDestination
@@ -15,6 +16,7 @@ import com.composetest.feature.home.R as HomeResources
 import com.composetest.feature.news.R as NewsResources
 import com.composetest.feature.profile.R as ProfileResources
 import com.composetest.feature.weatherforecast.R as WeatherForecastResources
+import com.composetest.feature.exchange.R as ExchangeResources
 
 internal enum class NavigationFeature(
     val feature: Feature,
@@ -56,6 +58,13 @@ internal enum class NavigationFeature(
         ProfileDestination,
         NavigationLocal.MODAL_DRAWER,
         ProfileResources.string.profile_title
+    ),
+    EXCHANGE(
+        Feature.EXCHANGE,
+        ExchangeListDestination,
+        NavigationLocal.MODAL_DRAWER,
+        DesignSystemResources.drawable.ic_exchange_medium,
+        ExchangeResources.string.exchange_title
     );
 
     val noText get() = textId == null

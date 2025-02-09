@@ -5,6 +5,7 @@ import com.composetest.core.data.repositories.ApiSettingsSettingsRepositoryImpl
 import com.composetest.core.data.repositories.AuthenticationRepositoryImpl
 import com.composetest.core.data.repositories.ConfigurationRepositoryImpl
 import com.composetest.core.data.repositories.DatabaseRepositoryImpl
+import com.composetest.core.data.repositories.ExchangeRepositoryImpl
 import com.composetest.core.data.repositories.NewsApiRepositoryImpl
 import com.composetest.core.data.repositories.UserRepositoryImpl
 import com.composetest.core.data.repositories.WeatherForecastRepositoryImpl
@@ -13,6 +14,7 @@ import com.composetest.core.domain.repositories.ApiSettingsRepository
 import com.composetest.core.domain.repositories.AuthenticationRepository
 import com.composetest.core.domain.repositories.ConfigurationRepository
 import com.composetest.core.domain.repositories.DatabaseRepository
+import com.composetest.core.domain.repositories.ExchangeRepository
 import com.composetest.core.domain.repositories.NewsApiRepository
 import com.composetest.core.domain.repositories.UserRepository
 import com.composetest.core.domain.repositories.WeatherForecastRepository
@@ -66,4 +68,9 @@ internal abstract class RepositoryModule {
     abstract fun apiSettingsRepository(
         apiSettingsRepositoryImpl: ApiSettingsSettingsRepositoryImpl
     ): ApiSettingsRepository
+
+    @Binds
+    abstract fun exchangeRepository(
+        exchangeRepositoryImpl: ExchangeRepositoryImpl
+    ): ExchangeRepository
 }

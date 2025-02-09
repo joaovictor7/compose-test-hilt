@@ -19,6 +19,11 @@ fun String.convertToLocalDateTime(format: String): LocalDateTime {
     return LocalDateTime.parse(this, formatter)
 }
 
+fun String.convertFromString(format: String): LocalDateTime {
+    val formatter = DateTimeFormatter.ofPattern(format)
+    return LocalDateTime.parse(this, formatter)
+}
+
 fun LocalDateTime.convertToString(format: String): String {
     val formatter = DateTimeFormatter.ofPattern(format)
     return format(formatter)

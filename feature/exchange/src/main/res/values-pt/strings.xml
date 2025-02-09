@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="exchange_filter">Filtrar</string>
+    <string name="exchange_without_name">* Sem nome *</string>
+    <string name="exchange_volume_1day_label">Volume de USD/dia</string>
+
+    <string name="exchange_detail_no_value">* Sem valor *</string>
+    <string name="exchange_detail_name_label">Nome</string>
+    <string name="exchange_detail_symbols_count_label">Quantidade de símbolos</string>
+    <string name="exchange_detail_metric_id_label">Métricas</string>
+    <string name="exchange_detail_rank_label">Rank</string>
+    <string name="exchange_detail_dates_label">Datas</string>
+    <string name="exchange_detail_types_header_dates_grid">Tipos</string>
+    <string name="exchange_detail_start_header_dates_grid">Ínicio</string>
+    <string name="exchange_detail_end_header_dates_grid">Fim</string>
+    <string name="exchange_detail_quotes_id_dates_grid">Cotações</string>
+    <string name="exchange_detail_order_book_id_dates_grid">Livro de pedidos</string>
+    <string name="exchange_detail_trade_id_dates_grid">Ordens de negociações</string>
+    <string name="exchange_detail_hour_id_volume_grid">Hora</string>
+    <string name="exchange_detail_day_id_volume_grid">Dia</string>
+    <string name="exchange_detail_month_id_volume_grid">Mês</string>
+
+</resources>

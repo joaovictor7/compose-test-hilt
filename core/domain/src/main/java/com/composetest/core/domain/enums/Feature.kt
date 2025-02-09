@@ -8,5 +8,6 @@ enum class Feature(internal val remoteConfig: RemoteConfig) {
     WEATHER_FORECAST(FeatureRemoteConfig.WEATHER_FORECAST),
     NEWS(FeatureRemoteConfig.NEWS),
     PROFILE(FeatureRemoteConfig.PROFILE),
-    CONFIGURATION(FeatureRemoteConfig.CONFIGURATION)
+    CONFIGURATION(FeatureRemoteConfig.CONFIGURATION),
+    EXCHANGE(FeatureRemoteConfig.EXCHANGE),
 }

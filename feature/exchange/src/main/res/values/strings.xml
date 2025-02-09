@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="exchange_title" translatable="false">Exchange</string>
+    <string name="exchange_filter">Filter</string>
+    <string name="exchange_without_name">* Without name *</string>
+    <string name="exchange_id_label" translatable="false">ID</string>
+    <string name="exchange_volume_1day_label">USD/day volume</string>
+
+    <string name="exchange_detail_no_value">* Without value *</string>
+    <string name="exchange_detail_title" translatable="false">Exchange</string>
+    <string name="exchange_detail_id_label" translatable="false">ID</string>
+    <string name="exchange_detail_website_label" translatable="false">Website</string>
+    <string name="exchange_detail_name_label">Name</string>
+    <string name="exchange_detail_symbols_count_label">Symbols count</string>
+    <string name="exchange_detail_metric_id_label">Metrics</string>
+    <string name="exchange_detail_rank_label" translatable="false">Rank</string>
+    <string name="exchange_detail_dates_label">Dates</string>
+    <string name="exchange_detail_volumes_label" translatable="false">Volumes</string>
+    <string name="exchange_detail_types_header_dates_grid">Types</string>
+    <string name="exchange_detail_start_header_dates_grid">Start</string>
+    <string name="exchange_detail_end_header_dates_grid">End</string>
+    <string name="exchange_detail_quotes_id_dates_grid">Quotes</string>
+    <string name="exchange_detail_order_book_id_dates_grid">Order books</string>
+    <string name="exchange_detail_trade_id_dates_grid">Trades</string>
+    <string name="exchange_detail_volume_header_volume_grid" translatable="false">Volume</string>
+    <string name="exchange_detail_usd_header_volume_grid" translatable="false">USD</string>
+    <string name="exchange_detail_hour_id_volume_grid">Hour</string>
+    <string name="exchange_detail_day_id_volume_grid">Day</string>
+    <string name="exchange_detail_month_id_volume_grid">Month</string>
+
+</resources>

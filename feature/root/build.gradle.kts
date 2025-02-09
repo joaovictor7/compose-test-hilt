@@ -19,4 +19,5 @@ dependencies {
     implementation(projects.feature.profile)
     implementation(projects.feature.weatherforecast)
     implementation(projects.feature.news)
+    implementation(projects.feature.exchange)
 }
