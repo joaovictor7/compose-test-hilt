@@ -1,6 +1,5 @@
 package com.composetest.feature.root.ui.root
 
-import androidx.compose.material3.DrawerValue
 import androidx.navigation.NavHostController
 import com.composetest.core.domain.managers.SessionManager
 import com.composetest.core.domain.usecases.GetAvailableFeaturesUseCase
@@ -74,10 +73,6 @@ internal class RootViewModel @Inject constructor(
         currentScreenObservable()
     }
 
-    override fun modalDrawerManager(drawerValue: DrawerValue) {
-        launchUiEvent(RootUiEvent.ManagerModalDrawer(drawerValue))
-    }
-
     override fun logout() {
         runAsyncTask {
             sessionManager.finishCurrentSession()
@@ -115,7 +110,7 @@ internal class RootViewModel @Inject constructor(
     }
 
     private fun navigateToModalDrawerFeature(feature: NavigationFeature) {
-        launchUiEvent(RootUiEvent.ManagerModalDrawer(DrawerValue.Closed))
+        launchUiEvent(RootUiEvent.CloseModalDrawer)
         mainNavigationManager.navigate(feature.destination)
     }
 

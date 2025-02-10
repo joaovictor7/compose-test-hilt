@@ -33,6 +33,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -60,6 +61,7 @@ import com.composetest.feature.root.enums.NavigationFeature
 import com.composetest.feature.root.models.BottomFeatureNavigationModel
 import com.composetest.feature.root.navigation.navGraphs
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 import com.composetest.core.designsystem.R as DesignSystemResources
 
 internal object RootScreen : Screen<RootUiState, RootUiEvent, RootCommandReceiver> {
@@ -77,7 +79,7 @@ internal object RootScreen : Screen<RootUiState, RootUiEvent, RootCommandReceive
             drawerContent = getModalDrawerContent(uiState, onExecuteCommand),
         ) {
             ScreenScaffold(
-                topBar = getTopBar(onExecuteCommand),
+                topBar = getTopBar(drawerState),
                 bottomBar = getBottomBar(uiState, onExecuteCommand)
             ) {
                 Navigation(
@@ -231,11 +233,12 @@ private fun LogoutButton(onExecuteCommand: (Command<RootCommandReceiver>) -> Uni
     }
 }
 
-private fun getTopBar(onExecuteCommand: (Command<RootCommandReceiver>) -> Unit) = @Composable {
+private fun getTopBar(modalDrawerState: DrawerState) = @Composable {
+    val coroutineScope = rememberCoroutineScope()
     TopBarWithoutTitle(
         navigationAction = TopBarAction.MENU,
         onClickNavigationAction = {
-            onExecuteCommand(RootCommand.ModalDrawerManager(DrawerValue.Open))
+            coroutineScope.launch { modalDrawerState.open() }
         }
     )
 }
@@ -273,10 +276,7 @@ private fun LaunchedEffectsHandler(uiEvent: Flow<RootUiEvent>?, drawerState: Dra
         uiEvent?.collect {
             when (it) {
                 is RootUiEvent.FinishApp -> activity?.finish()
-                is RootUiEvent.ManagerModalDrawer -> when (it.drawerValue) {
-                    DrawerValue.Open -> drawerState.open()
-                    DrawerValue.Closed -> drawerState.close()
-                }
+                is RootUiEvent.CloseModalDrawer -> drawerState.close()
             }
         }
     }
@@ -287,9 +287,10 @@ private fun BackHandlers(
     drawerState: DrawerState,
     onExecuteCommand: (Command<RootCommandReceiver>) -> Unit
 ) {
+    val coroutineScope = rememberCoroutineScope()
     BackHandler {
         if (drawerState.isOpen) {
-            onExecuteCommand(RootCommand.ModalDrawerManager(DrawerValue.Closed))
+            coroutineScope.launch { drawerState.close() }
         } else {
             onExecuteCommand(RootCommand.BackHandler)
         }
