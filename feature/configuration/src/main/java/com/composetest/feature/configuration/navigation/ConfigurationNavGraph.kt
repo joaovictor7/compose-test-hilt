@@ -3,6 +3,7 @@ package com.composetest.feature.configuration.navigation
 import androidx.navigation.NavGraphBuilder
 import com.composetest.core.router.destinations.configuration.ConfigurationSecurityDestination
 import com.composetest.core.router.destinations.configuration.ConfigurationThemeDestination
+import com.composetest.core.router.interfaces.NavGraph
 import com.composetest.core.ui.extensions.buildComposable
 import com.composetest.feature.configuration.ui.security.ConfigurationSecurityCommandReceiver
 import com.composetest.feature.configuration.ui.security.ConfigurationSecurityScreen
@@ -15,11 +16,15 @@ import com.composetest.feature.configuration.ui.theme.ConfigurationThemeUiEvent
 import com.composetest.feature.configuration.ui.theme.ConfigurationThemeUiState
 import com.composetest.feature.configuration.ui.theme.ConfigurationThemeViewModel
 
-fun NavGraphBuilder.configurationNavGraph() {
-    buildComposable<ConfigurationThemeDestination, ConfigurationThemeViewModel, ConfigurationThemeUiState, ConfigurationThemeUiEvent, ConfigurationThemeCommandReceiver>(
-        screen = ConfigurationThemeScreen
-    )
-    buildComposable<ConfigurationSecurityDestination, ConfigurationSecurityViewModel, ConfigurationSecurityUiState, ConfigurationSecurityUiEvent, ConfigurationSecurityCommandReceiver>(
-        screen = ConfigurationSecurityScreen
-    )
+object ConfigurationNavGraph : NavGraph {
+    override fun NavGraphBuilder.navGraph(navigateBackHandler: Boolean) {
+        buildComposable<ConfigurationThemeDestination, ConfigurationThemeViewModel, ConfigurationThemeUiState, ConfigurationThemeUiEvent, ConfigurationThemeCommandReceiver>(
+            screen = ConfigurationThemeScreen,
+            navigateBackHandler = navigateBackHandler,
+        )
+        buildComposable<ConfigurationSecurityDestination, ConfigurationSecurityViewModel, ConfigurationSecurityUiState, ConfigurationSecurityUiEvent, ConfigurationSecurityCommandReceiver>(
+            screen = ConfigurationSecurityScreen,
+            navigateBackHandler = navigateBackHandler,
+        )
+    }
 }

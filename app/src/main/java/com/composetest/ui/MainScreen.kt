@@ -12,13 +12,7 @@ import com.composetest.core.router.destinations.login.LoginDestination
 import com.composetest.core.router.interfaces.Destination
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.interfaces.Screen
-import com.composetest.feature.configuration.navigation.configurationNavGraph
-import com.composetest.feature.exchange.navigation.exchangeNavGraph
-import com.composetest.feature.login.navigation.loginNavGraph
-import com.composetest.feature.news.navigation.newsNavGraph
-import com.composetest.feature.profile.navigation.profileNavGraph
-import com.composetest.feature.root.navigation.rootNavGraph
-import com.composetest.feature.weatherforecast.navigation.weatherForecastNavGraph
+import com.composetest.navigation.navGraphs
 import kotlinx.coroutines.flow.Flow
 
 internal object MainScreen : Screen<MainUiState, MainUiEvent, MainCommandReceiver> {
@@ -28,7 +22,7 @@ internal object MainScreen : Screen<MainUiState, MainUiEvent, MainCommandReceive
         uiEvent: Flow<MainUiEvent>?,
         onExecuteCommand: (Command<MainCommandReceiver>) -> Unit
     ) {
-        LifecycleHandle(onExecuteCommand)
+        LifecycleHandler(onExecuteCommand)
         ComposeTestTheme(
             dynamicColor = uiState.theme.dynamicColor,
             theme = uiState.theme.theme
@@ -53,18 +47,14 @@ private fun Navigation(
         navController = navController,
         startDestination = firstScreenDestination
     ) {
-        loginNavGraph()
-        rootNavGraph()
-        profileNavGraph()
-        configurationNavGraph()
-        weatherForecastNavGraph()
-        newsNavGraph()
-        exchangeNavGraph()
+        navGraphs.forEach {
+            it.run { navGraph() }
+        }
     }
 }
 
 @Composable
-private fun LifecycleHandle(onExecuteCommand: (Command<MainCommandReceiver>) -> Unit) {
+private fun LifecycleHandler(onExecuteCommand: (Command<MainCommandReceiver>) -> Unit) {
     LifecycleEvent {
         if (it == Lifecycle.Event.ON_RESUME) {
             onExecuteCommand(MainCommand.VerifySession)

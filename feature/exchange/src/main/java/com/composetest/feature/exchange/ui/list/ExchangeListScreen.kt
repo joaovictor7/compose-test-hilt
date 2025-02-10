@@ -63,32 +63,34 @@ internal object ExchangeListScreen :
                 .screenMargin()
         ) {
             LeftTopBar(R.string.exchange_title)
-            ExchangeListFilter(uiState = uiState, onExecuteCommand = onExecuteCommand)
-            PullToRefreshBox(
-                modifier = Modifier.fillMaxSize(),
-                state = pullToRefreshState,
-                isRefreshing = uiState.isLoading,
-                indicator = {
-                    Indicator(
-                        modifier = Modifier
-                            .align(Alignment.TopCenter)
-                            .windowInsetsPadding(WindowInsets.statusBars),
-                        isRefreshing = uiState.isLoading,
-                        state = pullToRefreshState
-                    )
-                },
-                onRefresh = { onExecuteCommand(ExchangeListCommand.GetAllExchanges) }
-            ) {
-                LazyColumn(
+            Column {
+                ExchangeListFilter(uiState = uiState, onExecuteCommand = onExecuteCommand)
+                PullToRefreshBox(
                     modifier = Modifier.fillMaxSize(),
-                    contentPadding = PaddingValues(top = Spacing.twelve),
-                    verticalArrangement = Arrangement.spacedBy(Spacing.sixteen)
+                    state = pullToRefreshState,
+                    isRefreshing = uiState.isLoading,
+                    indicator = {
+                        Indicator(
+                            modifier = Modifier
+                                .align(Alignment.TopCenter)
+                                .windowInsetsPadding(WindowInsets.statusBars),
+                            isRefreshing = uiState.isLoading,
+                            state = pullToRefreshState
+                        )
+                    },
+                    onRefresh = { onExecuteCommand(ExchangeListCommand.GetAllExchanges) }
                 ) {
-                    items(uiState.exchangeScreenList) {
-                        ExchangeItem(onExecuteCommand = onExecuteCommand, exchangeScreenModel = it)
-                    }
-                    item {
-                        Spacer(Modifier.windowInsetsPadding(WindowInsets.navigationBars))
+                    LazyColumn(
+                        modifier = Modifier.fillMaxSize(),
+                        contentPadding = PaddingValues(top = Spacing.twelve),
+                        verticalArrangement = Arrangement.spacedBy(Spacing.sixteen)
+                    ) {
+                        items(uiState.exchangeScreenList) {
+                            ExchangeItem(onExecuteCommand = onExecuteCommand, exchangeScreenModel = it)
+                        }
+                        item {
+                            Spacer(Modifier.windowInsetsPadding(WindowInsets.navigationBars))
+                        }
                     }
                 }
             }

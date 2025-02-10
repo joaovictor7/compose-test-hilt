@@ -55,11 +55,10 @@ import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.router.destinations.home.HomeDestination
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.interfaces.Screen
-import com.composetest.feature.configuration.navigation.configurationRootNavGraph
-import com.composetest.feature.home.navigation.homeRootNavGraph
 import com.composetest.feature.root.R
 import com.composetest.feature.root.enums.NavigationFeature
 import com.composetest.feature.root.models.BottomFeatureNavigationModel
+import com.composetest.feature.root.navigation.navGraphs
 import kotlinx.coroutines.flow.Flow
 import com.composetest.core.designsystem.R as DesignSystemResources
 
@@ -100,15 +99,10 @@ private fun Navigation(
     if (uiState.firstDestination == null) return
     val navController = rememberNavController()
     onExecuteCommand(RootCommand.SetRootNavGraph(navController))
+    BackHandlers(drawerState = drawerState, onExecuteCommand = onExecuteCommand)
     NavHost(navController = navController, startDestination = uiState.firstDestination) {
-        homeRootNavGraph()
-        configurationRootNavGraph()
-    }
-    BackHandler {
-        if (drawerState.isOpen) {
-            onExecuteCommand(RootCommand.ModalDrawerManager(DrawerValue.Closed))
-        } else {
-            onExecuteCommand(RootCommand.BackHandler)
+        navGraphs.forEach {
+            it.run { navGraph(false) }
         }
     }
 }
@@ -146,7 +140,9 @@ private fun ModalDrawerHeader(
             modifier = Modifier.weight(0.85f)
         ) {
             Image(
-                modifier = Modifier.size(50.dp).clip(CircleShape),
+                modifier = Modifier
+                    .size(50.dp)
+                    .clip(CircleShape),
                 painter = painterResource(DesignSystemResources.drawable.ic_person_off),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
@@ -282,6 +278,20 @@ private fun LaunchedEffectsHandler(uiEvent: Flow<RootUiEvent>?, drawerState: Dra
                     DrawerValue.Closed -> drawerState.close()
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun BackHandlers(
+    drawerState: DrawerState,
+    onExecuteCommand: (Command<RootCommandReceiver>) -> Unit
+) {
+    BackHandler {
+        if (drawerState.isOpen) {
+            onExecuteCommand(RootCommand.ModalDrawerManager(DrawerValue.Closed))
+        } else {
+            onExecuteCommand(RootCommand.BackHandler)
         }
     }
 }
