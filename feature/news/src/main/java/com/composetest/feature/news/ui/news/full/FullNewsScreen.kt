@@ -28,7 +28,7 @@ internal object FullNewsScreen :
     Screen<FullNewsUiState, FullNewsUiEvent, FullNewsCommandReceiver> {
 
     @Composable
-    override fun invoke(
+    override operator fun invoke(
         uiState: FullNewsUiState,
         uiEvent: Flow<FullNewsUiEvent>?,
         onExecuteCommand: (Command<FullNewsCommandReceiver>) -> Unit

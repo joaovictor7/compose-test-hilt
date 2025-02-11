@@ -28,9 +28,9 @@ internal class RootViewModel @Inject constructor(
     private val getUserUseCase: GetUserUseCase,
     private val userModalDrawerMapper: UserModalDrawerMapper,
     @NavGraphQualifier(NavGraph.MAIN) private val mainNavigationManager: NavigationManager,
-    getAvailableFeaturesUseCase: GetAvailableFeaturesUseCase,
     override val sendAnalyticsUseCase: SendAnalyticsUseCase,
     @NavGraphQualifier(NavGraph.ROOT) override val navigationManager: NavigationManager,
+    getAvailableFeaturesUseCase: GetAvailableFeaturesUseCase,
 ) : BaseViewModel<RootUiState, RootUiEvent>(RootUiState()), RootCommandReceiver {
 
     private val availableFeatures = getAvailableFeaturesUseCase()
@@ -110,7 +110,6 @@ internal class RootViewModel @Inject constructor(
     }
 
     private fun navigateToModalDrawerFeature(feature: NavigationFeature) {
-        launchUiEvent(RootUiEvent.CloseModalDrawer)
         mainNavigationManager.navigate(feature.destination)
     }
 

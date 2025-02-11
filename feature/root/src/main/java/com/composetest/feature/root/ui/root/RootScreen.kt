@@ -73,10 +73,10 @@ internal object RootScreen : Screen<RootUiState, RootUiEvent, RootCommandReceive
         onExecuteCommand: (Command<RootCommandReceiver>) -> Unit
     ) {
         val drawerState = rememberDrawerState(DrawerValue.Closed)
-        LaunchedEffectsHandler(uiEvent = uiEvent, drawerState = drawerState)
+        LaunchedEffectsHandler(uiEvent = uiEvent)
         ModalNavigationDrawer(
             drawerState = drawerState,
-            drawerContent = getModalDrawerContent(uiState, onExecuteCommand),
+            drawerContent = getModalDrawerContent(uiState, onExecuteCommand, drawerState),
         ) {
             ScreenScaffold(
                 topBar = getTopBar(drawerState),
@@ -101,23 +101,28 @@ private fun Navigation(
     if (uiState.firstDestination == null) return
     val navController = rememberNavController()
     onExecuteCommand(RootCommand.SetRootNavGraph(navController))
-    BackHandlers(drawerState = drawerState, onExecuteCommand = onExecuteCommand)
     NavHost(navController = navController, startDestination = uiState.firstDestination) {
         navGraphs.forEach {
             it.run { navGraph(false) }
         }
     }
+    BackHandlers(drawerState = drawerState, onExecuteCommand = onExecuteCommand)
 }
 
 private fun getModalDrawerContent(
     uiState: RootUiState,
-    onExecuteCommand: (Command<RootCommandReceiver>) -> Unit
+    onExecuteCommand: (Command<RootCommandReceiver>) -> Unit,
+    drawerState: DrawerState,
 ) = @Composable {
     ModalDrawerSheet {
         Column(verticalArrangement = Arrangement.spacedBy(Spacing.twenty)) {
             ModalDrawerHeader(uiState = uiState, onExecuteCommand = onExecuteCommand)
             HorizontalDivider()
-            ModalDrawerItems(uiState = uiState, onExecuteCommand = onExecuteCommand)
+            ModalDrawerItems(
+                uiState = uiState,
+                onExecuteCommand = onExecuteCommand,
+                drawerState = drawerState
+            )
             Spacer(Modifier.weight(1f))
             LogoutButton(onExecuteCommand = onExecuteCommand)
         }
@@ -181,8 +186,10 @@ private fun ModalDrawerHeader(
 @Composable
 private fun ModalDrawerItems(
     uiState: RootUiState,
-    onExecuteCommand: (Command<RootCommandReceiver>) -> Unit
+    onExecuteCommand: (Command<RootCommandReceiver>) -> Unit,
+    drawerState: DrawerState,
 ) {
+    val coroutineScope = rememberCoroutineScope()
     LazyColumn(verticalArrangement = Arrangement.spacedBy(Spacing.four)) {
         items(uiState.modalDrawerNavigationFeaturesToList) { item ->
             val label = item.textId?.let { stringResource(it) }.orEmpty()
@@ -201,6 +208,7 @@ private fun ModalDrawerItems(
                     )
                 },
                 onClick = {
+                    coroutineScope.launch { drawerState.close() }
                     onExecuteCommand(RootCommand.NavigateToFeature(item))
                 }
             )
@@ -217,9 +225,7 @@ private fun LogoutButton(onExecuteCommand: (Command<RootCommandReceiver>) -> Uni
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(Spacing.twelve)
     ) {
-        TextButton(
-            onClick = { onExecuteCommand(RootCommand.Logout) }
-        ) {
+        TextButton(onClick = { onExecuteCommand(RootCommand.Logout) }) {
             Icon(
                 painter = painterResource(DesignSystemResources.drawable.ic_logout_medium),
                 contentDescription = null
@@ -252,9 +258,7 @@ private fun getBottomBar(
             val label = it.feature.textId?.let { stringResource(it) }.orEmpty()
             NavigationBarItem(
                 selected = it.selected,
-                onClick = {
-                    onExecuteCommand(RootCommand.NavigateToFeature(it.feature))
-                },
+                onClick = { onExecuteCommand(RootCommand.NavigateToFeature(it.feature)) },
                 label = {
                     Text(text = label, style = MaterialTheme.typography.labelLarge)
                 },
@@ -270,13 +274,12 @@ private fun getBottomBar(
 }
 
 @Composable
-private fun LaunchedEffectsHandler(uiEvent: Flow<RootUiEvent>?, drawerState: DrawerState) {
+private fun LaunchedEffectsHandler(uiEvent: Flow<RootUiEvent>?) {
     val activity = LocalActivity.current
     LaunchedEffect(Unit) {
         uiEvent?.collect {
             when (it) {
                 is RootUiEvent.FinishApp -> activity?.finish()
-                is RootUiEvent.CloseModalDrawer -> drawerState.close()
             }
         }
     }

@@ -4,5 +4,4 @@ import com.composetest.core.ui.interfaces.BaseUiEvent
 
 internal sealed interface RootUiEvent : BaseUiEvent {
     data object FinishApp : RootUiEvent
-    data object CloseModalDrawer : RootUiEvent
 }

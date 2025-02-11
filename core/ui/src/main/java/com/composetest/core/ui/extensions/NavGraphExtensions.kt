@@ -27,7 +27,7 @@ inline fun <reified D, reified VM, US, UE, CR> NavGraphBuilder.buildComposable(
     noinline exitTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition?)? = null,
     noinline popEnterTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition?)? = enterTransition,
     noinline popExitTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition?)? = exitTransition,
-) where D : Destination, VM : BaseViewModel<US, UE>, VM : CommandReceiver<CR>, US : BaseUiState, CR : CommandReceiver<CR> {
+) where D : Destination, VM : BaseViewModel<US, UE>, VM : CommandReceiver<CR>, US : BaseUiState {
     composable<D>(
         typeMap = getNavTypes<D>(),
         deepLinks = deepLinks,

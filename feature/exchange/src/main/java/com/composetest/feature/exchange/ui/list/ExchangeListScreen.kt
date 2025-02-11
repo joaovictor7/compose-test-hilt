@@ -36,7 +36,7 @@ import com.composetest.core.designsystem.components.topbar.LeftTopBar
 import com.composetest.core.designsystem.constants.screenMargin
 import com.composetest.core.designsystem.dimensions.Spacing
 import com.composetest.core.designsystem.enums.textfields.TextFieldIcon
-import com.composetest.core.designsystem.extensions.screenMargin
+import com.composetest.core.designsystem.extensions.horizontalScreenMargin
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.interfaces.Screen
@@ -57,13 +57,9 @@ internal object ExchangeListScreen :
     ) {
         val pullToRefreshState = rememberPullToRefreshState()
         DialogsHandler(uiState = uiState, onExecuteCommand = onExecuteCommand)
-        Column(
-            modifier = Modifier
-                .windowInsetsPadding(WindowInsets.statusBars)
-                .screenMargin()
-        ) {
+        Column(modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars)) {
             LeftTopBar(R.string.exchange_title)
-            Column {
+            Column(modifier = Modifier.horizontalScreenMargin()) {
                 ExchangeListFilter(uiState = uiState, onExecuteCommand = onExecuteCommand)
                 PullToRefreshBox(
                     modifier = Modifier.fillMaxSize(),
@@ -86,7 +82,10 @@ internal object ExchangeListScreen :
                         verticalArrangement = Arrangement.spacedBy(Spacing.sixteen)
                     ) {
                         items(uiState.exchangeScreenList) {
-                            ExchangeItem(onExecuteCommand = onExecuteCommand, exchangeScreenModel = it)
+                            ExchangeItem(
+                                onExecuteCommand = onExecuteCommand,
+                                exchangeScreenModel = it
+                            )
                         }
                         item {
                             Spacer(Modifier.windowInsetsPadding(WindowInsets.navigationBars))
