@@ -38,6 +38,7 @@ internal fun Project.configureAndroid(
             excludes += "/META-INF/LICENSE*"
         }
     }
+    experimentalProperties["android.experimental.enableScreenshotTest"] = true
     dependencies {
         implementation(platform(getLibrary("firebase.bom")))
         implementation(getLibrary("androidx.lifecycle.runtime.ktx"))

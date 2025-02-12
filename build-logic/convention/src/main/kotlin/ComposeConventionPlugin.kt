@@ -2,6 +2,7 @@ import com.android.build.gradle.BaseExtension
 import extensions.debugImplementation
 import extensions.getLibrary
 import extensions.implementation
+import extensions.screenshotTestImplementation
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
@@ -13,6 +14,7 @@ internal class ComposeConventionPlugin : Plugin<Project> {
         with(target) {
             with(pluginManager) {
                 apply("org.jetbrains.kotlin.plugin.compose")
+                apply("com.android.compose.screenshot")
             }
             extensions.configure<BaseExtension> {
                 buildFeatures.compose = true
@@ -24,8 +26,8 @@ internal class ComposeConventionPlugin : Plugin<Project> {
                 implementation(getLibrary("compose.material3"))
                 implementation(getLibrary("compose.navigation"))
                 implementation(getLibrary("androidx.lifecycle.runtime.compose"))
-                implementation(getLibrary("androidx.hilt.navigation.compose"))
                 debugImplementation(getLibrary("compose.ui.tooling"))
+                screenshotTestImplementation(getLibrary("compose.ui.tooling"))
             }
         }
     }

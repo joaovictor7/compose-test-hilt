@@ -11,6 +11,9 @@ internal fun DependencyHandlerScope.debugImplementation(dependencyNotation: Any)
 internal fun DependencyHandlerScope.testImplementation(dependencyNotation: Any) =
     implement("testImplementation", dependencyNotation)
 
+internal fun DependencyHandlerScope.screenshotTestImplementation(dependencyNotation: Any) =
+    implement("screenshotTestImplementation", dependencyNotation)
+
 internal fun DependencyHandlerScope.testRuntimeOnly(dependencyNotation: Any) =
     implement("testRuntimeOnly", dependencyNotation)
 
