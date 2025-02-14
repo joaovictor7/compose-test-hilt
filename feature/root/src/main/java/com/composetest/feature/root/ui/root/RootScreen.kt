@@ -44,6 +44,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.composetest.core.designsystem.components.scaffolds.ScreenScaffold
@@ -54,40 +55,41 @@ import com.composetest.core.designsystem.extensions.horizontalScreenMargin
 import com.composetest.core.designsystem.extensions.screenMargin
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.router.destinations.home.HomeDestination
+import com.composetest.core.router.extensions.currentRouteChangesFlow
+import com.composetest.core.router.extensions.navigateTo
 import com.composetest.core.ui.interfaces.Command
-import com.composetest.core.ui.interfaces.Screen
 import com.composetest.feature.root.R
 import com.composetest.feature.root.enums.NavigationFeature
 import com.composetest.feature.root.models.BottomFeatureNavigationModel
-import com.composetest.feature.root.navigation.navGraphs
+import com.composetest.feature.root.navigation.NavGraphs
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.launch
 import com.composetest.core.designsystem.R as DesignSystemResources
 
-internal object RootScreen : Screen<RootUiState, RootUiEvent, RootCommandReceiver> {
-
-    @Composable
-    override operator fun invoke(
-        uiState: RootUiState,
-        uiEvent: Flow<RootUiEvent>?,
-        onExecuteCommand: (Command<RootCommandReceiver>) -> Unit
+@Composable
+internal fun RootScreen(
+    uiState: RootUiState,
+    uiEvent: Flow<RootUiEvent> = emptyFlow(),
+    onExecuteCommand: (Command<RootCommandReceiver>) -> Unit = {},
+    mainNavController: NavHostController = rememberNavController(),
+) {
+    val drawerState = rememberDrawerState(DrawerValue.Closed)
+    ModalNavigationDrawer(
+        drawerState = drawerState,
+        drawerContent = getModalDrawerContent(uiState, onExecuteCommand, drawerState),
     ) {
-        val drawerState = rememberDrawerState(DrawerValue.Closed)
-        LaunchedEffectsHandler(uiEvent = uiEvent)
-        ModalNavigationDrawer(
-            drawerState = drawerState,
-            drawerContent = getModalDrawerContent(uiState, onExecuteCommand, drawerState),
+        ScreenScaffold(
+            topBar = getTopBar(drawerState),
+            bottomBar = getBottomBar(uiState, onExecuteCommand)
         ) {
-            ScreenScaffold(
-                topBar = getTopBar(drawerState),
-                bottomBar = getBottomBar(uiState, onExecuteCommand)
-            ) {
-                Navigation(
-                    drawerState = drawerState,
-                    uiState = uiState,
-                    onExecuteCommand = onExecuteCommand
-                )
-            }
+            Navigation(
+                drawerState = drawerState,
+                uiState = uiState,
+                uiEvent = uiEvent,
+                mainNavController = mainNavController,
+                onExecuteCommand = onExecuteCommand
+            )
         }
     }
 }
@@ -96,17 +98,23 @@ internal object RootScreen : Screen<RootUiState, RootUiEvent, RootCommandReceive
 private fun Navigation(
     drawerState: DrawerState,
     uiState: RootUiState,
+    uiEvent: Flow<RootUiEvent>,
+    mainNavController: NavHostController,
     onExecuteCommand: (Command<RootCommandReceiver>) -> Unit
 ) {
     if (uiState.firstDestination == null) return
     val navController = rememberNavController()
-    onExecuteCommand(RootCommand.SetRootNavGraph(navController))
+    val navGraphs by NavGraphs(mainNavController)
     NavHost(navController = navController, startDestination = uiState.firstDestination) {
-        navGraphs.forEach {
-            it.run { navGraph(false) }
-        }
+        navGraphs.forEach { it() }
     }
-    BackHandlers(drawerState = drawerState, onExecuteCommand = onExecuteCommand)
+    LaunchedEffectHandler(
+        uiEvent = uiEvent,
+        onExecuteCommand = onExecuteCommand,
+        rootNavController = navController,
+        mainNavController = mainNavController
+    )
+    BackHandler(drawerState = drawerState, onExecuteCommand = onExecuteCommand)
 }
 
 private fun getModalDrawerContent(
@@ -254,17 +262,17 @@ private fun getBottomBar(
     onExecuteCommand: (Command<RootCommandReceiver>) -> Unit
 ) = @Composable {
     NavigationBar {
-        uiState.bottomNavigationFeatures.forEach {
-            val label = it.feature.textId?.let { stringResource(it) }.orEmpty()
+        uiState.bottomNavigationFeatures.forEach { bottomNavigation ->
+            val label = bottomNavigation.feature.textId?.let { stringResource(it) }.orEmpty()
             NavigationBarItem(
-                selected = it.selected,
-                onClick = { onExecuteCommand(RootCommand.NavigateToFeature(it.feature)) },
+                selected = bottomNavigation.selected,
+                onClick = { onExecuteCommand(RootCommand.NavigateToFeature(bottomNavigation.feature)) },
                 label = {
                     Text(text = label, style = MaterialTheme.typography.labelLarge)
                 },
                 icon = {
                     Icon(
-                        painter = painterResource(it.feature.iconId),
+                        painter = painterResource(bottomNavigation.feature.iconId),
                         contentDescription = label
                     )
                 }
@@ -274,19 +282,31 @@ private fun getBottomBar(
 }
 
 @Composable
-private fun LaunchedEffectsHandler(uiEvent: Flow<RootUiEvent>?) {
+private fun LaunchedEffectHandler(
+    uiEvent: Flow<RootUiEvent>,
+    onExecuteCommand: (Command<RootCommandReceiver>) -> Unit,
+    rootNavController: NavHostController,
+    mainNavController: NavHostController,
+) {
     val activity = LocalActivity.current
     LaunchedEffect(Unit) {
-        uiEvent?.collect {
+        uiEvent.collect {
             when (it) {
                 is RootUiEvent.FinishApp -> activity?.finish()
+                is RootUiEvent.NavigateToFeature -> mainNavController.navigateTo(it.navigationModel)
+                is RootUiEvent.NavigateToBottomFeature -> rootNavController.navigateTo(it.navigationModel)
             }
+        }
+    }
+    LaunchedEffect(Unit) {
+        rootNavController.currentRouteChangesFlow.collect {
+            onExecuteCommand(RootCommand.CurrentScreenObservable(it))
         }
     }
 }
 
 @Composable
-private fun BackHandlers(
+private fun BackHandler(
     drawerState: DrawerState,
     onExecuteCommand: (Command<RootCommandReceiver>) -> Unit
 ) {
@@ -312,7 +332,6 @@ private fun Preview() {
                     BottomFeatureNavigationModel(NavigationFeature.HOME)
                 )
             ),
-            uiEvent = null
-        ) { }
+        )
     }
 }

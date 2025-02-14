@@ -2,8 +2,8 @@ package com.composetest.feature.configuration.ui.configuration
 
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
 import com.composetest.core.router.di.qualifiers.NavGraphQualifier
-import com.composetest.core.router.enums.NavGraph
 import com.composetest.core.router.managers.NavigationManager
+import com.composetest.core.router.models.NavigationModel
 import com.composetest.core.ui.bases.BaseViewModel
 import com.composetest.feature.configuration.analytics.configuration.ConfigurationScreenAnalytic
 import com.composetest.feature.configuration.enums.Configuration
@@ -13,7 +13,7 @@ import javax.inject.Inject
 @HiltViewModel
 internal class ConfigurationViewModel @Inject constructor(
     override val sendAnalyticsUseCase: SendAnalyticsUseCase,
-    @NavGraphQualifier(NavGraph.MAIN) override val navigationManager: NavigationManager
+    @NavGraphQualifier(com.composetest.core.router.enums.NavGraph.MAIN) override val navigationManager: NavigationManager
 ) : BaseViewModel<ConfigurationUiState, ConfigurationUiEvent>(
     ConfigurationUiState()
 ), ConfigurationCommandReceiver {
@@ -26,7 +26,7 @@ internal class ConfigurationViewModel @Inject constructor(
     }
 
     override fun configurationClick(configuration: Configuration) {
-        navigationManager.navigate(configuration.destination)
+        launchUiEvent(ConfigurationUiEvent.NavigateTo(NavigationModel(configuration.destination)))
     }
 
     private fun initUiState() {

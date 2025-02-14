@@ -26,6 +26,7 @@ internal class ComposeConventionPlugin : Plugin<Project> {
                 implementation(getLibrary("compose.material3"))
                 implementation(getLibrary("compose.navigation"))
                 implementation(getLibrary("androidx.lifecycle.runtime.compose"))
+                implementation(getLibrary("androidx.hilt.navigation.compose"))
                 debugImplementation(getLibrary("compose.ui.tooling"))
                 screenshotTestImplementation(getLibrary("compose.ui.tooling"))
             }

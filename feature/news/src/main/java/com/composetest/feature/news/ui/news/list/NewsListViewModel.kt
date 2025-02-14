@@ -8,6 +8,7 @@ import com.composetest.core.router.destinations.news.FullNewsDestination
 import com.composetest.core.router.di.qualifiers.NavGraphQualifier
 import com.composetest.core.router.enums.NavGraph
 import com.composetest.core.router.managers.NavigationManager
+import com.composetest.core.router.models.NavigationModel
 import com.composetest.core.ui.bases.BaseViewModel
 import com.composetest.feature.news.analytics.home.NewsListScreenAnalytic
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,12 +29,16 @@ internal class NewsListViewModel @Inject constructor(
     }
 
     override fun navigateToFullNews(article: ArticleModel) {
-        navigationManager.navigate(
-            FullNewsDestination(
-                imageUrl = article.urlToImage,
-                title = article.title,
-                description = article.description,
-                content = article.content
+        launchUiEvent(
+            NewsListUiEvent.NavigateTo(
+                NavigationModel(
+                    FullNewsDestination(
+                        imageUrl = article.urlToImage,
+                        title = article.title,
+                        description = article.description,
+                        content = article.content
+                    )
+                )
             )
         )
     }

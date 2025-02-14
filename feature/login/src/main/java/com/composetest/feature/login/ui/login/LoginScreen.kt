@@ -24,6 +24,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.composetest.core.designsystem.R
 import com.composetest.core.designsystem.components.buttons.Button
 import com.composetest.core.designsystem.components.dialogs.SimpleDialog
@@ -36,38 +38,43 @@ import com.composetest.core.designsystem.extensions.opacity
 import com.composetest.core.designsystem.extensions.screenMarginWithoutBar
 import com.composetest.core.designsystem.extensions.verticalTopBackgroundBrush
 import com.composetest.core.designsystem.theme.ComposeTestTheme
+import com.composetest.core.router.extensions.navigateTo
 import com.composetest.core.security.utils.showBiometricPrompt
 import com.composetest.core.ui.interfaces.Command
-import com.composetest.core.ui.interfaces.Screen
 import com.composetest.feature.login.models.BiometricModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 import com.composetest.feature.login.R as LoginResources
 
 private const val AMOUNT_VIBRATION = 2
 private const val DURATION = 50
 private const val DISPLACEMENT = 15f
 
-internal object LoginScreen : Screen<LoginUiState, LoginUiEvent, LoginCommandReceiver> {
-    @Composable
-    override operator fun invoke(
-        uiState: LoginUiState,
-        uiEvent: Flow<LoginUiEvent>?,
-        onExecuteCommand: (Command<LoginCommandReceiver>) -> Unit
+@Composable
+internal fun LoginScreen(
+    uiState: LoginUiState,
+    uiEvent: Flow<LoginUiEvent> = emptyFlow(),
+    onExecuteCommand: (Command<LoginCommandReceiver>) -> Unit = {},
+    navController: NavHostController = rememberNavController()
+) {
+    LaunchedEffectHandler(
+        uiEvent = uiEvent,
+        onExecuteCommand = onExecuteCommand,
+        navController = navController
+    )
+    if (!uiState.needsLogin) return
+    DialogHandler(uiState = uiState, onExecuteCommand = onExecuteCommand)
+
+    Box(
+        modifier = Modifier
+            .verticalTopBackgroundBrush()
+            .screenMarginWithoutBar()
+            .fillMaxSize()
     ) {
-        if (!uiState.needsLogin) return
-        Box(
-            modifier = Modifier
-                .verticalTopBackgroundBrush()
-                .screenMarginWithoutBar()
-                .fillMaxSize()
-        ) {
-            ElevatedCard(modifier = Modifier.align(Alignment.Center)) {
-                LoginForm(uiState = uiState, onExecuteCommand = onExecuteCommand)
-            }
-            VersionName(uiState = uiState)
+        ElevatedCard(modifier = Modifier.align(Alignment.Center)) {
+            LoginForm(uiState = uiState, onExecuteCommand = onExecuteCommand)
         }
-        EffectsHandler(loginUiEvent = uiEvent, onExecuteCommand = onExecuteCommand)
-        HandleDialogs(uiState = uiState, onExecuteCommand = onExecuteCommand)
+        VersionName(uiState = uiState)
     }
 }
 
@@ -202,18 +209,16 @@ private fun Modifier.setBiometricButtonClick(isAvailable: Boolean, onClick: () -
 }
 
 @Composable
-private fun EffectsHandler(
-    loginUiEvent: Flow<LoginUiEvent>?,
-    onExecuteCommand: (Command<LoginCommandReceiver>) -> Unit
+private fun LaunchedEffectHandler(
+    uiEvent: Flow<LoginUiEvent>,
+    onExecuteCommand: (Command<LoginCommandReceiver>) -> Unit,
+    navController: NavHostController
 ) {
     val context = LocalContext.current
     val currentAppTheme = LocalTheme.current
-    stringResource(LoginResources.string.feature_login_biometric_title)
     LaunchedEffect(Unit) {
         onExecuteCommand(LoginCommand.SetStatusBarsTheme(true, currentAppTheme))
-    }
-    LaunchedEffect(loginUiEvent) {
-        loginUiEvent?.collect {
+        uiEvent.collect {
             when (it) {
                 is LoginUiEvent.ShowBiometricPrompt -> showBiometricPrompt(
                     context = context,
@@ -224,6 +229,7 @@ private fun EffectsHandler(
                         onExecuteCommand(LoginCommand.BiometricErrorHandler(error))
                     }
                 )
+                is LoginUiEvent.NavigateTo -> navController.navigateTo(it.navigationModel)
             }
         }
     }
@@ -235,7 +241,7 @@ private fun EffectsHandler(
 }
 
 @Composable
-private fun HandleDialogs(
+private fun DialogHandler(
     uiState: LoginUiState,
     onExecuteCommand: (Command<LoginCommandReceiver>) -> Unit
 ) = uiState.simpleDialogParam?.let {
@@ -257,7 +263,6 @@ private fun Preview() {
                     messageId = LoginResources.string.feature_login_biometric_is_blocked
                 )
             ),
-            uiEvent = null
-        ) {}
+        )
     }
 }

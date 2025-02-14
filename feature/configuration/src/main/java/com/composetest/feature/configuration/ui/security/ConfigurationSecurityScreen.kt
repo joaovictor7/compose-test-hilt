@@ -10,29 +10,22 @@ import com.composetest.core.designsystem.enums.switches.SwitchType
 import com.composetest.core.designsystem.extensions.screenMargin
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.ui.interfaces.Command
-import com.composetest.core.ui.interfaces.Screen
 import com.composetest.feature.configuration.R
-import kotlinx.coroutines.flow.Flow
 
-internal object ConfigurationSecurityScreen :
-    Screen<ConfigurationSecurityUiState, ConfigurationSecurityUiEvent, ConfigurationSecurityCommandReceiver> {
-
-    @Composable
-    override operator fun invoke(
-        uiState: ConfigurationSecurityUiState,
-        uiEvent: Flow<ConfigurationSecurityUiEvent>?,
-        onExecuteCommand: (Command<ConfigurationSecurityCommandReceiver>) -> Unit
+@Composable
+internal fun ConfigurationSecurityScreen(
+    uiState: ConfigurationSecurityUiState,
+    onExecuteCommand: (Command<ConfigurationSecurityCommandReceiver>) -> Unit = {}
+) {
+    ScreenScaffold(
+        modifier = Modifier.screenMargin(),
+        topBar = { LeftTopBar(titleId = R.string.configuration_security_text) }
     ) {
-        ScreenScaffold(
-            modifier = Modifier.screenMargin(),
-            topBar = { LeftTopBar(titleId = R.string.configuration_security_text) }
-        ) {
-            LabelSwitch(
-                labelTextId = R.string.configuration_security_biometric_label_text,
-                checked = uiState.biometricIsEnabled,
-                switchType = SwitchType.CHECK
-            ) { onExecuteCommand(ConfigurationSecurityCommand.ChangeSwitchBiometric(it)) }
-        }
+        LabelSwitch(
+            labelTextId = R.string.configuration_security_biometric_label_text,
+            checked = uiState.biometricIsEnabled,
+            switchType = SwitchType.CHECK
+        ) { onExecuteCommand(ConfigurationSecurityCommand.ChangeSwitchBiometric(it)) }
     }
 }
 
@@ -42,7 +35,6 @@ private fun Preview() {
     ComposeTestTheme {
         ConfigurationSecurityScreen(
             uiState = ConfigurationSecurityUiState(),
-            uiEvent = null
-        ) { }
+        )
     }
 }

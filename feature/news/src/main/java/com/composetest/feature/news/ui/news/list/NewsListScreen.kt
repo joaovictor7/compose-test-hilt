@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -25,6 +24,7 @@ import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -34,6 +34,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.composetest.core.designsystem.components.asyncimage.AsyncImage
 import com.composetest.core.designsystem.components.dialogs.SimpleDialog
 import com.composetest.core.designsystem.components.shimmer.ShimmerEffect
@@ -43,63 +45,64 @@ import com.composetest.core.designsystem.dimensions.Spacing
 import com.composetest.core.designsystem.extensions.horizontalScreenMargin
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.domain.models.ArticleModel
+import com.composetest.core.router.extensions.navigateTo
 import com.composetest.core.ui.interfaces.Command
-import com.composetest.core.ui.interfaces.Screen
 import com.composetest.feature.news.R
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 import java.time.LocalDateTime
 
-internal object NewsListScreen : Screen<NewsListUiState, NewsListUiEvent, NewsListCommandReceiver> {
-
-    @Composable
-    @OptIn(ExperimentalMaterial3Api::class)
-    override operator fun invoke(
-        uiState: NewsListUiState,
-        uiEvent: Flow<NewsListUiEvent>?,
-        onExecuteCommand: (Command<NewsListCommandReceiver>) -> Unit
-    ) {
-        if (!uiState.showScreen) return
-        if (uiState.showWithoutNewsMsg) {
-            WithoutNews()
-        }
-        val pullToRefreshState = rememberPullToRefreshState()
-        PullToRefreshBox(
-            modifier = Modifier.fillMaxSize(),
-            state = pullToRefreshState,
-            isRefreshing = uiState.isLoading,
-            indicator = {
-                Indicator(
-                    modifier = Modifier
-                        .align(Alignment.TopCenter)
-                        .windowInsetsPadding(WindowInsets.statusBars),
-                    isRefreshing = uiState.isLoading,
-                    state = pullToRefreshState
-                )
-            },
-            onRefresh = { onExecuteCommand(NewsListCommand.Refresh) }
-        ) {
-            LazyColumn(
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+internal fun NewsListScreen(
+    uiState: NewsListUiState,
+    uiEvent: Flow<NewsListUiEvent> = emptyFlow(),
+    onExecuteCommand: (Command<NewsListCommandReceiver>) -> Unit = {},
+    navController: NavHostController = rememberNavController(),
+) {
+    if (!uiState.showScreen) return
+    if (uiState.showWithoutNewsMsg) {
+        WithoutNews()
+        return
+    }
+    val pullToRefreshState = rememberPullToRefreshState()
+    LaunchedEffectHandler(uiEvent = uiEvent, navController = navController)
+    DialogHandler(uiState = uiState, onExecuteCommand = onExecuteCommand)
+    PullToRefreshBox(
+        modifier = Modifier.fillMaxSize(),
+        state = pullToRefreshState,
+        isRefreshing = uiState.isLoading,
+        indicator = {
+            Indicator(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .horizontalScreenMargin(),
-                contentPadding = topScreenMarginList,
-                verticalArrangement = Arrangement.spacedBy(Spacing.twentyEight)
-            ) {
-                if (uiState.isLoading) {
-                    items(4) {
-                        ListItemShimmer()
-                    }
-                } else {
-                    items(uiState.articles) {
-                        NewsCard(articleModel = it, onExecuteCommand = onExecuteCommand)
-                    }
-                    item {
-                        Spacer(modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars))
-                    }
+                    .align(Alignment.TopCenter)
+                    .windowInsetsPadding(WindowInsets.statusBars),
+                isRefreshing = uiState.isLoading,
+                state = pullToRefreshState
+            )
+        },
+        onRefresh = { onExecuteCommand(NewsListCommand.Refresh) }
+    ) {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .horizontalScreenMargin(),
+            contentPadding = topScreenMarginList,
+            verticalArrangement = Arrangement.spacedBy(Spacing.twentyEight)
+        ) {
+            if (uiState.isLoading) {
+                items(4) {
+                    ListItemShimmer()
+                }
+            } else {
+                items(uiState.articles) {
+                    NewsCard(articleModel = it, onExecuteCommand = onExecuteCommand)
+                }
+                item {
+                    Spacer(modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars))
                 }
             }
         }
-        DialogsHandler(uiState = uiState, onExecuteCommand = onExecuteCommand)
     }
 }
 
@@ -164,12 +167,26 @@ private fun ListItemShimmer() {
 }
 
 @Composable
-private fun DialogsHandler(
+private fun DialogHandler(
     uiState: NewsListUiState,
     onExecuteCommand: (Command<NewsListCommandReceiver>) -> Unit
 ) = uiState.simpleDialogParam?.let {
     SimpleDialog(param = it) {
         onExecuteCommand(NewsListCommand.DismissSimpleDialog)
+    }
+}
+
+@Composable
+private fun LaunchedEffectHandler(
+    uiEvent: Flow<NewsListUiEvent>,
+    navController: NavHostController
+) {
+    LaunchedEffect(Unit) {
+        uiEvent.collect {
+            when (it) {
+                is NewsListUiEvent.NavigateTo -> navController.navigateTo(it.navigationModel)
+            }
+        }
     }
 }
 
@@ -192,7 +209,6 @@ private fun Preview() {
                     )
                 )
             ),
-            uiEvent = null
-        ) { }
+        )
     }
 }

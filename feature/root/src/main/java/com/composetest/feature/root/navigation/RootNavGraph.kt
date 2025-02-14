@@ -1,20 +1,24 @@
 package com.composetest.feature.root.navigation
 
+import androidx.compose.runtime.getValue
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.composable
 import com.composetest.core.router.destinations.root.RootDestination
-import com.composetest.core.router.interfaces.NavGraph
-import com.composetest.core.ui.extensions.buildComposable
-import com.composetest.feature.root.ui.root.RootCommandReceiver
 import com.composetest.feature.root.ui.root.RootScreen
-import com.composetest.feature.root.ui.root.RootUiEvent
-import com.composetest.feature.root.ui.root.RootUiState
 import com.composetest.feature.root.ui.root.RootViewModel
 
-object RootNavGraph : NavGraph {
-    override fun NavGraphBuilder.navGraph(navigateBackHandler: Boolean) {
-        buildComposable<RootDestination, RootViewModel, RootUiState, RootUiEvent, RootCommandReceiver>(
-            screen = RootScreen,
-            navigateBackHandler = navigateBackHandler
+fun NavGraphBuilder.rootNavGraphs(mainNavController: NavHostController) {
+    composable<RootDestination> {
+        val viewModel = hiltViewModel<RootViewModel>()
+        val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+        RootScreen(
+            uiState = uiState,
+            uiEvent = viewModel.uiEvent,
+            onExecuteCommand = viewModel::executeCommand,
+            mainNavController = mainNavController
         )
     }
 }

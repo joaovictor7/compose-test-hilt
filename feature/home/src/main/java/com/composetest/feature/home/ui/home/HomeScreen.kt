@@ -13,32 +13,22 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.composetest.core.designsystem.extensions.horizontalScreenMargin
 import com.composetest.core.designsystem.theme.ComposeTestTheme
-import com.composetest.core.ui.interfaces.Command
-import com.composetest.core.ui.interfaces.Screen
 import com.composetest.feature.home.R
-import kotlinx.coroutines.flow.Flow
 
-internal object HomeScreen : Screen<HomeUiState, HomeUiEvent, HomeCommandReceiver> {
-
-    @Composable
-    override fun invoke(
-        uiState: HomeUiState,
-        uiEvent: Flow<HomeUiEvent>?,
-        onExecuteCommand: (Command<HomeCommandReceiver>) -> Unit
+@Composable
+internal fun HomeScreen() {
+    Column(
+        modifier = Modifier
+            .horizontalScreenMargin()
+            .fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
     ) {
-        Column(
-            modifier = Modifier
-                .horizontalScreenMargin()
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-        ) {
-            Text(
-                text = stringResource(R.string.home_text),
-                style = MaterialTheme.typography.headlineSmall,
-                textAlign = TextAlign.Center
-            )
-        }
+        Text(
+            text = stringResource(R.string.home_text),
+            style = MaterialTheme.typography.headlineSmall,
+            textAlign = TextAlign.Center
+        )
     }
 }
 
@@ -46,6 +36,6 @@ internal object HomeScreen : Screen<HomeUiState, HomeUiEvent, HomeCommandReceive
 @Composable
 private fun Preview() {
     ComposeTestTheme {
-        HomeScreen(uiState = HomeUiState, uiEvent = null) { }
+        HomeScreen()
     }
 }

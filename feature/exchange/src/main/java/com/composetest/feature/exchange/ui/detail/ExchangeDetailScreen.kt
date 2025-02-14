@@ -30,32 +30,21 @@ import com.composetest.core.designsystem.components.topbar.LeftTopBar
 import com.composetest.core.designsystem.dimensions.Spacing
 import com.composetest.core.designsystem.extensions.horizontalScreenMargin
 import com.composetest.core.designsystem.theme.ComposeTestTheme
-import com.composetest.core.ui.interfaces.Command
-import com.composetest.core.ui.interfaces.Screen
 import com.composetest.feature.exchange.R
 import com.composetest.feature.exchange.models.ExchangeDetailRowScreenModel
-import kotlinx.coroutines.flow.Flow
 
-internal object ExchangeDetailScreen :
-    Screen<ExchangeDetailUiState, ExchangeDetailUiEvent, ExchangeDetailCommandReceiver> {
-
-    @Composable
-    override operator fun invoke(
-        uiState: ExchangeDetailUiState,
-        uiEvent: Flow<ExchangeDetailUiEvent>?,
-        onExecuteCommand: (Command<ExchangeDetailCommandReceiver>) -> Unit
+@Composable
+internal fun ExchangeDetailScreen(uiState: ExchangeDetailUiState) {
+    ScreenScaffold(
+        modifier = Modifier.horizontalScreenMargin(),
+        topBar = { LeftTopBar(titleId = R.string.exchange_detail_title) }
     ) {
-        ScreenScaffold(
-            modifier = Modifier.horizontalScreenMargin(),
-            topBar = { LeftTopBar(titleId = R.string.exchange_detail_title) }
-        ) {
-            LazyColumn(verticalArrangement = Arrangement.spacedBy(Spacing.twelve)) {
-                items(uiState.exchangeDataRowsScreen) {
-                    if (it.valueIsGrid) {
-                        GridDataRow(exchangeDataRowScreen = it)
-                    } else {
-                        LabelDataRow(exchangeDataRowScreen = it)
-                    }
+        LazyColumn(verticalArrangement = Arrangement.spacedBy(Spacing.twelve)) {
+            items(uiState.exchangeDataRowsScreen) {
+                if (it.valueIsGrid) {
+                    GridDataRow(exchangeDataRowScreen = it)
+                } else {
+                    LabelDataRow(exchangeDataRowScreen = it)
                 }
             }
         }
@@ -158,7 +147,6 @@ private fun Preview() {
                     )
                 )
             ),
-            uiEvent = null
-        ) { }
+        )
     }
 }

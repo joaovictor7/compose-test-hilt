@@ -6,7 +6,7 @@ import com.composetest.core.designsystem.params.alertdialogs.SimpleDialogParam
 import com.composetest.core.domain.models.ThemeModel
 import com.composetest.core.ui.interfaces.BaseUiState
 
-data class MainUiState(
+internal data class MainUiState(
     val theme: ThemeModel = ThemeModel(),
     val showSplashScreen: Boolean = true,
     val simpleDialogParam: SimpleDialogParam? = null

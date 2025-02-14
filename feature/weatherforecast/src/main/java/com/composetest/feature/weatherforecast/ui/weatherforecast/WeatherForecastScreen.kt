@@ -26,7 +26,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -48,7 +47,6 @@ import com.composetest.core.designsystem.extensions.screenMargin
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.ui.enums.Permission
 import com.composetest.core.ui.interfaces.Command
-import com.composetest.core.ui.interfaces.Screen
 import com.composetest.core.ui.utils.getMultiplePermissionState
 import com.composetest.feature.weatherforecast.R
 import com.composetest.feature.weatherforecast.enums.WeatherForecastScreenStatus
@@ -59,42 +57,39 @@ import com.composetest.feature.weatherforecast.models.WeatherNowScreenModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.MultiplePermissionsState
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 import com.composetest.feature.weatherforecast.R as WeatherForecastResources
 
-internal object WeatherForecastScreen :
-    Screen<WeatherForecastUiState, WeatherForecastUiEvent, WeatherForecastCommandReceiver> {
-
-    @Composable
-    override operator fun invoke(
-        uiState: WeatherForecastUiState,
-        uiEvent: Flow<WeatherForecastUiEvent>?,
-        onExecuteCommand: (Command<WeatherForecastCommandReceiver>) -> Unit
-    ) {
-        val permissionState = getMultiplePermissionState(Permission.localization)
-        LaunchedEffectHandler(uiEvent = uiEvent, permissionState = permissionState)
-        DialogsHandler(uiState = uiState, onExecuteCommand = onExecuteCommand)
-        LifecycleEventHandler(onExecuteCommand = onExecuteCommand)
-        Column(modifier = Modifier.fillMaxSize()) {
-            LeftTopBar(
-                titleId = WeatherForecastResources.string.weather_forecast_title,
-                actionIcons = uiState.refreshButton,
-                onClickAction = { onExecuteCommand(WeatherForecastCommand.GetLocationAndWeatherForecastsData) }
-            )
-            Column(
-                modifier = Modifier.screenMargin(),
-                verticalArrangement = Arrangement.spacedBy(Spacing.twentyFour)
-            ) {
-                if (uiState.showFullScreenMsg) {
-                    FullScreenMessage(
-                        uiState = uiState,
-                        onExecuteCommand = onExecuteCommand,
-                        permissionState = permissionState
-                    )
-                    return
-                }
-                WeatherNow(uiState = uiState, onExecuteCommand = onExecuteCommand)
-                WeatherForecasts(uiState = uiState, onExecuteCommand = onExecuteCommand)
+@Composable
+internal fun WeatherForecastScreen(
+    uiState: WeatherForecastUiState,
+    uiEvent: Flow<WeatherForecastUiEvent> = emptyFlow(),
+    onExecuteCommand: (Command<WeatherForecastCommandReceiver>) -> Unit = {}
+) {
+    val permissionState = getMultiplePermissionState(Permission.localization)
+    LaunchedEffectHandler(uiEvent = uiEvent, permissionState = permissionState)
+    LifecycleEventHandler(onExecuteCommand = onExecuteCommand)
+    DialogHandler(uiState = uiState, onExecuteCommand = onExecuteCommand)
+    Column(modifier = Modifier.fillMaxSize()) {
+        LeftTopBar(
+            titleId = WeatherForecastResources.string.weather_forecast_title,
+            actionIcons = uiState.refreshButton,
+            onClickAction = { onExecuteCommand(WeatherForecastCommand.GetLocationAndWeatherForecastsData) }
+        )
+        Column(
+            modifier = Modifier.screenMargin(),
+            verticalArrangement = Arrangement.spacedBy(Spacing.twentyFour)
+        ) {
+            if (uiState.showFullScreenMsg) {
+                FullScreenMessage(
+                    uiState = uiState,
+                    onExecuteCommand = onExecuteCommand,
+                    permissionState = permissionState
+                )
+                return
             }
+            WeatherNow(uiState = uiState, onExecuteCommand = onExecuteCommand)
+            WeatherForecasts(uiState = uiState, onExecuteCommand = onExecuteCommand)
         }
     }
 }
@@ -340,7 +335,7 @@ private fun WeatherForecastsShimmer() {
 
 // region Handlers
 @Composable
-private fun DialogsHandler(
+private fun DialogHandler(
     uiState: WeatherForecastUiState,
     onExecuteCommand: (Command<WeatherForecastCommandReceiver>) -> Unit
 ) = uiState.simpleDialogParam?.let {
@@ -420,7 +415,6 @@ private fun Preview() {
                     )
                 )
             ),
-            uiEvent = null
-        ) { }
+        )
     }
 }

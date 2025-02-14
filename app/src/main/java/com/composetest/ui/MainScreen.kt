@@ -11,45 +11,29 @@ import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.router.destinations.login.LoginDestination
 import com.composetest.core.router.interfaces.Destination
 import com.composetest.core.ui.interfaces.Command
-import com.composetest.core.ui.interfaces.Screen
-import com.composetest.navigation.navGraphs
-import kotlinx.coroutines.flow.Flow
+import com.composetest.navigation.NavGraphs
 
-internal object MainScreen : Screen<MainUiState, MainUiEvent, MainCommandReceiver> {
-    @Composable
-    override operator fun invoke(
-        uiState: MainUiState,
-        uiEvent: Flow<MainUiEvent>?,
-        onExecuteCommand: (Command<MainCommandReceiver>) -> Unit
+@Composable
+internal fun MainScreen(
+    uiState: MainUiState,
+    onExecuteCommand: (Command<MainCommandReceiver>) -> Unit = {}
+) {
+    LifecycleHandler(onExecuteCommand)
+    ComposeTestTheme(
+        dynamicColor = uiState.theme.dynamicColor,
+        theme = uiState.theme.theme
     ) {
-        LifecycleHandler(onExecuteCommand)
-        ComposeTestTheme(
-            dynamicColor = uiState.theme.dynamicColor,
-            theme = uiState.theme.theme
-        ) {
-            DialogsHandler(uiState = uiState, onExecuteCommand = onExecuteCommand)
-            Navigation(
-                firstScreenDestination = LoginDestination(),
-                onExecuteCommand = onExecuteCommand
-            )
-        }
+        DialogHandler(uiState = uiState, onExecuteCommand = onExecuteCommand)
+        Navigation(firstScreenDestination = LoginDestination())
     }
 }
 
 @Composable
-private fun Navigation(
-    firstScreenDestination: Destination,
-    onExecuteCommand: (Command<MainCommandReceiver>) -> Unit
-) {
+private fun Navigation(firstScreenDestination: Destination) {
     val navController = rememberNavController()
-    onExecuteCommand(MainCommand.SetNavigationGraph(navController))
-    NavHost(
-        navController = navController,
-        startDestination = firstScreenDestination
-    ) {
-        navGraphs.forEach {
-            it.run { navGraph() }
-        }
+    val navGraphs by NavGraphs(navController)
+    NavHost(navController = navController, startDestination = firstScreenDestination) {
+        navGraphs.forEach { it() }
     }
 }
 
@@ -63,7 +47,7 @@ private fun LifecycleHandler(onExecuteCommand: (Command<MainCommandReceiver>) ->
 }
 
 @Composable
-private fun DialogsHandler(
+private fun DialogHandler(
     uiState: MainUiState,
     onExecuteCommand: (Command<MainCommandReceiver>) -> Unit
 ) = uiState.simpleDialogParam?.let {
@@ -76,9 +60,6 @@ private fun DialogsHandler(
 @Preview
 private fun Preview() {
     ComposeTestTheme {
-        MainScreen(
-            uiState = MainUiState(),
-            uiEvent = null
-        ) {}
+        MainScreen(uiState = MainUiState())
     }
 }

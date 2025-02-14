@@ -1,6 +1,5 @@
 package com.composetest.feature.root.ui.root
 
-import androidx.navigation.NavHostController
 import com.composetest.core.domain.managers.SessionManager
 import com.composetest.core.domain.usecases.GetAvailableFeaturesUseCase
 import com.composetest.core.domain.usecases.GetUserUseCase
@@ -9,8 +8,8 @@ import com.composetest.core.router.destinations.login.LoginDestination
 import com.composetest.core.router.di.qualifiers.NavGraphQualifier
 import com.composetest.core.router.enums.NavGraph
 import com.composetest.core.router.enums.NavigationMode
-import com.composetest.core.router.managers.NavControllerManager
 import com.composetest.core.router.managers.NavigationManager
+import com.composetest.core.router.models.NavigationModel
 import com.composetest.core.ui.bases.BaseViewModel
 import com.composetest.feature.root.analytics.root.RootEventAnalytic
 import com.composetest.feature.root.analytics.root.RootScreenAnalytic
@@ -23,11 +22,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class RootViewModel @Inject constructor(
-    private val navControllerManager: NavControllerManager,
     private val sessionManager: SessionManager,
     private val getUserUseCase: GetUserUseCase,
     private val userModalDrawerMapper: UserModalDrawerMapper,
-    @NavGraphQualifier(NavGraph.MAIN) private val mainNavigationManager: NavigationManager,
     override val sendAnalyticsUseCase: SendAnalyticsUseCase,
     @NavGraphQualifier(NavGraph.ROOT) override val navigationManager: NavigationManager,
     getAvailableFeaturesUseCase: GetAvailableFeaturesUseCase,
@@ -46,17 +43,18 @@ internal class RootViewModel @Inject constructor(
     }
 
     override fun backHandler() {
-        if (bottomNavigationFeaturesOrder.size > 1) {
-            val navigationBottomFeature =
-                bottomNavigationFeaturesOrder[bottomNavigationFeaturesOrder.lastIndex.dec()]
-            bottomNavigationFeaturesOrder.removeLastOrNull()
-            navigationManager.navigate(
-                navigationBottomFeature.destination,
-                NavigationMode.SAVE_SCREEN_STATE
-            )
-        } else {
+        if (bottomNavigationFeaturesOrder.size == 1) {
             launchUiEvent(RootUiEvent.FinishApp)
+            return
         }
+        val navigationBottomFeature =
+            bottomNavigationFeaturesOrder[bottomNavigationFeaturesOrder.lastIndex.dec()]
+        bottomNavigationFeaturesOrder.removeLastOrNull()
+        launchUiEvent(
+            RootUiEvent.NavigateToBottomFeature(
+                NavigationModel(navigationBottomFeature.destination, NavigationMode.SAVE_SCREEN_STATE)
+            )
+        )
     }
 
     override fun navigateToFeature(navigationFeature: NavigationFeature) {
@@ -68,18 +66,25 @@ internal class RootViewModel @Inject constructor(
         }
     }
 
-    override fun setRootNavGraph(navController: NavHostController) {
-        navControllerManager.setNavController(NavGraph.ROOT, navController)
-        currentScreenObservable()
-    }
-
     override fun logout() {
         runAsyncTask {
             sessionManager.finishCurrentSession()
-            mainNavigationManager.asyncNavigate(
-                LoginDestination(isLogout = true),
-                NavigationMode.REMOVE_ALL_SCREENS_STACK
+            launchUiEvent(
+                RootUiEvent.NavigateToFeature(
+                    NavigationModel(
+                        destination = LoginDestination(true),
+                        navigationMode = NavigationMode.REMOVE_ALL_SCREENS_STACK
+                    ),
+                )
             )
+        }
+    }
+
+    override fun currentScreenObservable(currentRoute: String?) {
+        val bottomNavigationFeature = NavigationFeature.bottomNavigationFeatures
+            .firstOrNull { currentRoute == it.destination.asRoute }
+        bottomNavigationFeature?.let {
+            updateUiState { it.setSelectedBottomNavigationFeature(bottomNavigationFeature) }
         }
     }
 
@@ -106,23 +111,15 @@ internal class RootViewModel @Inject constructor(
             bottomNavigationFeaturesOrder.remove(navigationFeature)
         }
         bottomNavigationFeaturesOrder.add(navigationFeature)
-        navigationManager.navigate(navigationFeature.destination, NavigationMode.SAVE_SCREEN_STATE)
+        launchUiEvent(
+            RootUiEvent.NavigateToBottomFeature(
+                NavigationModel(navigationFeature.destination, NavigationMode.SAVE_SCREEN_STATE)
+            )
+        )
     }
 
     private fun navigateToModalDrawerFeature(feature: NavigationFeature) {
-        mainNavigationManager.navigate(feature.destination)
-    }
-
-    private fun currentScreenObservable() {
-        runFlowTask(navigationManager.currentRouteChangesFlow) { currentRoute ->
-            val bottomNavigationFeature = NavigationFeature.bottomNavigationFeatures
-                .firstOrNull { currentRoute == it.destination.asRoute }
-            bottomNavigationFeature?.let {
-                updateUiState {
-                    it.setSelectedBottomNavigationFeature(bottomNavigationFeature)
-                }
-            }
-        }
+        launchUiEvent(RootUiEvent.NavigateToFeature(NavigationModel(destination = feature.destination)))
     }
 
     private fun getModalDrawerNavigationFeatures() = NavigationFeature.modalDrawerFeatures.filter {

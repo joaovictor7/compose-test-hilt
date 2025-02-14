@@ -26,7 +26,6 @@ class MainActivity : AppCompatActivity() {
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
             MainScreen(
                 uiState = uiState,
-                uiEvent = viewModel.uiEvent,
                 onExecuteCommand = viewModel::executeCommand
             )
         }

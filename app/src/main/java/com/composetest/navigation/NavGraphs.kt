@@ -1,19 +1,28 @@
 package com.composetest.navigation
 
-import com.composetest.feature.configuration.navigation.ConfigurationNavGraph
-import com.composetest.feature.exchange.navigation.ExchangeNavGraph
-import com.composetest.feature.login.navigation.LoginNavGraph
-import com.composetest.feature.news.navigation.NewsNavGraph
-import com.composetest.feature.profile.navigation.ProfileNavGraph
-import com.composetest.feature.root.navigation.RootNavGraph
-import com.composetest.feature.weatherforecast.navigation.WeatherForecastNavGraph
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
+import com.composetest.core.router.interfaces.NavGraph
+import com.composetest.feature.configuration.navigation.configurationNavGraphs
+import com.composetest.feature.exchange.navigation.exchangeNavGraphs
+import com.composetest.feature.login.navigation.loginNavGraphs
+import com.composetest.feature.news.navigation.newsNavGraphs
+import com.composetest.feature.profile.navigation.profileNavGraphs
+import com.composetest.feature.root.navigation.rootNavGraphs
+import com.composetest.feature.weatherforecast.navigation.weatherForecastNavGraphs
+import kotlin.reflect.KProperty
 
-internal val navGraphs = listOf(
-    ConfigurationNavGraph,
-    LoginNavGraph,
-    RootNavGraph,
-    ProfileNavGraph,
-    WeatherForecastNavGraph,
-    NewsNavGraph,
-    ExchangeNavGraph,
-)
+internal class NavGraphs(private val navController: NavHostController) : NavGraph {
+    override operator fun getValue(
+        thisRef: Any?,
+        property: KProperty<*>
+    ): List<NavGraphBuilder.() -> Unit> = listOf(
+        { loginNavGraphs(navController) },
+        { rootNavGraphs(navController) },
+        { newsNavGraphs(navController) },
+        { exchangeNavGraphs(navController) },
+        { profileNavGraphs(navController) },
+        { configurationNavGraphs() },
+        { weatherForecastNavGraphs() },
+    )
+}

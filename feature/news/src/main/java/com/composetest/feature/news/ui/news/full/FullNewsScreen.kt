@@ -20,57 +20,46 @@ import com.composetest.core.designsystem.components.topbar.TopBarWithoutTitle
 import com.composetest.core.designsystem.constants.screenMargin
 import com.composetest.core.designsystem.dimensions.Spacing
 import com.composetest.core.designsystem.theme.ComposeTestTheme
-import com.composetest.core.ui.interfaces.Command
-import com.composetest.core.ui.interfaces.Screen
-import kotlinx.coroutines.flow.Flow
 
-internal object FullNewsScreen :
-    Screen<FullNewsUiState, FullNewsUiEvent, FullNewsCommandReceiver> {
-
-    @Composable
-    override operator fun invoke(
-        uiState: FullNewsUiState,
-        uiEvent: Flow<FullNewsUiEvent>?,
-        onExecuteCommand: (Command<FullNewsCommandReceiver>) -> Unit
-    ) {
-        Scaffold(topBar = { TopBarWithoutTitle() }) { paddingValues ->
-            Column(
-                modifier = Modifier
-                    .verticalScroll(rememberScrollState())
-                    .padding(paddingValues)
+@Composable
+internal fun FullNewsScreen(uiState: FullNewsUiState) {
+    Scaffold(topBar = { TopBarWithoutTitle() }) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .verticalScroll(rememberScrollState())
+                .padding(paddingValues)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
             ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    uiState.imageUrl?.let {
-                        AsyncImage(
-                            url = it,
-                            alignment = Alignment.TopCenter,
-                            contentScale = ContentScale.None
-                        )
-                    }
-                }
-                Column(
-                    modifier = Modifier.padding(screenMargin),
-                    verticalArrangement = Arrangement.spacedBy(Spacing.twelve)
-                ) {
-                    Text(
-                        text = uiState.title,
-                        style = MaterialTheme.typography.titleLarge
+                uiState.imageUrl?.let {
+                    AsyncImage(
+                        url = it,
+                        alignment = Alignment.TopCenter,
+                        contentScale = ContentScale.None
                     )
-                    uiState.description?.let {
-                        Text(
-                            text = it,
-                            style = MaterialTheme.typography.titleMedium
-                        )
-                    }
-                    uiState.content?.let {
-                        Text(
-                            text = it,
-                            style = MaterialTheme.typography.bodySmall
-                        )
-                    }
+                }
+            }
+            Column(
+                modifier = Modifier.padding(screenMargin),
+                verticalArrangement = Arrangement.spacedBy(Spacing.twelve)
+            ) {
+                Text(
+                    text = uiState.title,
+                    style = MaterialTheme.typography.titleLarge
+                )
+                uiState.description?.let {
+                    Text(
+                        text = it,
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                }
+                uiState.content?.let {
+                    Text(
+                        text = it,
+                        style = MaterialTheme.typography.bodySmall
+                    )
                 }
             }
         }
@@ -83,7 +72,6 @@ private fun Preview() {
     ComposeTestTheme {
         FullNewsScreen(
             uiState = FullNewsUiState(),
-            uiEvent = null
-        ) { }
+        )
     }
 }

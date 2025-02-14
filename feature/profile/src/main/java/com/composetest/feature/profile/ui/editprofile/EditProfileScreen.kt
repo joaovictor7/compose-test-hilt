@@ -17,38 +17,31 @@ import com.composetest.core.designsystem.dimensions.Spacing
 import com.composetest.core.designsystem.extensions.screenMargin
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.ui.interfaces.Command
-import com.composetest.core.ui.interfaces.Screen
 import com.composetest.feature.profile.R
 import com.composetest.feature.profile.models.ProfileFormModel
-import kotlinx.coroutines.flow.Flow
 
-internal object EditProfileScreen :
-    Screen<EditProfileUiState, EditProfileUiEvent, EditProfileCommandReceiver> {
-
-    @Composable
-    override operator fun invoke(
-        uiState: EditProfileUiState,
-        uiEvent: Flow<EditProfileUiEvent>?,
-        onExecuteCommand: (Command<EditProfileCommandReceiver>) -> Unit
-    ) {
-        ScreenScaffold(topBar = { LeftTopBar(titleId = R.string.profile_title) }) {
-            Column(
+@Composable
+internal fun EditProfileScreen(
+    uiState: EditProfileUiState,
+    onExecuteCommand: (Command<EditProfileCommandReceiver>) -> Unit = {},
+) {
+    ScreenScaffold(topBar = { LeftTopBar(titleId = R.string.profile_title) }) {
+        Column(
+            modifier = Modifier
+                .screenMargin()
+                .imePadding(),
+            verticalArrangement = Arrangement.SpaceBetween
+        ) {
+            EditProfileFormData(uiState = uiState, onExecuteCommand = onExecuteCommand)
+            Button(
                 modifier = Modifier
-                    .screenMargin()
-                    .imePadding(),
-                verticalArrangement = Arrangement.SpaceBetween
+                    .padding(top = Spacing.twelve)
+                    .fillMaxWidth(0.9f)
+                    .align(Alignment.CenterHorizontally),
+                text = "Salvar",
+                enabled = uiState.saveButtonEnabled
             ) {
-                EditProfileFormData(uiState = uiState, onExecuteCommand = onExecuteCommand)
-                Button(
-                    modifier = Modifier
-                        .padding(top = Spacing.twelve)
-                        .fillMaxWidth(0.9f)
-                        .align(Alignment.CenterHorizontally),
-                    text = "Salvar",
-                    enabled = uiState.saveButtonEnabled
-                ) {
-                    onExecuteCommand(EditProfileCommand.SaveProfile)
-                }
+                onExecuteCommand(EditProfileCommand.SaveProfile)
             }
         }
     }
@@ -83,7 +76,6 @@ private fun Preview() {
     ComposeTestTheme {
         EditProfileScreen(
             uiState = EditProfileUiState(),
-            uiEvent = null
-        ) { }
+        )
     }
 }

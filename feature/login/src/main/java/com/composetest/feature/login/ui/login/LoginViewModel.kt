@@ -1,12 +1,12 @@
 package com.composetest.feature.login.ui.login
 
-import com.composetest.core.domain.providers.BuildConfigProvider
+import com.composetest.common.errors.ApiError
 import com.composetest.core.designsystem.utils.getCommonSimpleDialogErrorParam
 import com.composetest.core.domain.enums.Theme
-import com.composetest.common.errors.ApiError
 import com.composetest.core.domain.managers.ConfigurationManager
 import com.composetest.core.domain.managers.RemoteConfigManager
 import com.composetest.core.domain.managers.SessionManager
+import com.composetest.core.domain.providers.BuildConfigProvider
 import com.composetest.core.domain.usecases.AuthenticationByBiometricUseCase
 import com.composetest.core.domain.usecases.AuthenticationUseCase
 import com.composetest.core.domain.usecases.BiometricIsAvailableUseCase
@@ -17,6 +17,7 @@ import com.composetest.core.router.di.qualifiers.NavGraphQualifier
 import com.composetest.core.router.enums.NavGraph
 import com.composetest.core.router.enums.NavigationMode
 import com.composetest.core.router.managers.NavigationManager
+import com.composetest.core.router.models.NavigationModel
 import com.composetest.core.security.enums.BiometricError
 import com.composetest.core.security.enums.BiometricError.Companion.biometricIsLockout
 import com.composetest.core.security.enums.BiometricError.Companion.userClosedPrompt
@@ -168,7 +169,11 @@ internal class LoginViewModel @Inject constructor(
         }
     }
 
-    private suspend fun navigateToRoot() {
-        navigationManager.asyncNavigate(RootDestination, NavigationMode.REMOVE_ALL_SCREENS_STACK)
+    private fun navigateToRoot() {
+        launchUiEvent(
+            LoginUiEvent.NavigateTo(
+                NavigationModel(RootDestination, NavigationMode.REMOVE_ALL_SCREENS_STACK)
+            )
+        )
     }
 }
