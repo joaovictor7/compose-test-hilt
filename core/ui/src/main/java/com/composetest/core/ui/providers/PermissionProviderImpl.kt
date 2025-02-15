@@ -26,5 +26,5 @@ internal class PermissionProviderImpl @Inject constructor(
     }
 
     private fun Permission.checkPermission(): Boolean =
-        ContextCompat.checkSelfPermission(context, this.manifest) == PackageManager.PERMISSION_GRANTED
+        ContextCompat.checkSelfPermission(context, manifest) == PackageManager.PERMISSION_GRANTED
 }

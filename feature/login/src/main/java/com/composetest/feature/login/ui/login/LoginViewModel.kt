@@ -13,21 +13,25 @@ import com.composetest.core.domain.usecases.BiometricIsAvailableUseCase
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
 import com.composetest.core.router.destinations.login.LoginDestination
 import com.composetest.core.router.destinations.root.RootDestination
-import com.composetest.core.router.di.qualifiers.NavGraphQualifier
-import com.composetest.core.router.enums.NavGraph
 import com.composetest.core.router.enums.NavigationMode
-import com.composetest.core.router.managers.NavigationManager
 import com.composetest.core.router.models.NavigationModel
 import com.composetest.core.security.enums.BiometricError
 import com.composetest.core.security.enums.BiometricError.Companion.biometricIsLockout
 import com.composetest.core.security.enums.BiometricError.Companion.userClosedPrompt
 import com.composetest.core.ui.bases.BaseViewModel
+import com.composetest.core.ui.interfaces.UiEvent
+import com.composetest.core.ui.interfaces.UiState
 import com.composetest.feature.login.R
 import com.composetest.feature.login.analytics.login.LoginEventAnalytic
 import com.composetest.feature.login.analytics.login.LoginScreenAnalytic
 import com.composetest.feature.login.enums.LoginRemoteConfig
 import com.composetest.feature.login.models.BiometricModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
@@ -39,14 +43,17 @@ internal class LoginViewModel @Inject constructor(
     private val biometricIsAvailableUseCase: BiometricIsAvailableUseCase,
     private val sessionManager: SessionManager,
     private val remoteConfigManager: RemoteConfigManager,
-    override val sendAnalyticsUseCase: SendAnalyticsUseCase,
     private val loginDestination: LoginDestination,
-    @NavGraphQualifier(NavGraph.MAIN) override val navigationManager: NavigationManager
-) : BaseViewModel<LoginUiState, LoginUiEvent>(LoginUiState()), LoginCommandReceiver {
+    override val sendAnalyticsUseCase: SendAnalyticsUseCase,
+) : BaseViewModel(), UiState<LoginUiState>, UiEvent<LoginUiEvent>, LoginCommandReceiver {
 
+    private val _uiState = MutableStateFlow(LoginUiState())
+    private val _uiEvent = MutableSharedFlow<LoginUiEvent>()
     private val loginFormModel get() = uiState.value.loginFormModel
     private val byPassLogin by lazy { remoteConfigManager.getBoolean(LoginRemoteConfig.BY_PASS_LOGIN) }
 
+    override val uiState = _uiState.asStateFlow()
+    override val uiEvent = _uiEvent.asSharedFlow()
     override val commandReceiver = this
     override val analyticScreen = LoginScreenAnalytic
 
@@ -56,17 +63,17 @@ internal class LoginViewModel @Inject constructor(
 
     override fun checkShowInvalidEmailMsg(hasFocus: Boolean) {
         if (hasFocus) {
-            updateUiState { it.setInvalidEmail(false) }
+            _uiState.update { it.setInvalidEmail(false) }
         } else if (loginFormModel.emailIsNotEmpty) {
-            updateUiState { it.setInvalidEmail(!loginFormModel.emailIsValid) }
+            _uiState.update { it.setInvalidEmail(!loginFormModel.emailIsValid) }
         }
     }
 
     override fun login(byBiometric: Boolean) {
-        updateUiState { it.setLoading(true) }
+        _uiState.update { it.setLoading(true) }
         runAsyncTask(
             onError = ::handleLoginError,
-            onCompletion = { updateUiState { it.setLoading(false) } }
+            onCompletion = { _uiState.update { it.setLoading(false) } }
         ) {
             authenticate(byBiometric)
             sendAnalyticsUseCase(LoginEventAnalytic.LoginSuccessful(true))
@@ -82,7 +89,7 @@ internal class LoginViewModel @Inject constructor(
         password?.let {
             newLoginFormModel = newLoginFormModel.copy(password = it)
         }
-        updateUiState {
+        _uiState.update {
             it.setLoginForm(
                 newLoginFormModel,
                 newLoginFormModel.loginAlready || byPassLogin
@@ -98,13 +105,13 @@ internal class LoginViewModel @Inject constructor(
     }
 
     override fun dismissSimpleDialog() {
-        updateUiState { it.setSimpleDialog(null) }
+        _uiState.update { it.setSimpleDialog(null) }
     }
 
     override fun biometricErrorHandler(biometricError: BiometricError) {
         if (biometricError.userClosedPrompt) return
         if (biometricError.biometricIsLockout) {
-            updateUiState {
+            _uiState.update {
                 it.setBiometricModel(
                     BiometricModel(
                         isAvailable = false,
@@ -113,21 +120,21 @@ internal class LoginViewModel @Inject constructor(
                 )
             }
         } else {
-            updateUiState { it.setBiometricModel(BiometricModel(isError = true)) }
+            _uiState.update { it.setBiometricModel(BiometricModel(isError = true)) }
         }
     }
 
     override fun biometricErrorAnimationFinished() {
-        updateUiState { it.setBiometricModel(BiometricModel()) }
+        _uiState.update { it.setBiometricModel(BiometricModel()) }
     }
 
     override fun showBiometricPrompt() {
-        launchUiEvent(LoginUiEvent.ShowBiometricPrompt)
+        _uiEvent.emitEvent(LoginUiEvent.ShowBiometricPrompt)
     }
 
     private suspend fun handleLoginError(throwable: Throwable?) {
         sendAnalyticsUseCase(LoginEventAnalytic.LoginSuccessful(false))
-        updateUiState { uiState ->
+        _uiState.update { uiState ->
             if (throwable is ApiError.Unauthorized) {
                 uiState.setShowInvalidCredentialsMsg(true)
             } else {
@@ -156,7 +163,7 @@ internal class LoginViewModel @Inject constructor(
         openScreenAnalytic()
         runAsyncTask {
             val biometricIsAvailable = biometricIsAvailableUseCase()
-            updateUiState {
+            _uiState.update {
                 it.initUiState(
                     versionName = "${buildConfigProvider.get.versionName} - ${buildConfigProvider.get.versionCode}",
                     loginButtonIsEnabled = byPassLogin,
@@ -164,13 +171,13 @@ internal class LoginViewModel @Inject constructor(
                 )
             }
             if (!loginDestination.isLogout && biometricIsAvailable) {
-                launchUiEvent(LoginUiEvent.ShowBiometricPrompt)
+                _uiEvent.emitEvent(LoginUiEvent.ShowBiometricPrompt)
             }
         }
     }
 
     private fun navigateToRoot() {
-        launchUiEvent(
+        _uiEvent.emitEvent(
             LoginUiEvent.NavigateTo(
                 NavigationModel(RootDestination, NavigationMode.REMOVE_ALL_SCREENS_STACK)
             )

@@ -7,50 +7,39 @@ import com.composetest.common.analytics.AnalyticScreen
 import com.composetest.common.analytics.CommonAnalyticEvent
 import com.composetest.common.analytics.ErrorAnalyticEvent
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
-import com.composetest.core.router.managers.NavigationManager
-import com.composetest.core.ui.interfaces.BaseUiEvent
-import com.composetest.core.ui.interfaces.BaseUiState
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-abstract class BaseViewModel<UiState : BaseUiState, UiEvent : BaseUiEvent>(
-    initialUiState: UiState
-) : ViewModel() {
+abstract class BaseViewModel : ViewModel() {
 
-    protected abstract val navigationManager: NavigationManager
     protected abstract val analyticScreen: AnalyticScreen
     protected abstract val sendAnalyticsUseCase: SendAnalyticsUseCase
 
-    private val _uiState = MutableStateFlow(initialUiState)
-    val uiState = _uiState.asStateFlow()
-
-    private val _uiEvent = Channel<UiEvent>(Channel.BUFFERED)
-    val uiEvent = _uiEvent.receiveAsFlow()
-
-    open fun navigateBack() {
-        navigationManager.navigateBack()
+    protected fun openScreenAnalytic() = runAsyncTask {
+        sendAnalyticsUseCase(CommonAnalyticEvent.OpenScreen(analyticScreen))
     }
 
-    protected fun updateUiState(onNewUiState: (UiState) -> UiState) {
-        _uiState.update(onNewUiState)
-    }
+    protected fun <UiEvent> MutableSharedFlow<UiEvent>.emitEvent(uiEvent: UiEvent) =
+        runAsyncTask { emit(uiEvent) }
 
-    protected fun launchUiEvent(uiEvent: UiEvent) {
-        _uiEvent.trySend(uiEvent)
-    }
-
-    protected fun openScreenAnalytic() {
-        runAsyncTask {
-            sendAnalyticsUseCase(CommonAnalyticEvent.OpenScreen(analyticScreen))
-        }
+    protected fun runAsyncTask(
+        onError: (suspend (Throwable) -> Unit)? = null,
+        onCompletion: (suspend () -> Unit)? = null,
+        onAsyncTask: suspend () -> Unit
+    ) = viewModelScope.launch {
+        runCatching {
+            try {
+                onAsyncTask()
+            } catch (e: Throwable) {
+                errorHandler(e, onError)
+            } finally {
+                onCompletion?.invoke()
+            }
+        }.onFailure { errorHandler(it) }
     }
 
     protected fun <T> runFlowTask(
@@ -59,31 +48,11 @@ abstract class BaseViewModel<UiState : BaseUiState, UiEvent : BaseUiEvent>(
         onCompletion: (suspend () -> Unit)? = null,
         onError: (suspend (e: Throwable) -> Unit)? = null,
         onCollect: (param: T) -> Unit
-    ) {
-        runAsyncTask(onError, onCompletion) {
-            flow.onStart { onStart?.invoke() }
-                .catch { errorHandler(it, onError) }
-                .onCompletion { onCompletion?.invoke() }
-                .collect(onCollect)
-        }
-    }
-
-    protected fun runAsyncTask(
-        onError: (suspend (Throwable) -> Unit)? = null,
-        onCompletion: (suspend () -> Unit)? = null,
-        onAsyncTask: suspend () -> Unit
-    ) {
-        viewModelScope.launch {
-            runCatching {
-                try {
-                    onAsyncTask()
-                } catch (e: Throwable) {
-                    errorHandler(e, onError)
-                } finally {
-                    onCompletion?.invoke()
-                }
-            }.onFailure { errorHandler(it) }
-        }
+    ) = runAsyncTask(onError, onCompletion) {
+        flow.onStart { onStart?.invoke() }
+            .catch { errorHandler(it, onError) }
+            .onCompletion { onCompletion?.invoke() }
+            .collect(onCollect)
     }
 
     private suspend fun errorHandler(

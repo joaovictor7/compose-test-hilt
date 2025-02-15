@@ -4,14 +4,15 @@ import com.composetest.core.domain.models.UserModel
 import com.composetest.core.domain.usecases.GetUserUseCase
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
 import com.composetest.core.domain.usecases.UpdateUserUseCase
-import com.composetest.core.router.di.qualifiers.NavGraphQualifier
-import com.composetest.core.router.enums.NavGraph
-import com.composetest.core.router.managers.NavigationManager
 import com.composetest.core.ui.bases.BaseViewModel
+import com.composetest.core.ui.interfaces.UiState
 import com.composetest.feature.profile.analytics.profile.ProfileScreenAnalytic
 import com.composetest.feature.profile.mappers.ProfileFormMapper
 import com.composetest.feature.profile.models.ProfileFormModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,12 +21,12 @@ internal class EditProfileViewModel @Inject constructor(
     private val updateUserUseCase: UpdateUserUseCase,
     private val profileFormMapper: ProfileFormMapper,
     override val sendAnalyticsUseCase: SendAnalyticsUseCase,
-    @NavGraphQualifier(NavGraph.MAIN) override val navigationManager: NavigationManager
-) : BaseViewModel<EditProfileUiState, EditProfileUiEvent>(EditProfileUiState()),
-    EditProfileCommandReceiver {
+) : BaseViewModel(), UiState<EditProfileUiState>, EditProfileCommandReceiver {
 
+    private val _uiState = MutableStateFlow(EditProfileUiState())
     private var userModel: UserModel? = null
 
+    override val uiState = _uiState.asStateFlow()
     override val commandReceiver = this
     override val analyticScreen = ProfileScreenAnalytic
 
@@ -41,7 +42,7 @@ internal class EditProfileViewModel @Inject constructor(
         profileFormModel.name?.let {
             userModel = userModel?.copy(name = it)
         }
-        updateUiState {
+        _uiState.update {
             it.copy(profileForm = profileFormMapper(userModel))
         }
     }
@@ -53,7 +54,7 @@ internal class EditProfileViewModel @Inject constructor(
     private fun initUiState() {
         runAsyncTask {
             getUserUseCase()?.let { userModel ->
-                updateUiState {
+                _uiState.update {
                     it.copy(profileForm = profileFormMapper(userModel))
                 }
             }

@@ -5,22 +5,30 @@ import com.composetest.core.domain.models.ArticleModel
 import com.composetest.core.domain.usecases.GetTopHeadlinesUseCase
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
 import com.composetest.core.router.destinations.news.FullNewsDestination
-import com.composetest.core.router.di.qualifiers.NavGraphQualifier
-import com.composetest.core.router.enums.NavGraph
-import com.composetest.core.router.managers.NavigationManager
 import com.composetest.core.router.models.NavigationModel
 import com.composetest.core.ui.bases.BaseViewModel
+import com.composetest.core.ui.interfaces.UiEvent
+import com.composetest.core.ui.interfaces.UiState
 import com.composetest.feature.news.analytics.home.NewsListScreenAnalytic
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
 internal class NewsListViewModel @Inject constructor(
     private val getTopHeadlinesUseCase: GetTopHeadlinesUseCase,
-    @NavGraphQualifier(NavGraph.MAIN) override val navigationManager: NavigationManager,
     override val sendAnalyticsUseCase: SendAnalyticsUseCase,
-) : BaseViewModel<NewsListUiState, NewsListUiEvent>(NewsListUiState()), NewsListCommandReceiver {
+) : BaseViewModel(), UiState<NewsListUiState>, UiEvent<NewsListUiEvent>, NewsListCommandReceiver {
 
+    private val _uiState = MutableStateFlow(NewsListUiState())
+    private val _uiEvent = MutableSharedFlow<NewsListUiEvent>()
+
+    override val uiEvent = _uiEvent.asSharedFlow()
+    override val uiState = _uiState.asStateFlow()
     override val commandReceiver = this
     override val analyticScreen = NewsListScreenAnalytic
 
@@ -29,7 +37,7 @@ internal class NewsListViewModel @Inject constructor(
     }
 
     override fun navigateToFullNews(article: ArticleModel) {
-        launchUiEvent(
+        _uiEvent.emitEvent(
             NewsListUiEvent.NavigateTo(
                 NavigationModel(
                     FullNewsDestination(
@@ -48,22 +56,22 @@ internal class NewsListViewModel @Inject constructor(
     }
 
     override fun dismissSimpleDialog() {
-        updateUiState { it.setSimpleDialogParam(null) }
+        _uiState.update { it.setSimpleDialogParam(null) }
     }
 
     private fun getArticles() {
-        updateUiState { it.setIsLoading(true) }
+        _uiState.update { it.setIsLoading(true) }
         runAsyncTask(
-            onCompletion = { updateUiState { it.setIsLoading(false) } },
+            onCompletion = { _uiState.update { it.setIsLoading(false) } },
             onError = ::requestErrorHandler
         ) {
             val articles = getTopHeadlinesUseCase()
-            updateUiState { it.setArticles(articles) }
+            _uiState.update { it.setArticles(articles) }
         }
     }
 
     private fun requestErrorHandler(error: Throwable) {
-        updateUiState { uiState ->
+        _uiState.update { uiState ->
             uiState.setSimpleDialogParam(getCommonSimpleDialogErrorParam(error))
         }
     }

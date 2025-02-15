@@ -1,7 +1,7 @@
 package com.composetest.core.designsystem.utils
 
-import com.composetest.core.designsystem.components.dialogs.CommonSimpleDialog
 import com.composetest.common.errors.ApiError
+import com.composetest.core.designsystem.components.dialogs.CommonSimpleDialog
 import com.composetest.core.designsystem.params.alertdialogs.SimpleDialogParam
 
 fun getCommonSimpleDialogErrorParam(

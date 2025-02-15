@@ -6,9 +6,9 @@ import com.composetest.common.providers.StringResourceProvider
 import com.composetest.core.domain.models.ExchangeModel
 import com.composetest.core.router.destinations.exchange.ExchangeDetailDestination
 import com.composetest.feature.exchange.R
+import com.composetest.feature.exchange.models.ExchangeDetailRowScreenModel
 import com.composetest.feature.exchange.models.ExchangeListRowScreenModel
 import com.composetest.feature.exchange.models.ExchangeScreenModel
-import com.composetest.feature.exchange.models.ExchangeDetailRowScreenModel
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import javax.inject.Inject

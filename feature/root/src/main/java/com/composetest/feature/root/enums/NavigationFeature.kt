@@ -12,11 +12,11 @@ import com.composetest.core.router.destinations.weatherforecast.WeatherForecastD
 import com.composetest.core.router.interfaces.Destination
 import com.composetest.core.designsystem.R as DesignSystemResources
 import com.composetest.feature.configuration.R as ConfigurationResources
+import com.composetest.feature.exchange.R as ExchangeResources
 import com.composetest.feature.home.R as HomeResources
 import com.composetest.feature.news.R as NewsResources
 import com.composetest.feature.profile.R as ProfileResources
 import com.composetest.feature.weatherforecast.R as WeatherForecastResources
-import com.composetest.feature.exchange.R as ExchangeResources
 
 internal enum class NavigationFeature(
     val feature: Feature,

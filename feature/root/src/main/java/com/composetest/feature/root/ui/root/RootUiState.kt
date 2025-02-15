@@ -1,7 +1,6 @@
 package com.composetest.feature.root.ui.root
 
 import com.composetest.core.router.interfaces.Destination
-import com.composetest.core.ui.interfaces.BaseUiState
 import com.composetest.feature.root.enums.NavigationFeature
 import com.composetest.feature.root.models.BottomFeatureNavigationModel
 import com.composetest.feature.root.models.UserModalDrawerModel
@@ -11,7 +10,7 @@ internal data class RootUiState(
     val modalDrawerNavigationFeatures: List<NavigationFeature> = emptyList(),
     val bottomNavigationFeatures: List<BottomFeatureNavigationModel> = emptyList(),
     val userModalDrawerModel: UserModalDrawerModel = UserModalDrawerModel()
-) : BaseUiState {
+) {
 
     val showEditProfile get() = modalDrawerNavigationFeatures.any { it == NavigationFeature.PROFILE }
     val modalDrawerNavigationFeaturesToList get() = modalDrawerNavigationFeatures.filterNot { it.noText }

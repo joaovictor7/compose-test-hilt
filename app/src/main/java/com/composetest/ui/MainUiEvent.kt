@@ -1,5 +1,7 @@
 package com.composetest.ui
 
-import com.composetest.core.ui.interfaces.BaseUiEvent
+import com.composetest.core.router.models.NavigationModel
 
-internal interface MainUiEvent : BaseUiEvent
+internal interface MainUiEvent {
+    data class NavigateTo(val navigationModel: NavigationModel) : MainUiEvent
+}

@@ -4,10 +4,10 @@ import android.content.Context
 import android.util.Log
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.composetest.core.domain.providers.BuildConfigProvider
 import com.composetest.core.database.converters.LocalDateTimeConverter
 import com.composetest.core.database.database.Database
 import com.composetest.core.database.managers.DatabaseSecurityManager
+import com.composetest.core.domain.providers.BuildConfigProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

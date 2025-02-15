@@ -3,7 +3,6 @@ package com.composetest.feature.weatherforecast.ui.weatherforecast
 import com.composetest.core.designsystem.enums.topbar.TopBarAction
 import com.composetest.core.designsystem.params.alertdialogs.SimpleDialogParam
 import com.composetest.core.domain.models.weatherforecast.TodayWeatherForecastModel
-import com.composetest.core.ui.interfaces.BaseUiState
 import com.composetest.feature.weatherforecast.enums.WeatherForecastScreenStatus
 import com.composetest.feature.weatherforecast.enums.WeatherForecastStatus
 import com.composetest.feature.weatherforecast.models.FutureWeatherForecastScreenModel
@@ -18,7 +17,7 @@ internal data class WeatherForecastUiState(
     val simpleDialogParam: SimpleDialogParam? = null,
     val weatherNowStatus: WeatherForecastStatus = WeatherForecastStatus.LOADING,
     val weatherForecastsStatus: WeatherForecastStatus = WeatherForecastStatus.LOADING,
-) : BaseUiState {
+) {
 
     val refreshButton
         get() = if (!showFullScreenMsg && WeatherForecastStatus.LOADING !in listOf(

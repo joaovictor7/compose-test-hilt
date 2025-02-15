@@ -1,12 +1,11 @@
 package com.composetest.ui
 
-import androidx.navigation.NavHostController
 import com.composetest.core.ui.interfaces.Command
 
 internal sealed interface MainCommand : Command<MainCommandReceiver> {
-    data object VerifySession : MainCommand {
+    data class VerifySession(private val currentRoute: String?) : MainCommand {
         override fun execute(commandReceiver: MainCommandReceiver) {
-            commandReceiver.verifySession()
+            commandReceiver.verifySession(currentRoute)
         }
     }
 

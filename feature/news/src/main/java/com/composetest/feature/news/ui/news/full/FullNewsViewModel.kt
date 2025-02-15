@@ -2,22 +2,24 @@ package com.composetest.feature.news.ui.news.full
 
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
 import com.composetest.core.router.destinations.news.FullNewsDestination
-import com.composetest.core.router.di.qualifiers.NavGraphQualifier
-import com.composetest.core.router.enums.NavGraph
-import com.composetest.core.router.managers.NavigationManager
 import com.composetest.core.ui.bases.BaseViewModel
+import com.composetest.core.ui.interfaces.UiState
 import com.composetest.feature.news.analytics.newsdetail.FullNewsScreenAnalytic
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
 internal class FullNewsViewModel @Inject constructor(
     private val destination: FullNewsDestination,
-    @NavGraphQualifier(NavGraph.MAIN) override val navigationManager: NavigationManager,
     override val sendAnalyticsUseCase: SendAnalyticsUseCase
-) : BaseViewModel<FullNewsUiState, FullNewsUiEvent>(FullNewsUiState()), FullNewsCommandReceiver {
+) : BaseViewModel(), UiState<FullNewsUiState> {
 
-    override val commandReceiver = this
+    private val _uiState = MutableStateFlow(FullNewsUiState())
+
+    override val uiState = _uiState.asStateFlow()
     override val analyticScreen = FullNewsScreenAnalytic
 
     init {
@@ -25,7 +27,7 @@ internal class FullNewsViewModel @Inject constructor(
     }
 
     private fun initUiState() {
-        updateUiState {
+        _uiState.update {
             it.copy(
                 imageUrl = destination.imageUrl,
                 title = destination.title,

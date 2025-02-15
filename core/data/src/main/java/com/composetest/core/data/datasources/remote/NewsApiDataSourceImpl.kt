@@ -3,11 +3,10 @@ package com.composetest.core.data.datasources.remote
 import com.composetest.core.data.api.responses.newsapi.NewsApiResponse
 import com.composetest.core.data.datasources.NewsApiDataSource
 import com.composetest.core.data.di.qualifiers.ApiQualifier
-import com.composetest.core.domain.enums.Api
 import com.composetest.core.data.extensions.get
 import com.composetest.core.data.utils.ApiCallUtils
+import com.composetest.core.domain.enums.Api
 import io.ktor.client.HttpClient
-import io.ktor.http.parameters
 
 internal class NewsApiDataSourceImpl(
     private val apiCallUtils: ApiCallUtils,
