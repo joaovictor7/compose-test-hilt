@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
 import com.composetest.core.designsystem.enums.switches.SwitchType
 import com.composetest.core.designsystem.theme.ComposeTestTheme
@@ -17,15 +18,17 @@ import com.composetest.core.designsystem.theme.ComposeTestTheme
 @Composable
 fun LabelSwitch(
     modifier: Modifier = Modifier,
-    @StringRes labelTextId: Int,
+    labelText: String,
     checked: Boolean,
+    enable: Boolean = true,
     switchType: SwitchType? = null,
     onCheckedChange: (Boolean) -> Unit
 ) {
     LabelSwitch(
         modifier = modifier,
-        labelText = stringResource(labelTextId),
+        labelText = labelText,
         checked = checked,
+        enable = enable,
         switchType = switchType,
         onCheckedChange = onCheckedChange
     )
@@ -34,8 +37,28 @@ fun LabelSwitch(
 @Composable
 fun LabelSwitch(
     modifier: Modifier = Modifier,
-    labelText: String,
+    @StringRes labelTextId: Int,
     checked: Boolean,
+    enable: Boolean = true,
+    switchType: SwitchType? = null,
+    onCheckedChange: (Boolean) -> Unit
+) {
+    LabelSwitch(
+        modifier = modifier,
+        labelText = stringResource(labelTextId),
+        checked = checked,
+        enable = enable,
+        switchType = switchType,
+        onCheckedChange = onCheckedChange
+    )
+}
+
+@Composable
+fun LabelSwitch(
+    modifier: Modifier = Modifier,
+    labelText: AnnotatedString,
+    checked: Boolean,
+    enable: Boolean = true,
     switchType: SwitchType? = null,
     onCheckedChange: (Boolean) -> Unit
 ) {
@@ -50,6 +73,7 @@ fun LabelSwitch(
         )
         ThumbSwitch(
             checked = checked,
+            enable = enable,
             type = switchType,
             onCheckedChange = onCheckedChange
         )

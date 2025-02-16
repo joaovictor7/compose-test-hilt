@@ -12,7 +12,7 @@ import com.composetest.core.domain.models.BuildConfigModel
 import com.composetest.core.domain.providers.BuildConfigProvider
 import com.composetest.core.domain.usecases.AuthenticationByBiometricUseCase
 import com.composetest.core.domain.usecases.AuthenticationUseCase
-import com.composetest.core.domain.usecases.BiometricIsAvailableUseCase
+import com.composetest.core.domain.usecases.BiometricIsEnableUseCase
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
 import com.composetest.core.router.destinations.root.RootDestination
 import com.composetest.core.router.enums.NavigationMode
@@ -55,7 +55,7 @@ internal class LoginViewModelTest : CoroutinesTest {
     private val sendAnalyticsUseCase: SendAnalyticsUseCase = mockk(relaxed = true)
     private val authenticationByBiometricUseCase: AuthenticationByBiometricUseCase =
         mockk(relaxed = true)
-    private val biometricIsAvailableUseCase: BiometricIsAvailableUseCase = mockk(relaxed = true)
+    private val biometricIsEnableUseCase: BiometricIsEnableUseCase = mockk(relaxed = true)
 
     private lateinit var viewModel: LoginViewModel
 
@@ -281,7 +281,7 @@ internal class LoginViewModelTest : CoroutinesTest {
         navigationManager = navigationManager,
         configurationManager = configurationManager,
         authenticationByBiometricUseCase = authenticationByBiometricUseCase,
-        biometricIsAvailableUseCase = biometricIsAvailableUseCase
+        biometricIsEnableUseCase = biometricIsEnableUseCase
     )
 
     private companion object {

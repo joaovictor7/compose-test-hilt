@@ -6,10 +6,11 @@ import com.composetest.core.domain.enums.Theme
 import com.composetest.core.domain.managers.ConfigurationManager
 import com.composetest.core.domain.managers.RemoteConfigManager
 import com.composetest.core.domain.managers.SessionManager
+import com.composetest.core.domain.providers.BiometricProvider
 import com.composetest.core.domain.providers.BuildConfigProvider
 import com.composetest.core.domain.usecases.AuthenticationByBiometricUseCase
 import com.composetest.core.domain.usecases.AuthenticationUseCase
-import com.composetest.core.domain.usecases.BiometricIsAvailableUseCase
+import com.composetest.core.domain.usecases.BiometricIsEnableUseCase
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
 import com.composetest.core.router.destinations.login.LoginDestination
 import com.composetest.core.router.destinations.root.RootDestination
@@ -37,10 +38,11 @@ import javax.inject.Inject
 @HiltViewModel
 internal class LoginViewModel @Inject constructor(
     private val buildConfigProvider: BuildConfigProvider,
+    private val biometricProvider: BiometricProvider,
     private val configurationManager: ConfigurationManager,
     private val authenticationUseCase: AuthenticationUseCase,
     private val authenticationByBiometricUseCase: AuthenticationByBiometricUseCase,
-    private val biometricIsAvailableUseCase: BiometricIsAvailableUseCase,
+    private val biometricIsEnableUseCase: BiometricIsEnableUseCase,
     private val sessionManager: SessionManager,
     private val remoteConfigManager: RemoteConfigManager,
     private val loginDestination: LoginDestination,
@@ -162,12 +164,13 @@ internal class LoginViewModel @Inject constructor(
     private fun showScreen() {
         openScreenAnalytic()
         runAsyncTask {
-            val biometricIsAvailable = biometricIsAvailableUseCase()
+            val biometricIsEnable = biometricIsEnableUseCase()
+            val biometricIsAvailable = biometricProvider.biometricIsAvailable
             _uiState.update {
                 it.initUiState(
                     versionName = "${buildConfigProvider.buildConfig.versionName} - ${buildConfigProvider.buildConfig.versionCode}",
                     loginButtonIsEnabled = byPassLogin,
-                    biometricModel = if (biometricIsAvailable) BiometricModel() else null,
+                    biometricModel = if (biometricIsAvailable && biometricIsEnable) BiometricModel() else null,
                 )
             }
             if (!loginDestination.isLogout && biometricIsAvailable) {

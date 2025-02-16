@@ -64,7 +64,6 @@ internal fun LoginScreen(
     )
     if (!uiState.needsLogin) return
     DialogHandler(uiState = uiState, onExecuteCommand = onExecuteCommand)
-
     Box(
         modifier = Modifier
             .verticalTopBackgroundBrush()

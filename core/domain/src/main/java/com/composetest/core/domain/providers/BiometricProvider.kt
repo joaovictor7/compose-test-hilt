@@ -1,5 +1,5 @@
 package com.composetest.core.domain.providers
 
 interface BiometricProvider {
-    val isBiometricAvailable: Boolean
+    val biometricIsAvailable: Boolean
 }

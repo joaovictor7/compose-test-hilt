@@ -14,7 +14,7 @@ internal class BiometricProviderImpl @Inject constructor(
     private val remoteConfigManager: RemoteConfigManager,
 ) : BiometricProvider {
 
-    override val isBiometricAvailable: Boolean
+    override val biometricIsAvailable: Boolean
         get() = BiometricManager.from(context)
             .canAuthenticate(BIOMETRIC_STRONG) == BiometricManager.BIOMETRIC_SUCCESS &&
                 remoteConfigManager.getBoolean(BiometricRemoteConfig.USE_BIOMETRIC)

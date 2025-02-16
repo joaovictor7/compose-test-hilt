@@ -1,6 +1,7 @@
 package com.composetest.feature.configuration.ui.security
 
 import com.composetest.core.domain.managers.ConfigurationManager
+import com.composetest.core.domain.providers.BiometricProvider
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
 import com.composetest.core.ui.bases.BaseViewModel
 import com.composetest.core.ui.interfaces.UiState
@@ -14,6 +15,7 @@ import javax.inject.Inject
 @HiltViewModel
 internal class ConfigurationSecurityViewModel @Inject constructor(
     private val configurationManager: ConfigurationManager,
+    private val biometricProvider: BiometricProvider,
     override val sendAnalyticsUseCase: SendAnalyticsUseCase,
 ) : BaseViewModel(), UiState<ConfigurationSecurityUiState>, ConfigurationSecurityCommandReceiver {
 
@@ -37,8 +39,11 @@ internal class ConfigurationSecurityViewModel @Inject constructor(
 
     private fun initUiState() {
         runAsyncTask {
+            val biometricIsAvailable = biometricProvider.biometricIsAvailable
             configurationManager.fetchConfiguration()
-            _uiState.update { it.initUiState(currentConfiguration?.biometricLogin) }
+            _uiState.update {
+                it.initUiState(biometricIsAvailable, currentConfiguration?.biometricLogin)
+            }
         }
     }
 }
