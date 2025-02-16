@@ -1,5 +1,6 @@
 package files
 
+import enums.Flavor
 import enums.Signing
 import java.io.File
 
@@ -15,5 +16,10 @@ internal sealed class PropertiesFile {
         override val file = "signing-key.properties"
         override val path = signing.toString()
         val keyPath = "$rootDir/signing-keys/$path/key"
+    }
+
+    data class App(private val flavor: Flavor) : PropertiesFile() {
+        override val file = "app.properties"
+        override val path = flavor.toString()
     }
 }

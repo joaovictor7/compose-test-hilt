@@ -46,7 +46,7 @@ internal object DatabaseModule {
     private fun RoomDatabase.Builder<Database>.addLogs(
         buildConfigProvider: BuildConfigProvider
     ) = also {
-        if (buildConfigProvider.get.isRelease) return@also
+        if (buildConfigProvider.buildConfig.isRelease) return@also
         setQueryCallback({ sqlQuery, bindArgs ->
             Log.i("SQLite", "SQL Query: $sqlQuery")
             if (bindArgs.isNotEmpty()) Log.i("SQLite", "SQL Args: $bindArgs")

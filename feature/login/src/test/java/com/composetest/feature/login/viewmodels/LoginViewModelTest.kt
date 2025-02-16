@@ -42,7 +42,7 @@ internal class LoginViewModelTest : CoroutinesTest {
 
     private val navigationManager: NavigationManager = mockk(relaxed = true)
     private val buildConfigProvider: BuildConfigProvider = object : BuildConfigProvider {
-        override val get: BuildConfigModel = buildConfigModelMock
+        override val buildConfig: BuildConfigModel = buildConfigModelMock
     }
     private val authenticationUseCase: AuthenticationUseCase = mockk(relaxed = true)
     private val sessionManager: SessionManager = mockk {

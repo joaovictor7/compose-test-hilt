@@ -165,7 +165,7 @@ internal class LoginViewModel @Inject constructor(
             val biometricIsAvailable = biometricIsAvailableUseCase()
             _uiState.update {
                 it.initUiState(
-                    versionName = "${buildConfigProvider.get.versionName} - ${buildConfigProvider.get.versionCode}",
+                    versionName = "${buildConfigProvider.buildConfig.versionName} - ${buildConfigProvider.buildConfig.versionCode}",
                     loginButtonIsEnabled = byPassLogin,
                     biometricModel = if (biometricIsAvailable) BiometricModel() else null,
                 )

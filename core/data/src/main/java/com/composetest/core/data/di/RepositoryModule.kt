@@ -1,7 +1,6 @@
 package com.composetest.core.data.di
 
 import com.composetest.core.data.repositories.AnalyticsRepositoryImpl
-import com.composetest.core.data.repositories.ApiSettingsSettingsRepositoryImpl
 import com.composetest.core.data.repositories.AuthenticationRepositoryImpl
 import com.composetest.core.data.repositories.ConfigurationRepositoryImpl
 import com.composetest.core.data.repositories.DatabaseRepositoryImpl
@@ -10,7 +9,6 @@ import com.composetest.core.data.repositories.NewsApiRepositoryImpl
 import com.composetest.core.data.repositories.UserRepositoryImpl
 import com.composetest.core.data.repositories.WeatherForecastRepositoryImpl
 import com.composetest.core.domain.repositories.AnalyticsRepository
-import com.composetest.core.domain.repositories.ApiSettingsRepository
 import com.composetest.core.domain.repositories.AuthenticationRepository
 import com.composetest.core.domain.repositories.ConfigurationRepository
 import com.composetest.core.domain.repositories.DatabaseRepository
@@ -63,11 +61,6 @@ internal abstract class RepositoryModule {
     abstract fun newsApiRepository(
         newsRepositoryImpl: NewsApiRepositoryImpl
     ): NewsApiRepository
-
-    @Binds
-    abstract fun apiSettingsRepository(
-        apiSettingsRepositoryImpl: ApiSettingsSettingsRepositoryImpl
-    ): ApiSettingsRepository
 
     @Binds
     abstract fun exchangeRepository(

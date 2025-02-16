@@ -20,7 +20,7 @@ internal class DatabaseSecurityManager @Inject constructor(
         loadSqlCipherLibrary()
     }
 
-    suspend fun getDatabaseCipherFactory() = if (buildConfigProvider.get.isRelease) {
+    suspend fun getDatabaseCipherFactory() = if (buildConfigProvider.buildConfig.isRelease) {
         val databaseKey = getOrCreateDatabaseKey()
         SupportOpenHelperFactory(databaseKey.toByteArray())
     } else null

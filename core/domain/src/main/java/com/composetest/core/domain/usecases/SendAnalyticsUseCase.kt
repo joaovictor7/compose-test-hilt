@@ -32,8 +32,8 @@ class SendAnalyticsUseCase @Inject constructor(
             USER_ID to user?.id.orEmpty(),
             LOGGED_SESSION to (user != null).toString(),
             DATE_TIME to ZonedDateTime.now().toString(),
-            APP_VERSION to buildConfigProvider.get.versionName,
-            ANDROID_SDK_VERSION to buildConfigProvider.get.androidSdkVersion.toString(),
+            APP_VERSION to buildConfigProvider.buildConfig.versionName,
+            ANDROID_SDK_VERSION to buildConfigProvider.buildConfig.androidSdkVersion.toString(),
             platform,
             *event.params.map { it.key to it.value.toString() }.toTypedArray()
         ).apply {

@@ -1,5 +1,6 @@
 package files
 
+import enums.Flavor
 import org.gradle.api.Project
 import java.util.Properties
 
@@ -7,6 +8,9 @@ internal class LoadPropertiesFile(
     private val project: Project,
     private val propertiesFile: PropertiesFile
 ) {
+
+    constructor(project: Project, flavor: Flavor) : this(project, PropertiesFile.App(flavor))
+
     fun getProperty(key: String) = getProperties(propertiesFile.fullPath)?.getProperty(key)
         ?: getProperties(propertiesFile.file)?.getProperty(key)
         ?: EMPTY_VALUE
