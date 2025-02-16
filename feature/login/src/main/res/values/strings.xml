@@ -10,4 +10,8 @@
     <string name="feature_login_biometric_title">Authenticate to access the account</string>
     <string name="feature_login_biometric_subtitle">Use your fingerprint or face ID to authenticate</string>
     <string name="feature_login_biometric_is_blocked">The biometric authentication is blocked\nLog in with e-mail and password</string>
+
+    <!-- Session Alert Dialog -->
+    <string name="alert_dialog_session_invalid_title">Expired session</string>
+    <string name="alert_dialog_session_invalid_text">Your session was expired. Make login again.</string>
 </resources>

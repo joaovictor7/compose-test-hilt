@@ -1,8 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- Session Alert Dialog -->
-    <string name="alert_dialog_session_invalid_title">Expired session</string>
-    <string name="alert_dialog_session_invalid_text">Your session was expired. Make login again.</string>
-
 </resources>

@@ -7,4 +7,8 @@
     <string name="feature_login_biometric_title">Autenticar para acessar a conta</string>
     <string name="feature_login_biometric_subtitle">Use sua impressão digital ou face ID para autenticar</string>
     <string name="feature_login_biometric_is_blocked">A autenticação por biometria está bloqueada\nFaça o login usando e-mail e senha</string>
+
+    <!-- Session Alert Dialog -->
+    <string name="alert_dialog_session_invalid_title">Sessão expirada</string>
+    <string name="alert_dialog_session_invalid_text">Sua sessão expirou. Faça o login novamente.</string>
 </resources>

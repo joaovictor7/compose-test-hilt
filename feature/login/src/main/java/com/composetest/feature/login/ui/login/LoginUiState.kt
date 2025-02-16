@@ -8,7 +8,6 @@ import com.composetest.feature.login.models.LoginFormModel
 
 internal data class LoginUiState(
     val loginFormModel: LoginFormModel = LoginFormModel(),
-    val needsLogin: Boolean = false,
     val versionName: String = String(),
     val invalidEmail: Boolean = false,
     val loginButtonIsEnabled: Boolean = false,
@@ -21,11 +20,12 @@ internal data class LoginUiState(
     val emailSupporting get() = if (invalidEmail) R.string.feature_login_invalid_email else null
 
     fun initUiState(
+        simpleDialogParam: SimpleDialogParam?,
         versionName: String,
         loginButtonIsEnabled: Boolean,
         biometricModel: BiometricModel?,
     ) = copy(
-        needsLogin = true,
+        simpleDialogParam = simpleDialogParam,
         versionName = versionName,
         loginButtonIsEnabled = loginButtonIsEnabled,
         biometricModel = biometricModel

@@ -1,4 +1,4 @@
-package com.composetest.ui.analytics
+package com.composetest.analytics
 
 import com.composetest.common.analytics.AnalyticScreen
 

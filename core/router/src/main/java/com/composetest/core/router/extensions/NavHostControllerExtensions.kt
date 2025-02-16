@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.transform
 import kotlin.reflect.KClass
 
-val NavHostController.currentRoute get() = currentDestination?.route
+val NavHostController.currentRoute get() = currentDestination?.route?.substringBefore("?")
 
 val NavHostController.currentRouteChangesFlow
     get() = currentBackStackEntryFlow

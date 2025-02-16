@@ -57,13 +57,12 @@ internal fun LoginScreen(
     onExecuteCommand: (Command<LoginCommandReceiver>) -> Unit = {},
     navController: NavHostController = rememberNavController()
 ) {
+    DialogHandler(uiState = uiState, onExecuteCommand = onExecuteCommand)
     LaunchedEffectHandler(
         uiEvent = uiEvent,
         onExecuteCommand = onExecuteCommand,
         navController = navController
     )
-    if (!uiState.needsLogin) return
-    DialogHandler(uiState = uiState, onExecuteCommand = onExecuteCommand)
     Box(
         modifier = Modifier
             .verticalTopBackgroundBrush()
@@ -104,17 +103,13 @@ private fun LoginForm(
                 onFocusChanged = {
                     onExecuteCommand(LoginCommand.CheckShowInvalidEmailMsg(it.hasFocus))
                 }
-            ) { email ->
-                onExecuteCommand(LoginCommand.WriteData(email = email))
-            }
+            ) { email -> onExecuteCommand(LoginCommand.WriteData(email = email)) }
             OutlinedTextField(
                 textValue = uiState.loginFormModel.password,
                 labelText = stringResource(LoginResources.string.feature_login_password),
                 keyboardInput = KeyboardType.Password,
                 modifier = Modifier.fillMaxWidth()
-            ) { password ->
-                onExecuteCommand(LoginCommand.WriteData(password = password))
-            }
+            ) { password -> onExecuteCommand(LoginCommand.WriteData(password = password)) }
             if (uiState.invalidCredentials) {
                 Text(
                     text = stringResource(LoginResources.string.feature_login_invalid_credentials),
@@ -216,7 +211,6 @@ private fun LaunchedEffectHandler(
     val context = LocalContext.current
     val currentAppTheme = LocalTheme.current
     LaunchedEffect(Unit) {
-        onExecuteCommand(LoginCommand.SetStatusBarsTheme(true, currentAppTheme))
         uiEvent.collect {
             when (it) {
                 is LoginUiEvent.ShowBiometricPrompt -> showBiometricPrompt(
@@ -231,6 +225,10 @@ private fun LaunchedEffectHandler(
                 is LoginUiEvent.NavigateTo -> navController.navigateTo(it.navigationModel)
             }
         }
+    }
+    LaunchedEffect(Unit) {
+        onExecuteCommand(LoginCommand.SetStatusBarsTheme(true, currentAppTheme))
+        onExecuteCommand(LoginCommand.CheckAutoShowBiometricPrompt)
     }
     DisposableEffect(Unit) {
         onDispose {
@@ -257,7 +255,6 @@ private fun Preview() {
             LoginUiState(
                 versionName = "Version",
                 invalidCredentials = true,
-                needsLogin = true,
                 biometricModel = BiometricModel(
                     messageId = LoginResources.string.feature_login_biometric_is_blocked
                 )

@@ -1,7 +1,7 @@
-package com.composetest.ui.dialogs
+package com.composetest.feature.login.ui.dialogs
 
-import com.composetest.R
 import com.composetest.core.designsystem.params.alertdialogs.SimpleDialogParam
+import com.composetest.feature.login.R
 import com.composetest.core.designsystem.R as DesignSystemResources
 
 internal sealed interface SimpleDialogParam : SimpleDialogParam {
