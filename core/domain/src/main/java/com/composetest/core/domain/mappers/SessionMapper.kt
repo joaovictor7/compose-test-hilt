@@ -6,13 +6,9 @@ import javax.inject.Inject
 
 internal class SessionMapper @Inject constructor() {
 
-    operator fun invoke(authenticationModel: AuthenticationModel) = SessionModel(
+    operator fun invoke(authenticationModel: AuthenticationModel, sessionDuration: Long) = SessionModel(
         token = authenticationModel.sessionToken,
         startDate = authenticationModel.sessionStartDateTime,
-        endDate = authenticationModel.sessionStartDateTime.plusWeeks(SESSION_WEEKS_DURATION),
+        endDate = authenticationModel.sessionStartDateTime.plusWeeks(sessionDuration),
     )
-
-    private companion object {
-        const val SESSION_WEEKS_DURATION = 2L
-    }
 }

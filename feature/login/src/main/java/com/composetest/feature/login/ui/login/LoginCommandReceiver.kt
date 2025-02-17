@@ -12,6 +12,5 @@ internal interface LoginCommandReceiver : CommandReceiver<LoginCommandReceiver> 
     fun biometricErrorAnimationFinished()
     fun dismissSimpleDialog()
     fun biometricErrorHandler(biometricError: BiometricError)
-    fun checkAutoShowBiometricPrompt()
     fun showBiometricPrompt()
 }

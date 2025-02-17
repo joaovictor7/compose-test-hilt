@@ -50,11 +50,9 @@ internal class LoginViewModel @Inject constructor(
 ) : BaseViewModel(), UiState<LoginUiState>, UiEvent<LoginUiEvent>, LoginCommandReceiver {
 
     private val _uiState = MutableStateFlow(LoginUiState())
-    private val _uiEvent = MutableSharedFlow<LoginUiEvent>()
+    private val _uiEvent = MutableSharedFlow<LoginUiEvent>(replay = 1)
     private val loginFormModel get() = uiState.value.loginFormModel
     private val byPassLogin by lazy { remoteConfigManager.getBoolean(LoginRemoteConfig.BY_PASS_LOGIN) }
-    private var biometricIsAvailable = false
-    private var biometricIsEnable = false
 
     override val uiState = _uiState.asStateFlow()
     override val uiEvent = _uiEvent.asSharedFlow()
@@ -131,20 +129,15 @@ internal class LoginViewModel @Inject constructor(
         _uiState.update { it.setBiometricModel(BiometricModel()) }
     }
 
-    override fun checkAutoShowBiometricPrompt() {
-        if (loginDestination.autoShowBiometricPrompt && biometricIsEnable && biometricIsAvailable) {
-            showBiometricPrompt()
-        }
-    }
-
     override fun showBiometricPrompt() {
         _uiEvent.emitEvent(LoginUiEvent.ShowBiometricPrompt)
     }
 
     private fun initUiState() {
-        biometricIsAvailable = biometricProvider.biometricIsAvailable
+        val biometricIsAvailable = biometricProvider.biometricIsAvailable
         runAsyncTask {
-            biometricIsEnable = biometricIsEnableUseCase()
+            val biometricIsEnable = biometricIsEnableUseCase()
+            autoShowBiometricPrompt(biometricIsEnable, biometricIsAvailable)
             _uiState.update {
                 it.initUiState(
                     simpleDialogParam = showDialogExpiredSession(),
@@ -186,4 +179,10 @@ internal class LoginViewModel @Inject constructor(
     private fun showDialogExpiredSession() = if (loginDestination.expiredSession) {
         SimpleDialogParam.ExpiredSession
     } else null
+
+    private fun autoShowBiometricPrompt(biometricIsEnable: Boolean, biometricIsAvailable: Boolean) {
+        if (loginDestination.autoShowBiometricPrompt && biometricIsEnable && biometricIsAvailable) {
+            showBiometricPrompt()
+        }
+    }
 }

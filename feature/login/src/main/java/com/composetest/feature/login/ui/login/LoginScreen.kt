@@ -228,7 +228,6 @@ private fun LaunchedEffectHandler(
     }
     LaunchedEffect(Unit) {
         onExecuteCommand(LoginCommand.SetStatusBarsTheme(true, currentAppTheme))
-        onExecuteCommand(LoginCommand.CheckAutoShowBiometricPrompt)
     }
     DisposableEffect(Unit) {
         onDispose {

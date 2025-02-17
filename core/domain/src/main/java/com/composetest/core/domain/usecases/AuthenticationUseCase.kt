@@ -15,8 +15,12 @@ class AuthenticationUseCase @Inject internal constructor(
 
     suspend operator fun invoke(email: String, password: String) {
         val authenticationModel = authenticationRepository.authentication(email, password)
-        val session = sessionMapper(authenticationModel)
+        val session = sessionMapper(authenticationModel, SESSION_WEEKS_DURATION)
         userRepository.upsert(authenticationModel.user)
         sessionManager.createSession(session, authenticationModel.user)
+    }
+
+    private companion object {
+        const val SESSION_WEEKS_DURATION = 2L
     }
 }

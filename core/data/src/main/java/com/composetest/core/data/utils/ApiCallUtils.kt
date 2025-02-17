@@ -15,7 +15,7 @@ internal class ApiCallUtils @Inject constructor(
 
     suspend fun <T> executeApiCall(onRemoteCall: suspend () -> T) =
         withContext(dispatcherProvider.io) {
-            if (buildConfigProvider.get.flavor == Flavor.DEVELOP) {
+            if (buildConfigProvider.buildConfig.flavor == Flavor.DEVELOP) {
                 delay(fakeCallDelay)
             }
             onRemoteCall()

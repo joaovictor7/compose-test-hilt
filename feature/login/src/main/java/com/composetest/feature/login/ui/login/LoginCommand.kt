@@ -53,12 +53,6 @@ internal sealed interface LoginCommand : Command<LoginCommandReceiver> {
         }
     }
 
-    data object CheckAutoShowBiometricPrompt : LoginCommand {
-        override fun execute(commandReceiver: LoginCommandReceiver) {
-            commandReceiver.checkAutoShowBiometricPrompt()
-        }
-    }
-
     data object ShowBiometricPrompt : LoginCommand {
         override fun execute(commandReceiver: LoginCommandReceiver) {
             commandReceiver.showBiometricPrompt()

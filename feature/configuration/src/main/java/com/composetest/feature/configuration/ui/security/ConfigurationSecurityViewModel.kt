@@ -38,8 +38,8 @@ internal class ConfigurationSecurityViewModel @Inject constructor(
     }
 
     private fun initUiState() {
+        val biometricIsAvailable = biometricProvider.biometricIsAvailable
         runAsyncTask {
-            val biometricIsAvailable = biometricProvider.biometricIsAvailable
             configurationManager.fetchConfiguration()
             _uiState.update {
                 it.initUiState(biometricIsAvailable, currentConfiguration?.biometricLogin)
