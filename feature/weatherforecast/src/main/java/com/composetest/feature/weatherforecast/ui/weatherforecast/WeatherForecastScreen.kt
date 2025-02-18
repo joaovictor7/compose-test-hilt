@@ -24,6 +24,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
@@ -40,11 +41,12 @@ import com.composetest.core.designsystem.components.buttons.TryAgainButton
 import com.composetest.core.designsystem.components.dialogs.SimpleDialog
 import com.composetest.core.designsystem.components.graphics.SimpleScatterPlotGraphic
 import com.composetest.core.designsystem.components.lifecycle.LifecycleEvent
-import com.composetest.core.designsystem.components.shimmer.ShimmerEffect
+import com.composetest.core.designsystem.components.shimmer.Shimmer
 import com.composetest.core.designsystem.components.topbar.LeftTopBar
 import com.composetest.core.designsystem.dimensions.Spacing
 import com.composetest.core.designsystem.extensions.screenMargin
 import com.composetest.core.designsystem.theme.ComposeTestTheme
+import com.composetest.core.designsystem.utils.getSharedShimmerOffset
 import com.composetest.core.ui.enums.Permission
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.utils.getMultiplePermissionState
@@ -67,6 +69,7 @@ internal fun WeatherForecastScreen(
     onExecuteCommand: (Command<WeatherForecastCommandReceiver>) -> Unit = {}
 ) {
     val permissionState = getMultiplePermissionState(Permission.localization)
+    val shimmerOffset by getSharedShimmerOffset()
     LaunchedEffectHandler(uiEvent = uiEvent, permissionState = permissionState)
     LifecycleEventHandler(onExecuteCommand = onExecuteCommand)
     DialogHandler(uiState = uiState, onExecuteCommand = onExecuteCommand)
@@ -88,8 +91,16 @@ internal fun WeatherForecastScreen(
                 )
                 return
             }
-            WeatherNow(uiState = uiState, onExecuteCommand = onExecuteCommand)
-            WeatherForecasts(uiState = uiState, onExecuteCommand = onExecuteCommand)
+            WeatherNow(
+                uiState = uiState,
+                onExecuteCommand = onExecuteCommand,
+                shimmerOffset = shimmerOffset
+            )
+            WeatherForecasts(
+                uiState = uiState,
+                onExecuteCommand = onExecuteCommand,
+                shimmerOffset = shimmerOffset
+            )
         }
     }
 }
@@ -151,7 +162,8 @@ private fun NeedsPermissionButton(permissionState: MultiplePermissionsState) {
 @Composable
 private fun WeatherNow(
     uiState: WeatherForecastUiState,
-    onExecuteCommand: (Command<WeatherForecastCommandReceiver>) -> Unit
+    onExecuteCommand: (Command<WeatherForecastCommandReceiver>) -> Unit,
+    shimmerOffset: Float,
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -159,7 +171,7 @@ private fun WeatherNow(
         horizontalArrangement = Arrangement.Center
     ) {
         when (uiState.weatherNowStatus) {
-            WeatherForecastStatus.LOADING -> WeatherNowShimmer()
+            WeatherForecastStatus.LOADING -> WeatherNowShimmer(shimmerOffset = shimmerOffset)
             WeatherForecastStatus.ERROR -> TryAgainButton(
                 modifier = Modifier
                     .fillMaxHeight(0.1f)
@@ -212,9 +224,10 @@ private fun WeatherNowContent(uiState: WeatherForecastUiState) {
 private fun WeatherForecasts(
     uiState: WeatherForecastUiState,
     onExecuteCommand: (Command<WeatherForecastCommandReceiver>) -> Unit,
+    shimmerOffset: Float,
 ) {
     when (uiState.weatherForecastsStatus) {
-        WeatherForecastStatus.LOADING -> WeatherForecastsShimmer()
+        WeatherForecastStatus.LOADING -> WeatherForecastsShimmer(shimmerOffset = shimmerOffset)
         WeatherForecastStatus.ERROR -> TryAgainButton(
             modifier = Modifier
                 .fillMaxWidth()
@@ -298,34 +311,38 @@ private fun FutureWeatherForecast(futureWeatherForecastScreen: FutureWeatherFore
 
 // region Shimmers
 @Composable
-private fun WeatherNowShimmer() {
-    ShimmerEffect(
+private fun WeatherNowShimmer(shimmerOffset: Float) {
+    Shimmer(
         modifier = Modifier
             .fillMaxHeight(0.07f)
-            .fillMaxWidth(0.6f)
+            .fillMaxWidth(0.6f),
+        offset = shimmerOffset,
     )
 }
 
 @Composable
-private fun WeatherForecastsShimmer() {
-    ShimmerEffect(
+private fun WeatherForecastsShimmer(shimmerOffset: Float) {
+    Shimmer(
         modifier = Modifier
             .fillMaxWidth()
-            .height(200.dp)
+            .height(200.dp),
+        offset = shimmerOffset,
     )
     Column(verticalArrangement = Arrangement.spacedBy(Spacing.twelve)) {
         repeat(4) {
             Column(verticalArrangement = Arrangement.spacedBy(Spacing.sixteen)) {
-                ShimmerEffect(
+                Shimmer(
                     modifier = Modifier
                         .fillMaxWidth(0.6f)
-                        .height(30.dp)
+                        .height(30.dp),
+                    offset = shimmerOffset,
                 )
-                ShimmerEffect(
+                Shimmer(
                     modifier = Modifier
                         .padding(horizontal = Spacing.eight)
                         .height(70.dp)
-                        .fillMaxWidth()
+                        .fillMaxWidth(),
+                    offset = shimmerOffset,
                 )
             }
         }

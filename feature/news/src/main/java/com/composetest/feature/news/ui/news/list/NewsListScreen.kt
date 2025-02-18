@@ -26,9 +26,9 @@ import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -37,12 +37,13 @@ import androidx.navigation.compose.rememberNavController
 import com.composetest.core.designsystem.components.asyncimage.AsyncImage
 import com.composetest.core.designsystem.components.buttons.TryAgainButton
 import com.composetest.core.designsystem.components.dialogs.SimpleDialog
-import com.composetest.core.designsystem.components.shimmer.ShimmerEffect
+import com.composetest.core.designsystem.components.shimmer.Shimmer
 import com.composetest.core.designsystem.constants.screenMargin
 import com.composetest.core.designsystem.constants.topScreenMarginList
 import com.composetest.core.designsystem.dimensions.Spacing
 import com.composetest.core.designsystem.extensions.horizontalScreenMargin
 import com.composetest.core.designsystem.theme.ComposeTestTheme
+import com.composetest.core.designsystem.utils.getSharedShimmerOffset
 import com.composetest.core.domain.models.ArticleModel
 import com.composetest.core.router.extensions.navigateTo
 import com.composetest.core.ui.interfaces.Command
@@ -59,6 +60,7 @@ internal fun NewsListScreen(
     navController: NavHostController = rememberNavController(),
 ) {
     val pullToRefreshState = rememberPullToRefreshState()
+    val shimmerOffset by getSharedShimmerOffset()
     LaunchedEffectHandler(uiEvent = uiEvent, navController = navController)
     DialogHandler(uiState = uiState, onExecuteCommand = onExecuteCommand)
     PullToRefreshBox(
@@ -85,7 +87,7 @@ internal fun NewsListScreen(
         ) {
             if (uiState.isLoading) {
                 items(4) {
-                    ListItemShimmer()
+                    ListItemShimmer(shimmerOffset = shimmerOffset)
                 }
             } else {
                 items(uiState.articles) {
@@ -150,12 +152,11 @@ private fun RetryButton(onExecuteCommand: (Command<NewsListCommandReceiver>) -> 
 }
 
 @Composable
-private fun ListItemShimmer() {
-    ShimmerEffect(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(250.dp)
-            .clip(MaterialTheme.shapes.medium),
+private fun ListItemShimmer(shimmerOffset: Float) {
+    Shimmer(modifier = Modifier
+        .fillMaxWidth()
+        .height(250.dp),
+        offset = shimmerOffset,
     )
 }
 
