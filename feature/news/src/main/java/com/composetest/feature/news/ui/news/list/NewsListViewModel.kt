@@ -71,8 +71,6 @@ internal class NewsListViewModel @Inject constructor(
     }
 
     private fun requestErrorHandler(error: Throwable) {
-        _uiState.update { uiState ->
-            uiState.setSimpleDialogParam(getCommonSimpleDialogErrorParam(error))
-        }
+        _uiState.update { it.setSimpleDialogParam(getCommonSimpleDialogErrorParam(error)) }
     }
 }

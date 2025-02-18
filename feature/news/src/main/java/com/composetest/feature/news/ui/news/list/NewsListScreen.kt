@@ -1,5 +1,6 @@
 package com.composetest.feature.news.ui.news.list
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,16 +28,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.composetest.core.designsystem.components.asyncimage.AsyncImage
+import com.composetest.core.designsystem.components.buttons.TryAgainButton
 import com.composetest.core.designsystem.components.dialogs.SimpleDialog
 import com.composetest.core.designsystem.components.shimmer.ShimmerEffect
 import com.composetest.core.designsystem.constants.screenMargin
@@ -47,7 +46,6 @@ import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.domain.models.ArticleModel
 import com.composetest.core.router.extensions.navigateTo
 import com.composetest.core.ui.interfaces.Command
-import com.composetest.feature.news.R
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import java.time.LocalDateTime
@@ -60,11 +58,6 @@ internal fun NewsListScreen(
     onExecuteCommand: (Command<NewsListCommandReceiver>) -> Unit = {},
     navController: NavHostController = rememberNavController(),
 ) {
-    if (!uiState.showScreen) return
-    if (uiState.showWithoutNewsMsg) {
-        WithoutNews()
-        return
-    }
     val pullToRefreshState = rememberPullToRefreshState()
     LaunchedEffectHandler(uiEvent = uiEvent, navController = navController)
     DialogHandler(uiState = uiState, onExecuteCommand = onExecuteCommand)
@@ -102,6 +95,9 @@ internal fun NewsListScreen(
                     Spacer(modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars))
                 }
             }
+        }
+        if (uiState.showRetryButton) {
+            RetryButton(onExecuteCommand = onExecuteCommand)
         }
     }
 }
@@ -143,16 +139,13 @@ private fun NewsCard(
 }
 
 @Composable
-private fun WithoutNews() {
+private fun RetryButton(onExecuteCommand: (Command<NewsListCommandReceiver>) -> Unit) {
     Box(modifier = Modifier.fillMaxSize()) {
-        Text(
+        TryAgainButton(
             modifier = Modifier
-                .alpha(0.6f)
-                .align(Alignment.Center),
-            text = stringResource(R.string.without_news_msg),
-            style = MaterialTheme.typography.titleLarge,
-            textAlign = TextAlign.Center
-        )
+                .background(color = MaterialTheme.colorScheme.surface)
+                .fillMaxSize()
+        ) { onExecuteCommand(NewsListCommand.Refresh) }
     }
 }
 
@@ -161,7 +154,7 @@ private fun ListItemShimmer() {
     ShimmerEffect(
         modifier = Modifier
             .fillMaxWidth()
-            .height(200.dp)
+            .height(250.dp)
             .clip(MaterialTheme.shapes.medium),
     )
 }
@@ -196,7 +189,7 @@ private fun Preview() {
     ComposeTestTheme {
         NewsListScreen(
             uiState = NewsListUiState(
-                showScreen = true,
+//                showRetryButton = true,
                 isLoading = true,
                 articles = listOf(
                     ArticleModel(

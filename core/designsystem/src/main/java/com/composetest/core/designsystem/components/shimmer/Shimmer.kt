@@ -25,8 +25,8 @@ import com.composetest.core.designsystem.theme.ComposeTestTheme
 fun ShimmerEffect(modifier: Modifier) {
     val transition = rememberInfiniteTransition()
     val translateAnimation = transition.animateFloat(
-        initialValue = 0f,
-        targetValue = (1000 + 500).toFloat(),
+        initialValue = -120f,
+        targetValue = 2000f,
         animationSpec = infiniteRepeatable(
             animation = tween(durationMillis = 1000, easing = LinearEasing),
             repeatMode = RepeatMode.Restart,
@@ -44,9 +44,7 @@ fun ShimmerEffect(modifier: Modifier) {
         end = Offset(x = translateAnimation.value, y = 270f),
     )
 
-    Box(
-        modifier = modifier.clip(MaterialTheme.shapes.medium),
-    ) {
+    Box(modifier = modifier.clip(MaterialTheme.shapes.medium)) {
         Spacer(
             modifier = Modifier
                 .matchParentSize()

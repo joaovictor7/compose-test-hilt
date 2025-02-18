@@ -2,6 +2,5 @@
 <resources>
 
     <string name="news_title">Notícias</string>
-    <string name="without_news_msg">Sem notícias 🤷\nAtualize a página</string>
 
 </resources>
