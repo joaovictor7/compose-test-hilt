@@ -6,6 +6,7 @@ import com.composetest.core.data.repositories.ConfigurationRepositoryImpl
 import com.composetest.core.data.repositories.DatabaseRepositoryImpl
 import com.composetest.core.data.repositories.ExchangeRepositoryImpl
 import com.composetest.core.data.repositories.NewsApiRepositoryImpl
+import com.composetest.core.data.repositories.RemoteConfigRepositoryImpl
 import com.composetest.core.data.repositories.UserRepositoryImpl
 import com.composetest.core.data.repositories.WeatherForecastRepositoryImpl
 import com.composetest.core.domain.repositories.AnalyticsRepository
@@ -14,6 +15,7 @@ import com.composetest.core.domain.repositories.ConfigurationRepository
 import com.composetest.core.domain.repositories.DatabaseRepository
 import com.composetest.core.domain.repositories.ExchangeRepository
 import com.composetest.core.domain.repositories.NewsApiRepository
+import com.composetest.core.domain.repositories.RemoteConfigRepository
 import com.composetest.core.domain.repositories.UserRepository
 import com.composetest.core.domain.repositories.WeatherForecastRepository
 import dagger.Binds
@@ -66,4 +68,9 @@ internal abstract class RepositoryModule {
     abstract fun exchangeRepository(
         exchangeRepositoryImpl: ExchangeRepositoryImpl
     ): ExchangeRepository
+
+    @Binds
+    abstract fun remoteConfigRepository(
+        remoteConfigRepositoryImpl: RemoteConfigRepositoryImpl
+    ): RemoteConfigRepository
 }

@@ -1,6 +1,6 @@
 package com.composetest.core.data.datasources
 
-import com.composetest.core.data.api.responses.AuthenticationResponse
+import com.composetest.core.network.responses.AuthenticationResponse
 
 internal interface AuthenticationDataSource {
 

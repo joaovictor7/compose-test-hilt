@@ -1,8 +1,8 @@
 package com.composetest.core.data.datasources
 
-import com.composetest.core.data.api.requests.WeatherForecastRequest
-import com.composetest.core.data.api.responses.weatherforecast.WeatherForecastResponse
-import com.composetest.core.data.api.responses.weatherforecast.WeatherNowResponse
+import com.composetest.core.network.requests.WeatherForecastRequest
+import com.composetest.core.network.responses.weatherforecast.WeatherForecastResponse
+import com.composetest.core.network.responses.weatherforecast.WeatherNowResponse
 
 internal interface OpenWeatherDataSource {
     suspend fun getWeatherNow(request: WeatherForecastRequest): WeatherNowResponse

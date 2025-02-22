@@ -28,7 +28,7 @@ splashScreen = "1.0.1"
 coil = "3.1.0"
 permissions = "0.37.0"
 location = "21.3.0"
-screenshot = "0.0.1-alpha08"
+screenshot = "0.0.1-alpha09"
 
 [libraries]
 # Kotlin

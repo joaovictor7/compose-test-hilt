@@ -1,11 +1,11 @@
 package com.composetest.core.data.datasources.remote
 
-import com.composetest.core.data.api.responses.newsapi.NewsApiResponse
 import com.composetest.core.data.datasources.NewsApiDataSource
-import com.composetest.core.data.di.qualifiers.ApiQualifier
 import com.composetest.core.data.extensions.get
 import com.composetest.core.data.utils.ApiCallUtils
-import com.composetest.core.domain.enums.Api
+import com.composetest.core.network.enums.Api
+import com.composetest.core.network.di.qualifiers.ApiQualifier
+import com.composetest.core.network.responses.newsapi.NewsApiResponse
 import io.ktor.client.HttpClient
 
 internal class NewsApiDataSourceImpl(

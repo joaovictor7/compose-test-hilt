@@ -1,7 +1,7 @@
 package com.composetest.core.data.mappers
 
-import com.composetest.core.data.api.responses.weatherforecast.WeatherNowDataResponse
-import com.composetest.core.data.api.responses.weatherforecast.WeatherNowResponse
+import com.composetest.core.network.responses.weatherforecast.WeatherNowDataResponse
+import com.composetest.core.network.responses.weatherforecast.WeatherNowResponse
 import com.composetest.core.domain.models.weatherforecast.WeatherNowModel
 import javax.inject.Inject
 

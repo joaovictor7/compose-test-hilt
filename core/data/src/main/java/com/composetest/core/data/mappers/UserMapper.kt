@@ -1,6 +1,6 @@
 package com.composetest.core.data.mappers
 
-import com.composetest.core.data.api.responses.AuthenticationResponse
+import com.composetest.core.network.responses.AuthenticationResponse
 import com.composetest.core.database.entities.UserEntity
 import com.composetest.core.domain.models.UserModel
 import com.composetest.core.domain.providers.CipherProvider
