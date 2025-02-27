@@ -42,7 +42,7 @@ internal class WeatherForecastViewModel @Inject constructor(
     WeatherForecastCommandReceiver {
 
     private val _uiState = MutableStateFlow(WeatherForecastUiState())
-    private val _uiEvent = MutableSharedFlow<WeatherForecastUiEvent>()
+    private val _uiEvent = MutableSharedFlow<WeatherForecastUiEvent>(replay = 1)
     private var location: Location? = null
     private var weatherForecastNowWasGet = false
     private var weatherForecastsWasGet = false
