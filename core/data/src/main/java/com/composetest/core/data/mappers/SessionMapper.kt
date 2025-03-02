@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 internal class SessionMapper @Inject constructor() {
 
-    operator fun invoke(entity: SessionEntity?) = entity?.let {
+    fun mapperToModel(entity: SessionEntity?) = entity?.let {
         SessionModel(
             id = it.id,
             token = it.token,
@@ -17,10 +17,7 @@ internal class SessionMapper @Inject constructor() {
         )
     }
 
-    operator fun invoke(
-        session: SessionModel,
-        user: UserModel
-    ) = SessionEntity(
+    fun mapperToEntity(session: SessionModel, user: UserModel) = SessionEntity(
         token = session.token,
         startDate = session.startDate,
         endDate = session.endDate,

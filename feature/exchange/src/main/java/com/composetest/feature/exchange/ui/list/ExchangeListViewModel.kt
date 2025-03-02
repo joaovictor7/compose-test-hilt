@@ -2,9 +2,9 @@ package com.composetest.feature.exchange.ui.list
 
 import com.composetest.common.extensions.orFalse
 import com.composetest.core.designsystem.utils.getCommonSimpleDialogErrorParam
-import com.composetest.core.domain.models.ExchangeModel
-import com.composetest.core.domain.usecases.GetAllExchangesUseCase
+import com.composetest.core.domain.models.exchange.ExchangeModel
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
+import com.composetest.core.domain.usecases.exchange.GetAllExchangesUseCase
 import com.composetest.core.router.models.NavigationModel
 import com.composetest.core.ui.bases.BaseViewModel
 import com.composetest.core.ui.interfaces.UiEvent
@@ -48,13 +48,13 @@ internal class ExchangeListViewModel @Inject constructor(
             onCompletion = { _uiState.update { it.setIsLoading(false) } }
         ) {
             exchangeList = getAllExchangesUseCase()
-            _uiState.update { it.setExchangeScreenList(exchangeMapper(exchangeList)) }
+            _uiState.update { it.setExchangeScreenList(exchangeMapper.mapperToModels(exchangeList)) }
         }
     }
 
     override fun navigateToDetail(exchangeId: String) {
         val exchange = exchangeList.find { it.id == exchangeId }
-        exchangeMapper(exchange)?.let {
+        exchangeMapper.mapperToDestination(exchange)?.let {
             _uiEvent.emitEvent(ExchangeListUiEvent.NavigateTo(NavigationModel(it)))
         }
     }
@@ -63,7 +63,12 @@ internal class ExchangeListViewModel @Inject constructor(
         val exchangesFiltered = exchangeList.filter {
             it.name?.contains(exchange, true).orFalse
         }
-        _uiState.update { it.setExchangeListFiltered(exchange, exchangeMapper(exchangesFiltered)) }
+        _uiState.update {
+            it.setExchangeListFiltered(
+                exchange,
+                exchangeMapper.mapperToModels(exchangesFiltered)
+            )
+        }
     }
 
     override fun dismissSimpleDialog() {

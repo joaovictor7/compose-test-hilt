@@ -12,12 +12,13 @@ internal class SessionRepository @Inject constructor(
 ) {
 
     suspend fun insert(session: SessionModel, user: UserModel) {
-        sessionDataSource.insert(sessionMapper(session, user))
+        sessionDataSource.insert(sessionMapper.mapperToEntity(session, user))
     }
 
     suspend fun finishSession(id: Long) {
         sessionDataSource.finishSession(id)
     }
 
-    suspend fun getCurrentSession() = sessionMapper(sessionDataSource.getCurrentSession())
+    suspend fun getCurrentSession() =
+        sessionMapper.mapperToModel(sessionDataSource.getCurrentSession())
 }

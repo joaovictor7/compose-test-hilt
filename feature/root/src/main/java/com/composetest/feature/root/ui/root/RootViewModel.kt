@@ -1,9 +1,9 @@
 package com.composetest.feature.root.ui.root
 
 import com.composetest.core.domain.managers.SessionManager
-import com.composetest.core.domain.usecases.GetAvailableFeaturesUseCase
-import com.composetest.core.domain.usecases.GetUserUseCase
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
+import com.composetest.core.domain.usecases.remoteconfigs.GetAvailableFeaturesUseCase
+import com.composetest.core.domain.usecases.user.GetUserUseCase
 import com.composetest.core.router.destinations.login.LoginDestination
 import com.composetest.core.router.enums.NavigationMode
 import com.composetest.core.router.models.NavigationModel
@@ -108,7 +108,7 @@ internal class RootViewModel @Inject constructor(
                     firstBottomNavigationFeature?.destination,
                     modalDrawerNavigationFeatures,
                     bottomNavigationFeatures,
-                    userModalDrawerMapper(user)
+                    userModalDrawerMapper.mapperToModel(user)
                 )
             }
         }

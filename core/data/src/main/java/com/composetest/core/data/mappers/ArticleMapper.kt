@@ -1,13 +1,13 @@
 package com.composetest.core.data.mappers
 
+import com.composetest.core.domain.models.news.ArticleModel
 import com.composetest.core.network.responses.newsapi.NewsApiResponse
-import com.composetest.core.domain.models.ArticleModel
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 internal class ArticleMapper @Inject constructor() {
-    operator fun invoke(response: NewsApiResponse) =
+    fun mapperToModels(response: NewsApiResponse) =
         response.articles.map {
             ArticleModel(
                 provider = it.source.name,

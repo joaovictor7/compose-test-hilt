@@ -3,7 +3,7 @@ package com.composetest.feature.exchange.mappers
 import com.composetest.common.extensions.convertFromString
 import com.composetest.common.extensions.convertToString
 import com.composetest.common.providers.StringResourceProvider
-import com.composetest.core.domain.models.ExchangeModel
+import com.composetest.core.domain.models.exchange.ExchangeModel
 import com.composetest.core.router.destinations.exchange.ExchangeDetailDestination
 import com.composetest.feature.exchange.R
 import com.composetest.feature.exchange.models.ExchangeDetailRowScreenModel
@@ -22,7 +22,7 @@ internal class ExchangeMapper @Inject constructor(
     }
     private val decimalFormat = DecimalFormat("$#,##0.00", decimalFormatSymbols)
 
-    operator fun invoke(allExchanges: List<ExchangeModel>) = allExchanges.map {
+    fun mapperToModels(allExchanges: List<ExchangeModel>) = allExchanges.map {
         ExchangeScreenModel(
             id = it.id,
             name = it.name,
@@ -39,27 +39,7 @@ internal class ExchangeMapper @Inject constructor(
         )
     }
 
-    operator fun invoke(exchange: ExchangeModel?) = exchange?.let {
-        ExchangeDetailDestination(
-            id = it.id,
-            website = it.website,
-            name = it.name,
-            dateTimeQuoteStart = it.dateTimeQuoteStart?.convertToString(DATE_TIME_FORMAT),
-            dateTimeQuoteEnd = it.dateTimeQuoteEnd?.convertToString(DATE_TIME_FORMAT),
-            dateTimeOrderTradeStart = it.dateTimeOrderTradeStart?.convertToString(DATE_TIME_FORMAT),
-            dateTimeOrderTradeEnd = it.dateTimeOrderTradeEnd?.convertToString(DATE_TIME_FORMAT),
-            dateTimeOrderBookStart = it.dateTimeOrderBookStart?.convertToString(DATE_TIME_FORMAT),
-            dateTimeOrderBookEnd = it.dateTimeOrderBookEnd?.convertToString(DATE_TIME_FORMAT),
-            symbolsCount = it.symbolsCount,
-            volume1hrsUsd = it.volume1hrsUsd,
-            volume1DayUsd = it.volume1DayUsd,
-            volume1MthUsd = it.volume1MthUsd,
-            metricId = it.metricId,
-            rank = it.rank
-        )
-    }
-
-    operator fun invoke(destination: ExchangeDetailDestination) = listOf(
+    fun mapperToModels(destination: ExchangeDetailDestination) = listOf(
         ExchangeDetailRowScreenModel(
             labelId = R.string.exchange_detail_id_label,
             value = destination.id
@@ -94,6 +74,26 @@ internal class ExchangeMapper @Inject constructor(
             gridValues = createVolumesGridData(destination)
         ),
     )
+
+    fun mapperToDestination(exchange: ExchangeModel?) = exchange?.let {
+        ExchangeDetailDestination(
+            id = it.id,
+            website = it.website,
+            name = it.name,
+            dateTimeQuoteStart = it.dateTimeQuoteStart?.convertToString(DATE_TIME_FORMAT),
+            dateTimeQuoteEnd = it.dateTimeQuoteEnd?.convertToString(DATE_TIME_FORMAT),
+            dateTimeOrderTradeStart = it.dateTimeOrderTradeStart?.convertToString(DATE_TIME_FORMAT),
+            dateTimeOrderTradeEnd = it.dateTimeOrderTradeEnd?.convertToString(DATE_TIME_FORMAT),
+            dateTimeOrderBookStart = it.dateTimeOrderBookStart?.convertToString(DATE_TIME_FORMAT),
+            dateTimeOrderBookEnd = it.dateTimeOrderBookEnd?.convertToString(DATE_TIME_FORMAT),
+            symbolsCount = it.symbolsCount,
+            volume1hrsUsd = it.volume1hrsUsd,
+            volume1DayUsd = it.volume1DayUsd,
+            volume1MthUsd = it.volume1MthUsd,
+            metricId = it.metricId,
+            rank = it.rank
+        )
+    }
 
     private fun createDatesGridData(destination: ExchangeDetailDestination) = listOf(
         listOf(

@@ -17,18 +17,18 @@ internal class WeatherForecastRepositoryImpl @Inject constructor(
     override suspend fun getWeatherNow(
         weatherForecastLocation: WeatherForecastLocationModel
     ): WeatherNowModel {
-        val request = weatherForecastMapper(weatherForecastLocation)
+        val request = weatherForecastMapper.mapperToRequest(weatherForecastLocation)
         val response = apiErrorHandler { openWeatherDataSource.getWeatherNow(request) }
-        return weatherForecastMapper(response)
+        return weatherForecastMapper.mapperToModel(response)
     }
 
     override suspend fun getWeatherForecasts(
         weatherForecastLocation: WeatherForecastLocationModel
     ): List<WeatherForecastModel> {
-        val request = weatherForecastMapper(weatherForecastLocation)
+        val request = weatherForecastMapper.mapperToRequest(weatherForecastLocation)
         val response = apiErrorHandler {
             openWeatherDataSource.getWeatherForecasts(request)
         }
-        return weatherForecastMapper(response)
+        return weatherForecastMapper.mapperToModels(response)
     }
 }

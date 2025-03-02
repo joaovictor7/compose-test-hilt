@@ -2,13 +2,18 @@ package com.composetest.core.database.daos
 
 import androidx.room.Dao
 import androidx.room.Query
+import androidx.room.Update
 import androidx.room.Upsert
-import com.composetest.core.database.entities.ConfigurationEntity
+import com.composetest.core.database.entities.configuration.ConfigurationEntity
+import com.composetest.core.database.partialupdate.SecurityConfigurationUpdate
 
 @Dao
 interface ConfigurationEntityDao {
     @Upsert
     suspend fun upsert(configurationEntity: ConfigurationEntity)
+
+    @Update(entity = ConfigurationEntity::class)
+    suspend fun update(securityConfigurationUpdate: SecurityConfigurationUpdate)
 
     @Query(
         "SELECT configuration.* FROM configuration " +

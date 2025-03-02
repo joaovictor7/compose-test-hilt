@@ -1,9 +1,9 @@
 package com.composetest.feature.news.ui.news.list
 
 import com.composetest.core.designsystem.utils.getCommonSimpleDialogErrorParam
-import com.composetest.core.domain.models.ArticleModel
-import com.composetest.core.domain.usecases.GetTopHeadlinesUseCase
+import com.composetest.core.domain.models.news.ArticleModel
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
+import com.composetest.core.domain.usecases.news.GetTopHeadlinesUseCase
 import com.composetest.core.router.destinations.news.FullNewsDestination
 import com.composetest.core.router.models.NavigationModel
 import com.composetest.core.ui.bases.BaseViewModel

@@ -17,12 +17,13 @@ internal class UserRepositoryImpl @Inject constructor(
 ) : UserRepository {
 
     override suspend fun upsert(user: UserModel) {
-        userDataSource.upsert(userMapper(user))
-        configurationDataSource.upsert(configurationMapper(ConfigurationModel(userId = user.id)))
+        userDataSource.upsert(userMapper.mapperToEntity(user))
+        configurationDataSource.upsert(configurationMapper.mapperToEntity(ConfigurationModel(userId = user.id)))
     }
 
     override suspend fun getCurrentUser() =
-        userMapper(userDataSource.getCurrentUser())
+        userMapper.mapperToModel(userDataSource.getCurrentUser())
 
-    override suspend fun getLastUser() = userMapper(userDataSource.getLastUser())
+    override suspend fun getLastActiveUser() =
+        userMapper.mapperToModel(userDataSource.getLastActiveUser())
 }

@@ -1,18 +1,18 @@
 package com.composetest.core.data.mappers
 
 import com.composetest.common.extensions.convertedFromUnix
-import com.composetest.core.network.requests.WeatherForecastRequest
-import com.composetest.core.network.responses.weatherforecast.WeatherForecastResponse
-import com.composetest.core.network.responses.weatherforecast.WeatherNowResponse
 import com.composetest.core.domain.models.weatherforecast.ForecastTemperatureModel
 import com.composetest.core.domain.models.weatherforecast.WeatherForecastLocationModel
 import com.composetest.core.domain.models.weatherforecast.WeatherForecastModel
 import com.composetest.core.domain.models.weatherforecast.WeatherNowModel
+import com.composetest.core.network.requests.WeatherForecastRequest
+import com.composetest.core.network.responses.weatherforecast.WeatherForecastResponse
+import com.composetest.core.network.responses.weatherforecast.WeatherNowResponse
 import javax.inject.Inject
 
 internal class WeatherForecastMapper @Inject constructor() {
 
-    operator fun invoke(response: WeatherNowResponse): WeatherNowModel {
+    fun mapperToModel(response: WeatherNowResponse): WeatherNowModel {
         val lastWeatherNowData = response.weatherDataList.last()
         return WeatherNowModel(
             city = response.city,
@@ -22,7 +22,7 @@ internal class WeatherForecastMapper @Inject constructor() {
         )
     }
 
-    operator fun invoke(response: WeatherForecastResponse): List<WeatherForecastModel> {
+    fun mapperToModels(response: WeatherForecastResponse): List<WeatherForecastModel> {
         return response.dataList.map {
             WeatherForecastModel(
                 dateTime = it.dateTime.convertedFromUnix,
@@ -36,7 +36,7 @@ internal class WeatherForecastMapper @Inject constructor() {
         }
     }
 
-    operator fun invoke(model: WeatherForecastLocationModel) = WeatherForecastRequest(
+    fun mapperToRequest(model: WeatherForecastLocationModel) = WeatherForecastRequest(
         latitude = model.latitude.toString(),
         longitude = model.longitude.toString(),
         language = model.language,

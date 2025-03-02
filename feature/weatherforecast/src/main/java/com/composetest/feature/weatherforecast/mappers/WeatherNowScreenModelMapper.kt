@@ -11,7 +11,7 @@ internal class WeatherNowScreenModelMapper @Inject constructor(
     private val buildConfigProvider: BuildConfigProvider,
 ) {
 
-    operator fun invoke(weatherNowModel: WeatherNowModel) = WeatherNowScreenModel(
+    fun mapperToModel(weatherNowModel: WeatherNowModel) = WeatherNowScreenModel(
         city = weatherNowModel.city,
         temperature = "${weatherNowModel.temperature.toInt()}º",
         iconUrl = buildConfigProvider.buildConfigFields.openWeatherIconHost.format(weatherNowModel.iconId),

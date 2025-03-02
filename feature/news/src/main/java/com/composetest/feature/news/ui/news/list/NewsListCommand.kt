@@ -1,6 +1,6 @@
 package com.composetest.feature.news.ui.news.list
 
-import com.composetest.core.domain.models.ArticleModel
+import com.composetest.core.domain.models.news.ArticleModel
 import com.composetest.core.ui.interfaces.Command
 
 internal sealed interface NewsListCommand : Command<NewsListCommandReceiver> {

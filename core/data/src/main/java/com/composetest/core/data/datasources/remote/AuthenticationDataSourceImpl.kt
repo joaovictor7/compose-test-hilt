@@ -17,7 +17,7 @@ internal class AuthenticationDataSourceImpl(
         apiCallUtils.executeApiCall {
             val authResult = firebaseAuth.signInWithEmailAndPassword(email, password).await()
             val tokenResult = authResult.user?.getIdToken(true)?.await()
-            authenticationMapper(authResult.user, tokenResult)
+            authenticationMapper.mapperToResponse(authResult.user, tokenResult)
         }
 
     override suspend fun updateUserProfile() {

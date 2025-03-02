@@ -3,7 +3,6 @@ package com.composetest.core.security.providers
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
 import android.util.Base64
-import com.composetest.core.domain.providers.CipherProvider
 import java.security.KeyStore
 import javax.crypto.Cipher
 import javax.crypto.KeyGenerator

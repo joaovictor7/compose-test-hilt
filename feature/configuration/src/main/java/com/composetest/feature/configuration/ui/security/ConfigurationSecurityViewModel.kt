@@ -1,8 +1,10 @@
 package com.composetest.feature.configuration.ui.security
 
-import com.composetest.core.domain.managers.ConfigurationManager
-import com.composetest.core.domain.providers.BiometricProvider
+import com.composetest.core.domain.models.configuration.SecurityConfigurationModel
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
+import com.composetest.core.domain.usecases.configuration.GetSecurityConfigurationUseCase
+import com.composetest.core.domain.usecases.configuration.UpdateSecurityConfigurationUseCase
+import com.composetest.core.security.providers.BiometricProvider
 import com.composetest.core.ui.bases.BaseViewModel
 import com.composetest.core.ui.interfaces.UiState
 import com.composetest.feature.configuration.analytics.theme.ConfigurationThemeScreenAnalytic
@@ -14,13 +16,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class ConfigurationSecurityViewModel @Inject constructor(
-    private val configurationManager: ConfigurationManager,
+    private val getSecurityConfigurationUseCase: GetSecurityConfigurationUseCase,
+    private val updateSecurityConfigurationUseCase: UpdateSecurityConfigurationUseCase,
     private val biometricProvider: BiometricProvider,
     override val sendAnalyticsUseCase: SendAnalyticsUseCase,
 ) : BaseViewModel(), UiState<ConfigurationSecurityUiState>, ConfigurationSecurityCommandReceiver {
 
     private val _uiState = MutableStateFlow(ConfigurationSecurityUiState())
-    private val currentConfiguration get() = configurationManager.currentConfiguration
+    private var securityConfiguration: SecurityConfigurationModel? = null
 
     override val uiState = _uiState.asStateFlow()
     override val commandReceiver = this
@@ -32,7 +35,9 @@ internal class ConfigurationSecurityViewModel @Inject constructor(
 
     override fun changeSwitchBiometric(checked: Boolean) {
         runAsyncTask {
-            configurationManager.setBiometricLogin(checked)
+            updateSecurityConfigurationUseCase(securityConfiguration?.apply {
+                biometricLogin = checked
+            })
             _uiState.update { it.copy(biometricIsEnabled = checked) }
         }
     }
@@ -40,9 +45,9 @@ internal class ConfigurationSecurityViewModel @Inject constructor(
     private fun initUiState() {
         val biometricIsAvailable = biometricProvider.biometricIsAvailable
         runAsyncTask {
-            configurationManager.fetchConfiguration()
+            securityConfiguration = getSecurityConfigurationUseCase()
             _uiState.update {
-                it.initUiState(biometricIsAvailable, currentConfiguration?.biometricLogin)
+                it.initUiState(biometricIsAvailable, securityConfiguration?.biometricLogin)
             }
         }
     }

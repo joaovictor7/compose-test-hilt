@@ -7,6 +7,7 @@ import com.composetest.core.data.repositories.DatabaseRepositoryImpl
 import com.composetest.core.data.repositories.ExchangeRepositoryImpl
 import com.composetest.core.data.repositories.NewsApiRepositoryImpl
 import com.composetest.core.data.repositories.RemoteConfigRepositoryImpl
+import com.composetest.core.data.repositories.SystemBarsThemeRepositoryImpl
 import com.composetest.core.data.repositories.UserRepositoryImpl
 import com.composetest.core.data.repositories.WeatherForecastRepositoryImpl
 import com.composetest.core.domain.repositories.AnalyticsRepository
@@ -16,6 +17,7 @@ import com.composetest.core.domain.repositories.DatabaseRepository
 import com.composetest.core.domain.repositories.ExchangeRepository
 import com.composetest.core.domain.repositories.NewsApiRepository
 import com.composetest.core.domain.repositories.RemoteConfigRepository
+import com.composetest.core.domain.repositories.SystemBarsThemeRepository
 import com.composetest.core.domain.repositories.UserRepository
 import com.composetest.core.domain.repositories.WeatherForecastRepository
 import dagger.Binds
@@ -47,6 +49,11 @@ internal abstract class RepositoryModule {
     abstract fun configurationRepository(
         configurationRepositoryImpl: ConfigurationRepositoryImpl
     ): ConfigurationRepository
+
+    @Binds
+    abstract fun systemBarsThemeRepository(
+        systemBarsThemeRepositoryImpl: SystemBarsThemeRepositoryImpl
+    ): SystemBarsThemeRepository
 
     // Remotes
     @Binds

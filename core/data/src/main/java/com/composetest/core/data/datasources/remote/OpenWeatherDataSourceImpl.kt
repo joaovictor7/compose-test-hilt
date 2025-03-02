@@ -1,11 +1,11 @@
 package com.composetest.core.data.datasources.remote
 
-import com.composetest.core.network.requests.WeatherForecastRequest
-import com.composetest.core.network.responses.weatherforecast.WeatherForecastResponse
-import com.composetest.core.network.responses.weatherforecast.WeatherNowResponse
 import com.composetest.core.data.datasources.OpenWeatherDataSource
 import com.composetest.core.data.extensions.get
 import com.composetest.core.data.utils.ApiCallUtils
+import com.composetest.core.network.requests.WeatherForecastRequest
+import com.composetest.core.network.responses.weatherforecast.WeatherForecastResponse
+import com.composetest.core.network.responses.weatherforecast.WeatherNowResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.request.HttpRequestBuilder
 

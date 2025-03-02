@@ -3,7 +3,7 @@ package com.composetest.core.data.managers
 import com.composetest.common.remoteconfig.RemoteConfig
 import com.composetest.core.domain.managers.RemoteConfigManager
 import com.composetest.core.domain.repositories.RemoteConfigRepository
-import com.composetest.core.domain.usecases.CheckRemoteConfigUseCase
+import com.composetest.core.domain.usecases.remoteconfigs.CheckRemoteConfigUseCase
 import javax.inject.Inject
 
 internal class RemoteConfigManagerImpl @Inject constructor(

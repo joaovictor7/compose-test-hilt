@@ -4,11 +4,11 @@ import android.location.Location
 import com.composetest.common.providers.LocationProvider
 import com.composetest.core.designsystem.components.dialogs.CommonSimpleDialog
 import com.composetest.core.designsystem.utils.getCommonSimpleDialogErrorParam
-import com.composetest.core.domain.usecases.GeTodayWeatherForecastUseCase
-import com.composetest.core.domain.usecases.GetFutureWeatherForecastUseCase
-import com.composetest.core.domain.usecases.GetWeatherForecastsUseCase
-import com.composetest.core.domain.usecases.GetWeatherNowUseCase
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
+import com.composetest.core.domain.usecases.weatherforecast.GeTodayWeatherForecastUseCase
+import com.composetest.core.domain.usecases.weatherforecast.GetFutureWeatherForecastUseCase
+import com.composetest.core.domain.usecases.weatherforecast.GetWeatherForecastsUseCase
+import com.composetest.core.domain.usecases.weatherforecast.GetWeatherNowUseCase
 import com.composetest.core.ui.bases.BaseViewModel
 import com.composetest.core.ui.enums.Permission
 import com.composetest.core.ui.interfaces.UiEvent
@@ -80,8 +80,8 @@ internal class WeatherForecastViewModel @Inject constructor(
             _uiState.update { it.copy(weatherNowStatus = WeatherForecastStatus.LOADING) }
             runAsyncTask(onError = ::handleWeatherForecastNowError) {
                 val weatherNowForecast = getWeatherNowUseCase(location.latitude, location.longitude)
-                _uiState.update { uiState ->
-                    uiState.setWeatherNow(weatherNowScreenModelMapper(weatherNowForecast))
+                _uiState.update {
+                    it.setWeatherNow(weatherNowScreenModelMapper.mapperToModel(weatherNowForecast))
                 }
                 weatherForecastNowWasGet = true
             }
@@ -99,7 +99,9 @@ internal class WeatherForecastViewModel @Inject constructor(
                 _uiState.update { uiState ->
                     uiState.setWeatherForecasts(
                         todayWeatherForecast,
-                        futureWeatherForecastScreenModelsMapper(futureWeatherForecasts)
+                        futureWeatherForecastScreenModelsMapper.mapperToModels(
+                            futureWeatherForecasts
+                        )
                     )
                 }
                 weatherForecastsWasGet = true

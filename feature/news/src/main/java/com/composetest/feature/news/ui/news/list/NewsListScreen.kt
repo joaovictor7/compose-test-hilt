@@ -44,7 +44,7 @@ import com.composetest.core.designsystem.dimensions.Spacing
 import com.composetest.core.designsystem.extensions.horizontalScreenMargin
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.designsystem.utils.getSharedShimmerOffset
-import com.composetest.core.domain.models.ArticleModel
+import com.composetest.core.domain.models.news.ArticleModel
 import com.composetest.core.router.extensions.navigateTo
 import com.composetest.core.ui.interfaces.Command
 import kotlinx.coroutines.flow.Flow
@@ -153,9 +153,10 @@ private fun RetryButton(onExecuteCommand: (Command<NewsListCommandReceiver>) -> 
 
 @Composable
 private fun ListItemShimmer(shimmerOffset: Float) {
-    Shimmer(modifier = Modifier
-        .fillMaxWidth()
-        .height(250.dp),
+    Shimmer(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(250.dp),
         offset = shimmerOffset,
     )
 }

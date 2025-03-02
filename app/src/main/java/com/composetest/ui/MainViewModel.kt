@@ -1,10 +1,10 @@
 package com.composetest.ui
 
 import com.composetest.analytics.MainAnalytic
-import com.composetest.core.domain.managers.ConfigurationManager
 import com.composetest.core.domain.managers.RemoteConfigManager
 import com.composetest.core.domain.managers.SessionManager
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
+import com.composetest.core.domain.usecases.configuration.GetAppThemeUseCase
 import com.composetest.core.router.destinations.login.LoginDestination
 import com.composetest.core.router.destinations.root.RootDestination
 import com.composetest.core.router.enums.NavigationMode
@@ -22,9 +22,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class MainViewModel @Inject constructor(
-    private val configurationManager: ConfigurationManager,
     private val sessionManager: SessionManager,
     private val remoteConfigManager: RemoteConfigManager,
+    private val getAppThemeUseCase: GetAppThemeUseCase,
     override val sendAnalyticsUseCase: SendAnalyticsUseCase,
 ) : BaseViewModel(), UiState<MainUiState>, UiEvent<MainUiEvent>, MainCommandReceiver {
 
@@ -73,8 +73,8 @@ internal class MainViewModel @Inject constructor(
     }
 
     private fun themeObservable() {
-        runFlowTask(configurationManager.theme) { theme ->
-            _uiState.update { it.setTheme(theme) }
+        runFlowTask(getAppThemeUseCase()) { appTheme ->
+            _uiState.update { it.setAppTheme(appTheme) }
         }
     }
 }

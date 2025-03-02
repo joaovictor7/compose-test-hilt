@@ -5,15 +5,13 @@ import com.composetest.common.errors.ApiError
 import com.composetest.core.designsystem.components.dialogs.CommonSimpleDialog
 import com.composetest.core.domain.enums.BuildType
 import com.composetest.core.domain.enums.Flavor
-import com.composetest.core.domain.managers.ConfigurationManager
 import com.composetest.core.domain.managers.RemoteConfigManager
 import com.composetest.core.domain.managers.SessionManager
 import com.composetest.core.domain.models.BuildConfigModel
 import com.composetest.core.domain.providers.BuildConfigProvider
-import com.composetest.core.domain.usecases.AuthenticationByBiometricUseCase
-import com.composetest.core.domain.usecases.AuthenticationUseCase
-import com.composetest.core.domain.usecases.BiometricIsEnableUseCase
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
+import com.composetest.core.domain.usecases.login.AuthenticationUseCase
+import com.composetest.core.domain.usecases.login.BiometricIsEnableUseCase
 import com.composetest.core.router.destinations.root.RootDestination
 import com.composetest.core.router.enums.NavigationMode
 import com.composetest.core.router.managers.NavigationManager

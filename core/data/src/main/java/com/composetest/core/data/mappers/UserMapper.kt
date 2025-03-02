@@ -1,23 +1,22 @@
 package com.composetest.core.data.mappers
 
-import com.composetest.core.network.responses.AuthenticationResponse
 import com.composetest.core.database.entities.UserEntity
 import com.composetest.core.domain.models.UserModel
-import com.composetest.core.domain.providers.CipherProvider
+import com.composetest.core.network.responses.AuthenticationResponse
 import javax.inject.Inject
 
 internal class UserMapper @Inject constructor(
-    private val cipherProvider: CipherProvider
+    private val cipherProvider: com.composetest.core.security.providers.CipherProvider
 ) {
 
-    operator fun invoke(model: UserModel) = UserEntity(
+    fun mapperToEntity(model: UserModel) = UserEntity(
         id = model.id,
         name = model.name,
         email = model.email,
         encryptedPassword = model.encryptedPassword
     )
 
-    operator fun invoke(entity: UserEntity?) = entity?.let {
+    fun mapperToModel(entity: UserEntity?) = entity?.let {
         UserModel(
             id = it.id,
             email = it.email,
@@ -26,7 +25,7 @@ internal class UserMapper @Inject constructor(
         )
     }
 
-    operator fun invoke(
+    fun mapperToModel(
         authenticationResponse: AuthenticationResponse,
         password: String
     ) = UserModel(

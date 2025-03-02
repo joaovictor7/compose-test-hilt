@@ -28,6 +28,6 @@ internal enum class ThemeConfiguration(
     );
 
     companion object {
-        fun getThemeConfiguration(theme: Theme) = entries.find { it.theme == theme } ?: AUTO
+        fun getThemeConfiguration(theme: Theme?) = entries.find { it.theme == theme } ?: AUTO
     }
 }

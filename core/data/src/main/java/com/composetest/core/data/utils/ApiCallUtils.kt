@@ -1,8 +1,8 @@
 package com.composetest.core.data.utils
 
+import com.composetest.common.providers.DispatcherProvider
 import com.composetest.core.domain.enums.Flavor
 import com.composetest.core.domain.providers.BuildConfigProvider
-import com.composetest.common.providers.DispatcherProvider
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

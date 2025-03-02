@@ -14,7 +14,7 @@ internal class FutureWeatherForecastScreenModelsMapper @Inject constructor(
     private val dateToHourFormatter = DateTimeFormatter.ofPattern("HH")
     private val dateToStringFormatter = DateTimeFormatter.ofPattern("EEEE, dd MMMM yyyy")
 
-    operator fun invoke(
+    fun mapperToModels(
         futureWeatherForecastModel: List<FutureWeatherForecastModel>
     ) = futureWeatherForecastModel.map { futureWeatherForecast ->
         FutureWeatherForecastScreenModel(

@@ -25,5 +25,5 @@ interface UserEntityDao {
                 "WHERE session.endDate = (SELECT MAX(endDate) FROM session WHERE isActive = 0)" +
                 "LIMIT 1"
     )
-    suspend fun getLastUser(): UserEntity?
+    suspend fun getLastActiveUser(): UserEntity?
 }

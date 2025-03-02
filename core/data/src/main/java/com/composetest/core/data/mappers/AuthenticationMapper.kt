@@ -2,8 +2,8 @@ package com.composetest.core.data.mappers
 
 import com.composetest.common.extensions.convertedFromSeconds
 import com.composetest.common.providers.DateTimeProvider
-import com.composetest.core.network.responses.AuthenticationResponse
 import com.composetest.core.domain.models.session.AuthenticationModel
+import com.composetest.core.network.responses.AuthenticationResponse
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GetTokenResult
 import java.time.LocalDateTime
@@ -14,7 +14,7 @@ internal class AuthenticationMapper @Inject constructor(
     private val userMapper: UserMapper
 ) {
 
-    operator fun invoke(
+    fun mapperToResponse(
         firebaseUser: FirebaseUser?,
         tokenResult: GetTokenResult?,
     ) = AuthenticationResponse(
@@ -25,13 +25,13 @@ internal class AuthenticationMapper @Inject constructor(
         userName = firebaseUser?.displayName,
     )
 
-    operator fun invoke(
+    fun mapperToModel(
         authenticationResponse: AuthenticationResponse,
         password: String
     ) = AuthenticationModel(
         sessionToken = authenticationResponse.sessionToken,
         sessionStartDateTime = LocalDateTime.parse(authenticationResponse.sessionStartDateTime),
-        user = userMapper(authenticationResponse, password)
+        user = userMapper.mapperToModel(authenticationResponse, password)
     )
 
     private fun GetTokenResult?.formatDateTime() =

@@ -3,14 +3,13 @@ package com.composetest.feature.login.ui.login
 import com.composetest.common.errors.ApiError
 import com.composetest.core.designsystem.utils.getCommonSimpleDialogErrorParam
 import com.composetest.core.domain.enums.Theme
-import com.composetest.core.domain.managers.ConfigurationManager
 import com.composetest.core.domain.managers.RemoteConfigManager
-import com.composetest.core.domain.providers.BiometricProvider
 import com.composetest.core.domain.providers.BuildConfigProvider
-import com.composetest.core.domain.usecases.AuthenticationByBiometricUseCase
-import com.composetest.core.domain.usecases.AuthenticationUseCase
-import com.composetest.core.domain.usecases.BiometricIsEnableUseCase
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
+import com.composetest.core.domain.usecases.configuration.SetSystemBarsStyleUseCase
+import com.composetest.core.domain.usecases.login.AuthenticationUseCase
+import com.composetest.core.domain.usecases.login.BiometricIsEnableUseCase
+import com.composetest.core.domain.usecases.user.GetLastActiveUserUseCase
 import com.composetest.core.router.destinations.login.LoginDestination
 import com.composetest.core.router.destinations.root.RootDestination
 import com.composetest.core.router.enums.NavigationMode
@@ -18,6 +17,8 @@ import com.composetest.core.router.models.NavigationModel
 import com.composetest.core.security.enums.BiometricError
 import com.composetest.core.security.enums.BiometricError.Companion.biometricIsLockout
 import com.composetest.core.security.enums.BiometricError.Companion.userClosedPrompt
+import com.composetest.core.security.providers.BiometricProvider
+import com.composetest.core.security.providers.CipherProvider
 import com.composetest.core.ui.bases.BaseViewModel
 import com.composetest.core.ui.interfaces.UiEvent
 import com.composetest.core.ui.interfaces.UiState
@@ -40,24 +41,27 @@ import javax.inject.Inject
 internal class LoginViewModel @Inject constructor(
     private val buildConfigProvider: BuildConfigProvider,
     private val biometricProvider: BiometricProvider,
-    private val configurationManager: ConfigurationManager,
+    private val cipherProvider: CipherProvider,
     private val authenticationUseCase: AuthenticationUseCase,
-    private val authenticationByBiometricUseCase: AuthenticationByBiometricUseCase,
+    private val getLastActiveUserUseCase: GetLastActiveUserUseCase,
     private val biometricIsEnableUseCase: BiometricIsEnableUseCase,
+    private val setSystemBarsStyleUseCase: SetSystemBarsStyleUseCase,
     private val remoteConfigManager: RemoteConfigManager,
     private val loginDestination: LoginDestination,
     override val sendAnalyticsUseCase: SendAnalyticsUseCase,
 ) : BaseViewModel(), UiState<LoginUiState>, UiEvent<LoginUiEvent>, LoginCommandReceiver {
 
-    private val _uiState = MutableStateFlow(LoginUiState())
-    private val _uiEvent = MutableSharedFlow<LoginUiEvent>(replay = 1)
     private val loginFormModel get() = uiState.value.loginFormModel
     private val byPassLogin by lazy { remoteConfigManager.getBoolean(LoginRemoteConfig.BY_PASS_LOGIN) }
 
-    override val uiState = _uiState.asStateFlow()
-    override val uiEvent = _uiEvent.asSharedFlow()
     override val commandReceiver = this
     override val analyticScreen = LoginScreenAnalytic
+
+    private val _uiState = MutableStateFlow(LoginUiState())
+    override val uiState = _uiState.asStateFlow()
+
+    private val _uiEvent = MutableSharedFlow<LoginUiEvent>(replay = 1)
+    override val uiEvent = _uiEvent.asSharedFlow()
 
     init {
         openScreenAnalytic()
@@ -102,7 +106,7 @@ internal class LoginViewModel @Inject constructor(
 
     override fun setStatusBarsTheme(enterScreen: Boolean, currentAppTheme: Theme) {
         val theme = if (enterScreen && currentAppTheme != Theme.DARK) Theme.DARK else null
-        configurationManager.setStatusBarsTheme(theme)
+        setSystemBarsStyleUseCase(theme)
     }
 
     override fun dismissSimpleDialog() {
@@ -162,9 +166,14 @@ internal class LoginViewModel @Inject constructor(
 
     private suspend fun authenticate(byBiometric: Boolean) {
         if (byBiometric) {
-            authenticationByBiometricUseCase()
+            getLastActiveUserUseCase()?.let {
+                authenticationUseCase(it.email, it.encryptedPassword)
+            }
         } else {
-            authenticationUseCase(loginFormModel.email, loginFormModel.password)
+            authenticationUseCase(
+                loginFormModel.email,
+                cipherProvider.encrypt(loginFormModel.password)
+            )
         }
     }
 

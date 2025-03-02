@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 internal class UserModalDrawerMapper @Inject constructor() {
 
-    operator fun invoke(userModel: UserModel?) = UserModalDrawerModel(
+    fun mapperToModel(userModel: UserModel?) = UserModalDrawerModel(
         username = userModel?.name,
         email = userModel?.email.orEmpty()
     )

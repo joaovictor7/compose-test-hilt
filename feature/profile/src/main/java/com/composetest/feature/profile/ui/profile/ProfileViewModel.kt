@@ -8,8 +8,8 @@ import androidx.compose.ui.text.withStyle
 import com.composetest.common.providers.StringResourceProvider
 import com.composetest.core.designsystem.enums.topbar.TopBarAction
 import com.composetest.core.domain.models.UserModel
-import com.composetest.core.domain.usecases.GetUserUseCase
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
+import com.composetest.core.domain.usecases.user.GetUserUseCase
 import com.composetest.core.router.destinations.profile.EditProfileDestination
 import com.composetest.core.router.models.NavigationModel
 import com.composetest.core.ui.bases.BaseViewModel

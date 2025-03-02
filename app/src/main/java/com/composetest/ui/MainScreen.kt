@@ -26,8 +26,8 @@ internal fun MainScreen(
 ) {
     if (uiState.firstDestination == null) return
     ComposeTestTheme(
-        dynamicColor = uiState.theme.dynamicColor,
-        theme = uiState.theme.theme
+        dynamicColor = uiState.appTheme.dynamicColor,
+        theme = uiState.appTheme.theme
     ) {
         DialogHandler(uiState = uiState, onExecuteCommand = onExecuteCommand)
         Navigation(

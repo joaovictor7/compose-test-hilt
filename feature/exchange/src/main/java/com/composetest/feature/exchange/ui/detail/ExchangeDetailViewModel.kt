@@ -31,7 +31,7 @@ internal class ExchangeDetailViewModel @Inject constructor(
 
     private fun setDetails() {
         _uiState.update {
-            val exchangeDetailsRowScreens = exchangeMapper(destination)
+            val exchangeDetailsRowScreens = exchangeMapper.mapperToModels(destination)
             it.setExchangeDataRowsScreen(exchangeDetailsRowScreens)
         }
     }

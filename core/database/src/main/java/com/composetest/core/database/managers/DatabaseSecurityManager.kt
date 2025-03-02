@@ -1,8 +1,8 @@
 package com.composetest.core.database.managers
 
 import com.composetest.core.domain.providers.BuildConfigProvider
-import com.composetest.core.domain.providers.CipherProvider
 import com.composetest.core.domain.repositories.DatabaseRepository
+import com.composetest.core.security.providers.CipherProvider
 import com.composetest.core.security.utils.addPBKDF2
 import com.composetest.core.security.utils.generateSecureKey
 import net.zetetic.database.sqlcipher.SupportOpenHelperFactory

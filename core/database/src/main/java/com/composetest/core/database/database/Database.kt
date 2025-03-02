@@ -7,9 +7,9 @@ import com.composetest.core.database.converters.LocalDateTimeConverter
 import com.composetest.core.database.daos.ConfigurationEntityDao
 import com.composetest.core.database.daos.SessionEntityDao
 import com.composetest.core.database.daos.UserEntityDao
-import com.composetest.core.database.entities.ConfigurationEntity
 import com.composetest.core.database.entities.SessionEntity
 import com.composetest.core.database.entities.UserEntity
+import com.composetest.core.database.entities.configuration.ConfigurationEntity
 
 private const val DATABASE_VERSION = 1
 

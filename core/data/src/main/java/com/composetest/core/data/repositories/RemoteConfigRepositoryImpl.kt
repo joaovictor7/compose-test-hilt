@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 internal class RemoteConfigRepositoryImpl @Inject constructor(
     private val remoteConfigDataSource: RemoteConfigDataSource
-): RemoteConfigRepository {
+) : RemoteConfigRepository {
 
     override fun getString(key: String) = remoteConfigDataSource.getString(key)
     override fun getLong(key: String) = remoteConfigDataSource.getLong(key)

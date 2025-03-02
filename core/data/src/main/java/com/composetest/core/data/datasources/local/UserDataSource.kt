@@ -14,5 +14,5 @@ internal class UserDataSource @Inject constructor(
 
     suspend fun getCurrentUser() = userEntityDao.getCurrentUser()
 
-    suspend fun getLastUser() = userEntityDao.getLastUser()
+    suspend fun getLastActiveUser() = userEntityDao.getLastActiveUser()
 }

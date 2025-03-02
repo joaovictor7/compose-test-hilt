@@ -1,9 +1,9 @@
 package com.composetest.feature.profile.ui.editprofile
 
 import com.composetest.core.domain.models.UserModel
-import com.composetest.core.domain.usecases.GetUserUseCase
 import com.composetest.core.domain.usecases.SendAnalyticsUseCase
-import com.composetest.core.domain.usecases.UpdateUserUseCase
+import com.composetest.core.domain.usecases.user.GetUserUseCase
+import com.composetest.core.domain.usecases.user.UpdateUserUseCase
 import com.composetest.core.ui.bases.BaseViewModel
 import com.composetest.core.ui.interfaces.UiState
 import com.composetest.feature.profile.analytics.profile.ProfileScreenAnalytic
@@ -43,7 +43,7 @@ internal class EditProfileViewModel @Inject constructor(
             userModel = userModel?.copy(name = it)
         }
         _uiState.update {
-            it.copy(profileForm = profileFormMapper(userModel))
+            it.copy(profileForm = profileFormMapper.mapperToModel(userModel))
         }
     }
 
@@ -55,7 +55,7 @@ internal class EditProfileViewModel @Inject constructor(
         runAsyncTask {
             getUserUseCase()?.let { userModel ->
                 _uiState.update {
-                    it.copy(profileForm = profileFormMapper(userModel))
+                    it.copy(profileForm = profileFormMapper.mapperToModel(userModel))
                 }
             }
         }

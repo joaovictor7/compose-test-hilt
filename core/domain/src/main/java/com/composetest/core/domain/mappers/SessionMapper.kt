@@ -6,9 +6,10 @@ import javax.inject.Inject
 
 internal class SessionMapper @Inject constructor() {
 
-    operator fun invoke(authenticationModel: AuthenticationModel, sessionDuration: Long) = SessionModel(
-        token = authenticationModel.sessionToken,
-        startDate = authenticationModel.sessionStartDateTime,
-        endDate = authenticationModel.sessionStartDateTime.plusWeeks(sessionDuration),
-    )
+    fun mapperToModel(authenticationModel: AuthenticationModel, sessionDuration: Long) =
+        SessionModel(
+            token = authenticationModel.sessionToken,
+            startDate = authenticationModel.sessionStartDateTime,
+            endDate = authenticationModel.sessionStartDateTime.plusWeeks(sessionDuration),
+        )
 }

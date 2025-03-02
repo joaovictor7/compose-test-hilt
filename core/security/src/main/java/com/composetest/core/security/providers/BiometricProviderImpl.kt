@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
 import com.composetest.core.domain.managers.RemoteConfigManager
-import com.composetest.core.domain.providers.BiometricProvider
 import com.composetest.core.security.enums.BiometricRemoteConfig
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
