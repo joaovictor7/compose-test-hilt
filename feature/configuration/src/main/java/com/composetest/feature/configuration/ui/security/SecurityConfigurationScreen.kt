@@ -18,9 +18,9 @@ import com.composetest.core.ui.interfaces.Command
 import com.composetest.feature.configuration.R
 
 @Composable
-internal fun ConfigurationSecurityScreen(
-    uiState: ConfigurationSecurityUiState,
-    onExecuteCommand: (Command<ConfigurationSecurityCommandReceiver>) -> Unit = {}
+internal fun SecurityConfigurationScreen(
+    uiState: SecurityConfigurationUiState,
+    onExecuteCommand: (Command<SecurityConfigurationCommandReceiver>) -> Unit = {}
 ) {
     ScreenScaffold(
         modifier = Modifier.screenMargin(),
@@ -31,12 +31,12 @@ internal fun ConfigurationSecurityScreen(
             checked = uiState.biometricIsEnabled,
             enable = uiState.biometricIsAvailable,
             switchType = SwitchType.CHECK
-        ) { onExecuteCommand(ConfigurationSecurityCommand.ChangeSwitchBiometric(it)) }
+        ) { onExecuteCommand(SecurityConfigurationCommand.ChangeSwitchBiometric(it)) }
     }
 }
 
 @Composable
-private fun getBiometricSwitchLabel(uiState: ConfigurationSecurityUiState): AnnotatedString {
+private fun getBiometricSwitchLabel(uiState: SecurityConfigurationUiState): AnnotatedString {
     var label =
         AnnotatedString(stringResource(R.string.configuration_security_biometric_label_text))
     if (!uiState.biometricIsAvailable) {
@@ -54,8 +54,8 @@ private fun getBiometricSwitchLabel(uiState: ConfigurationSecurityUiState): Anno
 @Preview
 private fun Preview() {
     ComposeTestTheme {
-        ConfigurationSecurityScreen(
-            uiState = ConfigurationSecurityUiState(
+        SecurityConfigurationScreen(
+            uiState = SecurityConfigurationUiState(
                 biometricIsAvailable = false
             ),
         )

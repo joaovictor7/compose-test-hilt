@@ -15,14 +15,14 @@ import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
-internal class ConfigurationSecurityViewModel @Inject constructor(
+internal class SecurityConfigurationViewModel @Inject constructor(
     private val getSecurityConfigurationUseCase: GetSecurityConfigurationUseCase,
     private val updateSecurityConfigurationUseCase: UpdateSecurityConfigurationUseCase,
     private val biometricProvider: BiometricProvider,
     override val sendAnalyticsUseCase: SendAnalyticsUseCase,
-) : BaseViewModel(), UiState<ConfigurationSecurityUiState>, ConfigurationSecurityCommandReceiver {
+) : BaseViewModel(), UiState<SecurityConfigurationUiState>, SecurityConfigurationCommandReceiver {
 
-    private val _uiState = MutableStateFlow(ConfigurationSecurityUiState())
+    private val _uiState = MutableStateFlow(SecurityConfigurationUiState())
     private var securityConfiguration: SecurityConfigurationModel? = null
 
     override val uiState = _uiState.asStateFlow()

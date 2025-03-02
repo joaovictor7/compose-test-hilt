@@ -5,26 +5,26 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.composetest.core.router.destinations.configuration.ConfigurationSecurityDestination
-import com.composetest.core.router.destinations.configuration.ConfigurationThemeDestination
-import com.composetest.feature.configuration.ui.security.ConfigurationSecurityScreen
-import com.composetest.feature.configuration.ui.security.ConfigurationSecurityViewModel
-import com.composetest.feature.configuration.ui.theme.ConfigurationThemeScreen
-import com.composetest.feature.configuration.ui.theme.ConfigurationThemeViewModel
+import com.composetest.core.router.destinations.configuration.SecurityConfigurationDestination
+import com.composetest.core.router.destinations.configuration.ThemeConfigurationDestination
+import com.composetest.feature.configuration.ui.security.SecurityConfigurationScreen
+import com.composetest.feature.configuration.ui.security.SecurityConfigurationViewModel
+import com.composetest.feature.configuration.ui.theme.ThemeConfigurationScreen
+import com.composetest.feature.configuration.ui.theme.ThemeConfigurationViewModel
 
 fun NavGraphBuilder.configurationNavGraphs() {
-    composable<ConfigurationThemeDestination> {
-        val viewModel = hiltViewModel<ConfigurationThemeViewModel>()
+    composable<ThemeConfigurationDestination> {
+        val viewModel = hiltViewModel<ThemeConfigurationViewModel>()
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-        ConfigurationThemeScreen(
+        ThemeConfigurationScreen(
             uiState = uiState,
             onExecuteCommand = viewModel::executeCommand,
         )
     }
-    composable<ConfigurationSecurityDestination> {
-        val viewModel = hiltViewModel<ConfigurationSecurityViewModel>()
+    composable<SecurityConfigurationDestination> {
+        val viewModel = hiltViewModel<SecurityConfigurationViewModel>()
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-        ConfigurationSecurityScreen(
+        SecurityConfigurationScreen(
             uiState = uiState,
             onExecuteCommand = viewModel::executeCommand,
         )

@@ -35,9 +35,9 @@ import com.composetest.feature.configuration.enums.ThemeConfiguration
 import com.composetest.feature.configuration.R as ConfigurationResources
 
 @Composable
-internal fun ConfigurationThemeScreen(
-    uiState: ConfigurationThemeUiState,
-    onExecuteCommand: (Command<ConfigurationThemeCommandReceiver>) -> Unit = {}
+internal fun ThemeConfigurationScreen(
+    uiState: ThemeConfigurationUiState,
+    onExecuteCommand: (Command<ThemeConfigurationCommandReceiver>) -> Unit = {}
 ) {
     ScreenScaffold(
         modifier = Modifier.screenMargin(),
@@ -68,8 +68,8 @@ private fun Section(
 
 @Composable
 private fun Theme(
-    uiState: ConfigurationThemeUiState,
-    onExecuteCommand: (Command<ConfigurationThemeCommandReceiver>) -> Unit
+    uiState: ThemeConfigurationUiState,
+    onExecuteCommand: (Command<ThemeConfigurationCommandReceiver>) -> Unit
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -85,7 +85,7 @@ private fun Theme(
                     .setSelectedBackgroundColor(selectedTheme = theme == uiState.selectedTheme)
                     .size(100.dp)
                     .clickable {
-                        onExecuteCommand(ConfigurationThemeCommand.ChangeTheme(theme))
+                        onExecuteCommand(ThemeConfigurationCommand.ChangeThemeConfiguration(theme))
                     }
             ) {
                 Icon(painter = painterResource(theme.iconId), contentDescription = null)
@@ -101,8 +101,8 @@ private fun Theme(
 
 @Composable
 private fun DynamicColor(
-    uiState: ConfigurationThemeUiState,
-    onExecuteCommand: (Command<ConfigurationThemeCommandReceiver>) -> Unit
+    uiState: ThemeConfigurationUiState,
+    onExecuteCommand: (Command<ThemeConfigurationCommandReceiver>) -> Unit
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -116,7 +116,7 @@ private fun DynamicColor(
         ThumbSwitch(
             checked = uiState.dynamicColor,
             type = SwitchType.CHECK,
-            onCheckedChange = { onExecuteCommand(ConfigurationThemeCommand.ChangeDynamicColor(it)) }
+            onCheckedChange = { onExecuteCommand(ThemeConfigurationCommand.ChangeDynamicColor(it)) }
         )
     }
 }
@@ -132,8 +132,8 @@ private fun Modifier.setSelectedBackgroundColor(selectedTheme: Boolean) = also {
 @PreviewLightDark
 private fun Preview() {
     ComposeTestTheme {
-        ConfigurationThemeScreen(
-            uiState = ConfigurationThemeUiState(
+        ThemeConfigurationScreen(
+            uiState = ThemeConfigurationUiState(
                 themes = ThemeConfiguration.entries,
                 selectedTheme = ThemeConfiguration.AUTO,
                 dynamicColor = true

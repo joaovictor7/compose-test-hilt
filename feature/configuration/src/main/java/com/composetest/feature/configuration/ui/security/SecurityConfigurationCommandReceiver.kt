@@ -2,8 +2,8 @@ package com.composetest.feature.configuration.ui.security
 
 import com.composetest.core.ui.interfaces.CommandReceiver
 
-internal interface ConfigurationSecurityCommandReceiver :
-    CommandReceiver<ConfigurationSecurityCommandReceiver> {
+internal interface SecurityConfigurationCommandReceiver :
+    CommandReceiver<SecurityConfigurationCommandReceiver> {
 
     fun changeSwitchBiometric(checked: Boolean)
 }

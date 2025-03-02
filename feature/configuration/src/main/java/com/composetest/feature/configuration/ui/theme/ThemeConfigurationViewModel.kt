@@ -19,15 +19,15 @@ import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
-internal class ConfigurationThemeViewModel @Inject constructor(
+internal class ThemeConfigurationViewModel @Inject constructor(
     private val getThemeConfigurationUseCase: GetThemeConfigurationUseCase,
     private val updateThemeConfigurationUseCase: UpdateThemeConfigurationUseCase,
     override val sendAnalyticsUseCase: SendAnalyticsUseCase,
-) : BaseViewModel(), UiState<ConfigurationThemeUiState>, ConfigurationThemeCommandReceiver {
+) : BaseViewModel(), UiState<ThemeConfigurationUiState>, ThemeConfigurationCommandReceiver {
 
     private var themeConfiguration: ThemeConfigurationModel? = null
 
-    private val _uiState = MutableStateFlow(ConfigurationThemeUiState())
+    private val _uiState = MutableStateFlow(ThemeConfigurationUiState())
     override val uiState = _uiState.asStateFlow()
 
     override val commandReceiver = this

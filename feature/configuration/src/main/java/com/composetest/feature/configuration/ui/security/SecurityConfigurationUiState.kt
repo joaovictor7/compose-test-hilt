@@ -2,7 +2,7 @@ package com.composetest.feature.configuration.ui.security
 
 import com.composetest.common.extensions.orFalse
 
-internal data class ConfigurationSecurityUiState(
+internal data class SecurityConfigurationUiState(
     val biometricIsAvailable: Boolean = true,
     val biometricIsEnabled: Boolean = false,
 ) {

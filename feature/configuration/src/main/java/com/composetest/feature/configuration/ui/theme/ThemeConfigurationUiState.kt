@@ -2,7 +2,7 @@ package com.composetest.feature.configuration.ui.theme
 
 import com.composetest.feature.configuration.enums.ThemeConfiguration
 
-internal data class ConfigurationThemeUiState(
+internal data class ThemeConfigurationUiState(
     val themes: List<ThemeConfiguration> = emptyList(),
     val selectedTheme: ThemeConfiguration = ThemeConfiguration.DARK,
     val dynamicColor: Boolean = false
