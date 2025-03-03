@@ -10,7 +10,6 @@ import com.composetest.core.domain.providers.BuildConfigProvider
 import com.composetest.core.domain.usecases.configuration.SetSystemBarsStyleUseCase
 import com.composetest.core.domain.usecases.login.AuthenticationUseCase
 import com.composetest.core.domain.usecases.login.BiometricIsEnableUseCase
-import com.composetest.core.domain.usecases.user.GetLastActiveUserUseCase
 import com.composetest.core.router.destinations.login.LoginDestination
 import com.composetest.core.router.destinations.root.RootDestination
 import com.composetest.core.router.enums.NavigationMode
@@ -25,6 +24,7 @@ import com.composetest.core.ui.interfaces.UiEvent
 import com.composetest.core.ui.interfaces.UiState
 import com.composetest.feature.login.R
 import com.composetest.core.analytic.events.login.LoginEventAnalytic
+import com.composetest.core.domain.usecases.login.AuthenticationByBiometricUseCase
 import com.composetest.feature.login.enums.LoginRemoteConfig
 import com.composetest.feature.login.extensions.autoShowBiometricPrompt
 import com.composetest.feature.login.models.BiometricModel
@@ -43,7 +43,7 @@ internal class LoginViewModel @Inject constructor(
     private val biometricProvider: BiometricProvider,
     private val cipherProvider: CipherProvider,
     private val authenticationUseCase: AuthenticationUseCase,
-    private val getLastActiveUserUseCase: GetLastActiveUserUseCase,
+    private val authenticationByBiometricUseCase: AuthenticationByBiometricUseCase,
     private val biometricIsEnableUseCase: BiometricIsEnableUseCase,
     private val setSystemBarsStyleUseCase: SetSystemBarsStyleUseCase,
     private val remoteConfigManager: RemoteConfigManager,
@@ -166,9 +166,7 @@ internal class LoginViewModel @Inject constructor(
 
     private suspend fun authenticate(byBiometric: Boolean) {
         if (byBiometric) {
-            getLastActiveUserUseCase()?.let {
-                authenticationUseCase(it.email, it.encryptedPassword)
-            }
+            authenticationByBiometricUseCase()
         } else {
             authenticationUseCase(
                 loginFormModel.email,
