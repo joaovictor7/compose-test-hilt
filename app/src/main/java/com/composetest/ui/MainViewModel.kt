@@ -3,8 +3,9 @@ package com.composetest.ui
 import com.composetest.analytics.MainAnalytic
 import com.composetest.core.analytic.AnalyticSender
 import com.composetest.core.domain.managers.RemoteConfigManager
-import com.composetest.core.domain.managers.SessionManager
 import com.composetest.core.domain.usecases.configuration.GetAppThemeUseCase
+import com.composetest.core.domain.usecases.session.CheckNeedsLoginUseCase
+import com.composetest.core.domain.usecases.session.CheckSessionIsValidUseCase
 import com.composetest.core.router.destinations.login.LoginDestination
 import com.composetest.core.router.destinations.root.RootDestination
 import com.composetest.core.router.enums.NavigationMode
@@ -22,9 +23,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class MainViewModel @Inject constructor(
-    private val sessionManager: SessionManager,
-    private val remoteConfigManager: RemoteConfigManager,
+    private val checkSessionIsValidUseCase: CheckSessionIsValidUseCase,
+    private val checkNeedsLoginUseCase: CheckNeedsLoginUseCase,
     private val getAppThemeUseCase: GetAppThemeUseCase,
+    private val remoteConfigManager: RemoteConfigManager,
     override val analyticSender: AnalyticSender,
 ) : BaseViewModel(), UiState<MainUiState>, UiEvent<MainUiEvent>, MainCommandReceiver {
 
@@ -38,13 +40,13 @@ internal class MainViewModel @Inject constructor(
     override val uiEvent = _uiEvent.asSharedFlow()
 
     init {
-        themeObservable()
+        appThemeObservable()
         initUiState()
     }
 
     override fun verifySession(currentRoute: String?) {
         runAsyncTask {
-            val validSession = sessionManager.sessionIsLogged()
+            val validSession = checkSessionIsValidUseCase()
             val loginDestination = LoginDestination(expiredSession = true)
             if (!validSession && currentRoute != loginDestination.asRoute) {
                 _uiEvent.emitEvent(
@@ -65,15 +67,15 @@ internal class MainViewModel @Inject constructor(
     }
 
     private fun initUiState() = runAsyncTask {
-        val firstDestination = if (sessionManager.needsLogin()) {
+        val firstDestination = if (checkNeedsLoginUseCase()) {
             LoginDestination()
         } else {
             RootDestination
         }
-        _uiState.update { it.setInitState(firstDestination) }
+        _uiState.update { it.setInitUiState(firstDestination) }
     }
 
-    private fun themeObservable() {
+    private fun appThemeObservable() {
         runFlowTask(getAppThemeUseCase()) { appTheme ->
             _uiState.update { it.setAppTheme(appTheme) }
         }

@@ -13,23 +13,25 @@ import com.composetest.core.analytic.AnalyticSender
 import com.composetest.core.analytic.events.ErrorAnalyticEvent
 import com.composetest.core.data.enums.Worker
 import com.composetest.core.data.workmanager.WorkManagerRequest
-import com.composetest.core.domain.managers.SessionManager
+import com.composetest.core.domain.usecases.session.CheckSessionIsValidUseCase
+import com.composetest.core.domain.usecases.session.FinishSessionUseCase
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import java.time.Duration
 
 @HiltWorker
 class SessionWorker @AssistedInject constructor(
-    private val sessionManager: SessionManager,
+    private val checkSessionIsValidUseCase: CheckSessionIsValidUseCase,
+    private val finishSessionUseCase: FinishSessionUseCase,
     private val analyticSender: AnalyticSender,
     @Assisted context: Context,
     @Assisted workerParams: WorkerParameters
 ) : CoroutineWorker(context, workerParams) {
 
     override suspend fun doWork() = runCatching {
-        val sessionValid = sessionManager.sessionIsLogged()
+        val sessionValid = checkSessionIsValidUseCase()
         if (!sessionValid) throw NotFoundException("Session not initialized")
-        sessionManager.finishCurrentSession()
+        finishSessionUseCase()
         Result.success()
     }.getOrElse {
         analyticSender.sendErrorEvent(ErrorAnalyticEvent(it))

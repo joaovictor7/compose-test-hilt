@@ -1,7 +1,6 @@
 package com.composetest.feature.root.ui.root
 
 import com.composetest.core.analytic.AnalyticSender
-import com.composetest.core.domain.managers.SessionManager
 import com.composetest.core.domain.usecases.remoteconfigs.GetAvailableFeaturesUseCase
 import com.composetest.core.domain.usecases.user.GetUserUseCase
 import com.composetest.core.router.destinations.login.LoginDestination
@@ -12,6 +11,7 @@ import com.composetest.core.ui.interfaces.UiEvent
 import com.composetest.core.ui.interfaces.UiState
 import com.composetest.core.analytic.events.root.RootEventAnalytic
 import com.composetest.core.analytic.events.root.RootScreenAnalytic
+import com.composetest.core.domain.usecases.session.FinishSessionUseCase
 import com.composetest.feature.root.enums.NavigationFeature
 import com.composetest.feature.root.enums.NavigationLocal
 import com.composetest.feature.root.mappers.UserModalDrawerMapper
@@ -26,7 +26,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class RootViewModel @Inject constructor(
-    private val sessionManager: SessionManager,
+    private val finishSessionUseCase: FinishSessionUseCase,
     private val getUserUseCase: GetUserUseCase,
     private val userModalDrawerMapper: UserModalDrawerMapper,
     override val analyticSender: AnalyticSender,
@@ -79,7 +79,7 @@ internal class RootViewModel @Inject constructor(
 
     override fun logout() {
         runAsyncTask {
-            sessionManager.finishCurrentSession()
+            finishSessionUseCase()
             _uiEvent.emitEvent(
                 RootUiEvent.NavigateToFeature(
                     NavigationModel(

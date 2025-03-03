@@ -16,7 +16,7 @@ internal data class MainUiState(
     val navigationBarStyle get() = appTheme.systemBarStyles.second
     val forceNavigationBarTransparency get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
 
-    fun setInitState(firstDestination: Destination) =
+    fun setInitUiState(firstDestination: Destination) =
         copy(showSplashScreen = false, firstDestination = firstDestination)
 
     fun setAppTheme(appTheme: AppThemeModel?) = copy(appTheme = appTheme ?: this.appTheme)
