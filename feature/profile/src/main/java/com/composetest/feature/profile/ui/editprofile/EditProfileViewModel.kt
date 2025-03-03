@@ -1,12 +1,13 @@
 package com.composetest.feature.profile.ui.editprofile
 
 import com.composetest.core.analytic.AnalyticSender
+import com.composetest.core.analytic.events.profile.EditProfileScreenAnalytic
 import com.composetest.core.domain.models.UserModel
 import com.composetest.core.domain.usecases.user.GetUserUseCase
 import com.composetest.core.domain.usecases.user.UpdateUserUseCase
 import com.composetest.core.ui.bases.BaseViewModel
 import com.composetest.core.ui.interfaces.UiState
-import com.composetest.feature.profile.analytics.profile.ProfileScreenAnalytic
+import com.composetest.core.analytic.events.profile.ProfileScreenAnalytic
 import com.composetest.feature.profile.mappers.ProfileFormMapper
 import com.composetest.feature.profile.models.ProfileFormModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,10 +24,10 @@ internal class EditProfileViewModel @Inject constructor(
     override val analyticSender: AnalyticSender,
 ) : BaseViewModel(), UiState<EditProfileUiState>, EditProfileCommandReceiver {
 
-    private var userModel: UserModel? = null
-
     override val commandReceiver = this
-    override val analyticScreen = ProfileScreenAnalytic
+    override val analyticScreen = EditProfileScreenAnalytic
+
+    private var userModel: UserModel? = null
 
     private val _uiState = MutableStateFlow(EditProfileUiState())
     override val uiState = _uiState.asStateFlow()

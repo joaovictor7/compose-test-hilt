@@ -15,8 +15,8 @@ import com.composetest.core.router.enums.NavigationMode
 import com.composetest.core.router.managers.NavigationManager
 import com.composetest.core.test.extensions.runFlowTest
 import com.composetest.core.test.interfaces.CoroutinesTest
-import com.composetest.feature.login.analytics.login.LoginEventAnalytic
-import com.composetest.feature.login.analytics.login.LoginScreenAnalytic
+import com.composetest.core.analytic.events.login.LoginEventAnalytic
+import com.composetest.core.analytic.events.login.LoginScreenAnalytic
 import com.composetest.feature.login.models.LoginFormModel
 import com.composetest.feature.login.remoteconfigs.LoginRemoteConfig
 import com.composetest.feature.login.ui.login.LoginCommand

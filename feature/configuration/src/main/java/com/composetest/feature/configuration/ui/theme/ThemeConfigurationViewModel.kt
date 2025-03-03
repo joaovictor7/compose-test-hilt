@@ -8,8 +8,8 @@ import com.composetest.core.domain.usecases.configuration.GetThemeConfigurationU
 import com.composetest.core.domain.usecases.configuration.UpdateThemeConfigurationUseCase
 import com.composetest.core.ui.bases.BaseViewModel
 import com.composetest.core.ui.interfaces.UiState
-import com.composetest.feature.configuration.analytics.theme.ConfigurationThemeEventAnalytic
-import com.composetest.feature.configuration.analytics.theme.ConfigurationThemeScreenAnalytic
+import com.composetest.core.analytic.events.configuration.ThemeConfigurationEventAnalytic
+import com.composetest.core.analytic.events.configuration.ThemeConfigurationScreenAnalytic
 import com.composetest.feature.configuration.enums.ThemeConfiguration
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,13 +25,13 @@ internal class ThemeConfigurationViewModel @Inject constructor(
     override val analyticSender: AnalyticSender,
 ) : BaseViewModel(), UiState<ThemeConfigurationUiState>, ThemeConfigurationCommandReceiver {
 
+    override val commandReceiver = this
+    override val analyticScreen = ThemeConfigurationScreenAnalytic
+
     private var themeConfiguration: ThemeConfigurationModel? = null
 
     private val _uiState = MutableStateFlow(ThemeConfigurationUiState())
     override val uiState = _uiState.asStateFlow()
-
-    override val commandReceiver = this
-    override val analyticScreen = ConfigurationThemeScreenAnalytic
 
     init {
         openScreenAnalytic()
@@ -76,7 +76,7 @@ internal class ThemeConfigurationViewModel @Inject constructor(
         theme: Theme? = null
     ) {
         analyticSender.sendEvent(
-            ConfigurationThemeEventAnalytic.ChangeTheme(
+            ThemeConfigurationEventAnalytic.ChangeThemeConfiguration(
                 theme?.name,
                 dynamicColor
             )

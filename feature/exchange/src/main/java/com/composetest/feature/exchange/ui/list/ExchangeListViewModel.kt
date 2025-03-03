@@ -9,7 +9,7 @@ import com.composetest.core.router.models.NavigationModel
 import com.composetest.core.ui.bases.BaseViewModel
 import com.composetest.core.ui.interfaces.UiEvent
 import com.composetest.core.ui.interfaces.UiState
-import com.composetest.feature.exchange.analytics.list.ExchangeListScreenAnalytic
+import com.composetest.core.analytic.events.exchange.ExchangeListScreenAnalytic
 import com.composetest.feature.exchange.mappers.ExchangeMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow

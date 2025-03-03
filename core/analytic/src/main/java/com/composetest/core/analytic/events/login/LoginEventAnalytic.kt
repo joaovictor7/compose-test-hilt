@@ -1,4 +1,4 @@
-package com.composetest.feature.login.analytics.login
+package com.composetest.core.analytic.events.login
 
 import com.composetest.core.analytic.AnalyticEvent
 import com.composetest.core.analytic.AnalyticScreen

@@ -14,7 +14,7 @@ import com.composetest.core.ui.interfaces.UiEvent
 import com.composetest.core.ui.interfaces.UiState
 import com.composetest.core.ui.providers.LocationProvider
 import com.composetest.core.ui.providers.PermissionProvider
-import com.composetest.feature.weatherforecast.analytics.weatherforecast.WeatherForecastScreenAnalytic
+import com.composetest.core.analytic.events.weatherforecast.WeatherForecastScreenAnalytic
 import com.composetest.feature.weatherforecast.enums.WeatherForecastScreenStatus
 import com.composetest.feature.weatherforecast.enums.WeatherForecastStatus
 import com.composetest.feature.weatherforecast.mappers.FutureWeatherForecastScreenModelsMapper

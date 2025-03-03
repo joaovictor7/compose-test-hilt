@@ -2,7 +2,7 @@ package com.composetest.feature.home.ui.home
 
 import com.composetest.core.analytic.AnalyticSender
 import com.composetest.core.ui.bases.BaseViewModel
-import com.composetest.feature.home.analytics.home.HomeScreenAnalytic
+import com.composetest.core.analytic.events.home.HomeScreenAnalytic
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

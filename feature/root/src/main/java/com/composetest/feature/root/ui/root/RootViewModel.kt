@@ -10,8 +10,8 @@ import com.composetest.core.router.models.NavigationModel
 import com.composetest.core.ui.bases.BaseViewModel
 import com.composetest.core.ui.interfaces.UiEvent
 import com.composetest.core.ui.interfaces.UiState
-import com.composetest.feature.root.analytics.root.RootEventAnalytic
-import com.composetest.feature.root.analytics.root.RootScreenAnalytic
+import com.composetest.core.analytic.events.root.RootEventAnalytic
+import com.composetest.core.analytic.events.root.RootScreenAnalytic
 import com.composetest.feature.root.enums.NavigationFeature
 import com.composetest.feature.root.enums.NavigationLocal
 import com.composetest.feature.root.mappers.UserModalDrawerMapper
@@ -151,7 +151,7 @@ internal class RootViewModel @Inject constructor(
 
     private fun sendNavigateToFeatureAnalytic(navigationFeature: NavigationFeature) {
         runAsyncTask {
-            analyticSender.sendEvent(RootEventAnalytic.NavigateToFeature(navigationFeature.feature))
+            analyticSender.sendEvent(RootEventAnalytic.NavigateToFeature(navigationFeature.feature.name))
         }
     }
 }

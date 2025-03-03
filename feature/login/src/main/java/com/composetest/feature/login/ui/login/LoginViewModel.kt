@@ -2,6 +2,7 @@ package com.composetest.feature.login.ui.login
 
 import com.composetest.common.errors.ApiError
 import com.composetest.core.analytic.AnalyticSender
+import com.composetest.core.analytic.events.configuration.ThemeConfigurationScreenAnalytic
 import com.composetest.core.designsystem.utils.getCommonSimpleDialogErrorParam
 import com.composetest.core.domain.enums.Theme
 import com.composetest.core.domain.managers.RemoteConfigManager
@@ -23,8 +24,7 @@ import com.composetest.core.ui.bases.BaseViewModel
 import com.composetest.core.ui.interfaces.UiEvent
 import com.composetest.core.ui.interfaces.UiState
 import com.composetest.feature.login.R
-import com.composetest.feature.login.analytics.login.LoginEventAnalytic
-import com.composetest.feature.login.analytics.login.LoginScreenAnalytic
+import com.composetest.core.analytic.events.login.LoginEventAnalytic
 import com.composetest.feature.login.enums.LoginRemoteConfig
 import com.composetest.feature.login.extensions.autoShowBiometricPrompt
 import com.composetest.feature.login.models.BiometricModel
@@ -51,11 +51,11 @@ internal class LoginViewModel @Inject constructor(
     override val analyticSender: AnalyticSender,
 ) : BaseViewModel(), UiState<LoginUiState>, UiEvent<LoginUiEvent>, LoginCommandReceiver {
 
+    override val commandReceiver = this
+    override val analyticScreen = ThemeConfigurationScreenAnalytic
+
     private val loginFormModel get() = uiState.value.loginFormModel
     private val byPassLogin by lazy { remoteConfigManager.getBoolean(LoginRemoteConfig.BY_PASS_LOGIN) }
-
-    override val commandReceiver = this
-    override val analyticScreen = LoginScreenAnalytic
 
     private val _uiState = MutableStateFlow(LoginUiState())
     override val uiState = _uiState.asStateFlow()

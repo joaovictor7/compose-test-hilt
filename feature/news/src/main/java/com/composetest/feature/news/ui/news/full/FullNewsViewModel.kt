@@ -4,7 +4,7 @@ import com.composetest.core.analytic.AnalyticSender
 import com.composetest.core.router.destinations.news.FullNewsDestination
 import com.composetest.core.ui.bases.BaseViewModel
 import com.composetest.core.ui.interfaces.UiState
-import com.composetest.feature.news.analytics.newsdetail.FullNewsScreenAnalytic
+import com.composetest.core.analytic.events.news.FullNewsScreenAnalytic
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

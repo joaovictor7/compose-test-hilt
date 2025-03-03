@@ -16,7 +16,7 @@ import com.composetest.core.ui.interfaces.UiEvent
 import com.composetest.core.ui.interfaces.UiState
 import com.composetest.core.ui.providers.StringResourceProvider
 import com.composetest.feature.profile.R
-import com.composetest.feature.profile.analytics.profile.ProfileScreenAnalytic
+import com.composetest.core.analytic.events.profile.ProfileScreenAnalytic
 import com.composetest.feature.profile.models.ProfileScreenModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow

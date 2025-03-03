@@ -1,6 +1,7 @@
 package com.composetest.feature.news.ui.news.list
 
 import com.composetest.core.analytic.AnalyticSender
+import com.composetest.core.analytic.events.news.NewsListScreenAnalytic
 import com.composetest.core.designsystem.utils.getCommonSimpleDialogErrorParam
 import com.composetest.core.domain.models.news.ArticleModel
 import com.composetest.core.domain.usecases.news.GetTopHeadlinesUseCase
@@ -9,7 +10,6 @@ import com.composetest.core.router.models.NavigationModel
 import com.composetest.core.ui.bases.BaseViewModel
 import com.composetest.core.ui.interfaces.UiEvent
 import com.composetest.core.ui.interfaces.UiState
-import com.composetest.feature.news.analytics.home.NewsListScreenAnalytic
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -14,10 +14,10 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
-abstract class BaseViewModel : ViewModel() {
+abstract class BaseViewModel: ViewModel() {
 
-    protected abstract val analyticScreen: AnalyticScreen
     protected abstract val analyticSender: AnalyticSender
+    protected abstract val analyticScreen: AnalyticScreen
 
     protected fun openScreenAnalytic() = runAsyncTask {
         analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(analyticScreen))
@@ -30,16 +30,18 @@ abstract class BaseViewModel : ViewModel() {
         onError: (suspend (Throwable) -> Unit)? = null,
         onCompletion: (suspend () -> Unit)? = null,
         onAsyncTask: suspend () -> Unit
-    ) = viewModelScope.launch {
-        runCatching {
-            try {
-                onAsyncTask()
-            } catch (e: Throwable) {
-                errorHandler(e, onError)
-            } finally {
-                onCompletion?.invoke()
-            }
-        }.onFailure { errorHandler(it) }
+    ) {
+        viewModelScope.launch {
+            runCatching {
+                try {
+                    onAsyncTask()
+                } catch (e: Throwable) {
+                    errorHandler(e, onError)
+                } finally {
+                    onCompletion?.invoke()
+                }
+            }.onFailure { errorHandler(it) }
+        }
     }
 
     protected fun <T> runFlowTask(

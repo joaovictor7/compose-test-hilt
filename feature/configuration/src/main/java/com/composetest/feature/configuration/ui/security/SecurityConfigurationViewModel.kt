@@ -7,7 +7,7 @@ import com.composetest.core.domain.usecases.configuration.UpdateSecurityConfigur
 import com.composetest.core.security.providers.BiometricProvider
 import com.composetest.core.ui.bases.BaseViewModel
 import com.composetest.core.ui.interfaces.UiState
-import com.composetest.feature.configuration.analytics.theme.ConfigurationThemeScreenAnalytic
+import com.composetest.core.analytic.events.configuration.ThemeConfigurationScreenAnalytic
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -22,10 +22,10 @@ internal class SecurityConfigurationViewModel @Inject constructor(
     override val analyticSender: AnalyticSender,
 ) : BaseViewModel(), UiState<SecurityConfigurationUiState>, SecurityConfigurationCommandReceiver {
 
-    private var securityConfiguration: SecurityConfigurationModel? = null
-
     override val commandReceiver = this
-    override val analyticScreen = ConfigurationThemeScreenAnalytic
+    override val analyticScreen = ThemeConfigurationScreenAnalytic
+
+    private var securityConfiguration: SecurityConfigurationModel? = null
 
     private val _uiState = MutableStateFlow(SecurityConfigurationUiState())
     override val uiState = _uiState.asStateFlow()

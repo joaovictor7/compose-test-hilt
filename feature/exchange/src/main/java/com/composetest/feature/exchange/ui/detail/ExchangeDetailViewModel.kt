@@ -4,7 +4,7 @@ import com.composetest.core.analytic.AnalyticSender
 import com.composetest.core.router.destinations.exchange.ExchangeDetailDestination
 import com.composetest.core.ui.bases.BaseViewModel
 import com.composetest.core.ui.interfaces.UiState
-import com.composetest.feature.exchange.analytics.detail.ExchangeDetailScreenAnalytic
+import com.composetest.core.analytic.events.exchange.ExchangeDetailScreenAnalytic
 import com.composetest.feature.exchange.mappers.ExchangeMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
