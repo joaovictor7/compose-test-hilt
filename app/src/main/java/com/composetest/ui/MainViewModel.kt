@@ -1,9 +1,9 @@
 package com.composetest.ui
 
 import com.composetest.analytics.MainAnalytic
+import com.composetest.core.analytic.AnalyticSender
 import com.composetest.core.domain.managers.RemoteConfigManager
 import com.composetest.core.domain.managers.SessionManager
-import com.composetest.core.domain.usecases.SendAnalyticsUseCase
 import com.composetest.core.domain.usecases.configuration.GetAppThemeUseCase
 import com.composetest.core.router.destinations.login.LoginDestination
 import com.composetest.core.router.destinations.root.RootDestination
@@ -25,16 +25,17 @@ internal class MainViewModel @Inject constructor(
     private val sessionManager: SessionManager,
     private val remoteConfigManager: RemoteConfigManager,
     private val getAppThemeUseCase: GetAppThemeUseCase,
-    override val sendAnalyticsUseCase: SendAnalyticsUseCase,
+    override val analyticSender: AnalyticSender,
 ) : BaseViewModel(), UiState<MainUiState>, UiEvent<MainUiEvent>, MainCommandReceiver {
 
-    private val _uiState = MutableStateFlow(MainUiState())
-    private val _uiEvent = MutableSharedFlow<MainUiEvent>()
-
-    override val uiState = _uiState.asStateFlow()
-    override val uiEvent = _uiEvent.asSharedFlow()
     override val commandReceiver = this
     override val analyticScreen = MainAnalytic
+
+    private val _uiState = MutableStateFlow(MainUiState())
+    override val uiState = _uiState.asStateFlow()
+
+    private val _uiEvent = MutableSharedFlow<MainUiEvent>()
+    override val uiEvent = _uiEvent.asSharedFlow()
 
     init {
         themeObservable()

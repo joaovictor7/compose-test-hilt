@@ -1,7 +1,7 @@
 package com.composetest.feature.login.analytics.login
 
-import com.composetest.common.analytics.AnalyticEvent
-import com.composetest.common.analytics.AnalyticScreen
+import com.composetest.core.analytic.AnalyticEvent
+import com.composetest.core.analytic.AnalyticScreen
 
 sealed class LoginEventAnalytic : AnalyticEvent, AnalyticScreen by LoginScreenAnalytic {
     data class LoginSuccessful(private val successful: Boolean) : LoginEventAnalytic() {

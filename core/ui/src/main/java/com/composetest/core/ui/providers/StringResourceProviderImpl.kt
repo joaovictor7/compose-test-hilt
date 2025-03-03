@@ -1,8 +1,7 @@
-package com.composetest.core.data.providers
+package com.composetest.core.ui.providers
 
 import android.content.Context
 import androidx.annotation.StringRes
-import com.composetest.common.providers.StringResourceProvider
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
@@ -11,11 +10,11 @@ internal class StringResourceProviderImpl @Inject constructor(
 ) : StringResourceProvider {
 
     override fun getString(@StringRes stringId: Int, vararg args: Any): String {
-        val arguments = getArguments(args.toList())
+        val arguments = getArguments(args)
         return context.getString(stringId, *arguments)
     }
 
-    private fun getArguments(args: List<Any>) = mutableListOf<String>().apply {
+    private fun getArguments(args: Array<out Any>) = mutableListOf<String>().apply {
         args.forEach {
             when (it) {
                 is String -> add(it)

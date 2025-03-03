@@ -9,11 +9,11 @@ import androidx.work.ExistingWorkPolicy
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkerParameters
-import com.composetest.common.analytics.ErrorAnalyticEvent
+import com.composetest.core.analytic.AnalyticSender
+import com.composetest.core.analytic.events.ErrorAnalyticEvent
 import com.composetest.core.data.enums.Worker
 import com.composetest.core.data.workmanager.WorkManagerRequest
 import com.composetest.core.domain.managers.SessionManager
-import com.composetest.core.domain.usecases.SendAnalyticsUseCase
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import java.time.Duration
@@ -21,7 +21,7 @@ import java.time.Duration
 @HiltWorker
 class SessionWorker @AssistedInject constructor(
     private val sessionManager: SessionManager,
-    private val sendAnalyticsUseCase: SendAnalyticsUseCase,
+    private val analyticSender: AnalyticSender,
     @Assisted context: Context,
     @Assisted workerParams: WorkerParameters
 ) : CoroutineWorker(context, workerParams) {
@@ -32,7 +32,7 @@ class SessionWorker @AssistedInject constructor(
         sessionManager.finishCurrentSession()
         Result.success()
     }.getOrElse {
-        sendAnalyticsUseCase(ErrorAnalyticEvent(it))
+        analyticSender.sendErrorEvent(ErrorAnalyticEvent(it))
         Result.failure()
     }
 

@@ -1,4 +1,4 @@
-package com.composetest.common.providers
+package com.composetest.core.ui.providers
 
 import androidx.annotation.StringRes
 

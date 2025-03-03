@@ -1,6 +1,6 @@
 package com.composetest.feature.exchange.ui.detail
 
-import com.composetest.core.domain.usecases.SendAnalyticsUseCase
+import com.composetest.core.analytic.AnalyticSender
 import com.composetest.core.router.destinations.exchange.ExchangeDetailDestination
 import com.composetest.core.ui.bases.BaseViewModel
 import com.composetest.core.ui.interfaces.UiState
@@ -16,7 +16,7 @@ import javax.inject.Inject
 internal class ExchangeDetailViewModel @Inject constructor(
     private val destination: ExchangeDetailDestination,
     private val exchangeMapper: ExchangeMapper,
-    override val sendAnalyticsUseCase: SendAnalyticsUseCase,
+    override val analyticSender: AnalyticSender,
 ) : BaseViewModel(), UiState<ExchangeDetailUiState> {
 
     private val _uiState = MutableStateFlow(ExchangeDetailUiState())

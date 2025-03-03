@@ -1,7 +1,7 @@
 package com.composetest.feature.configuration.ui.security
 
+import com.composetest.core.analytic.AnalyticSender
 import com.composetest.core.domain.models.configuration.SecurityConfigurationModel
-import com.composetest.core.domain.usecases.SendAnalyticsUseCase
 import com.composetest.core.domain.usecases.configuration.GetSecurityConfigurationUseCase
 import com.composetest.core.domain.usecases.configuration.UpdateSecurityConfigurationUseCase
 import com.composetest.core.security.providers.BiometricProvider
@@ -19,15 +19,16 @@ internal class SecurityConfigurationViewModel @Inject constructor(
     private val getSecurityConfigurationUseCase: GetSecurityConfigurationUseCase,
     private val updateSecurityConfigurationUseCase: UpdateSecurityConfigurationUseCase,
     private val biometricProvider: BiometricProvider,
-    override val sendAnalyticsUseCase: SendAnalyticsUseCase,
+    override val analyticSender: AnalyticSender,
 ) : BaseViewModel(), UiState<SecurityConfigurationUiState>, SecurityConfigurationCommandReceiver {
 
-    private val _uiState = MutableStateFlow(SecurityConfigurationUiState())
     private var securityConfiguration: SecurityConfigurationModel? = null
 
-    override val uiState = _uiState.asStateFlow()
     override val commandReceiver = this
     override val analyticScreen = ConfigurationThemeScreenAnalytic
+
+    private val _uiState = MutableStateFlow(SecurityConfigurationUiState())
+    override val uiState = _uiState.asStateFlow()
 
     init {
         initUiState()

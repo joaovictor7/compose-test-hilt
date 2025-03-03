@@ -27,11 +27,11 @@ internal class AuthenticationMapper @Inject constructor(
 
     fun mapperToModel(
         authenticationResponse: AuthenticationResponse,
-        password: String
+        encryptedPassword: String
     ) = AuthenticationModel(
         sessionToken = authenticationResponse.sessionToken,
         sessionStartDateTime = LocalDateTime.parse(authenticationResponse.sessionStartDateTime),
-        user = userMapper.mapperToModel(authenticationResponse, password)
+        user = userMapper.mapperToModel(authenticationResponse, encryptedPassword)
     )
 
     private fun GetTokenResult?.formatDateTime() =

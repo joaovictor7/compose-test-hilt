@@ -1,15 +1,13 @@
 package com.composetest.feature.login.viewmodels
 
-import com.composetest.common.analytics.CommonAnalyticEvent
 import com.composetest.common.errors.ApiError
 import com.composetest.core.designsystem.components.dialogs.CommonSimpleDialog
 import com.composetest.core.domain.enums.BuildType
 import com.composetest.core.domain.enums.Flavor
 import com.composetest.core.domain.managers.RemoteConfigManager
 import com.composetest.core.domain.managers.SessionManager
-import com.composetest.core.domain.models.BuildConfigModel
+import com.composetest.core.domain.models.buildconfig.BuildConfigModel
 import com.composetest.core.domain.providers.BuildConfigProvider
-import com.composetest.core.domain.usecases.SendAnalyticsUseCase
 import com.composetest.core.domain.usecases.login.AuthenticationUseCase
 import com.composetest.core.domain.usecases.login.BiometricIsEnableUseCase
 import com.composetest.core.router.destinations.root.RootDestination
@@ -50,7 +48,7 @@ internal class LoginViewModelTest : CoroutinesTest {
         every { getBoolean(LoginRemoteConfig.ByPassLogin) } returns false
     }
     private val configurationManager: ConfigurationManager = mockk(relaxed = true)
-    private val sendAnalyticsUseCase: SendAnalyticsUseCase = mockk(relaxed = true)
+    private val sendAnalyticsUseCase: AnalyticSender = mockk(relaxed = true)
     private val authenticationByBiometricUseCase: AuthenticationByBiometricUseCase =
         mockk(relaxed = true)
     private val biometricIsEnableUseCase: BiometricIsEnableUseCase = mockk(relaxed = true)
@@ -208,7 +206,11 @@ internal class LoginViewModelTest : CoroutinesTest {
                 collectedStates
             )
             coVerifySequence {
-                sendAnalyticsUseCase(CommonAnalyticEvent.OpenScreen(LoginScreenAnalytic))
+                sendAnalyticsUseCase(
+                    AnalyticSenderCommonAnalyticEvent.OpenScreen(
+                        LoginScreenAnalytic
+                    )
+                )
                 sendAnalyticsUseCase(LoginEventAnalytic.LoginSuccessful(true))
                 navigationManager.asyncNavigate(
                     RootDestination,
@@ -275,7 +277,7 @@ internal class LoginViewModelTest : CoroutinesTest {
         authenticationUseCase = authenticationUseCase,
         sessionManager = sessionManager,
         remoteConfigManager = remoteConfigManager,
-        sendAnalyticsUseCase = sendAnalyticsUseCase,
+        analyticSender = sendAnalyticsUseCase,
         navigationManager = navigationManager,
         configurationManager = configurationManager,
         authenticationByBiometricUseCase = authenticationByBiometricUseCase,

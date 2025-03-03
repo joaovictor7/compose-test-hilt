@@ -1,9 +1,9 @@
 package com.composetest.feature.exchange.ui.list
 
 import com.composetest.common.extensions.orFalse
+import com.composetest.core.analytic.AnalyticSender
 import com.composetest.core.designsystem.utils.getCommonSimpleDialogErrorParam
 import com.composetest.core.domain.models.exchange.ExchangeModel
-import com.composetest.core.domain.usecases.SendAnalyticsUseCase
 import com.composetest.core.domain.usecases.exchange.GetAllExchangesUseCase
 import com.composetest.core.router.models.NavigationModel
 import com.composetest.core.ui.bases.BaseViewModel
@@ -23,18 +23,20 @@ import javax.inject.Inject
 internal class ExchangeListViewModel @Inject constructor(
     private val getAllExchangesUseCase: GetAllExchangesUseCase,
     private val exchangeMapper: ExchangeMapper,
-    override val sendAnalyticsUseCase: SendAnalyticsUseCase,
+    override val analyticSender: AnalyticSender,
 ) : BaseViewModel(), UiState<ExchangeListUiState>, UiEvent<ExchangeListUiEvent>,
     ExchangeListCommandReceiver {
 
-    private val _uiState = MutableStateFlow(ExchangeListUiState())
-    private val _uiEvent = MutableSharedFlow<ExchangeListUiEvent>()
     private var exchangeList = listOf<ExchangeModel>()
 
-    override val uiState = _uiState.asStateFlow()
-    override val uiEvent = _uiEvent.asSharedFlow()
     override val commandReceiver = this
     override val analyticScreen = ExchangeListScreenAnalytic
+
+    private val _uiState = MutableStateFlow(ExchangeListUiState())
+    override val uiState = _uiState.asStateFlow()
+
+    private val _uiEvent = MutableSharedFlow<ExchangeListUiEvent>()
+    override val uiEvent = _uiEvent.asSharedFlow()
 
     init {
         openScreenAnalytic()

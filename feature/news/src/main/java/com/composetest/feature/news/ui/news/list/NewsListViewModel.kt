@@ -1,8 +1,8 @@
 package com.composetest.feature.news.ui.news.list
 
+import com.composetest.core.analytic.AnalyticSender
 import com.composetest.core.designsystem.utils.getCommonSimpleDialogErrorParam
 import com.composetest.core.domain.models.news.ArticleModel
-import com.composetest.core.domain.usecases.SendAnalyticsUseCase
 import com.composetest.core.domain.usecases.news.GetTopHeadlinesUseCase
 import com.composetest.core.router.destinations.news.FullNewsDestination
 import com.composetest.core.router.models.NavigationModel
@@ -21,16 +21,17 @@ import javax.inject.Inject
 @HiltViewModel
 internal class NewsListViewModel @Inject constructor(
     private val getTopHeadlinesUseCase: GetTopHeadlinesUseCase,
-    override val sendAnalyticsUseCase: SendAnalyticsUseCase,
+    override val analyticSender: AnalyticSender,
 ) : BaseViewModel(), UiState<NewsListUiState>, UiEvent<NewsListUiEvent>, NewsListCommandReceiver {
 
-    private val _uiState = MutableStateFlow(NewsListUiState())
-    private val _uiEvent = MutableSharedFlow<NewsListUiEvent>()
-
-    override val uiEvent = _uiEvent.asSharedFlow()
-    override val uiState = _uiState.asStateFlow()
     override val commandReceiver = this
     override val analyticScreen = NewsListScreenAnalytic
+
+    private val _uiState = MutableStateFlow(NewsListUiState())
+    override val uiState = _uiState.asStateFlow()
+
+    private val _uiEvent = MutableSharedFlow<NewsListUiEvent>()
+    override val uiEvent = _uiEvent.asSharedFlow()
 
     init {
         getArticles()

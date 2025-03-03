@@ -1,9 +1,9 @@
 package com.composetest.feature.configuration.ui.theme
 
 import com.composetest.common.extensions.orFalse
+import com.composetest.core.analytic.AnalyticSender
 import com.composetest.core.domain.enums.Theme
 import com.composetest.core.domain.models.configuration.ThemeConfigurationModel
-import com.composetest.core.domain.usecases.SendAnalyticsUseCase
 import com.composetest.core.domain.usecases.configuration.GetThemeConfigurationUseCase
 import com.composetest.core.domain.usecases.configuration.UpdateThemeConfigurationUseCase
 import com.composetest.core.ui.bases.BaseViewModel
@@ -22,7 +22,7 @@ import javax.inject.Inject
 internal class ThemeConfigurationViewModel @Inject constructor(
     private val getThemeConfigurationUseCase: GetThemeConfigurationUseCase,
     private val updateThemeConfigurationUseCase: UpdateThemeConfigurationUseCase,
-    override val sendAnalyticsUseCase: SendAnalyticsUseCase,
+    override val analyticSender: AnalyticSender,
 ) : BaseViewModel(), UiState<ThemeConfigurationUiState>, ThemeConfigurationCommandReceiver {
 
     private var themeConfiguration: ThemeConfigurationModel? = null
@@ -75,6 +75,11 @@ internal class ThemeConfigurationViewModel @Inject constructor(
         dynamicColor: Boolean? = null,
         theme: Theme? = null
     ) {
-        sendAnalyticsUseCase(ConfigurationThemeEventAnalytic.ChangeTheme(theme?.name, dynamicColor))
+        analyticSender.sendEvent(
+            ConfigurationThemeEventAnalytic.ChangeTheme(
+                theme?.name,
+                dynamicColor
+            )
+        )
     }
 }

@@ -4,8 +4,8 @@ import android.os.Build
 import com.composetest.BuildConfig
 import com.composetest.core.domain.enums.BuildType.Companion.getBuildType
 import com.composetest.core.domain.enums.Flavor.Companion.getFlavor
-import com.composetest.core.domain.models.BuildConfigFieldsModel
-import com.composetest.core.domain.models.BuildConfigModel
+import com.composetest.core.domain.models.buildconfig.BuildConfigFieldsModel
+import com.composetest.core.domain.models.buildconfig.BuildConfigModel
 import com.composetest.core.domain.providers.BuildConfigProvider
 import javax.inject.Inject
 

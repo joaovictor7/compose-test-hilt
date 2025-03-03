@@ -1,6 +1,6 @@
 package com.composetest.core.domain.enums
 
-// Use when have more than one Flavor set
+//Use when have more than one Flavor set
 //enum class FlavorDimension {
 //    DEVELOP, STAGING, PRODUCTION;
 //

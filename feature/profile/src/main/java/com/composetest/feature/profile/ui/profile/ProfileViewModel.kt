@@ -5,16 +5,16 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.withStyle
-import com.composetest.common.providers.StringResourceProvider
+import com.composetest.core.analytic.AnalyticSender
 import com.composetest.core.designsystem.enums.topbar.TopBarAction
 import com.composetest.core.domain.models.UserModel
-import com.composetest.core.domain.usecases.SendAnalyticsUseCase
 import com.composetest.core.domain.usecases.user.GetUserUseCase
 import com.composetest.core.router.destinations.profile.EditProfileDestination
 import com.composetest.core.router.models.NavigationModel
 import com.composetest.core.ui.bases.BaseViewModel
 import com.composetest.core.ui.interfaces.UiEvent
 import com.composetest.core.ui.interfaces.UiState
+import com.composetest.core.ui.providers.StringResourceProvider
 import com.composetest.feature.profile.R
 import com.composetest.feature.profile.analytics.profile.ProfileScreenAnalytic
 import com.composetest.feature.profile.models.ProfileScreenModel
@@ -30,16 +30,17 @@ import javax.inject.Inject
 internal class ProfileViewModel @Inject constructor(
     private val getUserUseCase: GetUserUseCase,
     private val stringResourceProvider: StringResourceProvider,
-    override val sendAnalyticsUseCase: SendAnalyticsUseCase,
+    override val analyticSender: AnalyticSender,
 ) : BaseViewModel(), UiState<ProfileUiState>, UiEvent<ProfileUiEvent>, ProfileCommandReceiver {
 
-    private val _uiState = MutableStateFlow(ProfileUiState())
-    private val _uiEvent = MutableSharedFlow<ProfileUiEvent>()
-
-    override val uiState = _uiState.asStateFlow()
-    override val uiEvent = _uiEvent.asSharedFlow()
     override val commandReceiver = this
     override val analyticScreen = ProfileScreenAnalytic
+
+    private val _uiState = MutableStateFlow(ProfileUiState())
+    override val uiState = _uiState.asStateFlow()
+
+    private val _uiEvent = MutableSharedFlow<ProfileUiEvent>()
+    override val uiEvent = _uiEvent.asSharedFlow()
 
     init {
         openScreenAnalytic()

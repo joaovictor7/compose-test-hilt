@@ -1,11 +1,11 @@
 package com.composetest.feature.login.ui.login
 
 import com.composetest.common.errors.ApiError
+import com.composetest.core.analytic.AnalyticSender
 import com.composetest.core.designsystem.utils.getCommonSimpleDialogErrorParam
 import com.composetest.core.domain.enums.Theme
 import com.composetest.core.domain.managers.RemoteConfigManager
 import com.composetest.core.domain.providers.BuildConfigProvider
-import com.composetest.core.domain.usecases.SendAnalyticsUseCase
 import com.composetest.core.domain.usecases.configuration.SetSystemBarsStyleUseCase
 import com.composetest.core.domain.usecases.login.AuthenticationUseCase
 import com.composetest.core.domain.usecases.login.BiometricIsEnableUseCase
@@ -48,7 +48,7 @@ internal class LoginViewModel @Inject constructor(
     private val setSystemBarsStyleUseCase: SetSystemBarsStyleUseCase,
     private val remoteConfigManager: RemoteConfigManager,
     private val loginDestination: LoginDestination,
-    override val sendAnalyticsUseCase: SendAnalyticsUseCase,
+    override val analyticSender: AnalyticSender,
 ) : BaseViewModel(), UiState<LoginUiState>, UiEvent<LoginUiEvent>, LoginCommandReceiver {
 
     private val loginFormModel get() = uiState.value.loginFormModel
@@ -83,7 +83,7 @@ internal class LoginViewModel @Inject constructor(
             onCompletion = { _uiState.update { it.setLoading(false) } }
         ) {
             authenticate(byBiometric)
-            sendAnalyticsUseCase(LoginEventAnalytic.LoginSuccessful(true))
+            analyticSender.sendEvent(LoginEventAnalytic.LoginSuccessful(true))
             navigateToRoot()
         }
     }
@@ -154,7 +154,7 @@ internal class LoginViewModel @Inject constructor(
     }
 
     private suspend fun handleLoginError(throwable: Throwable?) {
-        sendAnalyticsUseCase(LoginEventAnalytic.LoginSuccessful(false))
+        analyticSender.sendEvent(LoginEventAnalytic.LoginSuccessful(false))
         _uiState.update { uiState ->
             if (throwable is ApiError.Unauthorized) {
                 uiState.setShowInvalidCredentialsMsg(true)

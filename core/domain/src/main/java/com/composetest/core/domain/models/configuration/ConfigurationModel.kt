@@ -1,6 +1,4 @@
-package com.composetest.core.domain.models
-
-import com.composetest.core.domain.models.configuration.SecurityConfigurationModel
+package com.composetest.core.domain.models.configuration
 
 data class ConfigurationModel(
     val id: Long = 0,

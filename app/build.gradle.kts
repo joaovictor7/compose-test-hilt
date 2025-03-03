@@ -19,6 +19,7 @@ dependencies {
     implementation(projects.core.router)
     implementation(projects.core.data)
     implementation(projects.core.domain)
+    implementation(projects.core.analytic)
     implementation(projects.feature.login)
     implementation(projects.feature.root)
     implementation(projects.feature.home)

@@ -5,9 +5,7 @@ import com.composetest.core.domain.models.UserModel
 import com.composetest.core.network.responses.AuthenticationResponse
 import javax.inject.Inject
 
-internal class UserMapper @Inject constructor(
-    private val cipherProvider: com.composetest.core.security.providers.CipherProvider
-) {
+internal class UserMapper @Inject constructor() {
 
     fun mapperToEntity(model: UserModel) = UserEntity(
         id = model.id,
@@ -27,11 +25,11 @@ internal class UserMapper @Inject constructor(
 
     fun mapperToModel(
         authenticationResponse: AuthenticationResponse,
-        password: String
+        encryptedPassword: String
     ) = UserModel(
         id = authenticationResponse.userId,
         email = authenticationResponse.userEmail,
-        encryptedPassword = cipherProvider.encrypt(password),
+        encryptedPassword = encryptedPassword,
         name = authenticationResponse.userName,
     )
 }

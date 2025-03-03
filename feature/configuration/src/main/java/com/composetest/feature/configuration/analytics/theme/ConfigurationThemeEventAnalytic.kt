@@ -1,10 +1,9 @@
 package com.composetest.feature.configuration.analytics.theme
 
-import com.composetest.common.analytics.AnalyticEvent
-import com.composetest.common.analytics.AnalyticScreen
+import com.composetest.core.analytic.AnalyticEvent
+import com.composetest.core.analytic.AnalyticScreen
 
-sealed class ConfigurationThemeEventAnalytic :
-    AnalyticEvent,
+sealed class ConfigurationThemeEventAnalytic : AnalyticEvent,
     AnalyticScreen by ConfigurationThemeScreenAnalytic {
 
     data class ChangeTheme(

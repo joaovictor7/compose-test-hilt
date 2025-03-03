@@ -14,4 +14,5 @@ dependencies {
     implementation(projects.core.designsystem)
     implementation(projects.core.domain)
     implementation(projects.core.router)
+    implementation(projects.core.analytic)
 }

@@ -1,4 +1,4 @@
-package com.composetest.core.domain.models
+package com.composetest.core.domain.models.buildconfig
 
 import com.composetest.core.domain.enums.BuildType
 import com.composetest.core.domain.enums.Flavor

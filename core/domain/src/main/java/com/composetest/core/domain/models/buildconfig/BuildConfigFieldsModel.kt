@@ -1,4 +1,4 @@
-package com.composetest.core.domain.models
+package com.composetest.core.domain.models.buildconfig
 
 data class BuildConfigFieldsModel(
     val coinApiHost: String,

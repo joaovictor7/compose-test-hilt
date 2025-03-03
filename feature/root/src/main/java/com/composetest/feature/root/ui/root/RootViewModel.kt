@@ -1,7 +1,7 @@
 package com.composetest.feature.root.ui.root
 
+import com.composetest.core.analytic.AnalyticSender
 import com.composetest.core.domain.managers.SessionManager
-import com.composetest.core.domain.usecases.SendAnalyticsUseCase
 import com.composetest.core.domain.usecases.remoteconfigs.GetAvailableFeaturesUseCase
 import com.composetest.core.domain.usecases.user.GetUserUseCase
 import com.composetest.core.router.destinations.login.LoginDestination
@@ -29,23 +29,24 @@ internal class RootViewModel @Inject constructor(
     private val sessionManager: SessionManager,
     private val getUserUseCase: GetUserUseCase,
     private val userModalDrawerMapper: UserModalDrawerMapper,
-    override val sendAnalyticsUseCase: SendAnalyticsUseCase,
+    override val analyticSender: AnalyticSender,
     getAvailableFeaturesUseCase: GetAvailableFeaturesUseCase,
 ) : BaseViewModel(), UiState<RootUiState>, UiEvent<RootUiEvent>, RootCommandReceiver {
 
-    private val _uiState = MutableStateFlow(RootUiState())
-    private val _uiEvent = MutableSharedFlow<RootUiEvent>()
     private val availableFeatures = getAvailableFeaturesUseCase()
     private val bottomNavigationFeaturesOrder = mutableListOf<NavigationFeature>()
     private var firstBottomNavigationFeature: NavigationFeature? = null
 
-    override val uiState = _uiState.asStateFlow()
-    override val uiEvent = _uiEvent.asSharedFlow()
     override val commandReceiver = this
     override val analyticScreen = RootScreenAnalytic
 
+    private val _uiState = MutableStateFlow(RootUiState())
+    override val uiState = _uiState.asStateFlow()
+
+    private val _uiEvent = MutableSharedFlow<RootUiEvent>()
+    override val uiEvent = _uiEvent.asSharedFlow()
+
     init {
-        openScreenAnalytic()
         iniUiState()
     }
 
@@ -150,7 +151,7 @@ internal class RootViewModel @Inject constructor(
 
     private fun sendNavigateToFeatureAnalytic(navigationFeature: NavigationFeature) {
         runAsyncTask {
-            sendAnalyticsUseCase(RootEventAnalytic.NavigateToFeature(navigationFeature.feature))
+            analyticSender.sendEvent(RootEventAnalytic.NavigateToFeature(navigationFeature.feature))
         }
     }
 }

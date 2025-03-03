@@ -3,10 +3,10 @@ package com.composetest.core.ui.bases
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.composetest.common.analytics.AnalyticScreen
-import com.composetest.common.analytics.CommonAnalyticEvent
-import com.composetest.common.analytics.ErrorAnalyticEvent
-import com.composetest.core.domain.usecases.SendAnalyticsUseCase
+import com.composetest.core.analytic.AnalyticScreen
+import com.composetest.core.analytic.AnalyticSender
+import com.composetest.core.analytic.events.CommonAnalyticEvent
+import com.composetest.core.analytic.events.ErrorAnalyticEvent
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.catch
@@ -17,10 +17,10 @@ import kotlinx.coroutines.launch
 abstract class BaseViewModel : ViewModel() {
 
     protected abstract val analyticScreen: AnalyticScreen
-    protected abstract val sendAnalyticsUseCase: SendAnalyticsUseCase
+    protected abstract val analyticSender: AnalyticSender
 
     protected fun openScreenAnalytic() = runAsyncTask {
-        sendAnalyticsUseCase(CommonAnalyticEvent.OpenScreen(analyticScreen))
+        analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(analyticScreen))
     }
 
     protected fun <UiEvent> MutableSharedFlow<UiEvent>.emitEvent(uiEvent: UiEvent) =
@@ -60,7 +60,7 @@ abstract class BaseViewModel : ViewModel() {
         onError: (suspend (Throwable) -> Unit)? = null
     ) {
         Log.e("BaseViewModel", error.message, error)
-        sendAnalyticsUseCase(ErrorAnalyticEvent(error, analyticScreen))
+        analyticSender.sendErrorEvent(ErrorAnalyticEvent(error, analyticScreen))
         onError?.invoke(error)
     }
 }

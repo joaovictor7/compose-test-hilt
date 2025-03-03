@@ -1,7 +1,7 @@
 package com.composetest.feature.profile.ui.editprofile
 
+import com.composetest.core.analytic.AnalyticSender
 import com.composetest.core.domain.models.UserModel
-import com.composetest.core.domain.usecases.SendAnalyticsUseCase
 import com.composetest.core.domain.usecases.user.GetUserUseCase
 import com.composetest.core.domain.usecases.user.UpdateUserUseCase
 import com.composetest.core.ui.bases.BaseViewModel
@@ -20,15 +20,16 @@ internal class EditProfileViewModel @Inject constructor(
     private val getUserUseCase: GetUserUseCase,
     private val updateUserUseCase: UpdateUserUseCase,
     private val profileFormMapper: ProfileFormMapper,
-    override val sendAnalyticsUseCase: SendAnalyticsUseCase,
+    override val analyticSender: AnalyticSender,
 ) : BaseViewModel(), UiState<EditProfileUiState>, EditProfileCommandReceiver {
 
-    private val _uiState = MutableStateFlow(EditProfileUiState())
     private var userModel: UserModel? = null
 
-    override val uiState = _uiState.asStateFlow()
     override val commandReceiver = this
     override val analyticScreen = ProfileScreenAnalytic
+
+    private val _uiState = MutableStateFlow(EditProfileUiState())
+    override val uiState = _uiState.asStateFlow()
 
     init {
         openScreenAnalytic()

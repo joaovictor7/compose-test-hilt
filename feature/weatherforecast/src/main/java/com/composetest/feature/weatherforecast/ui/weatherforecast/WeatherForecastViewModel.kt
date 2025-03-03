@@ -1,10 +1,9 @@
 package com.composetest.feature.weatherforecast.ui.weatherforecast
 
 import android.location.Location
-import com.composetest.common.providers.LocationProvider
+import com.composetest.core.analytic.AnalyticSender
 import com.composetest.core.designsystem.components.dialogs.CommonSimpleDialog
 import com.composetest.core.designsystem.utils.getCommonSimpleDialogErrorParam
-import com.composetest.core.domain.usecases.SendAnalyticsUseCase
 import com.composetest.core.domain.usecases.weatherforecast.GeTodayWeatherForecastUseCase
 import com.composetest.core.domain.usecases.weatherforecast.GetFutureWeatherForecastUseCase
 import com.composetest.core.domain.usecases.weatherforecast.GetWeatherForecastsUseCase
@@ -13,6 +12,7 @@ import com.composetest.core.ui.bases.BaseViewModel
 import com.composetest.core.ui.enums.Permission
 import com.composetest.core.ui.interfaces.UiEvent
 import com.composetest.core.ui.interfaces.UiState
+import com.composetest.core.ui.providers.LocationProvider
 import com.composetest.core.ui.providers.PermissionProvider
 import com.composetest.feature.weatherforecast.analytics.weatherforecast.WeatherForecastScreenAnalytic
 import com.composetest.feature.weatherforecast.enums.WeatherForecastScreenStatus
@@ -37,20 +37,22 @@ internal class WeatherForecastViewModel @Inject constructor(
     private val futureWeatherForecastScreenModelsMapper: FutureWeatherForecastScreenModelsMapper,
     private val locationProvider: LocationProvider,
     private val permissionProvider: PermissionProvider,
-    override val sendAnalyticsUseCase: SendAnalyticsUseCase,
+    override val analyticSender: AnalyticSender,
 ) : BaseViewModel(), UiState<WeatherForecastUiState>, UiEvent<WeatherForecastUiEvent>,
     WeatherForecastCommandReceiver {
 
-    private val _uiState = MutableStateFlow(WeatherForecastUiState())
-    private val _uiEvent = MutableSharedFlow<WeatherForecastUiEvent>(replay = 1)
     private var location: Location? = null
     private var weatherForecastNowWasGet = false
     private var weatherForecastsWasGet = false
 
-    override val uiState = _uiState.asStateFlow()
-    override val uiEvent = _uiEvent.asSharedFlow()
     override val commandReceiver = this
     override val analyticScreen = WeatherForecastScreenAnalytic
+
+    private val _uiState = MutableStateFlow(WeatherForecastUiState())
+    override val uiState = _uiState.asStateFlow()
+
+    private val _uiEvent = MutableSharedFlow<WeatherForecastUiEvent>(replay = 1)
+    override val uiEvent = _uiEvent.asSharedFlow()
 
     init {
         openScreenAnalytic()

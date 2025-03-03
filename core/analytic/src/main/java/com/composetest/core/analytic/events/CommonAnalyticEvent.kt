@@ -1,4 +1,7 @@
-package com.composetest.common.analytics
+package com.composetest.core.analytic.events
+
+import com.composetest.core.analytic.AnalyticEvent
+import com.composetest.core.analytic.AnalyticScreen
 
 sealed class CommonAnalyticEvent(
     analyticScreen: AnalyticScreen

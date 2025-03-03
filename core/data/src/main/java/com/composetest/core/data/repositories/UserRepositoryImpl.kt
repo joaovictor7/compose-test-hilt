@@ -4,8 +4,8 @@ import com.composetest.core.data.datasources.local.ConfigurationDataSource
 import com.composetest.core.data.datasources.local.UserDataSource
 import com.composetest.core.data.mappers.ConfigurationMapper
 import com.composetest.core.data.mappers.UserMapper
-import com.composetest.core.domain.models.ConfigurationModel
 import com.composetest.core.domain.models.UserModel
+import com.composetest.core.domain.models.configuration.ConfigurationModel
 import com.composetest.core.domain.repositories.UserRepository
 import javax.inject.Inject
 

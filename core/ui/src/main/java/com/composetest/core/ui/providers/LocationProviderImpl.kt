@@ -1,10 +1,9 @@
-package com.composetest.core.data.providers
+package com.composetest.core.ui.providers
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Location
 import com.composetest.common.errors.LocationError
-import com.composetest.common.providers.LocationProvider
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import dagger.hilt.android.qualifiers.ApplicationContext

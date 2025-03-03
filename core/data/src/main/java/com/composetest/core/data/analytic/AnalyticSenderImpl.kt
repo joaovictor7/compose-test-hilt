@@ -1,27 +1,28 @@
-package com.composetest.core.domain.usecases
+package com.composetest.core.data.analytic
 
 import android.os.Bundle
 import androidx.core.os.bundleOf
-import com.composetest.common.analytics.AnalyticEvent
-import com.composetest.common.analytics.ErrorAnalyticEvent
+import com.composetest.core.analytic.AnalyticEvent
+import com.composetest.core.analytic.AnalyticSender
+import com.composetest.core.analytic.events.ErrorAnalyticEvent
 import com.composetest.core.domain.providers.BuildConfigProvider
 import com.composetest.core.domain.repositories.AnalyticsRepository
 import com.composetest.core.domain.repositories.UserRepository
 import java.time.ZonedDateTime
 import javax.inject.Inject
 
-class SendAnalyticsUseCase @Inject constructor(
+internal class AnalyticSenderImpl @Inject constructor(
     private val analyticsRepository: AnalyticsRepository,
     private val userRepository: UserRepository,
     private val buildConfigProvider: BuildConfigProvider
-) {
+) : AnalyticSender {
 
-    suspend operator fun invoke(event: AnalyticEvent) {
+    override suspend fun sendEvent(event: AnalyticEvent) {
         val bundle = createBundle(event)
         analyticsRepository.logEvent(event.tag, bundle)
     }
 
-    suspend operator fun invoke(event: ErrorAnalyticEvent) {
+    override suspend fun sendErrorEvent(event: ErrorAnalyticEvent) {
         val bundle = createBundle(event)
         analyticsRepository.logNonFatalError(event.tag, event.error, bundle)
     }

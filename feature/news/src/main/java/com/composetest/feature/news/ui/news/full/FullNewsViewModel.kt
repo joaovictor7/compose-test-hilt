@@ -1,6 +1,6 @@
 package com.composetest.feature.news.ui.news.full
 
-import com.composetest.core.domain.usecases.SendAnalyticsUseCase
+import com.composetest.core.analytic.AnalyticSender
 import com.composetest.core.router.destinations.news.FullNewsDestination
 import com.composetest.core.ui.bases.BaseViewModel
 import com.composetest.core.ui.interfaces.UiState
@@ -14,13 +14,14 @@ import javax.inject.Inject
 @HiltViewModel
 internal class FullNewsViewModel @Inject constructor(
     private val destination: FullNewsDestination,
-    override val sendAnalyticsUseCase: SendAnalyticsUseCase
+    override val analyticSender: AnalyticSender
 ) : BaseViewModel(), UiState<FullNewsUiState> {
 
-    private val _uiState = MutableStateFlow(FullNewsUiState())
 
-    override val uiState = _uiState.asStateFlow()
     override val analyticScreen = FullNewsScreenAnalytic
+
+    private val _uiState = MutableStateFlow(FullNewsUiState())
+    override val uiState = _uiState.asStateFlow()
 
     init {
         initUiState()

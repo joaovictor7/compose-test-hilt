@@ -8,9 +8,11 @@ android {
 }
 
 dependencies {
-    implementation(projects.core.designsystem)
-    implementation(projects.core.domain)
     implementation(projects.common)
+    implementation(projects.core.designsystem)
+    implementation(projects.core.analytic)
     implementation(projects.core.router)
     implementation(projects.core.designsystem)
+    implementation(libs.android.location)
+    api(libs.android.permissions)
 }

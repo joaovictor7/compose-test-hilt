@@ -3,5 +3,5 @@ plugins {
 }
 
 android {
-    namespace = "com.composetest.common"
+    namespace = "com.composetest.core.analytic"
 }

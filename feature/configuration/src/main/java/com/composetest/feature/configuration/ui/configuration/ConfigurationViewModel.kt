@@ -1,6 +1,6 @@
 package com.composetest.feature.configuration.ui.configuration
 
-import com.composetest.core.domain.usecases.SendAnalyticsUseCase
+import com.composetest.core.analytic.AnalyticSender
 import com.composetest.core.router.models.NavigationModel
 import com.composetest.core.ui.bases.BaseViewModel
 import com.composetest.core.ui.interfaces.UiEvent
@@ -17,17 +17,18 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class ConfigurationViewModel @Inject constructor(
-    override val sendAnalyticsUseCase: SendAnalyticsUseCase,
+    override val analyticSender: AnalyticSender,
 ) : BaseViewModel(), UiState<ConfigurationUiState>, UiEvent<ConfigurationUiEvent>,
     ConfigurationCommandReceiver {
 
-    private val _uiEvent = MutableSharedFlow<ConfigurationUiEvent>()
-    private val _uiState = MutableStateFlow(ConfigurationUiState())
-
-    override val uiState = _uiState.asStateFlow()
-    override val uiEvent = _uiEvent.asSharedFlow()
     override val commandReceiver = this
     override val analyticScreen = ConfigurationScreenAnalytic
+
+    private val _uiState = MutableStateFlow(ConfigurationUiState())
+    override val uiState = _uiState.asStateFlow()
+
+    private val _uiEvent = MutableSharedFlow<ConfigurationUiEvent>()
+    override val uiEvent = _uiEvent.asSharedFlow()
 
     init {
         initUiState()
