@@ -1,15 +1,15 @@
-package com.composetest.core.domain.usecases.remoteconfigs
+package com.composetest.core.domain.usecases.root
 
 import com.composetest.core.domain.enums.Feature
-import com.composetest.core.domain.managers.RemoteConfigManager
+import com.composetest.core.domain.usecases.remoteconfigs.GetBooleanRemoteConfigUseCase
 import javax.inject.Inject
 
 class GetAvailableFeaturesUseCase @Inject constructor(
-    private val remoteConfigManager: RemoteConfigManager,
+    private val getBooleanRemoteConfigUseCase: GetBooleanRemoteConfigUseCase,
 ) {
     operator fun invoke() = mutableListOf<Feature>().apply {
         Feature.entries.forEach {
-            if (remoteConfigManager.getBoolean(it.remoteConfig)) {
+            if (getBooleanRemoteConfigUseCase(it.remoteConfig)) {
                 add(it)
             }
         }

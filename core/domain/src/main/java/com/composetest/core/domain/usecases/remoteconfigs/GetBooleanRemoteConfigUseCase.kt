@@ -2,14 +2,17 @@ package com.composetest.core.domain.usecases.remoteconfigs
 
 import com.composetest.common.extensions.digits
 import com.composetest.common.extensions.toIntOrZero
+import com.composetest.common.remoteconfig.RemoteConfig
 import com.composetest.core.domain.providers.BuildConfigProvider
+import com.composetest.core.domain.repositories.RemoteConfigRepository
 import javax.inject.Inject
 
-class CheckRemoteConfigUseCase @Inject constructor(
+class GetBooleanRemoteConfigUseCase @Inject constructor(
+    private val remoteConfigRepository: RemoteConfigRepository,
     private val buildConfigProvider: BuildConfigProvider
 ) {
-
-    operator fun invoke(versionOrBoolean: String): Boolean {
+    operator fun invoke(remoteConfig: RemoteConfig): Boolean {
+        val versionOrBoolean = remoteConfigRepository.getString(remoteConfig.key)
         val boolean = versionOrBoolean.toBooleanStrictOrNull()
         val remoteConfigVersionName = versionOrBoolean.digits.toIntOrZero
         val localVersionName = buildConfigProvider.buildConfig.fullyVersion.digits.toIntOrZero

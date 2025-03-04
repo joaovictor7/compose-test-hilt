@@ -1,7 +1,7 @@
 package com.composetest.feature.root.ui.root
 
 import com.composetest.core.analytic.AnalyticSender
-import com.composetest.core.domain.usecases.remoteconfigs.GetAvailableFeaturesUseCase
+import com.composetest.core.domain.usecases.root.GetAvailableFeaturesUseCase
 import com.composetest.core.domain.usecases.user.GetUserUseCase
 import com.composetest.core.router.destinations.login.LoginDestination
 import com.composetest.core.router.enums.NavigationMode

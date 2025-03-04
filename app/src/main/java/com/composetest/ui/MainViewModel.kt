@@ -2,8 +2,8 @@ package com.composetest.ui
 
 import com.composetest.analytics.MainAnalytic
 import com.composetest.core.analytic.AnalyticSender
-import com.composetest.core.domain.managers.RemoteConfigManager
 import com.composetest.core.domain.usecases.configuration.GetAppThemeUseCase
+import com.composetest.core.domain.usecases.remoteconfigs.FetchRemoteConfigUseCase
 import com.composetest.core.domain.usecases.session.CheckNeedsLoginUseCase
 import com.composetest.core.domain.usecases.session.CheckSessionIsValidUseCase
 import com.composetest.core.router.destinations.login.LoginDestination
@@ -26,7 +26,7 @@ internal class MainViewModel @Inject constructor(
     private val checkSessionIsValidUseCase: CheckSessionIsValidUseCase,
     private val checkNeedsLoginUseCase: CheckNeedsLoginUseCase,
     private val getAppThemeUseCase: GetAppThemeUseCase,
-    private val remoteConfigManager: RemoteConfigManager,
+    private val fetchRemoteConfigUseCase: FetchRemoteConfigUseCase,
     override val analyticSender: AnalyticSender,
 ) : BaseViewModel(), UiState<MainUiState>, UiEvent<MainUiEvent>, MainCommandReceiver {
 
@@ -59,7 +59,7 @@ internal class MainViewModel @Inject constructor(
     }
 
     override fun fetchRemoteConfig() {
-        remoteConfigManager.fetch()
+        fetchRemoteConfigUseCase()
     }
 
     override fun dismissAlertDialog() {

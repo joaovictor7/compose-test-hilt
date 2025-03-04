@@ -1,7 +1,7 @@
 package com.composetest.core.data.repositories
 
 import com.composetest.core.data.datasources.local.SessionDataSource
-import com.composetest.core.data.managers.WorkManager
+import com.composetest.core.data.workmanager.WorkManager
 import com.composetest.core.data.mappers.SessionMapper
 import com.composetest.core.data.workmanager.workes.SessionWorker
 import com.composetest.core.domain.models.UserModel

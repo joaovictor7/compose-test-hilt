@@ -7,7 +7,6 @@ import com.composetest.core.domain.usecases.user.GetUserUseCase
 import com.composetest.core.domain.usecases.user.UpdateUserUseCase
 import com.composetest.core.ui.bases.BaseViewModel
 import com.composetest.core.ui.interfaces.UiState
-import com.composetest.core.analytic.events.profile.ProfileScreenAnalytic
 import com.composetest.feature.profile.mappers.ProfileFormMapper
 import com.composetest.feature.profile.models.ProfileFormModel
 import dagger.hilt.android.lifecycle.HiltViewModel

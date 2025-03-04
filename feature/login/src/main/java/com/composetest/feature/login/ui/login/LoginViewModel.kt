@@ -3,13 +3,15 @@ package com.composetest.feature.login.ui.login
 import com.composetest.common.errors.ApiError
 import com.composetest.core.analytic.AnalyticSender
 import com.composetest.core.analytic.events.configuration.ThemeConfigurationScreenAnalytic
+import com.composetest.core.analytic.events.login.LoginEventAnalytic
 import com.composetest.core.designsystem.utils.getCommonSimpleDialogErrorParam
 import com.composetest.core.domain.enums.Theme
-import com.composetest.core.domain.managers.RemoteConfigManager
 import com.composetest.core.domain.providers.BuildConfigProvider
 import com.composetest.core.domain.usecases.configuration.SetSystemBarsStyleUseCase
+import com.composetest.core.domain.usecases.login.AuthenticationByBiometricUseCase
 import com.composetest.core.domain.usecases.login.AuthenticationUseCase
 import com.composetest.core.domain.usecases.login.BiometricIsEnableUseCase
+import com.composetest.core.domain.usecases.remoteconfigs.GetBooleanRemoteConfigUseCase
 import com.composetest.core.router.destinations.login.LoginDestination
 import com.composetest.core.router.destinations.root.RootDestination
 import com.composetest.core.router.enums.NavigationMode
@@ -23,8 +25,6 @@ import com.composetest.core.ui.bases.BaseViewModel
 import com.composetest.core.ui.interfaces.UiEvent
 import com.composetest.core.ui.interfaces.UiState
 import com.composetest.feature.login.R
-import com.composetest.core.analytic.events.login.LoginEventAnalytic
-import com.composetest.core.domain.usecases.login.AuthenticationByBiometricUseCase
 import com.composetest.feature.login.enums.LoginRemoteConfig
 import com.composetest.feature.login.extensions.autoShowBiometricPrompt
 import com.composetest.feature.login.models.BiometricModel
@@ -46,7 +46,7 @@ internal class LoginViewModel @Inject constructor(
     private val authenticationByBiometricUseCase: AuthenticationByBiometricUseCase,
     private val biometricIsEnableUseCase: BiometricIsEnableUseCase,
     private val setSystemBarsStyleUseCase: SetSystemBarsStyleUseCase,
-    private val remoteConfigManager: RemoteConfigManager,
+    private val getBooleanRemoteConfigUseCase: GetBooleanRemoteConfigUseCase,
     private val loginDestination: LoginDestination,
     override val analyticSender: AnalyticSender,
 ) : BaseViewModel(), UiState<LoginUiState>, UiEvent<LoginUiEvent>, LoginCommandReceiver {
@@ -55,7 +55,7 @@ internal class LoginViewModel @Inject constructor(
     override val analyticScreen = ThemeConfigurationScreenAnalytic
 
     private val loginFormModel get() = uiState.value.loginFormModel
-    private val byPassLogin by lazy { remoteConfigManager.getBoolean(LoginRemoteConfig.BY_PASS_LOGIN) }
+    private val byPassLogin by lazy { getBooleanRemoteConfigUseCase(LoginRemoteConfig.BY_PASS_LOGIN) }
 
     private val _uiState = MutableStateFlow(LoginUiState())
     override val uiState = _uiState.asStateFlow()
