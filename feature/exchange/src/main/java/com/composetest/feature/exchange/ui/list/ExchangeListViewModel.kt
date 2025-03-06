@@ -27,10 +27,10 @@ internal class ExchangeListViewModel @Inject constructor(
 ) : BaseViewModel(), UiState<ExchangeListUiState>, UiEvent<ExchangeListUiEvent>,
     ExchangeListCommandReceiver {
 
-    private var exchangeList = listOf<ExchangeModel>()
-
     override val commandReceiver = this
     override val analyticScreen = ExchangeListScreenAnalytic
+
+    private var exchangeList = listOf<ExchangeModel>()
 
     private val _uiState = MutableStateFlow(ExchangeListUiState())
     override val uiState = _uiState.asStateFlow()

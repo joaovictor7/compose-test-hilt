@@ -13,6 +13,7 @@ internal class TestConventionPlugin : Plugin<Project> {
             tasks.withType<Test> {
                 useJUnitPlatform()
                 jvmArgs("-Xshare:off")
+                jvmArgs("-XX:+EnableDynamicAgentLoading")
             }
             dependencies {
                 testImplementation(project(":core:test"))
@@ -21,6 +22,7 @@ internal class TestConventionPlugin : Plugin<Project> {
                 testImplementation(getLibrary("kotlin.coroutines.test"))
                 testImplementation(getLibrary("slf4j.simple"))
                 testRuntimeOnly(getLibrary("junit5.engine"))
+                testRuntimeOnly(getLibrary("junit.launcher"))
             }
         }
     }

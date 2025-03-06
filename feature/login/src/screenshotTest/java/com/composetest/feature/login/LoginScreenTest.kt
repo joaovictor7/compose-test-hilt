@@ -16,13 +16,11 @@ internal class LoginScreenTest {
                 LoginUiState(
                     versionName = "Version",
                     invalidCredentials = true,
-                    needsLogin = true,
                     biometricModel = BiometricModel(
                         messageId = R.string.feature_login_biometric_is_blocked
                     )
                 ),
-                uiEvent = null
-            ) {}
+            )
         }
     }
 }

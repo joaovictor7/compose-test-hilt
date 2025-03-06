@@ -1,6 +1,6 @@
 package com.composetest.core.test.extensions
 
-import com.composetest.core.test.interfaces.CoroutinesTest
+import com.composetest.core.test.CoroutinesTest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher

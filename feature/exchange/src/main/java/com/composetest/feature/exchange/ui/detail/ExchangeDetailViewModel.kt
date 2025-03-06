@@ -19,10 +19,10 @@ internal class ExchangeDetailViewModel @Inject constructor(
     override val analyticSender: AnalyticSender,
 ) : BaseViewModel(), UiState<ExchangeDetailUiState> {
 
-    private val _uiState = MutableStateFlow(ExchangeDetailUiState())
-
-    override val uiState = _uiState.asStateFlow()
     override val analyticScreen = ExchangeDetailScreenAnalytic
+
+    private val _uiState = MutableStateFlow(ExchangeDetailUiState())
+    override val uiState = _uiState.asStateFlow()
 
     init {
         openScreenAnalytic()

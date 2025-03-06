@@ -1,59 +1,67 @@
 package com.composetest.feature.login.viewmodels
 
 import com.composetest.common.errors.ApiError
+import com.composetest.core.analytic.AnalyticSender
+import com.composetest.core.analytic.events.CommonAnalyticEvent
+import com.composetest.core.analytic.events.login.LoginEventAnalytic
+import com.composetest.core.analytic.events.login.LoginScreenAnalytic
 import com.composetest.core.designsystem.components.dialogs.CommonSimpleDialog
 import com.composetest.core.domain.enums.BuildType
 import com.composetest.core.domain.enums.Flavor
-import com.composetest.core.domain.managers.RemoteConfigManager
-import com.composetest.core.domain.managers.SessionManager
+import com.composetest.core.domain.models.buildconfig.BuildConfigFieldsModel
 import com.composetest.core.domain.models.buildconfig.BuildConfigModel
 import com.composetest.core.domain.providers.BuildConfigProvider
+import com.composetest.core.domain.usecases.configuration.SetSystemBarsStyleUseCase
+import com.composetest.core.domain.usecases.login.AuthenticationByBiometricUseCase
 import com.composetest.core.domain.usecases.login.AuthenticationUseCase
 import com.composetest.core.domain.usecases.login.BiometricIsEnableUseCase
+import com.composetest.core.domain.usecases.remoteconfigs.GetBooleanRemoteConfigUseCase
+import com.composetest.core.router.destinations.login.LoginDestination
 import com.composetest.core.router.destinations.root.RootDestination
 import com.composetest.core.router.enums.NavigationMode
-import com.composetest.core.router.managers.NavigationManager
+import com.composetest.core.router.models.NavigationModel
+import com.composetest.core.security.providers.BiometricProvider
+import com.composetest.core.security.providers.CipherProvider
+import com.composetest.core.test.BaseTest
 import com.composetest.core.test.extensions.runFlowTest
-import com.composetest.core.test.interfaces.CoroutinesTest
-import com.composetest.core.analytic.events.login.LoginEventAnalytic
-import com.composetest.core.analytic.events.login.LoginScreenAnalytic
 import com.composetest.feature.login.models.LoginFormModel
-import com.composetest.feature.login.remoteconfigs.LoginRemoteConfig
 import com.composetest.feature.login.ui.login.LoginCommand
+import com.composetest.feature.login.ui.login.LoginUiEvent
 import com.composetest.feature.login.ui.login.LoginUiState
 import com.composetest.feature.login.ui.login.LoginViewModel
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.coVerifyOrder
 import io.mockk.coVerifySequence
-import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.test.TestDispatcher
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-internal class LoginViewModelTest : CoroutinesTest {
+internal class LoginViewModelTest : BaseTest() {
 
-    override lateinit var testDispatcher: TestDispatcher
-
-    private val navigationManager: NavigationManager = mockk(relaxed = true)
-    private val buildConfigProvider: BuildConfigProvider = object : BuildConfigProvider {
-        override val buildConfig: BuildConfigModel = buildConfigModelMock
+    private val biometricProvider: BiometricProvider = mockk(relaxed = true)
+    private val cipherProvider: CipherProvider = mockk {
+        coEvery { encrypt(any()) } returns "encryptedData"
     }
     private val authenticationUseCase: AuthenticationUseCase = mockk(relaxed = true)
-    private val sessionManager: SessionManager = mockk {
-        coEvery { needsLogin() } returns true
-    }
-    private val remoteConfigManager: RemoteConfigManager = mockk(relaxed = true) {
-        every { getBoolean(LoginRemoteConfig.ByPassLogin) } returns false
-    }
-    private val configurationManager: ConfigurationManager = mockk(relaxed = true)
-    private val sendAnalyticsUseCase: AnalyticSender = mockk(relaxed = true)
     private val authenticationByBiometricUseCase: AuthenticationByBiometricUseCase =
         mockk(relaxed = true)
+    private val setSystemBarsStyleUseCase: SetSystemBarsStyleUseCase = mockk(relaxed = true)
+    private val getBooleanRemoteConfigUseCase: GetBooleanRemoteConfigUseCase = mockk(relaxed = true)
+    private val analyticSender: AnalyticSender = mockk(relaxed = true)
     private val biometricIsEnableUseCase: BiometricIsEnableUseCase = mockk(relaxed = true)
+    private val buildConfigProvider: BuildConfigProvider = object : BuildConfigProvider {
+        override val buildConfig: BuildConfigModel = buildConfigModelMock
+        override val buildConfigFields = buildConfigFieldsModelMock
+    }
 
     private lateinit var viewModel: LoginViewModel
+
+    override lateinit var testDispatcher: TestDispatcher
 
     @BeforeEach
     fun before() {
@@ -61,227 +69,88 @@ internal class LoginViewModelTest : CoroutinesTest {
     }
 
     @Test
-    fun `initial uiState`() = runFlowTest(viewModel.uiState) { onCancelJob, collectedStates ->
-        coEvery { sessionManager.needsLogin() } returns false
+    fun `initial uiState`() = runFlowTest(viewModel.uiState) { onCancelJob, states ->
         onCancelJob()
-
-        assertEquals(
-            listOf(
-                LoginUiState(),
-                LoginUiState(
-                    needsLogin = true,
-                    versionName = "1.0.0 - 0"
-                )
-            ),
-            collectedStates
-        )
-    }
-
-    @Test
-    fun `initial uiState when not need login`() {
-        coEvery { sessionManager.needsLogin() } returns false
-        val viewModel = initViewModel()
-        runFlowTest(viewModel.uiState) { onCancelJob, collectedStates ->
-            onCancelJob()
-
-            assertEquals(
-                listOf(LoginUiState()),
-                collectedStates
-            )
-            coVerify {
-                navigationManager.asyncNavigate(
-                    RootDestination,
-                    NavigationMode.REMOVE_ALL_SCREENS_STACK
-                )
-            }
+        assertEquals(LoginUiState(versionName = "1.0.0 - 0"), states[0])
+        coVerifySequence {
+            analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(LoginScreenAnalytic))
         }
     }
 
     @Test
     fun `misleading credentials login`() =
-        runFlowTest(viewModel.uiState) { onCancelJob, collectedStates ->
+        runFlowTest(viewModel.uiState) { onCancelJob, states ->
             coEvery { authenticationUseCase(any(), any()) } throws ApiError.Unauthorized()
 
             viewModel.executeCommand(LoginCommand.WriteData("teste@teste.com", "password"))
             viewModel.executeCommand(LoginCommand.Login(false))
             onCancelJob()
 
+            assertTrue(states[1].loginButtonIsEnabled)
             assertEquals(
-                listOf(
-                    LoginUiState(),
-                    LoginUiState(
-                        versionName = "1.0.0 - 0",
-                        needsLogin = true,
-
-                        ),
-                    LoginUiState(
-                        versionName = "1.0.0 - 0",
-                        needsLogin = true,
-
-                        loginButtonIsEnabled = true,
-                        loginFormModel = LoginFormModel(
-                            email = "teste@teste.com",
-                            password = "password"
-                        )
-                    ),
-                    LoginUiState(
-                        needsLogin = true,
-                        versionName = "1.0.0 - 0",
-                        loginButtonIsEnabled = true,
-
-                        isLoading = true,
-                        loginFormModel = LoginFormModel(
-                            email = "teste@teste.com",
-                            password = "password"
-                        )
-                    ),
-                    LoginUiState(
-                        needsLogin = true,
-                        versionName = "1.0.0 - 0",
-                        loginButtonIsEnabled = true,
-
-                        invalidCredentials = true,
-                        loginFormModel = LoginFormModel(
-                            email = "teste@teste.com",
-                            password = "password"
-                        )
-                    )
-                ),
-                collectedStates
+                LoginFormModel("teste@teste.com", "password"),
+                states[1].loginFormModel
             )
+            assertTrue(states[2].isLoading)
+            assertTrue(states[3].invalidCredentials)
+            assertFalse(states[3].isLoading)
             coVerify {
-                sendAnalyticsUseCase(LoginEventAnalytic.LoginSuccessful(false))
+                analyticSender.sendEvent(LoginEventAnalytic.LoginSuccessful(false))
             }
         }
 
     @Test
-    fun `success login`() =
-        runFlowTest(viewModel.uiState) { onCancelJob, collectedStates ->
-            viewModel.executeCommand(LoginCommand.WriteData(email = "teste@teste.com"))
-            viewModel.executeCommand(LoginCommand.WriteData(password = "password"))
-            viewModel.executeCommand(LoginCommand.Login(false))
-            onCancelJob()
+    fun `success login`() = runFlowTest(
+        viewModel.uiState,
+        viewModel.uiEvent
+    ) { onCancelJob, firstStates, secondStates ->
+        viewModel.executeCommand(
+            LoginCommand.WriteData(email = "teste@teste.com", password = "password")
+        )
+        viewModel.executeCommand(LoginCommand.Login(false))
+        onCancelJob()
 
-            assertEquals(
-                listOf(
-                    LoginUiState(),
-                    LoginUiState(
-                        versionName = "1.0.0 - 0",
-                        needsLogin = true,
-                    ),
-                    LoginUiState(
-                        versionName = "1.0.0 - 0",
-                        needsLogin = true,
-                        loginFormModel = LoginFormModel(email = "teste@teste.com")
-                    ),
-                    LoginUiState(
-                        versionName = "1.0.0 - 0",
-                        needsLogin = true,
-                        loginButtonIsEnabled = true,
-                        loginFormModel = LoginFormModel(
-                            email = "teste@teste.com",
-                            password = "password"
-                        )
-                    ),
-                    LoginUiState(
-                        needsLogin = true,
-                        versionName = "1.0.0 - 0",
-                        loginButtonIsEnabled = true,
-                        isLoading = true,
-                        loginFormModel = LoginFormModel(
-                            email = "teste@teste.com",
-                            password = "password"
-                        )
-                    ),
-                    LoginUiState(
-                        needsLogin = true,
-                        versionName = "1.0.0 - 0",
-                        loginButtonIsEnabled = true,
-                        loginFormModel = LoginFormModel(
-                            email = "teste@teste.com",
-                            password = "password"
-                        )
-                    )
-                ),
-                collectedStates
-            )
-            coVerifySequence {
-                sendAnalyticsUseCase(
-                    AnalyticSenderCommonAnalyticEvent.OpenScreen(
-                        LoginScreenAnalytic
-                    )
-                )
-                sendAnalyticsUseCase(LoginEventAnalytic.LoginSuccessful(true))
-                navigationManager.asyncNavigate(
-                    RootDestination,
-                    NavigationMode.REMOVE_ALL_SCREENS_STACK
-                )
-            }
+        assertTrue(firstStates[1].loginButtonIsEnabled)
+        assertEquals(
+            LoginFormModel("teste@teste.com", "password"),
+            firstStates[1].loginFormModel
+        )
+        assertTrue(firstStates[2].isLoading)
+        assertFalse(firstStates[3].isLoading)
+        assertEquals(
+            LoginUiEvent.NavigateTo(
+                NavigationModel(RootDestination, NavigationMode.REMOVE_ALL_SCREENS_STACK)
+            ), secondStates[0]
+        )
+        coVerifyOrder {
+            authenticationUseCase("teste@teste.com", "encryptedData")
+            analyticSender.sendEvent(LoginEventAnalytic.LoginSuccessful(true))
         }
+    }
 
     @Test
     fun `error network`() =
-        runFlowTest(viewModel.uiState) { onCancelJob, collectedStates ->
+        runFlowTest(viewModel.uiState, viewModel.uiEvent) { onCancelJob, firstStates, secondStates ->
             coEvery { authenticationUseCase(any(), any()) } throws ApiError.Network()
 
             viewModel.executeCommand(LoginCommand.WriteData("teste@teste.com", "password"))
             viewModel.executeCommand(LoginCommand.Login(false))
             onCancelJob()
 
-            assertEquals(
-                listOf(
-                    LoginUiState(),
-                    LoginUiState(
-                        versionName = "1.0.0 - 0",
-                        needsLogin = true,
-                    ),
-                    LoginUiState(
-                        versionName = "1.0.0 - 0",
-                        needsLogin = true,
-                        loginButtonIsEnabled = true,
-                        loginFormModel = LoginFormModel(
-                            email = "teste@teste.com",
-                            password = "password"
-                        )
-                    ),
-                    LoginUiState(
-                        needsLogin = true,
-                        versionName = "1.0.0 - 0",
-                        loginButtonIsEnabled = true,
-                        isLoading = true,
-                        loginFormModel = LoginFormModel(
-                            email = "teste@teste.com",
-                            password = "password"
-                        )
-                    ),
-                    LoginUiState(
-                        needsLogin = true,
-                        versionName = "1.0.0 - 0",
-                        loginButtonIsEnabled = true,
-                        simpleDialogParam = CommonSimpleDialog.NetworkError,
-                        loginFormModel = LoginFormModel(
-                            email = "teste@teste.com",
-                            password = "password"
-                        )
-                    )
-                ),
-                collectedStates
-            )
-            coVerify {
-                sendAnalyticsUseCase(LoginEventAnalytic.LoginSuccessful(false))
-            }
+            assertEquals(CommonSimpleDialog.NetworkError, firstStates[3].simpleDialogParam)
         }
 
     private fun initViewModel() = LoginViewModel(
         buildConfigProvider = buildConfigProvider,
+        biometricProvider = biometricProvider,
+        cipherProvider = cipherProvider,
         authenticationUseCase = authenticationUseCase,
-        sessionManager = sessionManager,
-        remoteConfigManager = remoteConfigManager,
-        analyticSender = sendAnalyticsUseCase,
-        navigationManager = navigationManager,
-        configurationManager = configurationManager,
         authenticationByBiometricUseCase = authenticationByBiometricUseCase,
-        biometricIsEnableUseCase = biometricIsEnableUseCase
+        biometricIsEnableUseCase = biometricIsEnableUseCase,
+        setSystemBarsStyleUseCase = setSystemBarsStyleUseCase,
+        getBooleanRemoteConfigUseCase = getBooleanRemoteConfigUseCase,
+        loginDestination = LoginDestination(),
+        analyticSender = analyticSender,
     )
 
     private companion object {
@@ -292,14 +161,12 @@ internal class LoginViewModelTest : CoroutinesTest {
             buildType = BuildType.DEBUG,
             flavor = Flavor.DEVELOP,
             androidSdkVersion = 34,
-            buildConfigFields = BuildConfigFieldsModel(
-                databaseKey = String(),
-                newsApiHost = String(),
-                newsApiKey = String(),
-                openWeatherApiHost = String(),
-                openWeatherIconHost = String(),
-                openWeatherApiKey = String(),
-            )
+        )
+        val buildConfigFieldsModelMock = BuildConfigFieldsModel(
+            coinApiHost = "123",
+            newsApiHost = "123",
+            openWeatherApiHost = "123",
+            openWeatherIconHost = "123",
         )
     }
 }

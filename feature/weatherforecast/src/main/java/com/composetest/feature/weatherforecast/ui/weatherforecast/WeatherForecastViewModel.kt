@@ -41,12 +41,12 @@ internal class WeatherForecastViewModel @Inject constructor(
 ) : BaseViewModel(), UiState<WeatherForecastUiState>, UiEvent<WeatherForecastUiEvent>,
     WeatherForecastCommandReceiver {
 
+    override val commandReceiver = this
+    override val analyticScreen = WeatherForecastScreenAnalytic
+
     private var location: Location? = null
     private var weatherForecastNowWasGet = false
     private var weatherForecastsWasGet = false
-
-    override val commandReceiver = this
-    override val analyticScreen = WeatherForecastScreenAnalytic
 
     private val _uiState = MutableStateFlow(WeatherForecastUiState())
     override val uiState = _uiState.asStateFlow()

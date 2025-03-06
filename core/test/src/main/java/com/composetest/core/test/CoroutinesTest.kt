@@ -1,4 +1,4 @@
-package com.composetest.core.test.interfaces
+package com.composetest.core.test
 
 import com.composetest.core.test.extensions.CoroutinesExtension
 import kotlinx.coroutines.test.TestDispatcher

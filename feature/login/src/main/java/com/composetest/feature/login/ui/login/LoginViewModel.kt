@@ -4,6 +4,7 @@ import com.composetest.common.errors.ApiError
 import com.composetest.core.analytic.AnalyticSender
 import com.composetest.core.analytic.events.configuration.ThemeConfigurationScreenAnalytic
 import com.composetest.core.analytic.events.login.LoginEventAnalytic
+import com.composetest.core.analytic.events.login.LoginScreenAnalytic
 import com.composetest.core.designsystem.utils.getCommonSimpleDialogErrorParam
 import com.composetest.core.domain.enums.Theme
 import com.composetest.core.domain.providers.BuildConfigProvider
@@ -52,7 +53,7 @@ internal class LoginViewModel @Inject constructor(
 ) : BaseViewModel(), UiState<LoginUiState>, UiEvent<LoginUiEvent>, LoginCommandReceiver {
 
     override val commandReceiver = this
-    override val analyticScreen = ThemeConfigurationScreenAnalytic
+    override val analyticScreen = LoginScreenAnalytic
 
     private val loginFormModel get() = uiState.value.loginFormModel
     private val byPassLogin by lazy { getBooleanRemoteConfigUseCase(LoginRemoteConfig.BY_PASS_LOGIN) }
