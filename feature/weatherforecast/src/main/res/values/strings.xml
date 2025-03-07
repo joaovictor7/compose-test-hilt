@@ -5,5 +5,4 @@
     <string name="weather_forecast_required_permission_msg">We need your permission to use this feature</string>
     <string name="weather_forecast_active_permissions">Activate permission</string>
     <string name="weather_forecast_active_permissions_blocked">Go to settings</string>
-    <string name="weather_forecast_try_again">Try again</string>
 </resources>

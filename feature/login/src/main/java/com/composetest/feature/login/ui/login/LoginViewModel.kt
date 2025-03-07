@@ -2,7 +2,6 @@ package com.composetest.feature.login.ui.login
 
 import com.composetest.common.errors.ApiError
 import com.composetest.core.analytic.AnalyticSender
-import com.composetest.core.analytic.events.configuration.ThemeConfigurationScreenAnalytic
 import com.composetest.core.analytic.events.login.LoginEventAnalytic
 import com.composetest.core.analytic.events.login.LoginScreenAnalytic
 import com.composetest.core.designsystem.utils.getCommonSimpleDialogErrorParam

@@ -9,7 +9,6 @@
     <string name="exchange_detail_name_label">Nome</string>
     <string name="exchange_detail_symbols_count_label">Quantidade de símbolos</string>
     <string name="exchange_detail_metric_id_label">Métricas</string>
-    <string name="exchange_detail_rank_label">Rank</string>
     <string name="exchange_detail_dates_label">Datas</string>
     <string name="exchange_detail_types_header_dates_grid">Tipos</string>
     <string name="exchange_detail_start_header_dates_grid">Ínicio</string>
