@@ -3,13 +3,10 @@ package com.composetest.core.data.di
 import com.composetest.common.providers.DateTimeProvider
 import com.composetest.core.data.datasources.AuthenticationDataSource
 import com.composetest.core.data.datasources.NewsApiDataSource
-import com.composetest.core.data.datasources.OpenWeatherDataSource
 import com.composetest.core.data.datasources.local.AuthenticationFakeDataSourceImpl
 import com.composetest.core.data.datasources.local.NewsApiFakeDataSourceImpl
-import com.composetest.core.data.datasources.local.OpenWeatherFakeDataSourceImpl
 import com.composetest.core.data.datasources.remote.AuthenticationDataSourceImpl
 import com.composetest.core.data.datasources.remote.NewsApiDataSourceImpl
-import com.composetest.core.data.datasources.remote.OpenWeatherDataSourceImpl
 import com.composetest.core.data.mappers.AuthenticationMapper
 import com.composetest.core.data.providers.AssetsProvider
 import com.composetest.core.data.providers.AssetsProviderImpl
@@ -46,23 +43,6 @@ internal object DataSourceModule {
         fakeInstance = AuthenticationFakeDataSourceImpl(
             apiCallUtils = apiCallUtils,
             dateTimeProvider = dateTimeProvider,
-            assetsProvider = assetsProvider
-        )
-    )
-
-    @Provides
-    fun openWeatherDataSource(
-        environmentInstanceProvider: EnvironmentInstanceProvider,
-        apiCallUtils: ApiCallUtils,
-        assetsProvider: AssetsProvider,
-        @ApiQualifier(Api.OPEN_WEATHER) openWeatherApi: HttpClient
-    ): OpenWeatherDataSource = environmentInstanceProvider.getInstance(
-        instance = OpenWeatherDataSourceImpl(
-            apiCallUtils = apiCallUtils,
-            openWeatherApi = openWeatherApi,
-        ),
-        fakeInstance = OpenWeatherFakeDataSourceImpl(
-            apiCallUtils = apiCallUtils,
             assetsProvider = assetsProvider
         )
     )

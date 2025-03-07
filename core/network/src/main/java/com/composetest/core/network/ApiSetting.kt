@@ -17,17 +17,6 @@ sealed interface ApiSetting {
             const val API_KEY_HEADER = "x-api-key"
         }
     }
-
-    data class OpenWeatherApi(
-        private val apiId: String,
-        override val url: String,
-    ) : ApiSetting {
-        override val queryParameters = mapOf(API_ID_PARAM to apiId)
-
-        private companion object {
-            const val API_ID_PARAM = "appid"
-        }
-    }
 }
 
 interface ApiSetting1 {
