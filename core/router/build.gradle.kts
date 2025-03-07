@@ -1,8 +1,6 @@
 plugins {
     alias(libs.plugins.composeTest.library)
     alias(libs.plugins.composeTest.compose)
-    alias(libs.plugins.kotlinSerialization)
-    id("kotlin-parcelize")
 }
 
 android {
@@ -11,6 +9,6 @@ android {
 
 dependencies {
     implementation(projects.common)
-    implementation(libs.kotlin.json.serializable)
     implementation(libs.kotlin.reflect)
+    implementation(libs.kotlin.json.serializable)
 }

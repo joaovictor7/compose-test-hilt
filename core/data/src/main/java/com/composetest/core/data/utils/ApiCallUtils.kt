@@ -8,7 +8,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 
-internal class ApiCallUtils @Inject constructor(
+class ApiCallUtils @Inject constructor(
     private val buildConfigProvider: BuildConfigProvider,
     private val dispatcherProvider: DispatcherProvider
 ) {

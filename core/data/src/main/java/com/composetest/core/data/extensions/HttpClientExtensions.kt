@@ -6,20 +6,20 @@ import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.get
 import io.ktor.client.request.post
 
-internal suspend inline fun <reified Response> HttpClient.post(
+suspend inline fun <reified Response> HttpClient.post(
     path: String,
     request: HttpRequestBuilder.() -> Unit
 ) = post(path, request)
 
-internal suspend inline fun <reified Response> HttpClient.post(
+suspend inline fun <reified Response> HttpClient.post(
     request: HttpRequestBuilder.() -> Unit
 ) = post(request)
 
-internal suspend inline fun <reified Response> HttpClient.get(
+suspend inline fun <reified Response> HttpClient.get(
     path: String,
     request: HttpRequestBuilder.() -> Unit = {}
 ) = get(path, request).body<Response>()
 
-internal suspend inline fun <reified Response> HttpClient.get(
+suspend inline fun <reified Response> HttpClient.get(
     request: HttpRequestBuilder.() -> Unit = {}
 ) = get(request).body<Response>()

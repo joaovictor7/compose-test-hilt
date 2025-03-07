@@ -2,20 +2,19 @@ package com.composetest.core.data.di
 
 import com.composetest.common.providers.DateTimeProvider
 import com.composetest.core.data.datasources.AuthenticationDataSource
-import com.composetest.core.data.datasources.CoinDataSource
 import com.composetest.core.data.datasources.NewsApiDataSource
 import com.composetest.core.data.datasources.OpenWeatherDataSource
 import com.composetest.core.data.datasources.local.AuthenticationFakeDataSourceImpl
-import com.composetest.core.data.datasources.local.CoinDataSourceFakeImpl
 import com.composetest.core.data.datasources.local.NewsApiFakeDataSourceImpl
 import com.composetest.core.data.datasources.local.OpenWeatherFakeDataSourceImpl
 import com.composetest.core.data.datasources.remote.AuthenticationDataSourceImpl
-import com.composetest.core.data.datasources.remote.CoinDataSourceImpl
 import com.composetest.core.data.datasources.remote.NewsApiDataSourceImpl
 import com.composetest.core.data.datasources.remote.OpenWeatherDataSourceImpl
 import com.composetest.core.data.mappers.AuthenticationMapper
 import com.composetest.core.data.providers.AssetsProvider
+import com.composetest.core.data.providers.AssetsProviderImpl
 import com.composetest.core.data.providers.EnvironmentInstanceProvider
+import com.composetest.core.data.providers.EnvironmentInstanceProviderImpl
 import com.composetest.core.data.utils.ApiCallUtils
 import com.composetest.core.network.di.qualifiers.ApiQualifier
 import com.composetest.core.network.enums.Api
@@ -32,9 +31,9 @@ internal object DataSourceModule {
 
     @Provides
     fun authenticationDataSource(
-        environmentInstanceProvider: EnvironmentInstanceProvider,
+        environmentInstanceProvider: EnvironmentInstanceProviderImpl,
         dateTimeProvider: DateTimeProvider,
-        assetsProvider: AssetsProvider,
+        assetsProvider: AssetsProviderImpl,
         firebaseAuth: FirebaseAuth,
         authenticationMapper: AuthenticationMapper,
         apiCallUtils: ApiCallUtils,
@@ -83,16 +82,5 @@ internal object DataSourceModule {
             apiCallUtils = apiCallUtils,
             assetsProvider = assetsProvider
         )
-    )
-
-    @Provides
-    fun coinDataSource(
-        apiCallUtils: ApiCallUtils,
-        assetsProvider: AssetsProvider,
-        environmentInstanceProvider: EnvironmentInstanceProvider,
-        @ApiQualifier(Api.COIN_API) httpClient: HttpClient
-    ): CoinDataSource = environmentInstanceProvider.getInstance(
-        instance = CoinDataSourceImpl(apiCallUtils, httpClient),
-        fakeInstance = CoinDataSourceFakeImpl(apiCallUtils, assetsProvider)
     )
 }

@@ -40,16 +40,4 @@ internal object ApiModule {
             url = buildConfigProvider.buildConfigFields.openWeatherApiHost,
         )
     )
-
-    @Provides
-    @ApiQualifier(Api.COIN_API)
-    fun coinApi(
-        remoteConfigRepository: RemoteConfigRepository,
-        buildConfigProvider: BuildConfigProvider
-    ): HttpClient = HttpClientBuilder.build(
-        ApiSetting.CoinApi(
-            apiKey = remoteConfigRepository.getString(ApiKeyRemoteConfig.COIN_API.key),
-            url = buildConfigProvider.buildConfigFields.coinApiHost,
-        )
-    )
 }

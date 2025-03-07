@@ -17,6 +17,7 @@ internal fun Project.configureAndroid(
 ) = with(commonExtension) {
     with(pluginManager) {
         apply("org.jetbrains.kotlin.android")
+        apply("org.jetbrains.kotlin.plugin.serialization")
         apply("com.google.devtools.ksp")
     }
     compileSdk = AppConfig.COMPILE_SDK_VERSION
