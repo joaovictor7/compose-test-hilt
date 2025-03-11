@@ -8,5 +8,5 @@ class BiometricIsEnableUseCase @Inject constructor(
     private val configurationRepository: ConfigurationRepository,
 ) {
     suspend operator fun invoke() =
-        configurationRepository.getLastSecurityConfiguration()?.biometricLogin.orFalse
+        configurationRepository.getLastBiometricConfiguration().orFalse
 }

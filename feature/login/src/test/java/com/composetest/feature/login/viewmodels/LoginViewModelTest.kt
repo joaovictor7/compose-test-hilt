@@ -11,7 +11,7 @@ import com.composetest.core.domain.enums.Flavor
 import com.composetest.core.domain.models.buildconfig.BuildConfigFieldsModel
 import com.composetest.core.domain.models.buildconfig.BuildConfigModel
 import com.composetest.core.domain.providers.BuildConfigProvider
-import com.composetest.core.domain.usecases.configuration.SetSystemBarsStyleUseCase
+import com.composetest.feature.configuration.domain.usecases.SetSystemBarsStyleUseCase
 import com.composetest.core.domain.usecases.login.AuthenticationByBiometricUseCase
 import com.composetest.core.domain.usecases.login.AuthenticationUseCase
 import com.composetest.core.domain.usecases.login.BiometricIsEnableUseCase
@@ -50,7 +50,7 @@ internal class LoginViewModelTest : BaseTest() {
     private val authenticationUseCase: AuthenticationUseCase = mockk(relaxed = true)
     private val authenticationByBiometricUseCase: AuthenticationByBiometricUseCase =
         mockk(relaxed = true)
-    private val setSystemBarsStyleUseCase: SetSystemBarsStyleUseCase = mockk(relaxed = true)
+    private val setSystemBarsStyleUseCase: com.composetest.feature.configuration.domain.usecases.SetSystemBarsStyleUseCase = mockk(relaxed = true)
     private val getBooleanRemoteConfigUseCase: GetBooleanRemoteConfigUseCase = mockk(relaxed = true)
     private val analyticSender: AnalyticSender = mockk(relaxed = true)
     private val biometricIsEnableUseCase: BiometricIsEnableUseCase = mockk(relaxed = true)

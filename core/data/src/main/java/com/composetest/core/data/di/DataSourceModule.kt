@@ -3,8 +3,10 @@ package com.composetest.core.data.di
 import com.composetest.common.providers.DateTimeProvider
 import com.composetest.core.data.datasources.AuthenticationDataSource
 import com.composetest.core.data.datasources.NewsApiDataSource
+import com.composetest.core.data.datasources.PreferenceDataSource
 import com.composetest.core.data.datasources.local.AuthenticationFakeDataSourceImpl
 import com.composetest.core.data.datasources.local.NewsApiFakeDataSourceImpl
+import com.composetest.core.data.datasources.local.PreferenceDataSourceImpl
 import com.composetest.core.data.datasources.remote.AuthenticationDataSourceImpl
 import com.composetest.core.data.datasources.remote.NewsApiDataSourceImpl
 import com.composetest.core.data.mappers.AuthenticationMapper
@@ -63,4 +65,9 @@ internal object DataSourceModule {
             assetsProvider = assetsProvider
         )
     )
+
+    @Provides
+    fun preferencesDataSource(
+        preferenceDataSourceImpl: PreferenceDataSourceImpl
+    ): PreferenceDataSource = preferenceDataSourceImpl
 }

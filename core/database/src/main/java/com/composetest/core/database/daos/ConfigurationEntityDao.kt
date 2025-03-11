@@ -25,11 +25,11 @@ interface ConfigurationEntityDao {
     suspend fun getCurrentConfiguration(): ConfigurationEntity?
 
     @Query(
-        "SELECT configuration.* FROM configuration " +
+        "SELECT configuration.biometricLogin FROM configuration " +
                 "JOIN user ON user.userId = configuration.userId " +
                 "JOIN session ON session.userId = user.userId " +
                 "WHERE session.endDate = (SELECT MAX(endDate) FROM session)" +
                 "LIMIT 1"
     )
-    suspend fun getLastConfiguration(): ConfigurationEntity?
+    suspend fun getLastBiometricConfiguration(): Boolean?
 }

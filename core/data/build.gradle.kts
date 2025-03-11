@@ -14,12 +14,12 @@ dependencies {
     implementation(projects.common)
     implementation(projects.core.analytic)
     implementation(libs.kotlin.json.serializable)
-    implementation(libs.androidx.dataStore)
     implementation(libs.androidx.hilt.work)
     implementation(libs.androidx.work.manager)
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.config)
     implementation(libs.firebase.auth)
+    api(libs.androidx.dataStore)
     ksp(libs.androidx.hilt.compiler)
 }
