@@ -5,7 +5,7 @@ import com.composetest.feature.weatherforecast.domain.models.TodayWeatherForecas
 import com.composetest.feature.weatherforecast.domain.models.WeatherForecastModel
 import javax.inject.Inject
 
-internal class GeTodayWeatherForecastUseCase @Inject constructor(
+internal class GetTodayWeatherForecastUseCase @Inject constructor(
     private val dateTimeProvider: DateTimeProvider
 ) {
 

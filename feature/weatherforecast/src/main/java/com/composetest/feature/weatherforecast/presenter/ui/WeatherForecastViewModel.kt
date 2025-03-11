@@ -4,7 +4,7 @@ import android.location.Location
 import com.composetest.core.analytic.AnalyticSender
 import com.composetest.core.designsystem.components.dialogs.CommonSimpleDialog
 import com.composetest.core.designsystem.utils.getCommonSimpleDialogErrorParam
-import com.composetest.feature.weatherforecast.domain.usescases.GeTodayWeatherForecastUseCase
+import com.composetest.feature.weatherforecast.domain.usescases.GetTodayWeatherForecastUseCase
 import com.composetest.feature.weatherforecast.domain.usescases.GetFutureWeatherForecastUseCase
 import com.composetest.feature.weatherforecast.domain.usescases.GetWeatherForecastsUseCase
 import com.composetest.feature.weatherforecast.domain.usescases.GetWeatherNowUseCase
@@ -31,7 +31,7 @@ import javax.inject.Inject
 internal class WeatherForecastViewModel @Inject constructor(
     private val getWeatherNowUseCase: GetWeatherNowUseCase,
     private val getWeatherForecastsUseCase: GetWeatherForecastsUseCase,
-    private val getTodayWeatherForecastUseCase: GeTodayWeatherForecastUseCase,
+    private val getTodayWeatherForecastUseCase: GetTodayWeatherForecastUseCase,
     private val getFutureWeatherForecastsUseCase: GetFutureWeatherForecastUseCase,
     private val weatherNowScreenModelMapper: WeatherNowScreenModelMapper,
     private val futureWeatherForecastScreenModelsMapper: FutureWeatherForecastScreenModelsMapper,

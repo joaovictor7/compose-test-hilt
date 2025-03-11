@@ -22,15 +22,12 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 internal object FirebaseModule {
     @Provides
-    @Singleton
     fun firebaseCrashlytics(): FirebaseCrashlytics = Firebase.crashlytics
 
     @Provides
-    @Singleton
     fun firebaseAnalytics(): FirebaseAnalytics = Firebase.analytics
 
     @Provides
-    @Singleton
     fun firebaseAuth(): FirebaseAuth = Firebase.auth
 
     @Provides
