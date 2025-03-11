@@ -1,4 +1,4 @@
-package com.composetest.core.domain.models.configuration
+package com.composetest.feature.configuration.domain.models
 
 internal data class ConfigurationModel(
     val id: Long = 0,

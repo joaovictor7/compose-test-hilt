@@ -7,7 +7,9 @@ import com.composetest.feature.configuration.data.datasources.local.Configuratio
 import com.composetest.feature.configuration.domain.models.SecurityConfigurationModel
 import com.composetest.core.domain.models.configuration.ThemeConfigurationModel
 import com.composetest.core.domain.repositories.ConfigurationRepository
+import com.composetest.feature.configuration.data.mappers.ConfigurationMapper
 import com.composetest.feature.configuration.data.mappers.ThemeConfigurationMapper
+import com.composetest.feature.configuration.domain.models.ConfigurationModel
 import javax.inject.Inject
 
 internal class ConfigurationRepositoryImpl @Inject constructor(
@@ -15,7 +17,12 @@ internal class ConfigurationRepositoryImpl @Inject constructor(
     private val preferenceDataSource: PreferenceDataSource,
     private val themeConfigurationMapper: ThemeConfigurationMapper,
     private val securityConfigurationMapper: SecurityConfigurationMapper,
+    private val configurationMapper: ConfigurationMapper,
 ) : ConfigurationRepository {
+
+    override suspend fun insertDefaultUserConfiguration(userId: String) {
+        upsert(ConfigurationModel(userId = userId))
+    }
 
     override suspend fun getLastBiometricConfiguration() =
         configurationDataSource.getLastBiometricConfiguration()
@@ -29,6 +36,10 @@ internal class ConfigurationRepositoryImpl @Inject constructor(
     suspend fun getSecurityConfiguration(): SecurityConfigurationModel? {
         val entity = configurationDataSource.getConfiguration()
         return securityConfigurationMapper.mapperToModel(entity)
+    }
+
+    suspend fun upsert(configurationModel: ConfigurationModel) {
+        configurationDataSource.upsert(configurationMapper.mapperToEntity(configurationModel))
     }
 
     suspend fun updateSecurityConfiguration(securityConfigurationModel: SecurityConfigurationModel) {

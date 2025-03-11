@@ -1,7 +1,7 @@
 package com.composetest.feature.configuration.data.mappers
 
 import com.composetest.core.database.entities.configuration.ConfigurationEntity
-import com.composetest.core.domain.models.configuration.ConfigurationModel
+import com.composetest.feature.configuration.domain.models.ConfigurationModel
 import javax.inject.Inject
 
 internal class ConfigurationMapper @Inject constructor(
