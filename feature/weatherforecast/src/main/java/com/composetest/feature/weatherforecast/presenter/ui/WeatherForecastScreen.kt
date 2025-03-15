@@ -120,7 +120,7 @@ private fun FullScreenMessage(
             verticalArrangement = Arrangement.spacedBy(Spacing.eight),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            if (uiState.screenStatus == WeatherForecastScreenStatus.PERMISSION_NOT_GRANTED) {
+            if (uiState.isPermissionNotGranted) {
                 Text(
                     text = stringResource(R.string.weather_forecast_required_permission_msg),
                     style = MaterialTheme.typography.bodyLarge,

@@ -8,5 +8,5 @@ class GetStringRemoteConfigUseCase @Inject constructor(
     private val remoteConfigRepository: RemoteConfigRepository,
 ) {
     operator fun invoke(remoteConfig: RemoteConfig) =
-        remoteConfigRepository.getString(remoteConfig.key)
+        remoteConfigRepository.getString(remoteConfig)
 }

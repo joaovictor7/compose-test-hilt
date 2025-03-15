@@ -8,5 +8,5 @@ class GetLongRemoteConfigUseCase @Inject constructor(
     private val remoteConfigRepository: RemoteConfigRepository,
 ) {
     operator fun invoke(remoteConfig: RemoteConfig) =
-        remoteConfigRepository.getLong(remoteConfig.key)
+        remoteConfigRepository.getLong(remoteConfig)
 }

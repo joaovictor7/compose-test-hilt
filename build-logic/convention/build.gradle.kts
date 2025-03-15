@@ -12,24 +12,24 @@ gradlePlugin {
     plugins {
         fun registerPlugin(id: String, className: String) {
             register(id) {
-                this.id = id
+                this.id = "com.composetest.$id"
                 this.implementationClass = className
             }
         }
         registerPlugin(
-            id = "com.composetest.application",
+            id = "application",
             className = "ApplicationConventionPlugin"
         )
         registerPlugin(
-            id = "com.composetest.library",
+            id = "library",
             className = "LibraryConventionPlugin"
         )
         registerPlugin(
-            id = "com.composetest.compose",
+            id = "compose",
             className = "ComposeConventionPlugin"
         )
         registerPlugin(
-            id = "com.composetest.test",
+            id = "test",
             className = "TestConventionPlugin"
         )
     }

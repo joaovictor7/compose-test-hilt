@@ -8,5 +8,5 @@ class GetDoubleRemoteConfigUseCase @Inject constructor(
     private val remoteConfigRepository: RemoteConfigRepository,
 ) {
     operator fun invoke(remoteConfig: RemoteConfig) =
-        remoteConfigRepository.getDouble(remoteConfig.key)
+        remoteConfigRepository.getDouble(remoteConfig)
 }

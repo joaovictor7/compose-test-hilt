@@ -1,12 +1,12 @@
 package com.composetest.feature.weatherforecast.network.di
 
-import com.composetest.core.domain.enums.remoteconfigs.ApiKeyRemoteConfig
 import com.composetest.core.domain.providers.BuildConfigProvider
 import com.composetest.core.domain.repositories.RemoteConfigRepository
 import com.composetest.core.network.HttpClientBuilder
 import com.composetest.core.network.di.qualifiers.ApiQualifier
 import com.composetest.core.network.enums.Api
 import com.composetest.feature.weatherforecast.network.OpenWeatherApi
+import com.composetest.feature.weatherforecast.network.enums.ApiKeyRemoteConfig
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,7 +24,7 @@ internal object ApiModule {
         buildConfigProvider: BuildConfigProvider
     ): HttpClient = HttpClientBuilder.build(
         OpenWeatherApi(
-            apiId = remoteConfigRepository.getString(ApiKeyRemoteConfig.OPEN_WEATHER_API.key),
+            apiId = remoteConfigRepository.getString(ApiKeyRemoteConfig.OPEN_WEATHER_API),
             url = buildConfigProvider.buildConfigFields.openWeatherApiHost,
         )
     )

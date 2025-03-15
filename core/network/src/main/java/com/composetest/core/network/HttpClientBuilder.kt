@@ -63,22 +63,4 @@ object HttpClientBuilder {
             }
         }
     }
-
-    fun build(apiSetting: ApiSetting1) = httpClient.config {
-        defaultRequest {
-            url {
-                url(apiSetting.url.scapeCharacterTreatment)
-                appendPathSegments(apiSetting.path.scapeCharacterTreatment)
-                port = apiSetting.port
-                apiSetting.queryParameters.forEach {
-                    parameters.append(it.key, it.value)
-                }
-            }
-            headers {
-                apiSetting.headers.forEach {
-                    append(it.key, it.value)
-                }
-            }
-        }
-    }
 }

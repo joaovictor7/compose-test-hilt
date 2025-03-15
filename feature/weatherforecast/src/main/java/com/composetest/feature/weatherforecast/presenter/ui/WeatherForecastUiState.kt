@@ -32,6 +32,9 @@ internal data class WeatherForecastUiState(
             WeatherForecastScreenStatus.PERMISSION_NOT_GRANTED
         ) || (weatherNowStatus == WeatherForecastStatus.ERROR && weatherForecastsStatus == WeatherForecastStatus.ERROR)
 
+    val isPermissionNotGranted get() =
+        screenStatus == WeatherForecastScreenStatus.PERMISSION_NOT_GRANTED
+
     fun setScreenStatus(screenStatus: WeatherForecastScreenStatus) =
         copy(screenStatus = screenStatus)
 
