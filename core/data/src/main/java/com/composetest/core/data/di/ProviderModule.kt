@@ -8,8 +8,8 @@ import com.composetest.core.data.providers.AssetsProvider
 import com.composetest.core.data.providers.AssetsProviderImpl
 import com.composetest.core.data.providers.DateTimeProviderImpl
 import com.composetest.core.data.providers.DispatcherProviderImpl
-import com.composetest.core.data.providers.EnvironmentInstanceProviderImpl
 import com.composetest.core.data.providers.EnvironmentInstanceProvider
+import com.composetest.core.data.providers.EnvironmentInstanceProviderImpl
 import com.composetest.core.data.providers.LocaleProviderImpl
 import com.composetest.core.data.providers.NetworkProviderImpl
 import dagger.Binds

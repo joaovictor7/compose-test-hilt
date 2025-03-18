@@ -1,7 +1,7 @@
 package com.composetest.feature.news.presenter.ui.news.list
 
-import com.composetest.feature.news.domain.models.ArticleModel
 import com.composetest.core.ui.interfaces.Command
+import com.composetest.feature.news.domain.models.ArticleModel
 
 internal sealed interface NewsListCommand : Command<NewsListCommandReceiver> {
     data class NavigateToFullNews(private val articleModel: ArticleModel) : NewsListCommand {

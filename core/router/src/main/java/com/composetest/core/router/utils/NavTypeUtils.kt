@@ -1,11 +1,8 @@
 package com.composetest.core.router.utils
 
-import android.os.Bundle
 import androidx.navigation.NavType
-import kotlinx.serialization.json.Json
 import kotlin.reflect.KType
 import kotlin.reflect.full.companionObjectInstance
-import kotlin.reflect.typeOf
 import com.composetest.core.router.interfaces.NavType as NavTypes
 
 inline fun <reified D> getNavTypes(): Map<KType, NavType<*>> =

@@ -1,11 +1,15 @@
 package com.composetest.feature.configuration.presenter.ui.configuration
 
+import androidx.lifecycle.viewModelScope
 import com.composetest.core.analytic.AnalyticSender
+import com.composetest.core.analytic.events.CommonAnalyticEvent
 import com.composetest.core.router.models.NavigationModel
 import com.composetest.core.ui.bases.BaseViewModel
+import com.composetest.core.ui.di.qualifiers.AsyncTaskUtilsQualifier
 import com.composetest.core.ui.interfaces.UiEvent
 import com.composetest.core.ui.interfaces.UiState
-import com.composetest.core.analytic.events.configuration.ConfigurationScreenAnalytic
+import com.composetest.core.ui.utils.AsyncTaskUtils
+import com.composetest.feature.configuration.analytic.screens.ConfigurationScreenAnalytic
 import com.composetest.feature.configuration.presenter.enums.Configuration
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -17,12 +21,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class ConfigurationViewModel @Inject constructor(
-    override val analyticSender: AnalyticSender,
+    private val analyticSender: AnalyticSender,
+    @AsyncTaskUtilsQualifier(ConfigurationScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
 ) : BaseViewModel(), UiState<ConfigurationUiState>, UiEvent<ConfigurationUiEvent>,
     ConfigurationCommandReceiver {
 
     override val commandReceiver = this
-    override val analyticScreen = ConfigurationScreenAnalytic
 
     private val _uiState = MutableStateFlow(ConfigurationUiState())
     override val uiState = _uiState.asStateFlow()
@@ -36,6 +40,12 @@ internal class ConfigurationViewModel @Inject constructor(
 
     override fun configurationClick(configuration: Configuration) {
         _uiEvent.emitEvent(ConfigurationUiEvent.NavigateTo(NavigationModel(configuration.destination)))
+    }
+
+    override fun sendOpenScreenAnalytic() {
+        asyncTaskUtils.runAsyncTask(viewModelScope) {
+            analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(ConfigurationScreenAnalytic))
+        }
     }
 
     private fun initUiState() {

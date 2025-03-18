@@ -1,8 +1,8 @@
 package com.composetest.feature.weatherforecast.presenter.mappers
 
 import com.composetest.common.providers.LocaleProvider
-import com.composetest.feature.weatherforecast.domain.models.WeatherNowModel
 import com.composetest.core.domain.providers.BuildConfigProvider
+import com.composetest.feature.weatherforecast.domain.models.WeatherNowModel
 import com.composetest.feature.weatherforecast.presenter.models.WeatherNowScreenModel
 import javax.inject.Inject
 

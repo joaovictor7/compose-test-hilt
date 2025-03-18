@@ -1,12 +1,16 @@
 package com.composetest.feature.profile.ui.editprofile
 
+import androidx.lifecycle.viewModelScope
 import com.composetest.core.analytic.AnalyticSender
+import com.composetest.core.analytic.events.CommonAnalyticEvent
 import com.composetest.core.analytic.events.profile.EditProfileScreenAnalytic
 import com.composetest.core.domain.models.UserModel
 import com.composetest.core.domain.usecases.user.GetUserUseCase
 import com.composetest.core.domain.usecases.user.UpdateUserUseCase
 import com.composetest.core.ui.bases.BaseViewModel
+import com.composetest.core.ui.di.qualifiers.AsyncTaskUtilsQualifier
 import com.composetest.core.ui.interfaces.UiState
+import com.composetest.core.ui.utils.AsyncTaskUtils
 import com.composetest.feature.profile.mappers.ProfileFormMapper
 import com.composetest.feature.profile.models.ProfileFormModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,11 +24,11 @@ internal class EditProfileViewModel @Inject constructor(
     private val getUserUseCase: GetUserUseCase,
     private val updateUserUseCase: UpdateUserUseCase,
     private val profileFormMapper: ProfileFormMapper,
-    override val analyticSender: AnalyticSender,
+    private val analyticSender: AnalyticSender,
+    @AsyncTaskUtilsQualifier(EditProfileScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
 ) : BaseViewModel(), UiState<EditProfileUiState>, EditProfileCommandReceiver {
 
     override val commandReceiver = this
-    override val analyticScreen = EditProfileScreenAnalytic
 
     private var userModel: UserModel? = null
 
@@ -32,8 +36,14 @@ internal class EditProfileViewModel @Inject constructor(
     override val uiState = _uiState.asStateFlow()
 
     init {
-        openScreenAnalytic()
+        sendOpenScreenAnalytic()
         initUiState()
+    }
+
+    override fun sendOpenScreenAnalytic() {
+        asyncTaskUtils.runAsyncTask(viewModelScope) {
+            analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(EditProfileScreenAnalytic))
+        }
     }
 
     override fun setFormData(profileFormModel: ProfileFormModel) {
@@ -53,7 +63,7 @@ internal class EditProfileViewModel @Inject constructor(
     }
 
     private fun initUiState() {
-        runAsyncTask {
+        asyncTaskUtils.runAsyncTask(viewModelScope) {
             getUserUseCase()?.let { userModel ->
                 _uiState.update {
                     it.copy(profileForm = profileFormMapper.mapperToModel(userModel))

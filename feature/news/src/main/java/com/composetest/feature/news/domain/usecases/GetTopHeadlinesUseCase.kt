@@ -2,7 +2,6 @@ package com.composetest.feature.news.domain.usecases
 
 import com.composetest.feature.news.data.repositories.NewsApiRepository
 import javax.inject.Inject
-import kotlin.collections.filterNot
 
 internal class GetTopHeadlinesUseCase @Inject constructor(
     private val repository: NewsApiRepository

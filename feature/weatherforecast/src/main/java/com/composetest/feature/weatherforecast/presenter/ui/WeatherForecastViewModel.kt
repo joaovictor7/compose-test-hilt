@@ -1,20 +1,24 @@
 package com.composetest.feature.weatherforecast.presenter.ui
 
 import android.location.Location
+import androidx.lifecycle.viewModelScope
 import com.composetest.core.analytic.AnalyticSender
+import com.composetest.core.analytic.events.CommonAnalyticEvent
 import com.composetest.core.designsystem.components.dialogs.CommonSimpleDialog
 import com.composetest.core.designsystem.utils.getCommonSimpleDialogErrorParam
-import com.composetest.feature.weatherforecast.domain.usescases.GetTodayWeatherForecastUseCase
-import com.composetest.feature.weatherforecast.domain.usescases.GetFutureWeatherForecastUseCase
-import com.composetest.feature.weatherforecast.domain.usescases.GetWeatherForecastsUseCase
-import com.composetest.feature.weatherforecast.domain.usescases.GetWeatherNowUseCase
 import com.composetest.core.ui.bases.BaseViewModel
+import com.composetest.core.ui.di.qualifiers.AsyncTaskUtilsQualifier
 import com.composetest.core.ui.enums.Permission
 import com.composetest.core.ui.interfaces.UiEvent
 import com.composetest.core.ui.interfaces.UiState
 import com.composetest.core.ui.providers.LocationProvider
 import com.composetest.core.ui.providers.PermissionProvider
-import com.composetest.feature.weatherforecast.analytics.WeatherForecastScreenAnalytic
+import com.composetest.core.ui.utils.AsyncTaskUtils
+import com.composetest.feature.weatherforecast.analytic.screens.WeatherForecastScreenAnalytic
+import com.composetest.feature.weatherforecast.domain.usescases.GetFutureWeatherForecastUseCase
+import com.composetest.feature.weatherforecast.domain.usescases.GetTodayWeatherForecastUseCase
+import com.composetest.feature.weatherforecast.domain.usescases.GetWeatherForecastsUseCase
+import com.composetest.feature.weatherforecast.domain.usescases.GetWeatherNowUseCase
 import com.composetest.feature.weatherforecast.presenter.enums.WeatherForecastScreenStatus
 import com.composetest.feature.weatherforecast.presenter.enums.WeatherForecastStatus
 import com.composetest.feature.weatherforecast.presenter.mappers.FutureWeatherForecastScreenModelsMapper
@@ -37,12 +41,12 @@ internal class WeatherForecastViewModel @Inject constructor(
     private val futureWeatherForecastScreenModelsMapper: FutureWeatherForecastScreenModelsMapper,
     private val locationProvider: LocationProvider,
     private val permissionProvider: PermissionProvider,
-    override val analyticSender: AnalyticSender,
+    private val analyticSender: AnalyticSender,
+    @AsyncTaskUtilsQualifier(WeatherForecastScreenAnalytic.WEATHER_FORECAST) private val asyncTaskUtils: AsyncTaskUtils,
 ) : BaseViewModel(), UiState<WeatherForecastUiState>, UiEvent<WeatherForecastUiEvent>,
     WeatherForecastCommandReceiver {
 
     override val commandReceiver = this
-    override val analyticScreen = WeatherForecastScreenAnalytic
 
     private var location: Location? = null
     private var weatherForecastNowWasGet = false
@@ -55,7 +59,7 @@ internal class WeatherForecastViewModel @Inject constructor(
     override val uiEvent = _uiEvent.asSharedFlow()
 
     init {
-        openScreenAnalytic()
+        sendOpenScreenAnalytic()
         checkPermissions()
     }
 
@@ -70,7 +74,7 @@ internal class WeatherForecastViewModel @Inject constructor(
     }
 
     override fun getLocationAndWeatherForecastsData() {
-        runAsyncTask(onError = ::handleLocationError) {
+        asyncTaskUtils.runAsyncTask(viewModelScope, onError = ::handleLocationError) {
             location = locationProvider.getLastLocation()
             getWeatherForecastNowData()
             getWeatherForecastsData()
@@ -80,10 +84,15 @@ internal class WeatherForecastViewModel @Inject constructor(
     override fun getWeatherForecastNowData() {
         location?.let { location ->
             _uiState.update { it.copy(weatherNowStatus = WeatherForecastStatus.LOADING) }
-            runAsyncTask(onError = ::handleWeatherForecastNowError) {
-                val weatherNowForecast = getWeatherNowUseCase(location.latitude, location.longitude)
+            asyncTaskUtils.runAsyncTask(viewModelScope, onError = ::handleWeatherForecastNowError) {
+                val weatherNowForecast =
+                    getWeatherNowUseCase(location.latitude, location.longitude)
                 _uiState.update {
-                    it.setWeatherNow(weatherNowScreenModelMapper.mapperToModel(weatherNowForecast))
+                    it.setWeatherNow(
+                        weatherNowScreenModelMapper.mapperToModel(
+                            weatherNowForecast
+                        )
+                    )
                 }
                 weatherForecastNowWasGet = true
             }
@@ -93,7 +102,7 @@ internal class WeatherForecastViewModel @Inject constructor(
     override fun getWeatherForecastsData() {
         location?.let { location ->
             _uiState.update { it.copy(weatherForecastsStatus = WeatherForecastStatus.LOADING) }
-            runAsyncTask(onError = ::handleWeatherForecastsError) {
+            asyncTaskUtils.runAsyncTask(viewModelScope, onError = ::handleWeatherForecastsError) {
                 val weatherForecast =
                     getWeatherForecastsUseCase(location.latitude, location.longitude)
                 val todayWeatherForecast = getTodayWeatherForecastUseCase(weatherForecast)
@@ -113,6 +122,10 @@ internal class WeatherForecastViewModel @Inject constructor(
 
     override fun dismissSimpleDialog() {
         _uiState.update { it.dismissSimpleDialog() }
+    }
+
+    override fun sendOpenScreenAnalytic() = asyncTaskUtils.runAsyncTask(viewModelScope) {
+        analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(WeatherForecastScreenAnalytic))
     }
 
     private fun checkPermissions() {

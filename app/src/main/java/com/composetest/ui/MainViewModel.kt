@@ -1,7 +1,6 @@
 package com.composetest.ui
 
-import com.composetest.analytics.MainAnalytic
-import com.composetest.core.analytic.AnalyticSender
+import androidx.lifecycle.viewModelScope
 import com.composetest.core.domain.usecases.configuration.GetAppThemeUseCase
 import com.composetest.core.domain.usecases.remoteconfigs.FetchRemoteConfigUseCase
 import com.composetest.core.domain.usecases.session.CheckNeedsLoginUseCase
@@ -13,6 +12,8 @@ import com.composetest.core.router.models.NavigationModel
 import com.composetest.core.ui.bases.BaseViewModel
 import com.composetest.core.ui.interfaces.UiEvent
 import com.composetest.core.ui.interfaces.UiState
+import com.composetest.core.ui.utils.AsyncTaskUtils
+import com.composetest.di.qualifiers.MainAsyncTaskUtilsQualifier
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,11 +28,10 @@ internal class MainViewModel @Inject constructor(
     private val checkNeedsLoginUseCase: CheckNeedsLoginUseCase,
     private val getAppThemeUseCase: GetAppThemeUseCase,
     private val fetchRemoteConfigUseCase: FetchRemoteConfigUseCase,
-    override val analyticSender: AnalyticSender,
+    @MainAsyncTaskUtilsQualifier private val asyncTaskUtils: AsyncTaskUtils,
 ) : BaseViewModel(), UiState<MainUiState>, UiEvent<MainUiEvent>, MainCommandReceiver {
 
     override val commandReceiver = this
-    override val analyticScreen = MainAnalytic
 
     private val _uiState = MutableStateFlow(MainUiState())
     override val uiState = _uiState.asStateFlow()
@@ -45,7 +45,7 @@ internal class MainViewModel @Inject constructor(
     }
 
     override fun verifySession(currentRoute: String?) {
-        runAsyncTask {
+        asyncTaskUtils.runAsyncTask(viewModelScope) {
             val validSession = checkSessionIsValidUseCase()
             val loginDestination = LoginDestination(expiredSession = true)
             if (!validSession && currentRoute != loginDestination.asRoute) {
@@ -66,7 +66,7 @@ internal class MainViewModel @Inject constructor(
         _uiState.update { it.setSimpleDialog(null) }
     }
 
-    private fun initUiState() = runAsyncTask {
+    private fun initUiState() = asyncTaskUtils.runAsyncTask(viewModelScope) {
         val firstDestination = if (checkNeedsLoginUseCase()) {
             LoginDestination()
         } else {
@@ -76,7 +76,7 @@ internal class MainViewModel @Inject constructor(
     }
 
     private fun appThemeObservable() {
-        runFlowTask(getAppThemeUseCase()) { appTheme ->
+        asyncTaskUtils.runFlowTask(viewModelScope, getAppThemeUseCase()) { appTheme ->
             _uiState.update { it.setAppTheme(appTheme) }
         }
     }

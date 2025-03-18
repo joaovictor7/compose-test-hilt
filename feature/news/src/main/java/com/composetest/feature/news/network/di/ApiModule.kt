@@ -4,8 +4,8 @@ import com.composetest.core.domain.providers.BuildConfigProvider
 import com.composetest.core.domain.repositories.RemoteConfigRepository
 import com.composetest.core.network.HttpClientBuilder
 import com.composetest.core.network.di.qualifiers.ApiQualifier
-import com.composetest.core.network.enums.Api
 import com.composetest.feature.news.network.NewsApiSetting
+import com.composetest.feature.news.network.constants.ApiConstants
 import com.composetest.feature.news.network.enums.ApiKeyRemoteConfig
 import dagger.Module
 import dagger.Provides
@@ -18,7 +18,7 @@ import io.ktor.client.HttpClient
 internal object ApiModule {
 
     @Provides
-    @ApiQualifier(Api.NEWS_API)
+    @ApiQualifier(ApiConstants.NEWS_API)
     fun newsApi(
         remoteConfigRepository: RemoteConfigRepository,
         buildConfigProvider: BuildConfigProvider

@@ -1,5 +1,7 @@
 package com.composetest.core.domain.enums
 
+import com.composetest.core.domain.enums.BuildType.entries
+
 enum class BuildType {
     RELEASE, DEBUG;
 

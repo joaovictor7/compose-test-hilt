@@ -5,18 +5,23 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.withStyle
+import androidx.lifecycle.viewModelScope
 import com.composetest.core.analytic.AnalyticSender
+import com.composetest.core.analytic.events.CommonAnalyticEvent
+import com.composetest.core.analytic.events.profile.EditProfileScreenAnalytic
+import com.composetest.core.analytic.events.profile.ProfileScreenAnalytic
 import com.composetest.core.designsystem.enums.topbar.TopBarAction
 import com.composetest.core.domain.models.UserModel
 import com.composetest.core.domain.usecases.user.GetUserUseCase
 import com.composetest.core.router.destinations.profile.EditProfileDestination
 import com.composetest.core.router.models.NavigationModel
 import com.composetest.core.ui.bases.BaseViewModel
+import com.composetest.core.ui.di.qualifiers.AsyncTaskUtilsQualifier
 import com.composetest.core.ui.interfaces.UiEvent
 import com.composetest.core.ui.interfaces.UiState
 import com.composetest.core.ui.providers.StringResourceProvider
+import com.composetest.core.ui.utils.AsyncTaskUtils
 import com.composetest.feature.profile.R
-import com.composetest.core.analytic.events.profile.ProfileScreenAnalytic
 import com.composetest.feature.profile.models.ProfileScreenModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -30,11 +35,11 @@ import javax.inject.Inject
 internal class ProfileViewModel @Inject constructor(
     private val getUserUseCase: GetUserUseCase,
     private val stringResourceProvider: StringResourceProvider,
-    override val analyticSender: AnalyticSender,
+    private val analyticSender: AnalyticSender,
+    @AsyncTaskUtilsQualifier(ProfileScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
 ) : BaseViewModel(), UiState<ProfileUiState>, UiEvent<ProfileUiEvent>, ProfileCommandReceiver {
 
     override val commandReceiver = this
-    override val analyticScreen = ProfileScreenAnalytic
 
     private val _uiState = MutableStateFlow(ProfileUiState())
     override val uiState = _uiState.asStateFlow()
@@ -43,8 +48,14 @@ internal class ProfileViewModel @Inject constructor(
     override val uiEvent = _uiEvent.asSharedFlow()
 
     init {
-        openScreenAnalytic()
+        sendOpenScreenAnalytic()
         initUiState()
+    }
+
+    override fun sendOpenScreenAnalytic() {
+        asyncTaskUtils.runAsyncTask(viewModelScope) {
+            analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(EditProfileScreenAnalytic))
+        }
     }
 
     override fun toolbarActionCLick(action: TopBarAction) {
@@ -54,7 +65,7 @@ internal class ProfileViewModel @Inject constructor(
     }
 
     private fun initUiState() {
-        runAsyncTask {
+        asyncTaskUtils.runAsyncTask(viewModelScope) {
             getUserUseCase()?.let { userModel ->
                 val profileScreenModel = getModelToScreen(userModel)
                 _uiState.update { it.setProfileScreenModels(profileScreenModel) }

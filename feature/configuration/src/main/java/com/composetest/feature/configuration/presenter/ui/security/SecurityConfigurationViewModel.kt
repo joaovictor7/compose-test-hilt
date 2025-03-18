@@ -1,13 +1,17 @@
 package com.composetest.feature.configuration.presenter.ui.security
 
+import androidx.lifecycle.viewModelScope
 import com.composetest.core.analytic.AnalyticSender
-import com.composetest.core.analytic.events.configuration.SecurityConfigurationScreenAnalytic
+import com.composetest.core.analytic.events.CommonAnalyticEvent
+import com.composetest.core.security.providers.BiometricProvider
+import com.composetest.core.ui.bases.BaseViewModel
+import com.composetest.core.ui.di.qualifiers.AsyncTaskUtilsQualifier
+import com.composetest.core.ui.interfaces.UiState
+import com.composetest.core.ui.utils.AsyncTaskUtils
+import com.composetest.feature.configuration.analytic.screens.SecurityConfigurationScreenAnalytic
 import com.composetest.feature.configuration.domain.models.SecurityConfigurationModel
 import com.composetest.feature.configuration.domain.usecases.GetSecurityConfigurationUseCase
 import com.composetest.feature.configuration.domain.usecases.UpdateSecurityConfigurationUseCase
-import com.composetest.core.security.providers.BiometricProvider
-import com.composetest.core.ui.bases.BaseViewModel
-import com.composetest.core.ui.interfaces.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -19,11 +23,11 @@ internal class SecurityConfigurationViewModel @Inject constructor(
     private val getSecurityConfigurationUseCase: GetSecurityConfigurationUseCase,
     private val updateSecurityConfigurationUseCase: UpdateSecurityConfigurationUseCase,
     private val biometricProvider: BiometricProvider,
-    override val analyticSender: AnalyticSender,
+    private val analyticSender: AnalyticSender,
+    @AsyncTaskUtilsQualifier(SecurityConfigurationScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
 ) : BaseViewModel(), UiState<SecurityConfigurationUiState>, SecurityConfigurationCommandReceiver {
 
     override val commandReceiver = this
-    override val analyticScreen = SecurityConfigurationScreenAnalytic
 
     private var securityConfiguration: SecurityConfigurationModel? = null
 
@@ -35,7 +39,7 @@ internal class SecurityConfigurationViewModel @Inject constructor(
     }
 
     override fun changeSwitchBiometric(checked: Boolean) {
-        runAsyncTask {
+        asyncTaskUtils.runAsyncTask(viewModelScope) {
             updateSecurityConfigurationUseCase(securityConfiguration?.apply {
                 biometricLogin = checked
             })
@@ -43,9 +47,17 @@ internal class SecurityConfigurationViewModel @Inject constructor(
         }
     }
 
+    override fun sendOpenScreenAnalytic() {
+        asyncTaskUtils.runAsyncTask(viewModelScope) {
+            analyticSender.sendEvent(
+                CommonAnalyticEvent.OpenScreen(SecurityConfigurationScreenAnalytic)
+            )
+        }
+    }
+
     private fun initUiState() {
         val biometricIsAvailable = biometricProvider.biometricIsAvailable
-        runAsyncTask {
+        asyncTaskUtils.runAsyncTask(viewModelScope) {
             securityConfiguration = getSecurityConfigurationUseCase()
             _uiState.update {
                 it.initUiState(biometricIsAvailable, securityConfiguration?.biometricLogin)

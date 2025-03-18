@@ -4,8 +4,8 @@ import com.composetest.core.domain.providers.BuildConfigProvider
 import com.composetest.core.domain.repositories.RemoteConfigRepository
 import com.composetest.core.network.HttpClientBuilder
 import com.composetest.core.network.di.qualifiers.ApiQualifier
-import com.composetest.core.network.enums.Api
 import com.composetest.feature.exchange.network.ExchangeApiSetting
+import com.composetest.feature.exchange.network.constants.ApiConstants
 import com.composetest.feature.exchange.network.enums.ApiKeyRemoteConfig
 import dagger.Module
 import dagger.Provides
@@ -18,7 +18,7 @@ import io.ktor.client.HttpClient
 internal object ApiModule {
 
     @Provides
-    @ApiQualifier(Api.COIN_API)
+    @ApiQualifier(ApiConstants.COIN_API)
     fun coinApi(
         remoteConfigRepository: RemoteConfigRepository,
         buildConfigProvider: BuildConfigProvider

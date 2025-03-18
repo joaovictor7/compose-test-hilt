@@ -4,7 +4,7 @@ import com.composetest.core.domain.enums.Theme
 import com.composetest.core.domain.repositories.SystemBarsThemeRepository
 import javax.inject.Inject
 
- class SetSystemBarsStyleUseCase @Inject constructor(
+class SetSystemBarsStyleUseCase @Inject constructor(
     private val systemBarsThemeRepository: SystemBarsThemeRepository,
 ) {
 

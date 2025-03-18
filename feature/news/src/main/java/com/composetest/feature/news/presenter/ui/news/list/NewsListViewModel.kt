@@ -1,15 +1,19 @@
 package com.composetest.feature.news.presenter.ui.news.list
 
+import androidx.lifecycle.viewModelScope
 import com.composetest.core.analytic.AnalyticSender
-import com.composetest.core.analytic.events.news.NewsListScreenAnalytic
+import com.composetest.core.analytic.events.CommonAnalyticEvent
 import com.composetest.core.designsystem.utils.getCommonSimpleDialogErrorParam
-import com.composetest.feature.news.domain.models.ArticleModel
-import com.composetest.feature.news.domain.usecases.GetTopHeadlinesUseCase
 import com.composetest.core.router.destinations.news.FullNewsDestination
 import com.composetest.core.router.models.NavigationModel
 import com.composetest.core.ui.bases.BaseViewModel
+import com.composetest.core.ui.di.qualifiers.AsyncTaskUtilsQualifier
 import com.composetest.core.ui.interfaces.UiEvent
 import com.composetest.core.ui.interfaces.UiState
+import com.composetest.core.ui.utils.AsyncTaskUtils
+import com.composetest.feature.news.analytic.screens.NewsListScreenAnalytic
+import com.composetest.feature.news.domain.models.ArticleModel
+import com.composetest.feature.news.domain.usecases.GetTopHeadlinesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,11 +25,11 @@ import javax.inject.Inject
 @HiltViewModel
 internal class NewsListViewModel @Inject constructor(
     private val getTopHeadlinesUseCase: GetTopHeadlinesUseCase,
-    override val analyticSender: AnalyticSender,
+    private val analyticSender: AnalyticSender,
+    @AsyncTaskUtilsQualifier(NewsListScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
 ) : BaseViewModel(), UiState<NewsListUiState>, UiEvent<NewsListUiEvent>, NewsListCommandReceiver {
 
     override val commandReceiver = this
-    override val analyticScreen = NewsListScreenAnalytic
 
     private val _uiState = MutableStateFlow(NewsListUiState())
     override val uiState = _uiState.asStateFlow()
@@ -34,6 +38,7 @@ internal class NewsListViewModel @Inject constructor(
     override val uiEvent = _uiEvent.asSharedFlow()
 
     init {
+        sendOpenScreenAnalytic()
         getArticles()
     }
 
@@ -60,9 +65,16 @@ internal class NewsListViewModel @Inject constructor(
         _uiState.update { it.setSimpleDialogParam(null) }
     }
 
+    override fun sendOpenScreenAnalytic() {
+        asyncTaskUtils.runAsyncTask(viewModelScope) {
+            analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(NewsListScreenAnalytic))
+        }
+    }
+
     private fun getArticles() {
         _uiState.update { it.setIsLoading(true) }
-        runAsyncTask(
+        asyncTaskUtils.runAsyncTask(
+            viewModelScope,
             onCompletion = { _uiState.update { it.setIsLoading(false) } },
             onError = ::requestErrorHandler
         ) {

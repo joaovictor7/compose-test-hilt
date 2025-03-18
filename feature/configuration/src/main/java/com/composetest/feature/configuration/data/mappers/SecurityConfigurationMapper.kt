@@ -14,12 +14,14 @@ internal class SecurityConfigurationMapper @Inject constructor() {
         )
     }
 
-    fun mapperToEntity(model: com.composetest.feature.configuration.domain.models.SecurityConfigurationModel) = SecurityConfigurationEntity(
-        biometricLogin = model.biometricLogin
-    )
+    fun mapperToEntity(model: com.composetest.feature.configuration.domain.models.SecurityConfigurationModel) =
+        SecurityConfigurationEntity(
+            biometricLogin = model.biometricLogin
+        )
 
-    fun mapperToUpdate(model: com.composetest.feature.configuration.domain.models.SecurityConfigurationModel) = SecurityConfigurationUpdate(
-        id = model.id,
-        biometricLogin = model.biometricLogin
-    )
+    fun mapperToUpdate(model: com.composetest.feature.configuration.domain.models.SecurityConfigurationModel) =
+        SecurityConfigurationUpdate(
+            id = model.id,
+            biometricLogin = model.biometricLogin
+        )
 }

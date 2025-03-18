@@ -1,7 +1,10 @@
 package com.composetest.feature.login.ui.login
 
+import androidx.lifecycle.viewModelScope
 import com.composetest.common.errors.ApiError
 import com.composetest.core.analytic.AnalyticSender
+import com.composetest.core.analytic.events.CommonAnalyticEvent
+import com.composetest.core.analytic.events.home.HomeScreenAnalytic
 import com.composetest.core.analytic.events.login.LoginEventAnalytic
 import com.composetest.core.analytic.events.login.LoginScreenAnalytic
 import com.composetest.core.designsystem.utils.getCommonSimpleDialogErrorParam
@@ -22,8 +25,10 @@ import com.composetest.core.security.enums.BiometricError.Companion.userClosedPr
 import com.composetest.core.security.providers.BiometricProvider
 import com.composetest.core.security.providers.CipherProvider
 import com.composetest.core.ui.bases.BaseViewModel
+import com.composetest.core.ui.di.qualifiers.AsyncTaskUtilsQualifier
 import com.composetest.core.ui.interfaces.UiEvent
 import com.composetest.core.ui.interfaces.UiState
+import com.composetest.core.ui.utils.AsyncTaskUtils
 import com.composetest.feature.login.R
 import com.composetest.feature.login.enums.LoginRemoteConfig
 import com.composetest.feature.login.extensions.autoShowBiometricPrompt
@@ -48,11 +53,11 @@ internal class LoginViewModel @Inject constructor(
     private val setSystemBarsStyleUseCase: SetSystemBarsStyleUseCase,
     private val getBooleanRemoteConfigUseCase: GetBooleanRemoteConfigUseCase,
     private val loginDestination: LoginDestination,
-    override val analyticSender: AnalyticSender,
+    private val analyticSender: AnalyticSender,
+    @AsyncTaskUtilsQualifier(LoginScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
 ) : BaseViewModel(), UiState<LoginUiState>, UiEvent<LoginUiEvent>, LoginCommandReceiver {
 
     override val commandReceiver = this
-    override val analyticScreen = LoginScreenAnalytic
 
     private val loginFormModel get() = uiState.value.loginFormModel
     private val byPassLogin by lazy { getBooleanRemoteConfigUseCase(LoginRemoteConfig.BY_PASS_LOGIN) }
@@ -64,8 +69,14 @@ internal class LoginViewModel @Inject constructor(
     override val uiEvent = _uiEvent.asSharedFlow()
 
     init {
-        openScreenAnalytic()
+        sendOpenScreenAnalytic()
         initUiState()
+    }
+
+    override fun sendOpenScreenAnalytic() {
+        asyncTaskUtils.runAsyncTask(viewModelScope) {
+            analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(HomeScreenAnalytic))
+        }
     }
 
     override fun checkShowInvalidEmailMsg(hasFocus: Boolean) {
@@ -78,7 +89,8 @@ internal class LoginViewModel @Inject constructor(
 
     override fun login(byBiometric: Boolean) {
         _uiState.update { it.setLoading(true) }
-        runAsyncTask(
+        asyncTaskUtils.runAsyncTask(
+            viewModelScope,
             onError = ::handleLoginError,
             onCompletion = { _uiState.update { it.setLoading(false) } }
         ) {
@@ -139,7 +151,7 @@ internal class LoginViewModel @Inject constructor(
 
     private fun initUiState() {
         val biometricIsAvailable = biometricProvider.biometricIsAvailable
-        runAsyncTask {
+        asyncTaskUtils.runAsyncTask(viewModelScope) {
             val biometricIsEnable = biometricIsEnableUseCase()
             autoShowBiometricPrompt(biometricIsEnable, biometricIsAvailable)
             _uiState.update {

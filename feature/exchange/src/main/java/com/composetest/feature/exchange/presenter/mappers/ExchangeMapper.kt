@@ -2,10 +2,10 @@ package com.composetest.feature.exchange.presenter.mappers
 
 import com.composetest.common.extensions.convertFromString
 import com.composetest.common.extensions.convertToString
-import com.composetest.feature.exchange.domain.models.ExchangeModel
 import com.composetest.core.router.destinations.exchange.ExchangeDetailDestination
 import com.composetest.core.ui.providers.StringResourceProvider
 import com.composetest.feature.exchange.R
+import com.composetest.feature.exchange.domain.models.ExchangeModel
 import com.composetest.feature.exchange.presenter.models.ExchangeDetailRowScreenModel
 import com.composetest.feature.exchange.presenter.models.ExchangeListRowScreenModel
 import com.composetest.feature.exchange.presenter.models.ExchangeScreenModel

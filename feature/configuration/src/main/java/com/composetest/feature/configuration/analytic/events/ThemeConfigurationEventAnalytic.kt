@@ -1,9 +1,10 @@
-package com.composetest.core.analytic.events.configuration
+package com.composetest.feature.configuration.analytic.events
 
 import com.composetest.core.analytic.AnalyticEvent
 import com.composetest.core.analytic.AnalyticScreen
+import com.composetest.feature.configuration.analytic.screens.ThemeConfigurationScreenAnalytic
 
-sealed class ThemeConfigurationEventAnalytic : AnalyticEvent,
+internal sealed class ThemeConfigurationEventAnalytic : AnalyticEvent,
     AnalyticScreen by ThemeConfigurationScreenAnalytic {
 
     data class ChangeThemeConfiguration(

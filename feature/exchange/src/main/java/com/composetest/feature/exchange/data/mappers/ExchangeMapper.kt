@@ -1,8 +1,8 @@
 package com.composetest.feature.exchange.data.mappers
 
 import com.composetest.common.extensions.convertFromString
-import com.composetest.feature.exchange.network.responses.ExchangeResponse
 import com.composetest.feature.exchange.domain.models.ExchangeModel
+import com.composetest.feature.exchange.network.responses.ExchangeResponse
 import javax.inject.Inject
 
 internal class ExchangeMapper @Inject constructor() {

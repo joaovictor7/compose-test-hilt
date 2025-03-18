@@ -1,7 +1,7 @@
 package com.composetest.feature.weatherforecast.presenter.mappers
 
-import com.composetest.feature.weatherforecast.domain.models.FutureWeatherForecastModel
 import com.composetest.core.domain.providers.BuildConfigProvider
+import com.composetest.feature.weatherforecast.domain.models.FutureWeatherForecastModel
 import com.composetest.feature.weatherforecast.presenter.models.FutureDailyWeatherForecastScreenModel
 import com.composetest.feature.weatherforecast.presenter.models.FutureWeatherForecastScreenModel
 import java.time.format.DateTimeFormatter

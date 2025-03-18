@@ -1,17 +1,21 @@
 package com.composetest.feature.root.ui.root
 
+import androidx.lifecycle.viewModelScope
 import com.composetest.core.analytic.AnalyticSender
+import com.composetest.core.analytic.events.CommonAnalyticEvent
+import com.composetest.core.analytic.events.root.RootEventAnalytic
+import com.composetest.core.analytic.events.root.RootScreenAnalytic
 import com.composetest.core.domain.usecases.root.GetAvailableFeaturesUseCase
+import com.composetest.core.domain.usecases.session.FinishSessionUseCase
 import com.composetest.core.domain.usecases.user.GetUserUseCase
 import com.composetest.core.router.destinations.login.LoginDestination
 import com.composetest.core.router.enums.NavigationMode
 import com.composetest.core.router.models.NavigationModel
 import com.composetest.core.ui.bases.BaseViewModel
+import com.composetest.core.ui.di.qualifiers.AsyncTaskUtilsQualifier
 import com.composetest.core.ui.interfaces.UiEvent
 import com.composetest.core.ui.interfaces.UiState
-import com.composetest.core.analytic.events.root.RootEventAnalytic
-import com.composetest.core.analytic.events.root.RootScreenAnalytic
-import com.composetest.core.domain.usecases.session.FinishSessionUseCase
+import com.composetest.core.ui.utils.AsyncTaskUtils
 import com.composetest.feature.root.enums.NavigationFeature
 import com.composetest.feature.root.enums.NavigationLocal
 import com.composetest.feature.root.mappers.UserModalDrawerMapper
@@ -29,16 +33,16 @@ internal class RootViewModel @Inject constructor(
     private val finishSessionUseCase: FinishSessionUseCase,
     private val getUserUseCase: GetUserUseCase,
     private val userModalDrawerMapper: UserModalDrawerMapper,
-    override val analyticSender: AnalyticSender,
+    private val analyticSender: AnalyticSender,
+    @AsyncTaskUtilsQualifier(RootScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
     getAvailableFeaturesUseCase: GetAvailableFeaturesUseCase,
 ) : BaseViewModel(), UiState<RootUiState>, UiEvent<RootUiEvent>, RootCommandReceiver {
+
+    override val commandReceiver = this
 
     private val availableFeatures = getAvailableFeaturesUseCase()
     private val bottomNavigationFeaturesOrder = mutableListOf<NavigationFeature>()
     private var firstBottomNavigationFeature: NavigationFeature? = null
-
-    override val commandReceiver = this
-    override val analyticScreen = RootScreenAnalytic
 
     private val _uiState = MutableStateFlow(RootUiState())
     override val uiState = _uiState.asStateFlow()
@@ -47,7 +51,14 @@ internal class RootViewModel @Inject constructor(
     override val uiEvent = _uiEvent.asSharedFlow()
 
     init {
+        sendOpenScreenAnalytic()
         iniUiState()
+    }
+
+    override fun sendOpenScreenAnalytic() {
+        asyncTaskUtils.runAsyncTask(viewModelScope) {
+            analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(RootScreenAnalytic))
+        }
     }
 
     override fun backHandler() {
@@ -78,7 +89,7 @@ internal class RootViewModel @Inject constructor(
     }
 
     override fun logout() {
-        runAsyncTask {
+        asyncTaskUtils.runAsyncTask(viewModelScope) {
             finishSessionUseCase()
             _uiEvent.emitEvent(
                 RootUiEvent.NavigateToFeature(
@@ -102,7 +113,7 @@ internal class RootViewModel @Inject constructor(
     private fun iniUiState() {
         val modalDrawerNavigationFeatures = getModalDrawerNavigationFeatures()
         val bottomNavigationFeatures = getBottomNavigationFeatures()
-        runAsyncTask {
+        asyncTaskUtils.runAsyncTask(viewModelScope) {
             val user = getUserUseCase()
             _uiState.update {
                 it.initUiState(
@@ -150,7 +161,7 @@ internal class RootViewModel @Inject constructor(
     }
 
     private fun sendNavigateToFeatureAnalytic(navigationFeature: NavigationFeature) {
-        runAsyncTask {
+        asyncTaskUtils.runAsyncTask(viewModelScope) {
             analyticSender.sendEvent(RootEventAnalytic.NavigateToFeature(navigationFeature.feature.name))
         }
     }
