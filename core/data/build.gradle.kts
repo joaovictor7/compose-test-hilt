@@ -19,7 +19,6 @@ dependencies {
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.config)
-    implementation(libs.firebase.auth)
     api(libs.androidx.dataStore)
     ksp(libs.androidx.hilt.compiler)
 }

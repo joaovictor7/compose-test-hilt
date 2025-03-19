@@ -1,14 +1,12 @@
 package com.composetest.core.data.di
 
 import com.composetest.core.data.repositories.AnalyticsRepositoryImpl
-import com.composetest.core.data.repositories.AuthenticationRepositoryImpl
 import com.composetest.core.data.repositories.DatabaseRepositoryImpl
 import com.composetest.core.data.repositories.RemoteConfigRepositoryImpl
 import com.composetest.core.data.repositories.SessionRepositoryImpl
 import com.composetest.core.data.repositories.SystemBarsThemeRepositoryImpl
 import com.composetest.core.data.repositories.UserRepositoryImpl
 import com.composetest.core.domain.repositories.AnalyticsRepository
-import com.composetest.core.domain.repositories.AuthenticationRepository
 import com.composetest.core.domain.repositories.DatabaseRepository
 import com.composetest.core.domain.repositories.RemoteConfigRepository
 import com.composetest.core.domain.repositories.SessionRepository
@@ -50,11 +48,6 @@ internal abstract class RepositoryModule {
     ): SessionRepository
 
     // Remotes
-    @Binds
-    abstract fun authenticationRepository(
-        authenticationRepositoryImpl: AuthenticationRepositoryImpl
-    ): AuthenticationRepository
-
     @Binds
     abstract fun remoteConfigRepository(
         remoteConfigRepositoryImpl: RemoteConfigRepositoryImpl

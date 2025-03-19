@@ -3,9 +3,9 @@ package com.composetest.feature.login
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.composetest.core.designsystem.theme.ComposeTestTheme
-import com.composetest.feature.login.models.BiometricModel
-import com.composetest.feature.login.ui.login.LoginScreen
-import com.composetest.feature.login.ui.login.LoginUiState
+import com.composetest.feature.login.presenter.models.BiometricModel
+import com.composetest.feature.login.presenter.ui.login.LoginScreen
+import com.composetest.feature.login.presenter.ui.login.LoginUiState
 
 internal class LoginScreenTest {
     @Composable
