@@ -1,4 +1,4 @@
-package com.composetest.feature.home.ui.home
+package com.composetest.feature.home.presenter.ui.home
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

@@ -1,4 +1,4 @@
-package com.composetest.core.analytic.events.home
+package com.composetest.feature.home.analytics.screens
 
 import com.composetest.core.analytic.AnalyticScreen
 

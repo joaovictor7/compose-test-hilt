@@ -4,7 +4,6 @@ import androidx.lifecycle.viewModelScope
 import com.composetest.common.errors.ApiError
 import com.composetest.core.analytic.AnalyticSender
 import com.composetest.core.analytic.events.CommonAnalyticEvent
-import com.composetest.core.analytic.events.home.HomeScreenAnalytic
 import com.composetest.core.analytic.events.login.LoginEventAnalytic
 import com.composetest.core.analytic.events.login.LoginScreenAnalytic
 import com.composetest.core.designsystem.utils.getCommonSimpleDialogErrorParam
@@ -75,7 +74,7 @@ internal class LoginViewModel @Inject constructor(
 
     override fun sendOpenScreenAnalytic() {
         asyncTaskUtils.runAsyncTask(viewModelScope) {
-            analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(HomeScreenAnalytic))
+            analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(LoginScreenAnalytic))
         }
     }
 

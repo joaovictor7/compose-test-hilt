@@ -1,9 +1,9 @@
-package com.composetest.feature.home.di
+package com.composetest.feature.home.presenter.di
 
 import com.composetest.core.analytic.AnalyticSender
-import com.composetest.core.analytic.events.home.HomeScreenAnalytic
 import com.composetest.core.ui.di.qualifiers.AsyncTaskUtilsQualifier
 import com.composetest.core.ui.utils.AsyncTaskUtils
+import com.composetest.feature.home.analytics.screens.HomeScreenAnalytic
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
