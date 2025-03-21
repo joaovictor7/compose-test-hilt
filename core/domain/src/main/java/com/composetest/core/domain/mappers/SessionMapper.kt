@@ -10,6 +10,6 @@ internal class SessionMapper @Inject constructor() {
         SessionModel(
             token = authenticationModel.sessionToken,
             startDate = authenticationModel.sessionStartDateTime,
-            endDate = authenticationModel.sessionStartDateTime.plusSeconds(sessionDuration),
+            endDate = authenticationModel.sessionStartDateTime.plusWeeks(sessionDuration),
         )
 }
