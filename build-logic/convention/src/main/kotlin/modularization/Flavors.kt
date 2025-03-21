@@ -8,7 +8,7 @@ import enums.FlavorDimension
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 
-internal fun Project.setFlavors(application: Boolean) = extensions.configure<BaseExtension> {
+internal fun Project.setFlavors(isApplication: Boolean) = extensions.configure<BaseExtension> {
     flavorDimensions(*FlavorDimension.allDimensions.toTypedArray())
     productFlavors {
         FlavorDimension.values().forEach { dimension ->
@@ -16,7 +16,7 @@ internal fun Project.setFlavors(application: Boolean) = extensions.configure<Bas
                 create(flavor.toString()) {
                     this.dimension = dimension.toString()
                     this.isDefault = flavor.isDefault
-                    if (application) {
+                    if (isApplication) {
                         setNonProductionFields(dimension, flavor)
                         setBuildConfigFields(this@setFlavors, flavor)
                     }

@@ -4,7 +4,6 @@ import com.composetest.common.errors.ApiError
 import com.composetest.core.analytic.AnalyticSender
 import com.composetest.core.analytic.events.CommonAnalyticEvent
 import com.composetest.core.analytic.events.login.LoginEventAnalytic
-import com.composetest.core.analytic.events.login.LoginScreenAnalytic
 import com.composetest.core.designsystem.components.dialogs.CommonSimpleDialog
 import com.composetest.core.domain.enums.BuildType
 import com.composetest.core.domain.enums.Flavor
@@ -130,7 +129,10 @@ internal class LoginViewModelTest : BaseTest() {
 
     @Test
     fun `error network`() =
-        runFlowTest(viewModel.uiState, viewModel.uiEvent) { onCancelJob, firstStates, secondStates ->
+        runFlowTest(
+            viewModel.uiState,
+            viewModel.uiEvent
+        ) { onCancelJob, firstStates, secondStates ->
             coEvery { authenticationUseCase(any(), any()) } throws ApiError.Network()
 
             viewModel.executeCommand(LoginCommand.WriteData("teste@teste.com", "password"))

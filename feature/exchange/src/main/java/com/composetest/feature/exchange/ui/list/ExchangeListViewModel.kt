@@ -1,15 +1,19 @@
 package com.composetest.feature.exchange.ui.list
 
+import androidx.lifecycle.viewModelScope
 import com.composetest.common.extensions.orFalse
 import com.composetest.core.analytic.AnalyticSender
+import com.composetest.core.analytic.enums.ScreensAnalytic
+import com.composetest.core.analytic.events.CommonAnalyticEvent
 import com.composetest.core.designsystem.utils.getCommonSimpleDialogErrorParam
 import com.composetest.core.domain.models.exchange.ExchangeModel
 import com.composetest.core.domain.usecases.exchange.GetAllExchangesUseCase
 import com.composetest.core.router.models.NavigationModel
 import com.composetest.core.ui.bases.BaseViewModel
+import com.composetest.core.ui.di.qualifiers.AsyncTaskUtilsQualifier
 import com.composetest.core.ui.interfaces.UiEvent
 import com.composetest.core.ui.interfaces.UiState
-import com.composetest.core.analytic.events.exchange.ExchangeListScreenAnalytic
+import com.composetest.core.ui.utils.AsyncTaskUtils
 import com.composetest.feature.exchange.mappers.ExchangeMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -23,14 +27,14 @@ import javax.inject.Inject
 internal class ExchangeListViewModel @Inject constructor(
     private val getAllExchangesUseCase: GetAllExchangesUseCase,
     private val exchangeMapper: ExchangeMapper,
-    override val analyticSender: AnalyticSender,
+    private val analyticSender: AnalyticSender,
+    @AsyncTaskUtilsQualifier(ScreensAnalytic.EXCHANGE_LIST) private val asyncTaskUtils: AsyncTaskUtils,
 ) : BaseViewModel(), UiState<ExchangeListUiState>, UiEvent<ExchangeListUiEvent>,
     ExchangeListCommandReceiver {
 
     override val commandReceiver = this
-    override val analyticScreen = ExchangeListScreenAnalytic
 
-    private var exchangeList = listOf<ExchangeModel>()
+    private var exchangeList = emptyList<ExchangeModel>()
 
     private val _uiState = MutableStateFlow(ExchangeListUiState())
     override val uiState = _uiState.asStateFlow()
@@ -39,13 +43,20 @@ internal class ExchangeListViewModel @Inject constructor(
     override val uiEvent = _uiEvent.asSharedFlow()
 
     init {
-        openScreenAnalytic()
+        sendOpenScreenAnalytic()
         getAllExchanges()
+    }
+
+    override fun sendOpenScreenAnalytic() {
+        asyncTaskUtils.runAsyncTask(viewModelScope) {
+            analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(ScreensAnalytic.EXCHANGE_LIST))
+        }
     }
 
     override fun getAllExchanges() {
         _uiState.update { it.setIsLoading(true) }
-        runAsyncTask(
+        asyncTaskUtils.runAsyncTask(
+            coroutineScope = viewModelScope,
             onError = { errorHandler(it) },
             onCompletion = { _uiState.update { it.setIsLoading(false) } }
         ) {
