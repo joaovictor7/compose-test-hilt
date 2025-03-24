@@ -94,6 +94,15 @@ internal class RootViewModel @Inject constructor(
         }
     }
 
+    override fun updateUserData() {
+        asyncTaskUtils.runAsyncTask(viewModelScope) {
+            val user = getUserUseCase()
+            _uiState.update {
+                it.setUpdateUser(userModalDrawerMapper.mapperToModel(user))
+            }
+        }
+    }
+
     override fun currentScreenObservable(currentRoute: String?) {
         val bottomNavigationFeature = NavigationFeature.bottomNavigationFeatures
             .firstOrNull { currentRoute == it.destination.asRoute }

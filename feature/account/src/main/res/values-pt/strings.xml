@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_title">Conta</string>
+    <string name="account_email_title">E-mail</string>
+    <string name="account_name_title">Nome</string>
+    <string name="account_name_not_setted">Seu nome ainda não foi informado</string>
+    <string name="account_change_password">Alterar senha</string>
+    <string name="account_update_button">Atualizar</string>
+</resources>

@@ -56,7 +56,9 @@ import com.composetest.core.designsystem.extensions.screenMargin
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.router.destinations.home.HomeDestination
 import com.composetest.core.router.extensions.currentRouteChangesFlow
+import com.composetest.core.router.extensions.getResultFlow
 import com.composetest.core.router.extensions.navigateTo
+import com.composetest.core.router.results.account.AccountUpdateResult
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.feature.root.R
 import com.composetest.feature.root.enums.NavigationFeature
@@ -296,6 +298,11 @@ private fun LaunchedEffectHandler(
                 is RootUiEvent.NavigateToFeature -> mainNavController.navigateTo(it.navigationModel)
                 is RootUiEvent.NavigateToBottomFeature -> rootNavController.navigateTo(it.navigationModel)
             }
+        }
+    }
+    LaunchedEffect(Unit) {
+        mainNavController.getResultFlow(AccountUpdateResult::class).collect {
+            onExecuteCommand(RootCommand.UpdateUserData)
         }
     }
     LaunchedEffect(Unit) {

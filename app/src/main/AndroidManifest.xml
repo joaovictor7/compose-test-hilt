@@ -5,6 +5,7 @@
     <application
         android:name=".application.MainApplication"
         android:allowBackup="true"
+        android:enableOnBackInvokedCallback="true"
         android:icon="@drawable/ic_launcher"
         android:label="${appName}"
         android:roundIcon="@drawable/ic_launcher"

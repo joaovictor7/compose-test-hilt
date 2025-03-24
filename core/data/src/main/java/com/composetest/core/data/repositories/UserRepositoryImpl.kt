@@ -16,9 +16,13 @@ internal class UserRepositoryImpl @Inject constructor(
     private val configurationMapper: ConfigurationMapper,
 ) : UserRepository {
 
-    override suspend fun upsert(user: UserModel) {
-        userDataSource.upsert(userMapper.mapperToEntity(user))
+    override suspend fun insert(user: UserModel) {
+        update(user)
         configurationDataSource.upsert(configurationMapper.mapperToEntity(ConfigurationModel(userId = user.id)))
+    }
+
+    override suspend fun update(user: UserModel) {
+        userDataSource.upsert(userMapper.mapperToEntity(user))
     }
 
     override suspend fun getCurrentUser() =

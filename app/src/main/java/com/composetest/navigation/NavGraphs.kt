@@ -7,7 +7,7 @@ import com.composetest.feature.configuration.navigation.configurationNavGraphs
 import com.composetest.feature.exchange.navigation.exchangeNavGraphs
 import com.composetest.feature.login.navigation.loginNavGraphs
 import com.composetest.feature.news.navigation.newsNavGraphs
-import com.composetest.feature.profile.navigation.profileNavGraphs
+import com.composetest.feature.account.navigation.accountNavGraphs
 import com.composetest.feature.root.navigation.rootNavGraphs
 import com.composetest.feature.weatherforecast.navigation.weatherForecastNavGraphs
 import kotlin.reflect.KProperty
@@ -21,7 +21,7 @@ internal class NavGraphs(private val navController: NavHostController) : NavGrap
         { rootNavGraphs(navController) },
         { newsNavGraphs(navController) },
         { exchangeNavGraphs(navController) },
-        { profileNavGraphs(navController) },
+        { accountNavGraphs(navController) },
         { configurationNavGraphs() },
         { weatherForecastNavGraphs() },
     )

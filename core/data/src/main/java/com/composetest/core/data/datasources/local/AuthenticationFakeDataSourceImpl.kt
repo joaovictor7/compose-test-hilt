@@ -18,7 +18,11 @@ internal class AuthenticationFakeDataSourceImpl(
                 .copy(sessionStartDateTime = dateTimeProvider.currentDateTime.toString())
         }
 
-    override suspend fun updateUserProfile() {
+    override suspend fun updateUserNameAndEmail(displayName: String?, email: String) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun updateUserPassword(password: String) {
         TODO("Not yet implemented")
     }
 }

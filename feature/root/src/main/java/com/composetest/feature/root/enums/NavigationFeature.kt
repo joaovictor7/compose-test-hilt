@@ -16,7 +16,7 @@ import com.composetest.feature.configuration.R as ConfigurationResources
 import com.composetest.feature.exchange.R as ExchangeResources
 import com.composetest.feature.home.R as HomeResources
 import com.composetest.feature.news.R as NewsResources
-import com.composetest.feature.profile.R as ProfileResources
+import com.composetest.feature.profile.R as AccountResources
 import com.composetest.feature.weatherforecast.R as WeatherForecastResources
 
 internal enum class NavigationFeature(
@@ -58,7 +58,7 @@ internal enum class NavigationFeature(
         Feature.PROFILE,
         ProfileDestination,
         NavigationLocal.MODAL_DRAWER,
-        ProfileResources.string.profile_title
+        AccountResources.string.account_title
     ),
     EXCHANGE(
         Feature.EXCHANGE,

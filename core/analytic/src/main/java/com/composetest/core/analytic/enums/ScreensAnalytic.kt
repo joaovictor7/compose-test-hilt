@@ -13,8 +13,7 @@ enum class ScreensAnalytic(override val screen: String) : AnalyticScreen {
     LOGIN("login"),
     FULL_NEWS("full_news"),
     NEWS_LIST("news_list"),
-    EDIT_PROFILE("edit_profile"),
-    PROFILE("profile"),
+    ACCOUNT("account"),
     ROOT("root"),
     WEATHER_FORECAST("weather_forecast")
 }

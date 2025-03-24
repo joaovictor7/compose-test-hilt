@@ -31,4 +31,12 @@ internal class AuthenticationRepositoryImpl @Inject constructor(
             else -> it
         }
     }
+
+    override suspend fun updateUserNameAndEmail(name: String, email: String) = apiErrorHandler {
+        authenticationDataSource.updateUserNameAndEmail(name, email)
+    }
+
+    override suspend fun updatePassword(password: String) = apiErrorHandler {
+        authenticationDataSource.updateUserPassword(cipherProvider.decrypt(password))
+    }
 }

@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="profile_title">Profile</string>
-    <string name="profile_email_title">E-mail</string>
-    <string name="profile_name_title">Nome</string>
-    <string name="profile_email_not_found">%1$s ainda não está disponível</string>
-</resources>

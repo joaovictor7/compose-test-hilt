@@ -23,7 +23,7 @@ dependencies {
     implementation(projects.feature.login)
     implementation(projects.feature.root)
     implementation(projects.feature.home)
-    implementation(projects.feature.profile)
+    implementation(projects.feature.account)
     implementation(projects.feature.configuration)
     implementation(projects.feature.weatherforecast)
     implementation(projects.feature.news)

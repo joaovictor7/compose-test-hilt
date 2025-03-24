@@ -16,6 +16,12 @@ internal sealed interface RootCommand : Command<RootCommandReceiver> {
         }
     }
 
+    data object UpdateUserData : RootCommand {
+        override fun execute(commandReceiver: RootCommandReceiver) {
+            commandReceiver.updateUserData()
+        }
+    }
+
     data object BackHandler : RootCommand {
         override fun execute(commandReceiver: RootCommandReceiver) {
             commandReceiver.backHandler()

@@ -20,10 +20,19 @@ internal class AuthenticationDataSourceImpl(
             authenticationMapper.mapperToResponse(authResult.user, tokenResult)
         }
 
-    override suspend fun updateUserProfile() {
-        val profileUpdates = userProfileChangeRequest {
-            displayName = "Jane Q. User"
+    override suspend fun updateUserNameAndEmail(displayName: String?, email: String) {
+        apiCallUtils.executeApiCall {
+            val profileUpdates = userProfileChangeRequest {
+                this.displayName = displayName
+            }
+            firebaseAuth.currentUser?.updateProfile(profileUpdates)
+            firebaseAuth.currentUser?.verifyBeforeUpdateEmail(email)
         }
-        firebaseAuth.currentUser?.updateProfile(profileUpdates)
+    }
+
+    override suspend fun updateUserPassword(password: String) {
+        apiCallUtils.executeApiCall {
+            firebaseAuth.currentUser?.updatePassword(password)
+        }
     }
 }

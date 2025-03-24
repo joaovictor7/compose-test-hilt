@@ -27,6 +27,9 @@ internal data class RootUiState(
         userModalDrawerModel = userModalDrawerModel
     )
 
+    fun setUpdateUser(userModalDrawerModel: UserModalDrawerModel) =
+        copy(userModalDrawerModel = userModalDrawerModel)
+
     fun setSelectedBottomNavigationFeature(feature: NavigationFeature) = copy(
         bottomNavigationFeatures = bottomNavigationFeatures.map {
             it.copy(selected = feature == it.feature)
