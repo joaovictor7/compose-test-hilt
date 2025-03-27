@@ -1,5 +1,5 @@
 [versions]
-agp = "8.9.0"
+agp = "8.9.1"
 kotlin = "2.1.20"
 kotlinJsonSerialization = "1.8.0"
 kotlinCoroutine = "1.10.1"
@@ -7,12 +7,12 @@ junit5 = "5.12.1"
 junitLauncher = "1.12.1"
 lifecycleRuntime = "2.8.7"
 activityCompose = "1.10.1"
-androidDataStore = "1.1.3"
+androidDataStore = "1.1.4"
 androidHilt = "2.56"
 androidXHilt = "1.2.0"
 androidXAppCompat = "1.7.0"
-androidXBiometric = "1.4.0-alpha02"
-composeBom = "2025.03.00"
+androidXBiometric = "1.4.0-alpha03"
+composeBom = "2025.03.01"
 composeNavigation = "2.8.9"
 googleServices = "4.4.2"
 firebaseBom = "33.11.0"
@@ -30,6 +30,8 @@ coil = "3.1.0"
 permissions = "0.37.0"
 location = "21.3.0"
 screenshot = "0.0.1-alpha09"
+kover = "0.9.1"
+jacoco = "0.8.12"
 
 [libraries]
 # Kotlin
@@ -39,6 +41,7 @@ kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", vers
 kotlin-json-serializable = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinJsonSerialization" }
 kotlin-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinCoroutine" }
 kotlin-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinCoroutine" }
+kotlin-kover = { group = "org.jetbrains.kotlinx", name = "kover-gradle-plugin", version.ref = "kover" }
 
 # Android
 android-tools-build-gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
@@ -110,6 +113,7 @@ composeTest-application = { id = "com.composetest.application" }
 composeTest-library = { id = "com.composetest.library" }
 composeTest-compose = { id = "com.composetest.compose" }
 composeTest-test = { id = "com.composetest.test" }
+composeTest-kover = { id = "com.composetest.kover" }
 
 # Another plugins
 kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
@@ -119,3 +123,4 @@ firebaseCrashlytics = { id = "com.google.firebase.crashlytics", version.ref = "f
 composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 screenshot = { id = "com.android.compose.screenshot", version.ref = "screenshot"}
+kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover"}

@@ -31,4 +31,14 @@ dependencies {
     implementation(libs.androidx.hilt.work)
     implementation(libs.androidx.splash.screen)
     implementation(libs.androidx.appcompat)
+
+    kover(projects.core.domain)
+    kover(projects.feature.login)
+    kover(projects.feature.root)
+    kover(projects.feature.home)
+    kover(projects.feature.account)
+    kover(projects.feature.configuration)
+    kover(projects.feature.weatherforecast)
+    kover(projects.feature.news)
+    kover(projects.feature.exchange)
 }
