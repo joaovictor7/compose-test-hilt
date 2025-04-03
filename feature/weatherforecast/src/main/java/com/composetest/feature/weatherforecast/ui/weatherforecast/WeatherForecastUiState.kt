@@ -35,6 +35,11 @@ internal data class WeatherForecastUiState(
     fun setScreenStatus(screenStatus: WeatherForecastScreenStatus) =
         copy(screenStatus = screenStatus)
 
+    fun setScreenLoading() = copy(
+        weatherNowStatus = WeatherForecastStatus.LOADING,
+        weatherForecastsStatus = WeatherForecastStatus.LOADING
+    )
+
     fun setWeatherNow(weatherNowModel: WeatherNowScreenModel) = copy(
         weatherNowStatus = WeatherForecastStatus.READY,
         weatherNow = weatherNowModel,

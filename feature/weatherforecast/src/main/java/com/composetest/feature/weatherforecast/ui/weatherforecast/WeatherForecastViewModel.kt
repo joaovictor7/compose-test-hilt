@@ -80,6 +80,7 @@ internal class WeatherForecastViewModel @Inject constructor(
     }
 
     override fun getLocationAndWeatherForecastsData() {
+        _uiState.update { it.setScreenLoading() }
         asyncTaskUtils.runAsyncTask(
             coroutineScope = viewModelScope,
             onError = ::handleLocationError
