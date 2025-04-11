@@ -86,48 +86,24 @@ internal class WeatherForecastViewModel @Inject constructor(
             onError = ::handleLocationError
         ) {
             location = locationProvider.getLastLocation()
-            getWeatherForecastNowData()
-            getWeatherForecastsData()
+            location?.let {
+                getWeatherNow(it)
+                getWeatherForecastsNow(it)
+            }
         }
     }
 
     override fun getWeatherForecastNowData() {
         location?.let { location ->
-            _uiState.update { it.copy(weatherNowStatus = WeatherForecastStatus.LOADING) }
-            asyncTaskUtils.runAsyncTask(
-                coroutineScope = viewModelScope,
-                onError = ::handleWeatherForecastNowError
-            ) {
-                val weatherNowForecast = getWeatherNowUseCase(location.latitude, location.longitude)
-                _uiState.update {
-                    it.setWeatherNow(weatherNowScreenModelMapper.mapperToModel(weatherNowForecast))
-                }
-                weatherForecastNowWasGet = true
-            }
+            _uiState.update { it.setWeatherNowStatus(WeatherForecastStatus.LOADING) }
+            getWeatherNow(location)
         }
     }
 
     override fun getWeatherForecastsData() {
         location?.let { location ->
-            _uiState.update { it.copy(weatherForecastsStatus = WeatherForecastStatus.LOADING) }
-            asyncTaskUtils.runAsyncTask(
-                coroutineScope = viewModelScope,
-                onError = ::handleWeatherForecastsError
-            ) {
-                val weatherForecast =
-                    getWeatherForecastsUseCase(location.latitude, location.longitude)
-                val todayWeatherForecast = getTodayWeatherForecastUseCase(weatherForecast)
-                val futureWeatherForecasts = getFutureWeatherForecastsUseCase(weatherForecast)
-                _uiState.update { uiState ->
-                    uiState.setWeatherForecasts(
-                        todayWeatherForecast,
-                        futureWeatherForecastScreenModelsMapper.mapperToModels(
-                            futureWeatherForecasts
-                        )
-                    )
-                }
-                weatherForecastsWasGet = true
-            }
+            _uiState.update { it.setWeatherForecastsStatus(WeatherForecastStatus.LOADING) }
+            getWeatherForecastsNow(location)
         }
     }
 
@@ -139,6 +115,36 @@ internal class WeatherForecastViewModel @Inject constructor(
         if (!permissionProvider.permissionIsGranted(Permission.localization)) {
             _uiEvent.emitEvent(WeatherForecastUiEvent.LaunchPermissionRequest)
         }
+    }
+
+    private fun getWeatherNow(location: Location) = asyncTaskUtils.runAsyncTask(
+        coroutineScope = viewModelScope,
+        onError = ::handleWeatherForecastNowError
+    ) {
+        val weatherNowForecast = getWeatherNowUseCase(location.latitude, location.longitude)
+        _uiState.update {
+            it.setWeatherNow(weatherNowScreenModelMapper.mapperToModel(weatherNowForecast))
+        }
+        weatherForecastNowWasGet = true
+    }
+
+    private fun getWeatherForecastsNow(location: Location) = asyncTaskUtils.runAsyncTask(
+        coroutineScope = viewModelScope,
+        onError = ::handleWeatherForecastsError
+    ) {
+        val weatherForecast =
+            getWeatherForecastsUseCase(location.latitude, location.longitude)
+        val todayWeatherForecast = getTodayWeatherForecastUseCase(weatherForecast)
+        val futureWeatherForecasts = getFutureWeatherForecastsUseCase(weatherForecast)
+        _uiState.update { uiState ->
+            uiState.setWeatherForecasts(
+                todayWeatherForecast,
+                futureWeatherForecastScreenModelsMapper.mapperToModels(
+                    futureWeatherForecasts
+                )
+            )
+        }
+        weatherForecastsWasGet = true
     }
 
     private fun handleLocationError(error: Throwable?) = _uiState.update {

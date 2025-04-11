@@ -33,5 +33,9 @@ gradlePlugin {
             id = "test",
             className = "TestConventionPlugin"
         )
+        registerPlugin(
+            id = "kover",
+            className = "KoverConventionPlugin"
+        )
     }
 }
