@@ -3,7 +3,6 @@ package com.composetest.feature.configuration.enums
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.composetest.core.domain.enums.Theme
-import com.composetest.feature.configuration.enums.ThemeConfiguration.entries
 import com.composetest.core.designsystem.R as DesignSystemResources
 import com.composetest.feature.configuration.R as ConfigurationResources
 

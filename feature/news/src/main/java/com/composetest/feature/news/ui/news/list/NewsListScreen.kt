@@ -25,7 +25,6 @@ import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -47,6 +46,7 @@ import com.composetest.core.designsystem.utils.getSharedShimmerOffset
 import com.composetest.core.domain.models.news.ArticleModel
 import com.composetest.core.router.extensions.navigateTo
 import com.composetest.core.ui.interfaces.Command
+import com.composetest.core.ui.utils.UiEventsObserver
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import java.time.LocalDateTime
@@ -61,7 +61,7 @@ internal fun NewsListScreen(
 ) {
     val pullToRefreshState = rememberPullToRefreshState()
     val shimmerOffset by getSharedShimmerOffset()
-    LaunchedEffectHandler(uiEvent = uiEvent, navController = navController)
+    UiEventsHandler(uiEvent = uiEvent, navController = navController)
     DialogHandler(uiState = uiState, onExecuteCommand = onExecuteCommand)
     PullToRefreshBox(
         modifier = Modifier.fillMaxSize(),
@@ -172,15 +172,13 @@ private fun DialogHandler(
 }
 
 @Composable
-private fun LaunchedEffectHandler(
+private fun UiEventsHandler(
     uiEvent: Flow<NewsListUiEvent>,
     navController: NavHostController
 ) {
-    LaunchedEffect(Unit) {
-        uiEvent.collect {
-            when (it) {
-                is NewsListUiEvent.NavigateTo -> navController.navigateTo(it.navigationModel)
-            }
+    UiEventsObserver(uiEvent) {
+        when (it) {
+            is NewsListUiEvent.NavigateTo -> navController.navigateTo(it.navigationModel)
         }
     }
 }
@@ -191,7 +189,7 @@ private fun Preview() {
     ComposeTestTheme {
         NewsListScreen(
             uiState = NewsListUiState(
-//                showRetryButton = true,
+                showRetryButton = true,
                 isLoading = true,
                 articles = listOf(
                     ArticleModel(

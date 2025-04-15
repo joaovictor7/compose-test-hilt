@@ -10,7 +10,6 @@ import com.composetest.core.router.destinations.news.NewsListDestination
 import com.composetest.core.router.destinations.profile.ProfileDestination
 import com.composetest.core.router.destinations.weatherforecast.WeatherForecastDestination
 import com.composetest.core.router.interfaces.Destination
-import com.composetest.feature.root.enums.NavigationFeature.entries
 import com.composetest.core.designsystem.R as DesignSystemResources
 import com.composetest.feature.configuration.R as ConfigurationResources
 import com.composetest.feature.exchange.R as ExchangeResources

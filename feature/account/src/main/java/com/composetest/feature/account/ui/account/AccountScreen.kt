@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -24,6 +23,7 @@ import com.composetest.core.designsystem.extensions.horizontalScreenMargin
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.router.extensions.navigateBack
 import com.composetest.core.ui.interfaces.Command
+import com.composetest.core.ui.utils.UiEventsObserver
 import com.composetest.feature.account.enums.AccountDataRow
 import com.composetest.feature.account.models.AccountScreenModel
 import com.composetest.feature.profile.R
@@ -37,7 +37,7 @@ internal fun AccountScreen(
     onExecuteCommand: (Command<AccountCommandReceiver>) -> Unit = {},
     navController: NavHostController = rememberNavController(),
 ) {
-    LaunchedEffectsHandler(uiEvent = uiEvent, navController = navController)
+    UiEventHandler(uiEvent = uiEvent, navController = navController)
     DialogHandler(uiState = uiState, onExecuteCommand = onExecuteCommand)
     BackHandler { onExecuteCommand(AccountCommand.BackHandler) }
     ScreenScaffold(
@@ -85,16 +85,14 @@ private fun DialogHandler(
 }
 
 @Composable
-private fun LaunchedEffectsHandler(
+private fun UiEventHandler(
     uiEvent: Flow<AccountUiEvent>,
     navController: NavHostController,
 ) {
-    LaunchedEffect(Unit) {
-        uiEvent.collect {
-            when (it) {
-                is AccountUiEvent.NavigateBack -> {
-                    navController.navigateBack(it.result)
-                }
+    UiEventsObserver(uiEvent) {
+        when (it) {
+            is AccountUiEvent.NavigateBack -> {
+                navController.navigateBack(it.result)
             }
         }
     }

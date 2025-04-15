@@ -25,7 +25,6 @@ import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -47,6 +46,7 @@ import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.designsystem.utils.getSharedShimmerOffset
 import com.composetest.core.router.extensions.navigateTo
 import com.composetest.core.ui.interfaces.Command
+import com.composetest.core.ui.utils.UiEventsObserver
 import com.composetest.feature.exchange.R
 import com.composetest.feature.exchange.models.ExchangeListRowScreenModel
 import com.composetest.feature.exchange.models.ExchangeScreenModel
@@ -63,7 +63,7 @@ internal fun ExchangeListScreen(
 ) {
     val pullToRefreshState = rememberPullToRefreshState()
     val shimmerOffset by getSharedShimmerOffset()
-    LaunchedEffectHandler(uiEvent = uiEvent, navController = navController)
+    UiEventsHandler(uiEvent = uiEvent, navController = navController)
     DialogHandler(uiState = uiState, onExecuteCommand = onExecuteCommand)
     Column(modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars)) {
         LeftTopBar(R.string.exchange_title)
@@ -189,15 +189,13 @@ private fun DialogHandler(
 }
 
 @Composable
-private fun LaunchedEffectHandler(
+private fun UiEventsHandler(
     uiEvent: Flow<ExchangeListUiEvent>,
     navController: NavHostController,
 ) {
-    LaunchedEffect(Unit) {
-        uiEvent.collect {
-            when (it) {
-                is ExchangeListUiEvent.NavigateTo -> navController.navigateTo(it.navigationModel)
-            }
+    UiEventsObserver(uiEvent) {
+        when (it) {
+            is ExchangeListUiEvent.NavigateTo -> navController.navigateTo(it.navigationModel)
         }
     }
 }

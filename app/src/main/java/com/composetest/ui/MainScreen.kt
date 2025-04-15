@@ -1,7 +1,6 @@
 package com.composetest.ui
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavHostController
@@ -14,6 +13,7 @@ import com.composetest.core.router.extensions.currentRoute
 import com.composetest.core.router.extensions.navigateTo
 import com.composetest.core.router.interfaces.Destination
 import com.composetest.core.ui.interfaces.Command
+import com.composetest.core.ui.utils.UiEventsObserver
 import com.composetest.navigation.NavGraphs
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
@@ -49,7 +49,7 @@ private fun Navigation(
     NavHost(navController = navController, startDestination = firstScreenDestination) {
         navGraphs.forEach { it() }
     }
-    LaunchedEffectHandler(uiEvent = uiEvent, navController = navController, )
+    UiEventsHandler(uiEvent = uiEvent, navController = navController)
     LifecycleHandler(onExecuteCommand = onExecuteCommand, navController = navController)
 }
 
@@ -76,15 +76,13 @@ private fun DialogHandler(
 }
 
 @Composable
-private fun LaunchedEffectHandler(
+private fun UiEventsHandler(
     uiEvent: Flow<MainUiEvent>,
     navController: NavHostController,
 ) {
-    LaunchedEffect(Unit) {
-        uiEvent.collect {
-            when (it) {
-                is MainUiEvent.NavigateTo -> navController.navigateTo(it.navigationModel)
-            }
+    UiEventsObserver(uiEvent) {
+        when (it) {
+            is MainUiEvent.NavigateTo -> navController.navigateTo(it.navigationModel)
         }
     }
 }

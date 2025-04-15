@@ -23,7 +23,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -49,6 +48,7 @@ import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.designsystem.utils.getSharedShimmerOffset
 import com.composetest.core.ui.enums.Permission
 import com.composetest.core.ui.interfaces.Command
+import com.composetest.core.ui.utils.UiEventsObserver
 import com.composetest.core.ui.utils.getMultiplePermissionState
 import com.composetest.feature.weatherforecast.R
 import com.composetest.feature.weatherforecast.enums.WeatherForecastScreenStatus
@@ -70,7 +70,7 @@ internal fun WeatherForecastScreen(
 ) {
     val permissionState = getMultiplePermissionState(Permission.localization)
     val shimmerOffset by getSharedShimmerOffset()
-    LaunchedEffectHandler(uiEvent = uiEvent, permissionState = permissionState)
+    UiEventsHandler(uiEvent = uiEvent, permissionState = permissionState)
     LifecycleEventHandler(onExecuteCommand = onExecuteCommand)
     DialogHandler(uiState = uiState, onExecuteCommand = onExecuteCommand)
     Column(modifier = Modifier.fillMaxSize()) {
@@ -362,16 +362,14 @@ private fun DialogHandler(
 }
 
 @Composable
-private fun LaunchedEffectHandler(
-    uiEvent: Flow<WeatherForecastUiEvent>?,
+private fun UiEventsHandler(
+    uiEvent: Flow<WeatherForecastUiEvent>,
     permissionState: MultiplePermissionsState,
 ) {
-    LaunchedEffect(Unit) {
-        uiEvent?.collect {
-            when (it) {
-                WeatherForecastUiEvent.LaunchPermissionRequest -> {
-                    permissionState.launchMultiplePermissionRequest()
-                }
+    UiEventsObserver(uiEvent) {
+        when (it) {
+            is WeatherForecastUiEvent.LaunchPermissionRequest -> {
+                permissionState.launchMultiplePermissionRequest()
             }
         }
     }

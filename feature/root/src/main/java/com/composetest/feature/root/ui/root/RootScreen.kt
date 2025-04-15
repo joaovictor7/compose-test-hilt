@@ -60,6 +60,7 @@ import com.composetest.core.router.extensions.getResultFlow
 import com.composetest.core.router.extensions.navigateTo
 import com.composetest.core.router.results.account.AccountUpdateResult
 import com.composetest.core.ui.interfaces.Command
+import com.composetest.core.ui.utils.UiEventsObserver
 import com.composetest.feature.root.R
 import com.composetest.feature.root.enums.NavigationFeature
 import com.composetest.feature.root.models.BottomFeatureNavigationModel
@@ -110,8 +111,12 @@ private fun Navigation(
     NavHost(navController = navController, startDestination = uiState.firstDestination) {
         navGraphs.forEach { it() }
     }
-    LaunchedEffectHandler(
+    UiEventsHandler(
         uiEvent = uiEvent,
+        rootNavController = navController,
+        mainNavController = mainNavController
+    )
+    LaunchedEffectHandler(
         onExecuteCommand = onExecuteCommand,
         rootNavController = navController,
         mainNavController = mainNavController
@@ -284,22 +289,27 @@ private fun getBottomBar(
 }
 
 @Composable
-private fun LaunchedEffectHandler(
+private fun UiEventsHandler(
     uiEvent: Flow<RootUiEvent>,
-    onExecuteCommand: (Command<RootCommandReceiver>) -> Unit,
     rootNavController: NavHostController,
     mainNavController: NavHostController,
 ) {
     val activity = LocalActivity.current
-    LaunchedEffect(Unit) {
-        uiEvent.collect {
-            when (it) {
-                is RootUiEvent.FinishApp -> activity?.finish()
-                is RootUiEvent.NavigateToFeature -> mainNavController.navigateTo(it.navigationModel)
-                is RootUiEvent.NavigateToBottomFeature -> rootNavController.navigateTo(it.navigationModel)
-            }
+    UiEventsObserver(uiEvent) {
+        when (it) {
+            is RootUiEvent.FinishApp -> activity?.finish()
+            is RootUiEvent.NavigateToFeature -> mainNavController.navigateTo(it.navigationModel)
+            is RootUiEvent.NavigateToBottomFeature -> rootNavController.navigateTo(it.navigationModel)
         }
     }
+}
+
+@Composable
+private fun LaunchedEffectHandler(
+    onExecuteCommand: (Command<RootCommandReceiver>) -> Unit,
+    rootNavController: NavHostController,
+    mainNavController: NavHostController,
+) {
     LaunchedEffect(Unit) {
         mainNavController.getResultFlow(AccountUpdateResult::class).collect {
             onExecuteCommand(RootCommand.UpdateUserData)
