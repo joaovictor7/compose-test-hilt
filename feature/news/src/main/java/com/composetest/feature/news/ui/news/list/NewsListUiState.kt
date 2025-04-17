@@ -1,6 +1,5 @@
 package com.composetest.feature.news.ui.news.list
 
-import com.composetest.core.designsystem.params.alertdialogs.SimpleDialogParam
 import com.composetest.core.domain.models.news.ArticleModel
 
 internal data class NewsListUiState(
@@ -12,6 +11,7 @@ internal data class NewsListUiState(
         isLoading = isLoading,
         showRetryButton = showRetryButton.takeIf { !isLoading } == true
     )
+
     fun setArticles(articles: List<ArticleModel>) = copy(articles = articles)
     fun setShowRetryButton() = copy(showRetryButton = true)
 }
