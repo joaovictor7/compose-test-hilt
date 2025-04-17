@@ -1,4 +1,4 @@
-package com.composetest.ui
+package com.composetest.ui.main
 
 import com.composetest.core.ui.interfaces.CommandReceiver
 

@@ -1,4 +1,4 @@
-package com.composetest.ui
+package com.composetest.ui.main
 
 import android.os.Bundle
 import androidx.activity.compose.setContent

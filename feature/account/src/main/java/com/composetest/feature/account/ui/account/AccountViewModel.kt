@@ -5,12 +5,12 @@ import androidx.lifecycle.viewModelScope
 import com.composetest.core.analytic.AnalyticSender
 import com.composetest.core.analytic.enums.ScreensAnalytic
 import com.composetest.core.analytic.events.CommonAnalyticEvent
-import com.composetest.core.designsystem.components.dialogs.CommonSimpleDialog
 import com.composetest.core.designsystem.enums.buttons.LoadingButtonState
 import com.composetest.core.domain.models.UserModel
 import com.composetest.core.domain.usecases.user.GetUserUseCase
 import com.composetest.core.domain.usecases.user.UpdateUserUseCase
 import com.composetest.core.router.results.account.AccountUpdateResult
+import com.composetest.core.router.utils.getDialogErrorDestination
 import com.composetest.core.security.providers.CipherProvider
 import com.composetest.core.ui.bases.BaseViewModel
 import com.composetest.core.ui.di.qualifiers.AsyncTaskUtilsQualifier
@@ -80,22 +80,18 @@ internal class AccountViewModel @Inject constructor(
             encryptedPassword = password?.let { cipherProvider.encrypt(it) }
                 ?: originalUser?.encryptedPassword.orEmpty()
         )
-        _uiState.update { it.copy(loadingState = LoadingButtonState.LOADING) }
+        _uiState.update { it.setLoadingState(LoadingButtonState.LOADING) }
         asyncTaskUtils.runAsyncTask(
             coroutineScope = viewModelScope,
-            onError = { handleUpdateAccountError() },
+            onError = ::handleUpdateAccountError,
         ) {
             updateUserUseCase(userModel)
-            _uiState.update { it.copy(loadingState = LoadingButtonState.SUCCESS) }
+            _uiState.update { it.setLoadingState(LoadingButtonState.SUCCESS) }
         }
     }
 
     override fun backHandler() {
         _uiEvent.emitEvent(AccountUiEvent.NavigateBack(AccountUpdateResult))
-    }
-
-    override fun dismissSimpleDialog() {
-        _uiState.update { it.copy(simpleDialogParam = null) }
     }
 
     private fun initUiState() {
@@ -128,10 +124,8 @@ internal class AccountViewModel @Inject constructor(
         )
     )
 
-    private fun handleUpdateAccountError() = _uiState.update {
-        it.copy(
-            simpleDialogParam = CommonSimpleDialog.FailedUpdateError,
-            loadingState = LoadingButtonState.IDLE
-        )
+    private fun handleUpdateAccountError(error: Throwable) {
+        _uiEvent.emitEvent(AccountUiEvent.NavigateTo(getDialogErrorDestination(error)))
+        _uiState.update { it.setLoadingState(LoadingButtonState.IDLE) }
     }
 }

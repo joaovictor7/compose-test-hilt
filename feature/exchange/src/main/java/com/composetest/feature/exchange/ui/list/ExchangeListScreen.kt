@@ -17,13 +17,9 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.pulltorefresh.PullToRefreshBox
-import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
-import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -35,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.composetest.core.designsystem.components.dialogs.SimpleDialog
+import com.composetest.core.designsystem.components.pulltorefresh.PullToRefresh
 import com.composetest.core.designsystem.components.shimmer.Shimmer
 import com.composetest.core.designsystem.components.textfields.TextField
 import com.composetest.core.designsystem.components.topbar.LeftTopBar
@@ -54,14 +51,12 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
 internal fun ExchangeListScreen(
     uiState: ExchangeListUiState,
     uiEvent: Flow<ExchangeListUiEvent> = emptyFlow(),
     onExecuteCommand: (Command<ExchangeListCommandReceiver>) -> Unit = {},
     navController: NavHostController = rememberNavController(),
 ) {
-    val pullToRefreshState = rememberPullToRefreshState()
     val shimmerOffset by getSharedShimmerOffset()
     UiEventsHandler(uiEvent = uiEvent, navController = navController)
     DialogHandler(uiState = uiState, onExecuteCommand = onExecuteCommand)
@@ -69,19 +64,8 @@ internal fun ExchangeListScreen(
         LeftTopBar(R.string.exchange_title)
         Column(modifier = Modifier.horizontalScreenMargin()) {
             ExchangeListFilter(uiState = uiState, onExecuteCommand = onExecuteCommand)
-            PullToRefreshBox(
-                modifier = Modifier.fillMaxSize(),
-                state = pullToRefreshState,
+            PullToRefresh(
                 isRefreshing = uiState.isLoading,
-                indicator = {
-                    Indicator(
-                        modifier = Modifier
-                            .align(Alignment.TopCenter)
-                            .windowInsetsPadding(WindowInsets.statusBars),
-                        isRefreshing = uiState.isLoading,
-                        state = pullToRefreshState
-                    )
-                },
                 onRefresh = { onExecuteCommand(ExchangeListCommand.GetAllExchanges) }
             ) {
                 LazyColumn(

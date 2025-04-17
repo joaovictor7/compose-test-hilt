@@ -1,7 +1,6 @@
 package com.composetest.feature.weatherforecast.ui.weatherforecast
 
 import com.composetest.core.designsystem.enums.topbar.TopBarAction
-import com.composetest.core.designsystem.params.alertdialogs.SimpleDialogParam
 import com.composetest.core.domain.models.weatherforecast.TodayWeatherForecastModel
 import com.composetest.feature.weatherforecast.enums.WeatherForecastScreenStatus
 import com.composetest.feature.weatherforecast.enums.WeatherForecastStatus
@@ -14,7 +13,6 @@ internal data class WeatherForecastUiState(
     val weatherNow: WeatherNowScreenModel = WeatherNowScreenModel(),
     val todayWeatherForecast: TodayWeatherForecastScreenModel? = TodayWeatherForecastScreenModel(),
     val futureWeatherForecasts: List<FutureWeatherForecastScreenModel> = emptyList(),
-    val simpleDialogParam: SimpleDialogParam? = null,
     val weatherNowStatus: WeatherForecastStatus = WeatherForecastStatus.LOADING,
     val weatherForecastsStatus: WeatherForecastStatus = WeatherForecastStatus.LOADING,
 ) {
@@ -31,6 +29,8 @@ internal data class WeatherForecastUiState(
             WeatherForecastScreenStatus.TRY_AGAIN,
             WeatherForecastScreenStatus.PERMISSION_NOT_GRANTED
         ) || (weatherNowStatus == WeatherForecastStatus.ERROR && weatherForecastsStatus == WeatherForecastStatus.ERROR)
+
+    val screenStatusIsPermissionNotGranted get() = screenStatus == WeatherForecastScreenStatus.PERMISSION_NOT_GRANTED
 
     fun setScreenStatus(screenStatus: WeatherForecastScreenStatus) =
         copy(screenStatus = screenStatus)
@@ -68,26 +68,15 @@ internal data class WeatherForecastUiState(
         futureWeatherForecasts = futureWeatherForecastScreens
     )
 
-    fun setLocationError(simpleDialogParam: SimpleDialogParam?) = copy(
-        screenStatus = WeatherForecastScreenStatus.TRY_AGAIN,
-        simpleDialogParam = simpleDialogParam,
-    )
-
     fun setWeatherNowError(
         weatherNowStatus: WeatherForecastStatus,
-        simpleDialogParam: SimpleDialogParam?
     ) = copy(
         weatherNowStatus = weatherNowStatus,
-        simpleDialogParam = simpleDialogParam
     )
 
     fun setWeatherForecastsError(
         weatherForecastsStatus: WeatherForecastStatus,
-        simpleDialogParam: SimpleDialogParam?
     ) = copy(
         weatherForecastsStatus = weatherForecastsStatus,
-        simpleDialogParam = simpleDialogParam
     )
-
-    fun dismissSimpleDialog() = copy(simpleDialogParam = null)
 }

@@ -5,7 +5,6 @@ import com.composetest.core.analytic.AnalyticSender
 import com.composetest.core.analytic.enums.ScreensAnalytic
 import com.composetest.core.analytic.events.CommonAnalyticEvent
 import com.composetest.core.analytic.events.login.LoginEventAnalytic
-import com.composetest.core.designsystem.components.dialogs.CommonSimpleDialog
 import com.composetest.core.domain.enums.BuildType
 import com.composetest.core.domain.enums.Flavor
 import com.composetest.core.domain.models.buildconfig.BuildConfigFieldsModel

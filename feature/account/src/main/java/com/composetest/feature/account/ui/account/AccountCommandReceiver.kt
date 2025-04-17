@@ -7,5 +7,4 @@ internal interface AccountCommandReceiver : CommandReceiver<AccountCommandReceiv
     fun updateFormData(dataRowId: AccountDataRow, value: String)
     fun saveData()
     fun backHandler()
-    fun dismissSimpleDialog()
 }

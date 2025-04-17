@@ -4,11 +4,11 @@ import androidx.lifecycle.viewModelScope
 import com.composetest.core.analytic.AnalyticSender
 import com.composetest.core.analytic.enums.ScreensAnalytic
 import com.composetest.core.analytic.events.CommonAnalyticEvent
-import com.composetest.core.designsystem.utils.getCommonSimpleDialogErrorParam
 import com.composetest.core.domain.models.news.ArticleModel
 import com.composetest.core.domain.usecases.news.GetTopHeadlinesUseCase
 import com.composetest.core.router.destinations.news.FullNewsDestination
 import com.composetest.core.router.models.NavigationModel
+import com.composetest.core.router.utils.getDialogErrorDestination
 import com.composetest.core.ui.bases.BaseViewModel
 import com.composetest.core.ui.di.qualifiers.AsyncTaskUtilsQualifier
 import com.composetest.core.ui.interfaces.UiEvent
@@ -67,10 +67,6 @@ internal class NewsListViewModel @Inject constructor(
         getArticles()
     }
 
-    override fun dismissSimpleDialog() {
-        _uiState.update { it.setSimpleDialogParam(null) }
-    }
-
     private fun getArticles() {
         _uiState.update { it.setIsLoading(true) }
         asyncTaskUtils.runAsyncTask(
@@ -84,6 +80,7 @@ internal class NewsListViewModel @Inject constructor(
     }
 
     private fun requestErrorHandler(error: Throwable) {
-        _uiState.update { it.setSimpleDialogParam(getCommonSimpleDialogErrorParam(error)) }
+        _uiState.update { it.setShowRetryButton() }
+        _uiEvent.emitEvent(NewsListUiEvent.NavigateTo(getDialogErrorDestination(error)))
     }
 }

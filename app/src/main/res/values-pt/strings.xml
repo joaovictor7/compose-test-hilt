@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="error_alert_dialog_network_title">Você não está online ☹️</string>
+    <string name="error_alert_dialog_network_text">Há algum problema com a sua conexão de internet. Verifique o sinal de Wi-Fi ou dados móveis e volte a tentar.</string>
+
 </resources>

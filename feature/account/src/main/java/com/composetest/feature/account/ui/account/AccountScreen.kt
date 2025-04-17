@@ -13,7 +13,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.composetest.core.designsystem.components.buttons.LoadingButton
-import com.composetest.core.designsystem.components.dialogs.SimpleDialog
 import com.composetest.core.designsystem.components.scaffolds.ScreenScaffold
 import com.composetest.core.designsystem.components.textfields.TextField
 import com.composetest.core.designsystem.components.topbar.LeftTopBar
@@ -22,6 +21,7 @@ import com.composetest.core.designsystem.dimensions.Spacing
 import com.composetest.core.designsystem.extensions.horizontalScreenMargin
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.router.extensions.navigateBack
+import com.composetest.core.router.extensions.navigateTo
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.utils.UiEventsObserver
 import com.composetest.feature.account.enums.AccountDataRow
@@ -38,7 +38,6 @@ internal fun AccountScreen(
     navController: NavHostController = rememberNavController(),
 ) {
     UiEventHandler(uiEvent = uiEvent, navController = navController)
-    DialogHandler(uiState = uiState, onExecuteCommand = onExecuteCommand)
     BackHandler { onExecuteCommand(AccountCommand.BackHandler) }
     ScreenScaffold(
         modifier = Modifier
@@ -75,16 +74,6 @@ internal fun AccountScreen(
 }
 
 @Composable
-private fun DialogHandler(
-    uiState: AccountUiState,
-    onExecuteCommand: (Command<AccountCommandReceiver>) -> Unit
-) = uiState.simpleDialogParam?.let {
-    SimpleDialog(param = it) {
-        onExecuteCommand(AccountCommand.DismissSimpleDialog)
-    }
-}
-
-@Composable
 private fun UiEventHandler(
     uiEvent: Flow<AccountUiEvent>,
     navController: NavHostController,
@@ -93,6 +82,9 @@ private fun UiEventHandler(
         when (it) {
             is AccountUiEvent.NavigateBack -> {
                 navController.navigateBack(it.result)
+            }
+            is AccountUiEvent.NavigateTo -> {
+                navController.navigateTo(it.navigationModel)
             }
         }
     }

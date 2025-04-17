@@ -14,21 +14,15 @@ internal sealed interface AccountCommand : Command<AccountCommandReceiver> {
         }
     }
 
-    data object SaveData: AccountCommand {
+    data object SaveData : AccountCommand {
         override fun execute(commandReceiver: AccountCommandReceiver) {
             commandReceiver.saveData()
         }
     }
 
-    data object BackHandler: AccountCommand {
+    data object BackHandler : AccountCommand {
         override fun execute(commandReceiver: AccountCommandReceiver) {
             commandReceiver.backHandler()
-        }
-    }
-
-    data object DismissSimpleDialog: AccountCommand {
-        override fun execute(commandReceiver: AccountCommandReceiver) {
-            commandReceiver.dismissSimpleDialog()
         }
     }
 }

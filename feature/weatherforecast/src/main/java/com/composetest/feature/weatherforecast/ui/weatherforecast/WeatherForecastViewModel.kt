@@ -5,12 +5,11 @@ import androidx.lifecycle.viewModelScope
 import com.composetest.core.analytic.AnalyticSender
 import com.composetest.core.analytic.enums.ScreensAnalytic
 import com.composetest.core.analytic.events.CommonAnalyticEvent
-import com.composetest.core.designsystem.components.dialogs.CommonSimpleDialog
-import com.composetest.core.designsystem.utils.getCommonSimpleDialogErrorParam
 import com.composetest.core.domain.usecases.weatherforecast.GeTodayWeatherForecastUseCase
 import com.composetest.core.domain.usecases.weatherforecast.GetFutureWeatherForecastUseCase
 import com.composetest.core.domain.usecases.weatherforecast.GetWeatherForecastsUseCase
 import com.composetest.core.domain.usecases.weatherforecast.GetWeatherNowUseCase
+import com.composetest.core.router.utils.getDialogErrorDestination
 import com.composetest.core.ui.bases.BaseViewModel
 import com.composetest.core.ui.di.qualifiers.AsyncTaskUtilsQualifier
 import com.composetest.core.ui.enums.Permission
@@ -107,10 +106,6 @@ internal class WeatherForecastViewModel @Inject constructor(
         }
     }
 
-    override fun dismissSimpleDialog() {
-        _uiState.update { it.dismissSimpleDialog() }
-    }
-
     private fun checkPermissions() {
         if (!permissionProvider.permissionIsGranted(Permission.localization)) {
             _uiEvent.emitEvent(WeatherForecastUiEvent.LaunchPermissionRequest)
@@ -147,26 +142,27 @@ internal class WeatherForecastViewModel @Inject constructor(
         weatherForecastsWasGet = true
     }
 
-    private fun handleLocationError(error: Throwable?) = _uiState.update {
-        it.setLocationError(getCommonSimpleDialogErrorParam(error))
+    private fun handleLocationError(error: Throwable) {
+        _uiEvent.emitEvent(WeatherForecastUiEvent.NavigateTo(getDialogErrorDestination(error)))
+        _uiState.update { it.setScreenStatus(WeatherForecastScreenStatus.TRY_AGAIN) }
     }
 
-    private fun handleWeatherForecastNowError(error: Throwable?) = _uiState.update {
-        val (status, simpleDialog) = getStatusAndErrorDialog(error, weatherForecastNowWasGet)
-        it.setWeatherNowError(status, simpleDialog)
+    private fun handleWeatherForecastNowError(error: Throwable) = _uiState.update {
+        val status = getStatusErrorAndOpenDialog(error, weatherForecastNowWasGet)
+        it.setWeatherNowError(status)
     }
 
-    private fun handleWeatherForecastsError(error: Throwable?) = _uiState.update {
-        val (status, simpleDialog) = getStatusAndErrorDialog(error, weatherForecastsWasGet)
-        it.setWeatherForecastsError(status, simpleDialog)
+    private fun handleWeatherForecastsError(error: Throwable) = _uiState.update {
+        val status = getStatusErrorAndOpenDialog(error, weatherForecastsWasGet)
+        it.setWeatherForecastsError(status)
     }
 
-    private fun getStatusAndErrorDialog(error: Throwable?, dataWasGet: Boolean) = if (dataWasGet) {
-        WeatherForecastStatus.READY to getCommonSimpleDialogErrorParam(
-            error,
-            CommonSimpleDialog.FailedUpdateError
-        )
-    } else {
-        WeatherForecastStatus.ERROR to getCommonSimpleDialogErrorParam(error)
+    private fun getStatusErrorAndOpenDialog(error: Throwable, dataWasGet: Boolean): WeatherForecastStatus {
+        _uiEvent.emitEvent(WeatherForecastUiEvent.NavigateTo(getDialogErrorDestination(error)))
+        return if (dataWasGet) {
+            WeatherForecastStatus.READY
+        } else {
+            WeatherForecastStatus.ERROR
+        }
     }
 }

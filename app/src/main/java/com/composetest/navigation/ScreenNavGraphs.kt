@@ -12,7 +12,7 @@ import com.composetest.feature.root.navigation.rootNavGraphs
 import com.composetest.feature.weatherforecast.navigation.weatherForecastNavGraphs
 import kotlin.reflect.KProperty
 
-internal class NavGraphs(private val navController: NavHostController) : NavGraph {
+internal class ScreenNavGraphs(private val navController: NavHostController) : NavGraph {
     override operator fun getValue(
         thisRef: Any?,
         property: KProperty<*>
@@ -22,7 +22,7 @@ internal class NavGraphs(private val navController: NavHostController) : NavGrap
         { newsNavGraphs(navController) },
         { exchangeNavGraphs(navController) },
         { accountNavGraphs(navController) },
+        { weatherForecastNavGraphs(navController) },
         { configurationNavGraphs() },
-        { weatherForecastNavGraphs() },
     )
 }

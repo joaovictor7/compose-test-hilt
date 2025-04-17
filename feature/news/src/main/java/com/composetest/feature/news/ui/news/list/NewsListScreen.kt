@@ -13,17 +13,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.sizeIn
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.pulltorefresh.PullToRefreshBox
-import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
-import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -35,7 +30,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.composetest.core.designsystem.components.asyncimage.AsyncImage
 import com.composetest.core.designsystem.components.buttons.TryAgainButton
-import com.composetest.core.designsystem.components.dialogs.SimpleDialog
+import com.composetest.core.designsystem.components.pulltorefresh.PullToRefresh
 import com.composetest.core.designsystem.components.shimmer.Shimmer
 import com.composetest.core.designsystem.constants.screenMargin
 import com.composetest.core.designsystem.constants.topScreenMarginList
@@ -52,30 +47,16 @@ import kotlinx.coroutines.flow.emptyFlow
 import java.time.LocalDateTime
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
 internal fun NewsListScreen(
     uiState: NewsListUiState,
     uiEvent: Flow<NewsListUiEvent> = emptyFlow(),
     onExecuteCommand: (Command<NewsListCommandReceiver>) -> Unit = {},
     navController: NavHostController = rememberNavController(),
 ) {
-    val pullToRefreshState = rememberPullToRefreshState()
     val shimmerOffset by getSharedShimmerOffset()
     UiEventsHandler(uiEvent = uiEvent, navController = navController)
-    DialogHandler(uiState = uiState, onExecuteCommand = onExecuteCommand)
-    PullToRefreshBox(
-        modifier = Modifier.fillMaxSize(),
-        state = pullToRefreshState,
+    PullToRefresh(
         isRefreshing = uiState.isLoading,
-        indicator = {
-            Indicator(
-                modifier = Modifier
-                    .align(Alignment.TopCenter)
-                    .windowInsetsPadding(WindowInsets.statusBars),
-                isRefreshing = uiState.isLoading,
-                state = pullToRefreshState
-            )
-        },
         onRefresh = { onExecuteCommand(NewsListCommand.Refresh) }
     ) {
         LazyColumn(
@@ -94,7 +75,7 @@ internal fun NewsListScreen(
                     NewsCard(articleModel = it, onExecuteCommand = onExecuteCommand)
                 }
                 item {
-                    Spacer(modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars))
+                    Spacer(Modifier.windowInsetsPadding(WindowInsets.navigationBars))
                 }
             }
         }
@@ -159,16 +140,6 @@ private fun ListItemShimmer(shimmerOffset: Float) {
             .height(250.dp),
         offset = shimmerOffset,
     )
-}
-
-@Composable
-private fun DialogHandler(
-    uiState: NewsListUiState,
-    onExecuteCommand: (Command<NewsListCommandReceiver>) -> Unit
-) = uiState.simpleDialogParam?.let {
-    SimpleDialog(param = it) {
-        onExecuteCommand(NewsListCommand.DismissSimpleDialog)
-    }
 }
 
 @Composable

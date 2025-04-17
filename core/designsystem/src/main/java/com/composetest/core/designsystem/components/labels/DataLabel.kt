@@ -12,9 +12,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.tooling.preview.PreviewLightDark
-import com.composetest.core.designsystem.R
 import com.composetest.core.designsystem.dimensions.Spacing
 import com.composetest.core.designsystem.theme.ComposeTestTheme
+import com.composetest.core.ui.R as UiRes
 
 @Composable
 fun DataLabel(
@@ -52,7 +52,7 @@ fun DataLabel(
 private fun Preview() {
     ComposeTestTheme {
         DataLabel(
-            labelTitleId = R.string.global_word_close,
+            labelTitleId = UiRes.string.close,
             labelText = "teste"
         )
     }

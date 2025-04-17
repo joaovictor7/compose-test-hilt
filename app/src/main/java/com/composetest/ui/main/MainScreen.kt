@@ -1,20 +1,26 @@
-package com.composetest.ui
+package com.composetest.ui.main
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.dialog
 import androidx.navigation.compose.rememberNavController
 import com.composetest.core.designsystem.components.dialogs.SimpleDialog
 import com.composetest.core.designsystem.components.lifecycle.LifecycleEvent
 import com.composetest.core.designsystem.theme.ComposeTestTheme
+import com.composetest.core.router.destinations.dialogs.GenericErrorDialog
+import com.composetest.core.router.destinations.dialogs.NetworkErrorDialog
 import com.composetest.core.router.extensions.currentRoute
 import com.composetest.core.router.extensions.navigateTo
 import com.composetest.core.router.interfaces.Destination
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.utils.UiEventsObserver
-import com.composetest.navigation.NavGraphs
+import com.composetest.navigation.DialogNavGraphs
+import com.composetest.navigation.ScreenNavGraphs
+import com.composetest.ui.dialogs.GenericErrorDialog
+import com.composetest.ui.dialogs.NetworkErrorDialog
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 
@@ -45,9 +51,10 @@ private fun Navigation(
     firstScreenDestination: Destination
 ) {
     val navController = rememberNavController()
-    val navGraphs by NavGraphs(navController)
+    val screenNavGraphs by ScreenNavGraphs(navController)
+    val dialogNavGraphs by DialogNavGraphs(navController)
     NavHost(navController = navController, startDestination = firstScreenDestination) {
-        navGraphs.forEach { it() }
+        listOf(screenNavGraphs, dialogNavGraphs).flatten().forEach { it() }
     }
     UiEventsHandler(uiEvent = uiEvent, navController = navController)
     LifecycleHandler(onExecuteCommand = onExecuteCommand, navController = navController)

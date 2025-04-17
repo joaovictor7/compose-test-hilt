@@ -5,10 +5,10 @@ import com.composetest.common.extensions.orFalse
 import com.composetest.core.analytic.AnalyticSender
 import com.composetest.core.analytic.enums.ScreensAnalytic
 import com.composetest.core.analytic.events.CommonAnalyticEvent
-import com.composetest.core.designsystem.utils.getCommonSimpleDialogErrorParam
 import com.composetest.core.domain.models.exchange.ExchangeModel
 import com.composetest.core.domain.usecases.exchange.GetAllExchangesUseCase
 import com.composetest.core.router.models.NavigationModel
+import com.composetest.core.router.utils.getDialogErrorDestination
 import com.composetest.core.ui.bases.BaseViewModel
 import com.composetest.core.ui.di.qualifiers.AsyncTaskUtilsQualifier
 import com.composetest.core.ui.interfaces.UiEvent
@@ -89,6 +89,6 @@ internal class ExchangeListViewModel @Inject constructor(
     }
 
     private fun errorHandler(error: Throwable) {
-        _uiState.update { it.setSimpleDialogParam(getCommonSimpleDialogErrorParam(error)) }
+        _uiEvent.emitEvent(ExchangeListUiEvent.NavigateTo(getDialogErrorDestination(error)))
     }
 }

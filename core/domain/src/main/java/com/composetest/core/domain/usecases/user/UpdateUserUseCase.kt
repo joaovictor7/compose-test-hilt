@@ -12,9 +12,9 @@ class UpdateUserUseCase @Inject constructor(
 
     suspend operator fun invoke(userModel: UserModel) {
         authenticationRepository.updateUserNameAndEmail(userModel.name.orEmpty(), userModel.email)
-        if (userModel.encryptedPassword.isNotEmpty()) {
-            authenticationRepository.updatePassword(userModel.encryptedPassword)
-        }
+//        if (userModel.encryptedPassword.isNotEmpty()) {
+//            authenticationRepository.updatePassword(userModel.encryptedPassword)
+//        }
         userRepository.update(userModel)
     }
 }

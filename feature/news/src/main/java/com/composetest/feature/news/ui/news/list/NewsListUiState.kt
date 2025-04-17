@@ -5,18 +5,13 @@ import com.composetest.core.domain.models.news.ArticleModel
 
 internal data class NewsListUiState(
     val articles: List<ArticleModel> = emptyList(),
-    val simpleDialogParam: SimpleDialogParam? = null,
     val showRetryButton: Boolean = false,
     val isLoading: Boolean = false
 ) {
     fun setIsLoading(isLoading: Boolean) = copy(
         isLoading = isLoading,
-        showRetryButton = if (isLoading) false else showRetryButton
+        showRetryButton = showRetryButton.takeIf { !isLoading } == true
     )
-
     fun setArticles(articles: List<ArticleModel>) = copy(articles = articles)
-    fun setSimpleDialogParam(param: SimpleDialogParam? = null) = copy(
-        simpleDialogParam = param,
-        showRetryButton = if (param != null) true else showRetryButton
-    )
+    fun setShowRetryButton() = copy(showRetryButton = true)
 }

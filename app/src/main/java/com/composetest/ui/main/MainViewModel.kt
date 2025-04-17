@@ -1,4 +1,4 @@
-package com.composetest.ui
+package com.composetest.ui.main
 
 import androidx.lifecycle.viewModelScope
 import com.composetest.core.analytic.enums.ScreensAnalytic

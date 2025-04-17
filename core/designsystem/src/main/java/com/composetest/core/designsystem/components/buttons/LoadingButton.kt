@@ -27,6 +27,7 @@ import com.composetest.core.designsystem.theme.ComposeTestTheme
 import kotlinx.coroutines.delay
 import kotlin.time.Duration.Companion.seconds
 
+private const val DELAY_ANIMATION = 1000
 private val animationDuration = 2.seconds
 
 @Composable
@@ -37,7 +38,7 @@ fun LoadingButton(
     enabled: Boolean = true,
     onClick: () -> Unit,
 ) {
-    val visualState = launchedEffectsHandler(loadingState)
+    val visualState = loadingButtonHandler(loadingState)
     Button(
         onClick = { if (visualState == LoadingButtonState.IDLE) onClick() },
         enabled = enabled,
@@ -46,7 +47,8 @@ fun LoadingButton(
         AnimatedContent(
             targetState = visualState,
             transitionSpec = {
-                fadeIn(animationSpec = tween(1000)).togetherWith(fadeOut(animationSpec = tween(1000)))
+                fadeIn(animationSpec = tween(DELAY_ANIMATION))
+                    .togetherWith(fadeOut(animationSpec = tween(DELAY_ANIMATION)))
             }
         ) { state ->
             when (state) {
@@ -62,7 +64,7 @@ fun LoadingButton(
                 LoadingButtonState.SUCCESS -> {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_check),
-                        contentDescription = "Success",
+                        contentDescription = null,
                         modifier = Modifier.size(24.dp)
                     )
                 }
@@ -72,7 +74,7 @@ fun LoadingButton(
 }
 
 @Composable
-private fun launchedEffectsHandler(loadingState: LoadingButtonState): LoadingButtonState {
+private fun loadingButtonHandler(loadingState: LoadingButtonState): LoadingButtonState {
     var visualState by remember { mutableStateOf(LoadingButtonState.IDLE) }
     LaunchedEffect(loadingState) {
         if (loadingState == LoadingButtonState.SUCCESS && visualState == LoadingButtonState.LOADING) {

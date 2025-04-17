@@ -5,7 +5,7 @@ import androidx.annotation.StringRes
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
-import com.composetest.core.designsystem.R
+import com.composetest.core.ui.R
 import com.composetest.core.security.enums.BiometricError
 
 fun showBiometricPrompt(
@@ -68,7 +68,7 @@ fun showBiometricPrompt(
         .setTitle(title)
         .setSubtitle(subtitle)
         .setDescription(description)
-        .setNegativeButtonText(negativeButtonText ?: context.getString(R.string.global_word_close))
+        .setNegativeButtonText(negativeButtonText ?: context.getString(R.string.close))
         .setConfirmationRequired(confirmationRequired)
         .build()
 

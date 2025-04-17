@@ -6,7 +6,6 @@ import com.composetest.core.analytic.AnalyticSender
 import com.composetest.core.analytic.enums.ScreensAnalytic
 import com.composetest.core.analytic.events.CommonAnalyticEvent
 import com.composetest.core.analytic.events.login.LoginEventAnalytic
-import com.composetest.core.designsystem.utils.getCommonSimpleDialogErrorParam
 import com.composetest.core.domain.enums.Theme
 import com.composetest.core.domain.providers.BuildConfigProvider
 import com.composetest.core.domain.usecases.configuration.SetSystemBarsStyleUseCase
@@ -18,6 +17,7 @@ import com.composetest.core.router.destinations.login.LoginDestination
 import com.composetest.core.router.destinations.root.RootDestination
 import com.composetest.core.router.enums.NavigationMode
 import com.composetest.core.router.models.NavigationModel
+import com.composetest.core.router.utils.getDialogErrorDestination
 import com.composetest.core.security.enums.BiometricError
 import com.composetest.core.security.enums.BiometricError.Companion.biometricIsLockout
 import com.composetest.core.security.enums.BiometricError.Companion.userClosedPrompt
@@ -164,14 +164,12 @@ internal class LoginViewModel @Inject constructor(
         }
     }
 
-    private suspend fun handleLoginError(throwable: Throwable?) {
+    private suspend fun handleLoginError(error: Throwable) {
         analyticSender.sendEvent(LoginEventAnalytic.LoginSuccessful(false))
-        _uiState.update { uiState ->
-            if (throwable is ApiError.Unauthorized) {
-                uiState.setShowInvalidCredentialsMsg(true)
-            } else {
-                uiState.setSimpleDialog(getCommonSimpleDialogErrorParam(throwable))
-            }
+        if (error is ApiError.Unauthorized) {
+            _uiState.update { it.setShowInvalidCredentialsMsg(true) }
+        } else {
+            _uiEvent.emitEvent(LoginUiEvent.NavigateTo(getDialogErrorDestination(error)))
         }
     }
 
