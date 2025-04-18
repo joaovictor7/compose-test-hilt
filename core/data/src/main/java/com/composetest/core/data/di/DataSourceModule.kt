@@ -18,7 +18,6 @@ import com.composetest.core.data.providers.AssetsProvider
 import com.composetest.core.data.providers.EnvironmentInstanceProvider
 import com.composetest.core.data.utils.ApiCallUtils
 import com.composetest.core.network.di.qualifiers.ApiQualifier
-import com.composetest.core.network.enums.Api
 import com.google.firebase.auth.FirebaseAuth
 import dagger.Module
 import dagger.Provides
@@ -56,7 +55,7 @@ internal object DataSourceModule {
         environmentInstanceProvider: EnvironmentInstanceProvider,
         apiCallUtils: ApiCallUtils,
         assetsProvider: AssetsProvider,
-        @ApiQualifier(Api.OPEN_WEATHER) openWeatherApi: HttpClient
+        @ApiQualifier.OpenWeather openWeatherApi: HttpClient
     ): OpenWeatherDataSource = environmentInstanceProvider.getInstance(
         instance = OpenWeatherDataSourceImpl(
             apiCallUtils = apiCallUtils,
@@ -73,7 +72,7 @@ internal object DataSourceModule {
         environmentInstanceProvider: EnvironmentInstanceProvider,
         apiCallUtils: ApiCallUtils,
         assetsProvider: AssetsProvider,
-        @ApiQualifier(Api.NEWS_API) newsApi: HttpClient
+        @ApiQualifier.NewsApi newsApi: HttpClient
     ): NewsApiDataSource = environmentInstanceProvider.getInstance(
         instance = NewsApiDataSourceImpl(
             apiCallUtils = apiCallUtils,
@@ -90,7 +89,7 @@ internal object DataSourceModule {
         apiCallUtils: ApiCallUtils,
         assetsProvider: AssetsProvider,
         environmentInstanceProvider: EnvironmentInstanceProvider,
-        @ApiQualifier(Api.COIN_API) httpClient: HttpClient
+        @ApiQualifier.CoinApi httpClient: HttpClient
     ): CoinDataSource = environmentInstanceProvider.getInstance(
         instance = CoinDataSourceImpl(apiCallUtils, httpClient),
         fakeInstance = CoinDataSourceFakeImpl(apiCallUtils, assetsProvider)

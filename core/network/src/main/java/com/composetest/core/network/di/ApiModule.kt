@@ -6,7 +6,6 @@ import com.composetest.core.domain.repositories.RemoteConfigRepository
 import com.composetest.core.network.ApiSetting
 import com.composetest.core.network.HttpClientBuilder
 import com.composetest.core.network.di.qualifiers.ApiQualifier
-import com.composetest.core.network.enums.Api
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,7 +17,7 @@ import io.ktor.client.HttpClient
 internal object ApiModule {
 
     @Provides
-    @ApiQualifier(Api.NEWS_API)
+    @ApiQualifier.NewsApi
     fun newsApi(
         remoteConfigRepository: RemoteConfigRepository,
         buildConfigProvider: BuildConfigProvider
@@ -30,7 +29,7 @@ internal object ApiModule {
     )
 
     @Provides
-    @ApiQualifier(Api.OPEN_WEATHER)
+    @ApiQualifier.OpenWeather
     fun openWeatherApi(
         remoteConfigRepository: RemoteConfigRepository,
         buildConfigProvider: BuildConfigProvider
@@ -42,7 +41,7 @@ internal object ApiModule {
     )
 
     @Provides
-    @ApiQualifier(Api.COIN_API)
+    @ApiQualifier.CoinApi
     fun coinApi(
         remoteConfigRepository: RemoteConfigRepository,
         buildConfigProvider: BuildConfigProvider
