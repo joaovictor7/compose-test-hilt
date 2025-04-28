@@ -127,16 +127,13 @@ internal class WeatherForecastViewModel @Inject constructor(
         coroutineScope = viewModelScope,
         onError = ::handleWeatherForecastsError
     ) {
-        val weatherForecast =
-            getWeatherForecastsUseCase(location.latitude, location.longitude)
+        val weatherForecast = getWeatherForecastsUseCase(location.latitude, location.longitude)
         val todayWeatherForecast = getTodayWeatherForecastUseCase(weatherForecast)
         val futureWeatherForecasts = getFutureWeatherForecastsUseCase(weatherForecast)
         _uiState.update { uiState ->
             uiState.setWeatherForecasts(
                 todayWeatherForecast,
-                futureWeatherForecastScreenModelsMapper.mapperToModels(
-                    futureWeatherForecasts
-                )
+                futureWeatherForecastScreenModelsMapper.mapperToModels(futureWeatherForecasts)
             )
         }
         weatherForecastsWasGet = true
@@ -157,7 +154,10 @@ internal class WeatherForecastViewModel @Inject constructor(
         it.setWeatherForecastsError(status)
     }
 
-    private fun getStatusErrorAndOpenDialog(error: Throwable, dataWasGet: Boolean): WeatherForecastStatus {
+    private fun getStatusErrorAndOpenDialog(
+        error: Throwable,
+        dataWasGet: Boolean
+    ): WeatherForecastStatus {
         _uiEvent.emitEvent(WeatherForecastUiEvent.NavigateTo(getDialogErrorDestination(error)))
         return if (dataWasGet) {
             WeatherForecastStatus.READY

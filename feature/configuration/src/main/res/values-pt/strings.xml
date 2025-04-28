@@ -16,6 +16,6 @@
 
     <!-- Security Configurations -->
     <string name="configuration_security_biometric_label_text">Fazer login usando biometria</string>
-    <string name="configuration_security_biometric_not_available_text">\nEssa opção não está disponível em seu dispositivo</string>
+    <string name="configuration_security_biometric_not_available_text">\nEssa opção não está disponível</string>
 
 </resources>
