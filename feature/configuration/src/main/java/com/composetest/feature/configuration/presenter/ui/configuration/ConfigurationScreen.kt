@@ -1,4 +1,4 @@
-package com.composetest.feature.configuration.presenter.ui.configuration
+package com.composetest.feature.configuration.ui.configuration
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,7 +16,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -30,7 +29,8 @@ import com.composetest.core.designsystem.extensions.horizontalScreenMargin
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.router.extensions.navigateTo
 import com.composetest.core.ui.interfaces.Command
-import com.composetest.feature.configuration.presenter.enums.Configuration
+import com.composetest.core.ui.utils.UiEventsObserver
+import com.composetest.feature.configuration.enums.Configuration
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 
@@ -43,7 +43,7 @@ internal fun ConfigurationScreen(
     mainNavController: NavHostController = rememberNavController(),
     onExecuteCommand: (Command<ConfigurationCommandReceiver>) -> Unit = {}
 ) {
-    LaunchedEffectHandler(uiEvent = uiEvent, mainNavController = mainNavController)
+    UiEventsHandler(uiEvent = uiEvent, mainNavController = mainNavController)
     LazyVerticalStaggeredGrid(
         modifier = Modifier.horizontalScreenMargin(),
         columns = StaggeredGridCells.Fixed(LIMIT_CONFIGURATIONS_PER_LINE),
@@ -90,15 +90,13 @@ private fun ConfigurationCard(
 }
 
 @Composable
-private fun LaunchedEffectHandler(
+private fun UiEventsHandler(
     uiEvent: Flow<ConfigurationUiEvent>,
     mainNavController: NavHostController
 ) {
-    LaunchedEffect(Unit) {
-        uiEvent.collect { event ->
-            when (event) {
-                is ConfigurationUiEvent.NavigateTo -> mainNavController.navigateTo(event.navigateModel)
-            }
+    UiEventsObserver(uiEvent) {
+        when (it) {
+            is ConfigurationUiEvent.NavigateTo -> mainNavController.navigateTo(it.navigateModel)
         }
     }
 }

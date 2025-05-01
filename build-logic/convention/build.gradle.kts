@@ -6,6 +6,7 @@ dependencies {
     implementation(libs.android.tools.build.gradle)
     implementation(libs.kotlin.gradle.plugin)
     implementation(libs.kotlin.compose.gradle.plugin)
+    implementation(libs.kotlin.kover)
 }
 
 gradlePlugin {
@@ -31,6 +32,10 @@ gradlePlugin {
         registerPlugin(
             id = "test",
             className = "TestConventionPlugin"
+        )
+        registerPlugin(
+            id = "kover",
+            className = "KoverConventionPlugin"
         )
     }
 }

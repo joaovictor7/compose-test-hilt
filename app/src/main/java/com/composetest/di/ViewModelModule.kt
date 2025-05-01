@@ -2,6 +2,8 @@ package com.composetest.di
 
 import com.composetest.analytics.MainAnalytic
 import com.composetest.core.analytic.AnalyticSender
+import com.composetest.core.analytic.enums.ScreensAnalytic
+import com.composetest.core.ui.di.qualifiers.AsyncTaskUtilsQualifier
 import com.composetest.core.ui.utils.AsyncTaskUtils
 import com.composetest.di.qualifiers.MainAsyncTaskUtilsQualifier
 import dagger.Module
@@ -14,8 +16,8 @@ import dagger.hilt.android.components.ViewModelComponent
 internal object ViewModelModule {
 
     @Provides
-    @MainAsyncTaskUtilsQualifier
+    @AsyncTaskUtilsQualifier(ScreensAnalytic.MAIN)
     fun mainAsyncTaskUtils(
-        analyticSender: AnalyticSender,
-    ): AsyncTaskUtils = AsyncTaskUtils(analyticSender, MainAnalytic)
+        analyticSender: AnalyticSender
+    ): AsyncTaskUtils = AsyncTaskUtils(analyticSender, ScreensAnalytic.MAIN)
 }

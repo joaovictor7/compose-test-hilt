@@ -23,7 +23,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,11 +33,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
-import com.composetest.common.extensions.navigateToApplicationDetailSettings
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.composetest.core.ui.extensions.navigateToApplicationDetailSettings
 import com.composetest.core.designsystem.components.asyncimage.AsyncImage
 import com.composetest.core.designsystem.components.buttons.Button
 import com.composetest.core.designsystem.components.buttons.TryAgainButton
-import com.composetest.core.designsystem.components.dialogs.SimpleDialog
 import com.composetest.core.designsystem.components.graphics.SimpleScatterPlotGraphic
 import com.composetest.core.designsystem.components.lifecycle.LifecycleEvent
 import com.composetest.core.designsystem.components.shimmer.Shimmer
@@ -47,8 +47,10 @@ import com.composetest.core.designsystem.dimensions.Spacing
 import com.composetest.core.designsystem.extensions.screenMargin
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.designsystem.utils.getSharedShimmerOffset
+import com.composetest.core.router.extensions.navigateTo
 import com.composetest.core.ui.enums.Permission
 import com.composetest.core.ui.interfaces.Command
+import com.composetest.core.ui.utils.UiEventsObserver
 import com.composetest.core.ui.utils.getMultiplePermissionState
 import com.composetest.feature.weatherforecast.R
 import com.composetest.feature.weatherforecast.presenter.enums.WeatherForecastScreenStatus
@@ -66,13 +68,17 @@ import com.composetest.feature.weatherforecast.R as WeatherForecastResources
 internal fun WeatherForecastScreen(
     uiState: WeatherForecastUiState,
     uiEvent: Flow<WeatherForecastUiEvent> = emptyFlow(),
-    onExecuteCommand: (Command<WeatherForecastCommandReceiver>) -> Unit = {}
+    onExecuteCommand: (Command<WeatherForecastCommandReceiver>) -> Unit = {},
+    navController: NavHostController = rememberNavController(),
 ) {
     val permissionState = getMultiplePermissionState(Permission.localization)
     val shimmerOffset by getSharedShimmerOffset()
-    LaunchedEffectHandler(uiEvent = uiEvent, permissionState = permissionState)
+    UiEventsHandler(
+        uiEvent = uiEvent,
+        navController = navController,
+        permissionState = permissionState
+    )
     LifecycleEventHandler(onExecuteCommand = onExecuteCommand)
-    DialogHandler(uiState = uiState, onExecuteCommand = onExecuteCommand)
     Column(modifier = Modifier.fillMaxSize()) {
         LeftTopBar(
             titleId = WeatherForecastResources.string.weather_forecast_title,
@@ -120,7 +126,7 @@ private fun FullScreenMessage(
             verticalArrangement = Arrangement.spacedBy(Spacing.eight),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            if (uiState.isPermissionNotGranted) {
+            if (uiState.screenStatusIsPermissionNotGranted) {
                 Text(
                     text = stringResource(R.string.weather_forecast_required_permission_msg),
                     style = MaterialTheme.typography.bodyLarge,
@@ -352,26 +358,18 @@ private fun WeatherForecastsShimmer(shimmerOffset: Float) {
 
 // region Handlers
 @Composable
-private fun DialogHandler(
-    uiState: WeatherForecastUiState,
-    onExecuteCommand: (Command<WeatherForecastCommandReceiver>) -> Unit
-) = uiState.simpleDialogParam?.let {
-    SimpleDialog(param = it) {
-        onExecuteCommand(WeatherForecastCommand.DismissSimpleDialog)
-    }
-}
-
-@Composable
-private fun LaunchedEffectHandler(
-    uiEvent: Flow<WeatherForecastUiEvent>?,
+private fun UiEventsHandler(
+    uiEvent: Flow<WeatherForecastUiEvent>,
+    navController: NavHostController,
     permissionState: MultiplePermissionsState,
 ) {
-    LaunchedEffect(Unit) {
-        uiEvent?.collect {
-            when (it) {
-                WeatherForecastUiEvent.LaunchPermissionRequest -> {
-                    permissionState.launchMultiplePermissionRequest()
-                }
+    UiEventsObserver(uiEvent) {
+        when (it) {
+            is WeatherForecastUiEvent.LaunchPermissionRequest -> {
+                permissionState.launchMultiplePermissionRequest()
+            }
+            is WeatherForecastUiEvent.NavigateTo -> {
+                navController.navigateTo(it.navigationModel)
             }
         }
     }

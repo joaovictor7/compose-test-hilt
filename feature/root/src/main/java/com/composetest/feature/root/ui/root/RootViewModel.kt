@@ -2,9 +2,8 @@ package com.composetest.feature.root.ui.root
 
 import androidx.lifecycle.viewModelScope
 import com.composetest.core.analytic.AnalyticSender
-import com.composetest.core.analytic.events.CommonAnalyticEvent
+import com.composetest.core.analytic.enums.ScreensAnalytic
 import com.composetest.core.analytic.events.root.RootEventAnalytic
-import com.composetest.core.analytic.events.root.RootScreenAnalytic
 import com.composetest.core.domain.usecases.root.GetAvailableFeaturesUseCase
 import com.composetest.core.domain.usecases.session.FinishSessionUseCase
 import com.composetest.core.domain.usecases.user.GetUserUseCase
@@ -34,15 +33,15 @@ internal class RootViewModel @Inject constructor(
     private val getUserUseCase: GetUserUseCase,
     private val userModalDrawerMapper: UserModalDrawerMapper,
     private val analyticSender: AnalyticSender,
-    @AsyncTaskUtilsQualifier(RootScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
+    @AsyncTaskUtilsQualifier(ScreensAnalytic.ROOT) private val asyncTaskUtils: AsyncTaskUtils,
     getAvailableFeaturesUseCase: GetAvailableFeaturesUseCase,
 ) : BaseViewModel(), UiState<RootUiState>, UiEvent<RootUiEvent>, RootCommandReceiver {
-
-    override val commandReceiver = this
 
     private val availableFeatures = getAvailableFeaturesUseCase()
     private val bottomNavigationFeaturesOrder = mutableListOf<NavigationFeature>()
     private var firstBottomNavigationFeature: NavigationFeature? = null
+
+    override val commandReceiver = this
 
     private val _uiState = MutableStateFlow(RootUiState())
     override val uiState = _uiState.asStateFlow()
@@ -51,14 +50,7 @@ internal class RootViewModel @Inject constructor(
     override val uiEvent = _uiEvent.asSharedFlow()
 
     init {
-        sendOpenScreenAnalytic()
         iniUiState()
-    }
-
-    override fun sendOpenScreenAnalytic() {
-        asyncTaskUtils.runAsyncTask(viewModelScope) {
-            analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(RootScreenAnalytic))
-        }
     }
 
     override fun backHandler() {
@@ -99,6 +91,15 @@ internal class RootViewModel @Inject constructor(
                     ),
                 )
             )
+        }
+    }
+
+    override fun updateUserData() {
+        asyncTaskUtils.runAsyncTask(viewModelScope) {
+            val user = getUserUseCase()
+            _uiState.update {
+                it.setUpdateUser(userModalDrawerMapper.mapperToModel(user))
+            }
         }
     }
 

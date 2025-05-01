@@ -1,23 +1,23 @@
-package com.composetest.feature.login.presenter.ui.login
+package com.composetest.feature.login.ui.login
 
 import androidx.lifecycle.viewModelScope
 import com.composetest.common.errors.ApiError
 import com.composetest.core.analytic.AnalyticSender
+import com.composetest.core.analytic.enums.ScreensAnalytic
 import com.composetest.core.analytic.events.CommonAnalyticEvent
 import com.composetest.core.analytic.events.login.LoginEventAnalytic
-import com.composetest.core.analytic.events.login.LoginScreenAnalytic
-import com.composetest.core.designsystem.utils.getCommonSimpleDialogErrorParam
 import com.composetest.core.domain.enums.Theme
 import com.composetest.core.domain.providers.BuildConfigProvider
 import com.composetest.core.domain.usecases.configuration.SetSystemBarsStyleUseCase
-import com.composetest.feature.login.domain.usecases.AuthenticationByBiometricUseCase
-import com.composetest.feature.login.domain.usecases.AuthenticationUseCase
-import com.composetest.feature.login.domain.usecases.BiometricIsEnableUseCase
+import com.composetest.core.domain.usecases.login.AuthenticationByBiometricUseCase
+import com.composetest.core.domain.usecases.login.AuthenticationUseCase
+import com.composetest.core.domain.usecases.login.BiometricIsEnableUseCase
 import com.composetest.core.domain.usecases.remoteconfigs.GetBooleanRemoteConfigUseCase
 import com.composetest.core.router.destinations.login.LoginDestination
 import com.composetest.core.router.destinations.root.RootDestination
 import com.composetest.core.router.enums.NavigationMode
 import com.composetest.core.router.models.NavigationModel
+import com.composetest.core.router.utils.getDialogErrorDestination
 import com.composetest.core.security.enums.BiometricError
 import com.composetest.core.security.enums.BiometricError.Companion.biometricIsLockout
 import com.composetest.core.security.enums.BiometricError.Companion.userClosedPrompt
@@ -29,10 +29,10 @@ import com.composetest.core.ui.interfaces.UiEvent
 import com.composetest.core.ui.interfaces.UiState
 import com.composetest.core.ui.utils.AsyncTaskUtils
 import com.composetest.feature.login.R
-import com.composetest.feature.login.presenter.enums.LoginRemoteConfig
-import com.composetest.feature.login.presenter.extensions.autoShowBiometricPrompt
-import com.composetest.feature.login.presenter.models.BiometricModel
-import com.composetest.feature.login.presenter.ui.dialogs.SimpleDialogParam
+import com.composetest.feature.login.enums.LoginRemoteConfig
+import com.composetest.feature.login.extensions.autoShowBiometricPrompt
+import com.composetest.feature.login.models.BiometricModel
+import com.composetest.feature.login.ui.dialogs.SimpleDialogParam
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -53,7 +53,7 @@ internal class LoginViewModel @Inject constructor(
     private val getBooleanRemoteConfigUseCase: GetBooleanRemoteConfigUseCase,
     private val loginDestination: LoginDestination,
     private val analyticSender: AnalyticSender,
-    @AsyncTaskUtilsQualifier(LoginScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
+    @AsyncTaskUtilsQualifier(ScreensAnalytic.LOGIN) private val asyncTaskUtils: AsyncTaskUtils,
 ) : BaseViewModel(), UiState<LoginUiState>, UiEvent<LoginUiEvent>, LoginCommandReceiver {
 
     override val commandReceiver = this
@@ -74,7 +74,7 @@ internal class LoginViewModel @Inject constructor(
 
     override fun sendOpenScreenAnalytic() {
         asyncTaskUtils.runAsyncTask(viewModelScope) {
-            analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(LoginScreenAnalytic))
+            analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(ScreensAnalytic.LOGIN))
         }
     }
 
@@ -89,7 +89,7 @@ internal class LoginViewModel @Inject constructor(
     override fun login(byBiometric: Boolean) {
         _uiState.update { it.setLoading(true) }
         asyncTaskUtils.runAsyncTask(
-            viewModelScope,
+            coroutineScope = viewModelScope,
             onError = ::handleLoginError,
             onCompletion = { _uiState.update { it.setLoading(false) } }
         ) {
@@ -164,14 +164,12 @@ internal class LoginViewModel @Inject constructor(
         }
     }
 
-    private suspend fun handleLoginError(throwable: Throwable?) {
+    private suspend fun handleLoginError(error: Throwable) {
         analyticSender.sendEvent(LoginEventAnalytic.LoginSuccessful(false))
-        _uiState.update { uiState ->
-            if (throwable is ApiError.Unauthorized) {
-                uiState.setShowInvalidCredentialsMsg(true)
-            } else {
-                uiState.setSimpleDialog(getCommonSimpleDialogErrorParam(throwable))
-            }
+        if (error is ApiError.Unauthorized) {
+            _uiState.update { it.setShowInvalidCredentialsMsg(true) }
+        } else {
+            _uiEvent.emitEvent(LoginUiEvent.NavigateTo(getDialogErrorDestination(error)))
         }
     }
 

@@ -1,19 +1,19 @@
-package com.composetest.feature.news.presenter.ui.news.list
+package com.composetest.feature.news.ui.news.list
 
 import androidx.lifecycle.viewModelScope
 import com.composetest.core.analytic.AnalyticSender
+import com.composetest.core.analytic.enums.ScreensAnalytic
 import com.composetest.core.analytic.events.CommonAnalyticEvent
-import com.composetest.core.designsystem.utils.getCommonSimpleDialogErrorParam
+import com.composetest.core.domain.models.news.ArticleModel
+import com.composetest.core.domain.usecases.news.GetTopHeadlinesUseCase
 import com.composetest.core.router.destinations.news.FullNewsDestination
 import com.composetest.core.router.models.NavigationModel
+import com.composetest.core.router.utils.getDialogErrorDestination
 import com.composetest.core.ui.bases.BaseViewModel
 import com.composetest.core.ui.di.qualifiers.AsyncTaskUtilsQualifier
 import com.composetest.core.ui.interfaces.UiEvent
 import com.composetest.core.ui.interfaces.UiState
 import com.composetest.core.ui.utils.AsyncTaskUtils
-import com.composetest.feature.news.analytic.screens.NewsListScreenAnalytic
-import com.composetest.feature.news.domain.models.ArticleModel
-import com.composetest.feature.news.domain.usecases.GetTopHeadlinesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,7 +26,7 @@ import javax.inject.Inject
 internal class NewsListViewModel @Inject constructor(
     private val getTopHeadlinesUseCase: GetTopHeadlinesUseCase,
     private val analyticSender: AnalyticSender,
-    @AsyncTaskUtilsQualifier(NewsListScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
+    @AsyncTaskUtilsQualifier(ScreensAnalytic.FULL_NEWS) private val asyncTaskUtils: AsyncTaskUtils,
 ) : BaseViewModel(), UiState<NewsListUiState>, UiEvent<NewsListUiEvent>, NewsListCommandReceiver {
 
     override val commandReceiver = this
@@ -40,6 +40,12 @@ internal class NewsListViewModel @Inject constructor(
     init {
         sendOpenScreenAnalytic()
         getArticles()
+    }
+
+    override fun sendOpenScreenAnalytic() {
+        asyncTaskUtils.runAsyncTask(viewModelScope) {
+            analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(ScreensAnalytic.NEWS_LIST))
+        }
     }
 
     override fun navigateToFullNews(article: ArticleModel) {
@@ -61,20 +67,10 @@ internal class NewsListViewModel @Inject constructor(
         getArticles()
     }
 
-    override fun dismissSimpleDialog() {
-        _uiState.update { it.setSimpleDialogParam(null) }
-    }
-
-    override fun sendOpenScreenAnalytic() {
-        asyncTaskUtils.runAsyncTask(viewModelScope) {
-            analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(NewsListScreenAnalytic))
-        }
-    }
-
     private fun getArticles() {
         _uiState.update { it.setIsLoading(true) }
         asyncTaskUtils.runAsyncTask(
-            viewModelScope,
+            coroutineScope = viewModelScope,
             onCompletion = { _uiState.update { it.setIsLoading(false) } },
             onError = ::requestErrorHandler
         ) {
@@ -84,6 +80,7 @@ internal class NewsListViewModel @Inject constructor(
     }
 
     private fun requestErrorHandler(error: Throwable) {
-        _uiState.update { it.setSimpleDialogParam(getCommonSimpleDialogErrorParam(error)) }
+        _uiState.update { it.setShowRetryButton() }
+        _uiEvent.emitEvent(NewsListUiEvent.NavigateTo(getDialogErrorDestination(error)))
     }
 }

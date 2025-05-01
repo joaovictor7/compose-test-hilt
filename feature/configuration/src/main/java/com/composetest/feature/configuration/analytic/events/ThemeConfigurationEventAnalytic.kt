@@ -2,10 +2,10 @@ package com.composetest.feature.configuration.analytic.events
 
 import com.composetest.core.analytic.AnalyticEvent
 import com.composetest.core.analytic.AnalyticScreen
-import com.composetest.feature.configuration.analytic.screens.ThemeConfigurationScreenAnalytic
+import com.composetest.core.analytic.enums.ScreensAnalytic
 
 internal sealed class ThemeConfigurationEventAnalytic : AnalyticEvent,
-    AnalyticScreen by ThemeConfigurationScreenAnalytic {
+    AnalyticScreen by ScreensAnalytic.THEME_CONFIGURATION {
 
     data class ChangeThemeConfiguration(
         private val theme: String? = null,

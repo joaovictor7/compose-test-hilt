@@ -3,18 +3,16 @@ package com.composetest.feature.configuration.presenter.ui.theme
 import androidx.lifecycle.viewModelScope
 import com.composetest.common.extensions.orFalse
 import com.composetest.core.analytic.AnalyticSender
+import com.composetest.core.analytic.enums.ScreensAnalytic
 import com.composetest.core.analytic.events.CommonAnalyticEvent
+import com.composetest.core.analytic.events.configuration.ThemeConfigurationEventAnalytic
 import com.composetest.core.domain.enums.Theme
 import com.composetest.core.domain.models.configuration.ThemeConfigurationModel
 import com.composetest.core.ui.bases.BaseViewModel
 import com.composetest.core.ui.di.qualifiers.AsyncTaskUtilsQualifier
 import com.composetest.core.ui.interfaces.UiState
 import com.composetest.core.ui.utils.AsyncTaskUtils
-import com.composetest.feature.configuration.analytic.events.ThemeConfigurationEventAnalytic
-import com.composetest.feature.configuration.analytic.screens.ThemeConfigurationScreenAnalytic
-import com.composetest.feature.configuration.domain.usecases.GetThemeConfigurationUseCase
-import com.composetest.feature.configuration.domain.usecases.UpdateThemeConfigurationUseCase
-import com.composetest.feature.configuration.presenter.enums.ThemeConfiguration
+import com.composetest.feature.configuration.enums.ThemeConfiguration
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -27,7 +25,7 @@ internal class ThemeConfigurationViewModel @Inject constructor(
     private val getThemeConfigurationUseCase: GetThemeConfigurationUseCase,
     private val updateThemeConfigurationUseCase: UpdateThemeConfigurationUseCase,
     private val analyticSender: AnalyticSender,
-    @AsyncTaskUtilsQualifier(ThemeConfigurationScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
+    @AsyncTaskUtilsQualifier(ScreensAnalytic.THEME_CONFIGURATION) private val asyncTaskUtils: AsyncTaskUtils,
 ) : BaseViewModel(), UiState<ThemeConfigurationUiState>, ThemeConfigurationCommandReceiver {
 
     override val commandReceiver = this
@@ -40,6 +38,12 @@ internal class ThemeConfigurationViewModel @Inject constructor(
     init {
         sendOpenScreenAnalytic()
         initUiState()
+    }
+
+    override fun sendOpenScreenAnalytic() {
+        asyncTaskUtils.runAsyncTask(viewModelScope) {
+            analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(ScreensAnalytic.THEME_CONFIGURATION))
+        }
     }
 
     override fun changeTheme(selectedTheme: ThemeConfiguration) {

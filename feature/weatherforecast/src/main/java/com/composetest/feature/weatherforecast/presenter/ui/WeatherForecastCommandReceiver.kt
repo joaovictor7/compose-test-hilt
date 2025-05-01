@@ -9,5 +9,4 @@ internal interface WeatherForecastCommandReceiver :
     fun getLocationAndWeatherForecastsData()
     fun getWeatherForecastNowData()
     fun getWeatherForecastsData()
-    fun dismissSimpleDialog()
 }

@@ -6,5 +6,4 @@ import com.composetest.feature.news.domain.models.ArticleModel
 internal interface NewsListCommandReceiver : CommandReceiver<NewsListCommandReceiver> {
     fun navigateToFullNews(article: ArticleModel)
     fun refresh()
-    fun dismissSimpleDialog()
 }

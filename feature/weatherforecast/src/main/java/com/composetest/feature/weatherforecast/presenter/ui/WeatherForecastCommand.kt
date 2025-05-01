@@ -27,10 +27,4 @@ internal sealed interface WeatherForecastCommand : Command<WeatherForecastComman
             commandReceiver.getWeatherForecastsData()
         }
     }
-
-    data object DismissSimpleDialog : WeatherForecastCommand {
-        override fun execute(commandReceiver: WeatherForecastCommandReceiver) {
-            commandReceiver.dismissSimpleDialog()
-        }
-    }
 }

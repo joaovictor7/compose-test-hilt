@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Global Words -->
+    <string name="close">Close</string>
+    <string name="try_again">Try again</string>
+
+</resources>

@@ -19,6 +19,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.composetest.core.designsystem.R
+import com.composetest.core.ui.R as UiRes
 import com.composetest.core.designsystem.dimensions.Spacing
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 
@@ -37,7 +38,7 @@ fun TryAgainButton(
     ) {
         Text(
             modifier = Modifier.padding(top = Spacing.twelve),
-            text = stringResource(R.string.global_word_try_again),
+            text = stringResource(UiRes.string.try_again),
             style = MaterialTheme.typography.bodyLarge,
             textAlign = TextAlign.Center
         )

@@ -16,7 +16,7 @@ dependencies {
     implementation(projects.core.analytic)
     implementation(projects.feature.home)
     implementation(projects.feature.configuration)
-    implementation(projects.feature.profile)
+    implementation(projects.feature.account)
     implementation(projects.feature.weatherforecast)
     implementation(projects.feature.news)
     implementation(projects.feature.exchange)

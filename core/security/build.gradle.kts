@@ -9,6 +9,6 @@ android {
 dependencies {
     implementation(projects.common)
     implementation(projects.core.domain)
-    implementation(projects.core.designsystem)
+    implementation(projects.core.ui)
     implementation(libs.androidx.biometric)
 }

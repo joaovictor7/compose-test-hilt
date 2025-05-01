@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.composetest.core.designsystem.R
 import com.composetest.core.designsystem.components.buttons.Button
 import com.composetest.core.designsystem.params.alertdialogs.SimpleDialogParam
 import com.composetest.core.designsystem.theme.ComposeTestTheme
@@ -47,6 +48,10 @@ fun SimpleDialog(
 @Preview
 private fun Preview() {
     ComposeTestTheme {
-        SimpleDialog(param = CommonSimpleDialog.NetworkError) {}
+        SimpleDialog(param = object : SimpleDialogParam {
+            override val iconId = R.string.error_alert_dialog_generic_text
+            override val titleId = R.string.error_alert_dialog_generic_title
+            override val textId = R.string.error_alert_dialog_generic_title
+        }) {}
     }
 }

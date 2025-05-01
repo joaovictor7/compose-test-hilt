@@ -1,4 +1,4 @@
-package com.composetest.feature.news.presenter.ui.news.list
+package com.composetest.feature.news.ui.news.list
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -13,19 +13,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.sizeIn
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.pulltorefresh.PullToRefreshBox
-import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
-import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,7 +30,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.composetest.core.designsystem.components.asyncimage.AsyncImage
 import com.composetest.core.designsystem.components.buttons.TryAgainButton
-import com.composetest.core.designsystem.components.dialogs.SimpleDialog
+import com.composetest.core.designsystem.components.pulltorefresh.PullToRefresh
 import com.composetest.core.designsystem.components.shimmer.Shimmer
 import com.composetest.core.designsystem.constants.screenMargin
 import com.composetest.core.designsystem.constants.topScreenMarginList
@@ -44,38 +38,25 @@ import com.composetest.core.designsystem.dimensions.Spacing
 import com.composetest.core.designsystem.extensions.horizontalScreenMargin
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.designsystem.utils.getSharedShimmerOffset
+import com.composetest.core.domain.models.news.ArticleModel
 import com.composetest.core.router.extensions.navigateTo
 import com.composetest.core.ui.interfaces.Command
-import com.composetest.feature.news.domain.models.ArticleModel
+import com.composetest.core.ui.utils.UiEventsObserver
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import java.time.LocalDateTime
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
 internal fun NewsListScreen(
     uiState: NewsListUiState,
     uiEvent: Flow<NewsListUiEvent> = emptyFlow(),
     onExecuteCommand: (Command<NewsListCommandReceiver>) -> Unit = {},
     navController: NavHostController = rememberNavController(),
 ) {
-    val pullToRefreshState = rememberPullToRefreshState()
     val shimmerOffset by getSharedShimmerOffset()
-    LaunchedEffectHandler(uiEvent = uiEvent, navController = navController)
-    DialogHandler(uiState = uiState, onExecuteCommand = onExecuteCommand)
-    PullToRefreshBox(
-        modifier = Modifier.fillMaxSize(),
-        state = pullToRefreshState,
+    UiEventsHandler(uiEvent = uiEvent, navController = navController)
+    PullToRefresh(
         isRefreshing = uiState.isLoading,
-        indicator = {
-            Indicator(
-                modifier = Modifier
-                    .align(Alignment.TopCenter)
-                    .windowInsetsPadding(WindowInsets.statusBars),
-                isRefreshing = uiState.isLoading,
-                state = pullToRefreshState
-            )
-        },
         onRefresh = { onExecuteCommand(NewsListCommand.Refresh) }
     ) {
         LazyColumn(
@@ -94,7 +75,7 @@ internal fun NewsListScreen(
                     NewsCard(articleModel = it, onExecuteCommand = onExecuteCommand)
                 }
                 item {
-                    Spacer(modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars))
+                    Spacer(Modifier.windowInsetsPadding(WindowInsets.navigationBars))
                 }
             }
         }
@@ -162,25 +143,13 @@ private fun ListItemShimmer(shimmerOffset: Float) {
 }
 
 @Composable
-private fun DialogHandler(
-    uiState: NewsListUiState,
-    onExecuteCommand: (Command<NewsListCommandReceiver>) -> Unit
-) = uiState.simpleDialogParam?.let {
-    SimpleDialog(param = it) {
-        onExecuteCommand(NewsListCommand.DismissSimpleDialog)
-    }
-}
-
-@Composable
-private fun LaunchedEffectHandler(
+private fun UiEventsHandler(
     uiEvent: Flow<NewsListUiEvent>,
     navController: NavHostController
 ) {
-    LaunchedEffect(Unit) {
-        uiEvent.collect {
-            when (it) {
-                is NewsListUiEvent.NavigateTo -> navController.navigateTo(it.navigationModel)
-            }
+    UiEventsObserver(uiEvent) {
+        when (it) {
+            is NewsListUiEvent.NavigateTo -> navController.navigateTo(it.navigationModel)
         }
     }
 }
@@ -191,7 +160,7 @@ private fun Preview() {
     ComposeTestTheme {
         NewsListScreen(
             uiState = NewsListUiState(
-//                showRetryButton = true,
+                showRetryButton = true,
                 isLoading = true,
                 articles = listOf(
                     ArticleModel(

@@ -26,7 +26,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.composetest.core.designsystem.R
 import com.composetest.core.designsystem.components.buttons.Button
 import com.composetest.core.designsystem.components.dialogs.SimpleDialog
 import com.composetest.core.designsystem.components.icons.VibratingIcon
@@ -41,10 +40,11 @@ import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.router.extensions.navigateTo
 import com.composetest.core.security.utils.showBiometricPrompt
 import com.composetest.core.ui.interfaces.Command
+import com.composetest.feature.login.R
 import com.composetest.feature.login.presenter.models.BiometricModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
-import com.composetest.feature.login.R as LoginResources
+import com.composetest.core.designsystem.R as DesignSystemResources
 
 private const val AMOUNT_VIBRATION = 2
 private const val DURATION = 50
@@ -86,16 +86,16 @@ private fun LoginForm(
         verticalArrangement = Arrangement.spacedBy(Spacing.twelve)
     ) {
         Text(
-            text = stringResource(LoginResources.string.feature_login_login),
+            text = stringResource(R.string.feature_login_login),
             style = MaterialTheme.typography.headlineLarge,
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center
         )
         Column(verticalArrangement = Arrangement.spacedBy(Spacing.sixteen)) {
             OutlinedTextField(
-                labelText = stringResource(LoginResources.string.feature_login_email),
+                labelText = stringResource(R.string.feature_login_email),
                 textValue = uiState.loginFormModel.email,
-                placeholderText = stringResource(LoginResources.string.feature_login_email_placeholder),
+                placeholderText = stringResource(R.string.feature_login_email_placeholder),
                 supportingText = uiState.emailSupporting?.let { stringResource(it) },
                 imeAction = ImeAction.Next,
                 trailingIcon = uiState.emailTrailingIcon,
@@ -106,13 +106,13 @@ private fun LoginForm(
             ) { email -> onExecuteCommand(LoginCommand.WriteData(email = email)) }
             OutlinedTextField(
                 textValue = uiState.loginFormModel.password,
-                labelText = stringResource(LoginResources.string.feature_login_password),
+                labelText = stringResource(R.string.feature_login_password),
                 keyboardInput = KeyboardType.Password,
                 modifier = Modifier.fillMaxWidth()
             ) { password -> onExecuteCommand(LoginCommand.WriteData(password = password)) }
             if (uiState.invalidCredentials) {
                 Text(
-                    text = stringResource(LoginResources.string.feature_login_invalid_credentials),
+                    text = stringResource(R.string.feature_login_invalid_credentials),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.error
                 )
@@ -138,7 +138,7 @@ private fun ButtonsArea(
         verticalArrangement = Arrangement.spacedBy(Spacing.eight)
     ) {
         Button(
-            text = stringResource(LoginResources.string.feature_login_enter),
+            text = stringResource(R.string.feature_login_enter),
             modifier = Modifier.fillMaxWidth(),
             enabled = uiState.loginButtonIsEnabled
         ) { onExecuteCommand(LoginCommand.Login(false)) }
@@ -158,7 +158,7 @@ private fun BiometricButton(
                 onExecuteCommand(LoginCommand.ShowBiometricPrompt)
             }
             .padding(Spacing.four),
-        iconId = R.drawable.ic_fingerprint_extra_large,
+        iconId = DesignSystemResources.drawable.ic_fingerprint_extra_large,
         iconTint = when {
             !biometric.isAvailable -> MaterialTheme.colorScheme.onSurface.opacity(0.38f)
             biometric.isError -> MaterialTheme.colorScheme.error
@@ -215,8 +215,8 @@ private fun LaunchedEffectHandler(
             when (it) {
                 is LoginUiEvent.ShowBiometricPrompt -> showBiometricPrompt(
                     context = context,
-                    titleId = LoginResources.string.feature_login_biometric_title,
-                    subtitleId = LoginResources.string.feature_login_biometric_subtitle,
+                    titleId = R.string.feature_login_biometric_title,
+                    subtitleId = R.string.feature_login_biometric_subtitle,
                     onSuccess = { onExecuteCommand(LoginCommand.Login(true)) },
                     onError = { error ->
                         onExecuteCommand(LoginCommand.BiometricErrorHandler(error))
@@ -255,7 +255,7 @@ private fun Preview() {
                 versionName = "Version",
                 invalidCredentials = true,
                 biometricModel = BiometricModel(
-                    messageId = LoginResources.string.feature_login_biometric_is_blocked
+                    messageId = R.string.feature_login_biometric_is_blocked
                 )
             ),
         )

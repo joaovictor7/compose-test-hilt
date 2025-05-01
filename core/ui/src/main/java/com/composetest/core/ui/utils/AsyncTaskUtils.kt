@@ -53,7 +53,7 @@ class AsyncTaskUtils(
         error: Throwable,
         onError: (suspend (Throwable) -> Unit)? = null
     ) {
-        Log.e("BaseViewModel", error.message, error)
+        Log.e("AsyncTaskError", error.message, error)
         analyticSender.sendErrorEvent(ErrorAnalyticEvent(error, analyticScreen))
         onError?.invoke(error)
     }

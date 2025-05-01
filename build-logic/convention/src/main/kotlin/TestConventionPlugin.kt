@@ -8,9 +8,14 @@ import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.withType
 
 internal class TestConventionPlugin : Plugin<Project> {
+
     override fun apply(target: Project) {
         with(target) {
+            with(pluginManager) {
+                apply("com.composetest.kover")
+            }
             tasks.withType<Test> {
+                ignoreFailures = true
                 useJUnitPlatform()
                 jvmArgs("-Xshare:off")
                 jvmArgs("-XX:+EnableDynamicAgentLoading")

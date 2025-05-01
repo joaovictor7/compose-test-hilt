@@ -2,10 +2,9 @@ package com.composetest.feature.login.viewmodels
 
 import com.composetest.common.errors.ApiError
 import com.composetest.core.analytic.AnalyticSender
+import com.composetest.core.analytic.enums.ScreensAnalytic
 import com.composetest.core.analytic.events.CommonAnalyticEvent
 import com.composetest.core.analytic.events.login.LoginEventAnalytic
-import com.composetest.core.analytic.events.login.LoginScreenAnalytic
-import com.composetest.core.designsystem.components.dialogs.CommonSimpleDialog
 import com.composetest.core.domain.enums.BuildType
 import com.composetest.core.domain.enums.Flavor
 import com.composetest.core.domain.models.buildconfig.BuildConfigFieldsModel
@@ -73,7 +72,7 @@ internal class LoginViewModelTest : BaseTest() {
         onCancelJob()
         assertEquals(LoginUiState(versionName = "1.0.0 - 0"), states[0])
         coVerifySequence {
-            analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(LoginScreenAnalytic))
+            analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(ScreensAnalytic.LOGIN))
         }
     }
 
@@ -154,6 +153,7 @@ internal class LoginViewModelTest : BaseTest() {
         getBooleanRemoteConfigUseCase = getBooleanRemoteConfigUseCase,
         loginDestination = LoginDestination(),
         analyticSender = analyticSender,
+        asyncTaskUtils = mockk(relaxed = true)
     )
 
     private companion object {

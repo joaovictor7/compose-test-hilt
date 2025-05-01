@@ -1,16 +1,15 @@
-package com.composetest.feature.news.data.datasources.remote
+package com.composetest.core.data.datasources.remote
 
+import com.composetest.core.data.datasources.NewsApiDataSource
 import com.composetest.core.data.extensions.get
 import com.composetest.core.data.utils.ApiCallUtils
 import com.composetest.core.network.di.qualifiers.ApiQualifier
-import com.composetest.feature.news.data.datasources.NewsApiDataSource
-import com.composetest.feature.news.network.constants.ApiConstants
-import com.composetest.feature.news.network.responses.NewsApiResponse
+import com.composetest.core.network.responses.newsapi.NewsApiResponse
 import io.ktor.client.HttpClient
 
 internal class NewsApiDataSourceImpl(
     private val apiCallUtils: ApiCallUtils,
-    @ApiQualifier(ApiConstants.NEWS_API) private val newsApi: HttpClient
+    @ApiQualifier.NewsApi private val newsApi: HttpClient
 ) : NewsApiDataSource {
 
     override suspend fun getTopHeadlinesNews() = apiCallUtils.executeApiCall {
