@@ -1,4 +1,4 @@
-package com.composetest.common.extensions
+package com.composetest.core.ui.extensions
 
 import android.content.Context
 import android.content.Intent

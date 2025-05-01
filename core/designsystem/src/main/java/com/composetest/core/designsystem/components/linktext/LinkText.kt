@@ -14,7 +14,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
-import com.composetest.common.extensions.navigateToWebUrl
+import com.composetest.core.ui.extensions.navigateToWebUrl
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.designsystem.theme.linkColor
 
