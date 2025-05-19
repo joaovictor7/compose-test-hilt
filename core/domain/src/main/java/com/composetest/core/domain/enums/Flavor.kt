@@ -1,7 +1,5 @@
 package com.composetest.core.domain.enums
 
-import com.composetest.core.domain.enums.Flavor.entries
-
 enum class Flavor {
     DEVELOP, STAGING, PRODUCTION;
 

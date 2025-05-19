@@ -2,11 +2,11 @@ package com.composetest.feature.login.presenter.di
 
 import androidx.lifecycle.SavedStateHandle
 import com.composetest.core.analytic.AnalyticSender
-import com.composetest.core.analytic.enums.ScreensAnalytic
 import com.composetest.core.router.destinations.login.LoginDestination
 import com.composetest.core.router.extensions.getDestination
 import com.composetest.core.ui.di.qualifiers.AsyncTaskUtilsQualifier
 import com.composetest.core.ui.utils.AsyncTaskUtils
+import com.composetest.feature.login.analytic.screens.LoginScreenAnalytic
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,8 +22,8 @@ internal object ViewModelModule {
     ): LoginDestination = savedStateHandle.getDestination()
 
     @Provides
-    @AsyncTaskUtilsQualifier(ScreensAnalytic.LOGIN)
+    @AsyncTaskUtilsQualifier(LoginScreenAnalytic.SCREEN)
     fun loginAsyncTaskUtils(
         analyticSender: AnalyticSender
-    ): AsyncTaskUtils = AsyncTaskUtils(analyticSender, ScreensAnalytic.LOGIN)
+    ): AsyncTaskUtils = AsyncTaskUtils(analyticSender, LoginScreenAnalytic)
 }

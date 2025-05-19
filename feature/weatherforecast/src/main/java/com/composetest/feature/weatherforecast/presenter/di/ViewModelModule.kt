@@ -14,8 +14,8 @@ import dagger.hilt.android.components.ViewModelComponent
 internal object ViewModelModule {
 
     @Provides
-    @AsyncTaskUtilsQualifier(WeatherForecastScreenAnalytic.WEATHER_FORECAST)
+    @AsyncTaskUtilsQualifier(WeatherForecastScreenAnalytic.SCREEN)
     fun weatherForecastAsyncTaskUtils(
-        analyticSender: AnalyticSender,
+        analyticSender: AnalyticSender
     ): AsyncTaskUtils = AsyncTaskUtils(analyticSender, WeatherForecastScreenAnalytic)
 }

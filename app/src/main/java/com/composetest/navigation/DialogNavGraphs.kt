@@ -6,8 +6,8 @@ import androidx.navigation.compose.dialog
 import com.composetest.core.router.destinations.dialogs.GenericErrorDialog
 import com.composetest.core.router.destinations.dialogs.NetworkErrorDialog
 import com.composetest.core.router.interfaces.NavGraph
-import com.composetest.ui.dialogs.GenericErrorDialog
-import com.composetest.ui.dialogs.NetworkErrorDialog
+import com.composetest.presentation.ui.dialogs.GenericErrorDialog
+import com.composetest.presentation.ui.dialogs.NetworkErrorDialog
 import kotlin.reflect.KProperty
 
 internal class DialogNavGraphs(private val navController: NavHostController) : NavGraph {

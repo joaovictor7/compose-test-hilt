@@ -1,8 +1,8 @@
 package com.composetest.feature.configuration.analytic.screens
 
-import com.composetest.core.analytic.AnalyticScreen
+import com.composetest.core.analytic.ScreenAnalytic
 
-internal object ThemeConfigurationScreenAnalytic : AnalyticScreen {
+internal object ThemeConfigurationScreenAnalytic : ScreenAnalytic {
     const val SCREEN = "theme_configuration"
     override val screen = SCREEN
 }

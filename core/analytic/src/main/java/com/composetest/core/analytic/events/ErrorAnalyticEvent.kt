@@ -1,14 +1,14 @@
 package com.composetest.core.analytic.events
 
 import com.composetest.core.analytic.AnalyticEvent
-import com.composetest.core.analytic.AnalyticScreen
+import com.composetest.core.analytic.ScreenAnalytic
 
 open class ErrorAnalyticEvent(
     val error: Throwable,
-    analyticScreen: AnalyticScreen = object : AnalyticScreen {
+    screenAnalytic: ScreenAnalytic = object : ScreenAnalytic {
         override val screen = null
     }
-) : AnalyticEvent, AnalyticScreen by analyticScreen {
+) : AnalyticEvent, ScreenAnalytic by screenAnalytic {
     final override val tag = "error"
     final override val params = mapOf(
         "message" to (error.message ?: "No error message")

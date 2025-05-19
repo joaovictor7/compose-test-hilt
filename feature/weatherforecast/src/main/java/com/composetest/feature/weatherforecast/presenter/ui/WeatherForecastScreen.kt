@@ -35,7 +35,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.composetest.core.ui.extensions.navigateToApplicationDetailSettings
 import com.composetest.core.designsystem.components.asyncimage.AsyncImage
 import com.composetest.core.designsystem.components.buttons.Button
 import com.composetest.core.designsystem.components.buttons.TryAgainButton
@@ -49,6 +48,7 @@ import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.designsystem.utils.getSharedShimmerOffset
 import com.composetest.core.router.extensions.navigateTo
 import com.composetest.core.ui.enums.Permission
+import com.composetest.core.ui.extensions.navigateToApplicationDetailSettings
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.utils.UiEventsObserver
 import com.composetest.core.ui.utils.getMultiplePermissionState

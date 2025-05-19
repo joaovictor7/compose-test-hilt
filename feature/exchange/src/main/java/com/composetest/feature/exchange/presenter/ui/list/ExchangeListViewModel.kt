@@ -1,12 +1,9 @@
-package com.composetest.feature.exchange.ui.list
+package com.composetest.feature.exchange.presenter.ui.list
 
 import androidx.lifecycle.viewModelScope
 import com.composetest.common.extensions.orFalse
 import com.composetest.core.analytic.AnalyticSender
-import com.composetest.core.analytic.enums.ScreensAnalytic
 import com.composetest.core.analytic.events.CommonAnalyticEvent
-import com.composetest.core.domain.models.exchange.ExchangeModel
-import com.composetest.core.domain.usecases.exchange.GetAllExchangesUseCase
 import com.composetest.core.router.models.NavigationModel
 import com.composetest.core.router.utils.getDialogErrorDestination
 import com.composetest.core.ui.bases.BaseViewModel
@@ -14,7 +11,10 @@ import com.composetest.core.ui.di.qualifiers.AsyncTaskUtilsQualifier
 import com.composetest.core.ui.interfaces.UiEvent
 import com.composetest.core.ui.interfaces.UiState
 import com.composetest.core.ui.utils.AsyncTaskUtils
-import com.composetest.feature.exchange.mappers.ExchangeMapper
+import com.composetest.feature.exchange.analytics.screens.ExchangeListScreenAnalytic
+import com.composetest.feature.exchange.domain.models.ExchangeModel
+import com.composetest.feature.exchange.domain.usecases.GetAllExchangesUseCase
+import com.composetest.feature.exchange.presenter.mappers.ExchangeMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,7 +28,7 @@ internal class ExchangeListViewModel @Inject constructor(
     private val getAllExchangesUseCase: GetAllExchangesUseCase,
     private val exchangeMapper: ExchangeMapper,
     private val analyticSender: AnalyticSender,
-    @AsyncTaskUtilsQualifier(ScreensAnalytic.EXCHANGE_LIST) private val asyncTaskUtils: AsyncTaskUtils,
+    @AsyncTaskUtilsQualifier(ExchangeListScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
 ) : BaseViewModel(), UiState<ExchangeListUiState>, UiEvent<ExchangeListUiEvent>,
     ExchangeListCommandReceiver {
 
@@ -49,7 +49,7 @@ internal class ExchangeListViewModel @Inject constructor(
 
     override fun sendOpenScreenAnalytic() {
         asyncTaskUtils.runAsyncTask(viewModelScope) {
-            analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(ScreensAnalytic.EXCHANGE_LIST))
+            analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(ExchangeListScreenAnalytic))
         }
     }
 

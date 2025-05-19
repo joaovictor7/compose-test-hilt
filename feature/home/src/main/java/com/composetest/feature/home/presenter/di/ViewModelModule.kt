@@ -16,6 +16,6 @@ internal object ViewModelModule {
     @Provides
     @AsyncTaskUtilsQualifier(HomeScreenAnalytic.SCREEN)
     fun homeAsyncTaskUtils(
-        analyticSender: AnalyticSender,
+        analyticSender: AnalyticSender
     ): AsyncTaskUtils = AsyncTaskUtils(analyticSender, HomeScreenAnalytic)
 }

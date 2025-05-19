@@ -5,7 +5,7 @@ import com.composetest.core.domain.repositories.RemoteConfigRepository
 import com.composetest.core.network.HttpClientBuilder
 import com.composetest.core.network.di.qualifiers.ApiQualifier
 import com.composetest.feature.weatherforecast.network.OpenWeatherApi
-import com.composetest.feature.weatherforecast.network.constants.ApiConstants
+import com.composetest.feature.weatherforecast.network.api.Api
 import com.composetest.feature.weatherforecast.network.enums.ApiKeyRemoteConfig
 import dagger.Module
 import dagger.Provides
@@ -18,7 +18,7 @@ import io.ktor.client.HttpClient
 internal object ApiModule {
 
     @Provides
-    @ApiQualifier(ApiConstants.OPEN_WEATHER_API)
+    @ApiQualifier(Api.OPEN_WEATHER_API)
     fun openWeatherApi(
         remoteConfigRepository: RemoteConfigRepository,
         buildConfigProvider: BuildConfigProvider

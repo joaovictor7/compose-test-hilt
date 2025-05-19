@@ -19,9 +19,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.composetest.core.designsystem.R
-import com.composetest.core.ui.R as UiRes
 import com.composetest.core.designsystem.dimensions.Spacing
 import com.composetest.core.designsystem.theme.ComposeTestTheme
+import com.composetest.core.ui.R as UiRes
 
 @Composable
 fun TryAgainButton(

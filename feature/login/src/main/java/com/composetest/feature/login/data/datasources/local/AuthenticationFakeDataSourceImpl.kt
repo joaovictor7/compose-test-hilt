@@ -1,11 +1,11 @@
 package com.composetest.feature.login.data.datasources.local
 
 import com.composetest.common.providers.DateTimeProvider
+import com.composetest.core.data.extensions.readJsonAs
+import com.composetest.core.data.providers.AssetsProvider
 import com.composetest.core.data.utils.ApiCallUtils
 import com.composetest.feature.login.data.datasources.AuthenticationDataSource
 import com.composetest.feature.login.network.responses.AuthenticationResponse
-import com.composetest.core.data.extensions.readJsonAs
-import com.composetest.core.data.providers.AssetsProvider
 
 internal class AuthenticationFakeDataSourceImpl(
     private val apiCallUtils: ApiCallUtils,

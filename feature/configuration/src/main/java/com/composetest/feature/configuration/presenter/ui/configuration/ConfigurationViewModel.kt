@@ -2,7 +2,6 @@ package com.composetest.feature.configuration.presenter.ui.configuration
 
 import androidx.lifecycle.viewModelScope
 import com.composetest.core.analytic.AnalyticSender
-import com.composetest.core.analytic.enums.ScreensAnalytic
 import com.composetest.core.analytic.events.CommonAnalyticEvent
 import com.composetest.core.router.models.NavigationModel
 import com.composetest.core.ui.bases.BaseViewModel
@@ -10,7 +9,8 @@ import com.composetest.core.ui.di.qualifiers.AsyncTaskUtilsQualifier
 import com.composetest.core.ui.interfaces.UiEvent
 import com.composetest.core.ui.interfaces.UiState
 import com.composetest.core.ui.utils.AsyncTaskUtils
-import com.composetest.feature.configuration.enums.Configuration
+import com.composetest.feature.configuration.analytic.screens.ConfigurationScreenAnalytic
+import com.composetest.feature.configuration.presenter.enums.Configuration
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,7 +22,7 @@ import javax.inject.Inject
 @HiltViewModel
 internal class ConfigurationViewModel @Inject constructor(
     private val analyticSender: AnalyticSender,
-    @AsyncTaskUtilsQualifier(ScreensAnalytic.CONFIGURATION) private val asyncTaskUtils: AsyncTaskUtils,
+    @AsyncTaskUtilsQualifier(ConfigurationScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
 ) : BaseViewModel(), UiState<ConfigurationUiState>, UiEvent<ConfigurationUiEvent>,
     ConfigurationCommandReceiver {
 
@@ -41,18 +41,12 @@ internal class ConfigurationViewModel @Inject constructor(
 
     override fun sendOpenScreenAnalytic() {
         asyncTaskUtils.runAsyncTask(viewModelScope) {
-            analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(ScreensAnalytic.CONFIGURATION))
+            analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(ConfigurationScreenAnalytic))
         }
     }
 
     override fun configurationClick(configuration: Configuration) {
         _uiEvent.emitEvent(ConfigurationUiEvent.NavigateTo(NavigationModel(configuration.destination)))
-    }
-
-    override fun sendOpenScreenAnalytic() {
-        asyncTaskUtils.runAsyncTask(viewModelScope) {
-            analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(ConfigurationScreenAnalytic))
-        }
     }
 
     private fun initUiState() {

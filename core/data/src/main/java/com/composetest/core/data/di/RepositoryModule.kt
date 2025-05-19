@@ -5,13 +5,11 @@ import com.composetest.core.data.repositories.DatabaseRepositoryImpl
 import com.composetest.core.data.repositories.RemoteConfigRepositoryImpl
 import com.composetest.core.data.repositories.SessionRepositoryImpl
 import com.composetest.core.data.repositories.SystemBarsThemeRepositoryImpl
-import com.composetest.core.data.repositories.UserRepositoryImpl
 import com.composetest.core.domain.repositories.AnalyticsRepository
 import com.composetest.core.domain.repositories.DatabaseRepository
 import com.composetest.core.domain.repositories.RemoteConfigRepository
 import com.composetest.core.domain.repositories.SessionRepository
 import com.composetest.core.domain.repositories.SystemBarsThemeRepository
-import com.composetest.core.domain.repositories.UserRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -26,11 +24,6 @@ internal abstract class RepositoryModule {
     abstract fun analyticsRepository(
         analyticsRepositoryImpl: AnalyticsRepositoryImpl
     ): AnalyticsRepository
-
-    @Binds
-    abstract fun userRepository(
-        userRepositoryImpl: UserRepositoryImpl
-    ): UserRepository
 
     @Binds
     abstract fun databaseRepository(

@@ -11,10 +11,7 @@ import com.composetest.core.domain.models.buildconfig.BuildConfigFieldsModel
 import com.composetest.core.domain.models.buildconfig.BuildConfigModel
 import com.composetest.core.domain.providers.BuildConfigProvider
 import com.composetest.core.domain.usecases.configuration.SetSystemBarsStyleUseCase
-import com.composetest.feature.login.domain.usecases.AuthenticationByBiometricUseCase
-import com.composetest.feature.login.domain.usecases.AuthenticationUseCase
-import com.composetest.feature.login.domain.usecases.BiometricIsEnableUseCase
-import com.composetest.core.domain.usecases.remoteconfigs.GetBooleanRemoteConfigUseCase
+import com.composetest.core.domain.usecases.remoteconfig.GetBooleanRemoteConfigUseCase
 import com.composetest.core.router.destinations.login.LoginDestination
 import com.composetest.core.router.destinations.root.RootDestination
 import com.composetest.core.router.enums.NavigationMode
@@ -23,6 +20,9 @@ import com.composetest.core.security.providers.BiometricProvider
 import com.composetest.core.security.providers.CipherProvider
 import com.composetest.core.test.BaseTest
 import com.composetest.core.test.extensions.runFlowTest
+import com.composetest.feature.login.domain.usecases.AuthenticationByBiometricUseCase
+import com.composetest.feature.login.domain.usecases.AuthenticationUseCase
+import com.composetest.feature.login.domain.usecases.BiometricIsEnableUseCase
 import com.composetest.feature.login.presenter.models.LoginFormModel
 import com.composetest.feature.login.presenter.ui.login.LoginCommand
 import com.composetest.feature.login.presenter.ui.login.LoginUiEvent

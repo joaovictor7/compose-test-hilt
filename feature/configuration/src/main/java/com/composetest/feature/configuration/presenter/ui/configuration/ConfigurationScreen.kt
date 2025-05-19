@@ -1,4 +1,4 @@
-package com.composetest.feature.configuration.ui.configuration
+package com.composetest.feature.configuration.presenter.ui.configuration
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -30,7 +30,7 @@ import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.router.extensions.navigateTo
 import com.composetest.core.ui.interfaces.Command
 import com.composetest.core.ui.utils.UiEventsObserver
-import com.composetest.feature.configuration.enums.Configuration
+import com.composetest.feature.configuration.presenter.enums.Configuration
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 

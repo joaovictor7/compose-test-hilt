@@ -2,7 +2,7 @@ package com.composetest.feature.login.data.datasources.remote
 
 import com.composetest.core.data.utils.ApiCallUtils
 import com.composetest.feature.login.data.datasources.AuthenticationDataSource
-import com.composetest.feature.login.data.mappers.AuthenticationMapper
+import com.composetest.feature.login.data.mapper.AuthenticationMapper
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.userProfileChangeRequest
 import kotlinx.coroutines.tasks.await

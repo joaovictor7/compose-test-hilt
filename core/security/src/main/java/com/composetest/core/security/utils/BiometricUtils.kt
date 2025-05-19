@@ -5,8 +5,8 @@ import androidx.annotation.StringRes
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
-import com.composetest.core.ui.R
 import com.composetest.core.security.enums.BiometricError
+import com.composetest.core.ui.R
 
 fun showBiometricPrompt(
     context: Context,

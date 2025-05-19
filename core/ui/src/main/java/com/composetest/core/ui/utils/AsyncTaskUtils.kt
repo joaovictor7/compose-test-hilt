@@ -1,8 +1,8 @@
 package com.composetest.core.ui.utils
 
 import android.util.Log
-import com.composetest.core.analytic.AnalyticScreen
 import com.composetest.core.analytic.AnalyticSender
+import com.composetest.core.analytic.ScreenAnalytic
 import com.composetest.core.analytic.events.ErrorAnalyticEvent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 
 class AsyncTaskUtils(
     private val analyticSender: AnalyticSender,
-    private val analyticScreen: AnalyticScreen
+    private val screenAnalytic: ScreenAnalytic
 ) {
 
     fun runAsyncTask(
@@ -54,7 +54,7 @@ class AsyncTaskUtils(
         onError: (suspend (Throwable) -> Unit)? = null
     ) {
         Log.e("AsyncTaskError", error.message, error)
-        analyticSender.sendErrorEvent(ErrorAnalyticEvent(error, analyticScreen))
+        analyticSender.sendErrorEvent(ErrorAnalyticEvent(error, screenAnalytic))
         onError?.invoke(error)
     }
 }

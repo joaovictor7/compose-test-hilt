@@ -2,11 +2,9 @@ package com.composetest.feature.root.ui.root
 
 import androidx.lifecycle.viewModelScope
 import com.composetest.core.analytic.AnalyticSender
-import com.composetest.core.analytic.enums.ScreensAnalytic
-import com.composetest.core.analytic.events.root.RootEventAnalytic
 import com.composetest.core.domain.usecases.root.GetAvailableFeaturesUseCase
 import com.composetest.core.domain.usecases.session.FinishSessionUseCase
-import com.composetest.core.domain.usecases.user.GetUserUseCase
+import com.composetest.core.domain.usecases.user.GetCurrentUserUseCase
 import com.composetest.core.router.destinations.login.LoginDestination
 import com.composetest.core.router.enums.NavigationMode
 import com.composetest.core.router.models.NavigationModel
@@ -15,6 +13,8 @@ import com.composetest.core.ui.di.qualifiers.AsyncTaskUtilsQualifier
 import com.composetest.core.ui.interfaces.UiEvent
 import com.composetest.core.ui.interfaces.UiState
 import com.composetest.core.ui.utils.AsyncTaskUtils
+import com.composetest.feature.root.analytic.events.RootEventAnalytic
+import com.composetest.feature.root.analytic.screens.RootScreenAnalytic
 import com.composetest.feature.root.enums.NavigationFeature
 import com.composetest.feature.root.enums.NavigationLocal
 import com.composetest.feature.root.mappers.UserModalDrawerMapper
@@ -30,10 +30,10 @@ import javax.inject.Inject
 @HiltViewModel
 internal class RootViewModel @Inject constructor(
     private val finishSessionUseCase: FinishSessionUseCase,
-    private val getUserUseCase: GetUserUseCase,
+    private val getCurrentUserUseCase: GetCurrentUserUseCase,
     private val userModalDrawerMapper: UserModalDrawerMapper,
     private val analyticSender: AnalyticSender,
-    @AsyncTaskUtilsQualifier(ScreensAnalytic.ROOT) private val asyncTaskUtils: AsyncTaskUtils,
+    @AsyncTaskUtilsQualifier(RootScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
     getAvailableFeaturesUseCase: GetAvailableFeaturesUseCase,
 ) : BaseViewModel(), UiState<RootUiState>, UiEvent<RootUiEvent>, RootCommandReceiver {
 
@@ -96,7 +96,7 @@ internal class RootViewModel @Inject constructor(
 
     override fun updateUserData() {
         asyncTaskUtils.runAsyncTask(viewModelScope) {
-            val user = getUserUseCase()
+            val user = getCurrentUserUseCase()
             _uiState.update {
                 it.setUpdateUser(userModalDrawerMapper.mapperToModel(user))
             }
@@ -115,7 +115,7 @@ internal class RootViewModel @Inject constructor(
         val modalDrawerNavigationFeatures = getModalDrawerNavigationFeatures()
         val bottomNavigationFeatures = getBottomNavigationFeatures()
         asyncTaskUtils.runAsyncTask(viewModelScope) {
-            val user = getUserUseCase()
+            val user = getCurrentUserUseCase()
             _uiState.update {
                 it.initUiState(
                     firstBottomNavigationFeature?.destination,

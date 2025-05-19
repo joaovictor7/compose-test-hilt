@@ -21,7 +21,9 @@ internal class ConfigurationRepositoryImpl @Inject constructor(
 ) : ConfigurationRepository {
 
     override suspend fun insertDefaultUserConfiguration(userId: String) {
-        upsert(ConfigurationModel(userId = userId))
+        configurationDataSource.upsert(
+            configurationMapper.mapperToEntity(ConfigurationModel(userId = userId))
+        )
     }
 
     override suspend fun getLastBiometricConfiguration() =
@@ -36,10 +38,6 @@ internal class ConfigurationRepositoryImpl @Inject constructor(
     suspend fun getSecurityConfiguration(): SecurityConfigurationModel? {
         val entity = configurationDataSource.getConfiguration()
         return securityConfigurationMapper.mapperToModel(entity)
-    }
-
-    suspend fun upsert(configurationModel: ConfigurationModel) {
-        configurationDataSource.upsert(configurationMapper.mapperToEntity(configurationModel))
     }
 
     suspend fun updateSecurityConfiguration(securityConfigurationModel: SecurityConfigurationModel) {

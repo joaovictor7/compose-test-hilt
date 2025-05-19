@@ -1,6 +1,6 @@
-package com.composetest.core.data.datasources
+package com.composetest.feature.login.data.datasources
 
-import com.composetest.core.network.responses.AuthenticationResponse
+import com.composetest.feature.login.network.responses.AuthenticationResponse
 
 internal interface AuthenticationDataSource {
     suspend fun authentication(email: String, password: String): AuthenticationResponse

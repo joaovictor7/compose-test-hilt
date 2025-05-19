@@ -7,7 +7,7 @@ import com.composetest.core.network.di.qualifiers.ApiQualifier
 import com.composetest.feature.news.data.datasources.NewsApiDataSource
 import com.composetest.feature.news.data.datasources.local.NewsApiFakeDataSourceImpl
 import com.composetest.feature.news.data.datasources.remote.NewsApiDataSourceImpl
-import com.composetest.feature.news.network.constants.ApiConstants
+import com.composetest.feature.news.network.api.Api
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,7 +23,7 @@ internal object DataSourceModule {
         environmentInstanceProvider: EnvironmentInstanceProvider,
         apiCallUtils: ApiCallUtils,
         assetsProvider: AssetsProvider,
-        @ApiQualifier(ApiConstants.NEWS_API) newsApi: HttpClient
+        @ApiQualifier(Api.NEWS_API) newsApi: HttpClient
     ): NewsApiDataSource = environmentInstanceProvider.getInstance(
         instance = NewsApiDataSourceImpl(
             apiCallUtils = apiCallUtils,

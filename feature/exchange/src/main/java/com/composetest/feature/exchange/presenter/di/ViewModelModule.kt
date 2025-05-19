@@ -23,14 +23,14 @@ internal object ViewModelModule {
     ): ExchangeDetailDestination = savedStateHandle.getDestination()
 
     @Provides
-    @AsyncTaskUtilsQualifier(ExchangeListScreenAnalytic.SCREEN)
-    fun exchangeListAsyncTaskUtils(
-        analyticSender: AnalyticSender,
-    ): AsyncTaskUtils = AsyncTaskUtils(analyticSender, ExchangeListScreenAnalytic)
-
-    @Provides
     @AsyncTaskUtilsQualifier(ExchangeDetailScreenAnalytic.SCREEN)
     fun exchangeDetailAsyncTaskUtils(
-        analyticSender: AnalyticSender,
+        analyticSender: AnalyticSender
+    ): AsyncTaskUtils = AsyncTaskUtils(analyticSender, ExchangeDetailScreenAnalytic)
+
+    @Provides
+    @AsyncTaskUtilsQualifier(ExchangeListScreenAnalytic.SCREEN)
+    fun exchangeListAsyncTaskUtils(
+        analyticSender: AnalyticSender
     ): AsyncTaskUtils = AsyncTaskUtils(analyticSender, ExchangeListScreenAnalytic)
 }

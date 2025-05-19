@@ -1,14 +1,9 @@
-package com.composetest.feature.weatherforecast.ui.weatherforecast
+package com.composetest.feature.weatherforecast.presenter.ui
 
 import android.location.Location
 import androidx.lifecycle.viewModelScope
 import com.composetest.core.analytic.AnalyticSender
-import com.composetest.core.analytic.enums.ScreensAnalytic
 import com.composetest.core.analytic.events.CommonAnalyticEvent
-import com.composetest.core.domain.usecases.weatherforecast.GeTodayWeatherForecastUseCase
-import com.composetest.core.domain.usecases.weatherforecast.GetFutureWeatherForecastUseCase
-import com.composetest.core.domain.usecases.weatherforecast.GetWeatherForecastsUseCase
-import com.composetest.core.domain.usecases.weatherforecast.GetWeatherNowUseCase
 import com.composetest.core.router.utils.getDialogErrorDestination
 import com.composetest.core.ui.bases.BaseViewModel
 import com.composetest.core.ui.di.qualifiers.AsyncTaskUtilsQualifier
@@ -18,10 +13,15 @@ import com.composetest.core.ui.interfaces.UiState
 import com.composetest.core.ui.providers.LocationProvider
 import com.composetest.core.ui.providers.PermissionProvider
 import com.composetest.core.ui.utils.AsyncTaskUtils
-import com.composetest.feature.weatherforecast.enums.WeatherForecastScreenStatus
-import com.composetest.feature.weatherforecast.enums.WeatherForecastStatus
-import com.composetest.feature.weatherforecast.mappers.FutureWeatherForecastScreenModelsMapper
-import com.composetest.feature.weatherforecast.mappers.WeatherNowScreenModelMapper
+import com.composetest.feature.weatherforecast.analytic.screens.WeatherForecastScreenAnalytic
+import com.composetest.feature.weatherforecast.domain.usescases.GetFutureWeatherForecastUseCase
+import com.composetest.feature.weatherforecast.domain.usescases.GetTodayWeatherForecastUseCase
+import com.composetest.feature.weatherforecast.domain.usescases.GetWeatherForecastsUseCase
+import com.composetest.feature.weatherforecast.domain.usescases.GetWeatherNowUseCase
+import com.composetest.feature.weatherforecast.presenter.enums.WeatherForecastScreenStatus
+import com.composetest.feature.weatherforecast.presenter.enums.WeatherForecastStatus
+import com.composetest.feature.weatherforecast.presenter.mappers.FutureWeatherForecastScreenModelsMapper
+import com.composetest.feature.weatherforecast.presenter.mappers.WeatherNowScreenModelMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -34,14 +34,14 @@ import javax.inject.Inject
 internal class WeatherForecastViewModel @Inject constructor(
     private val getWeatherNowUseCase: GetWeatherNowUseCase,
     private val getWeatherForecastsUseCase: GetWeatherForecastsUseCase,
-    private val getTodayWeatherForecastUseCase: GeTodayWeatherForecastUseCase,
+    private val getTodayWeatherForecastUseCase: GetTodayWeatherForecastUseCase,
     private val getFutureWeatherForecastsUseCase: GetFutureWeatherForecastUseCase,
     private val weatherNowScreenModelMapper: WeatherNowScreenModelMapper,
     private val futureWeatherForecastScreenModelsMapper: FutureWeatherForecastScreenModelsMapper,
     private val locationProvider: LocationProvider,
     private val permissionProvider: PermissionProvider,
     private val analyticSender: AnalyticSender,
-    @AsyncTaskUtilsQualifier(ScreensAnalytic.WEATHER_FORECAST) private val asyncTaskUtils: AsyncTaskUtils,
+    @AsyncTaskUtilsQualifier(WeatherForecastScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
 ) : BaseViewModel(), UiState<WeatherForecastUiState>, UiEvent<WeatherForecastUiEvent>,
     WeatherForecastCommandReceiver {
 
@@ -64,7 +64,7 @@ internal class WeatherForecastViewModel @Inject constructor(
 
     override fun sendOpenScreenAnalytic() {
         asyncTaskUtils.runAsyncTask(viewModelScope) {
-            analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(ScreensAnalytic.WEATHER_FORECAST))
+            analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(WeatherForecastScreenAnalytic))
         }
     }
 

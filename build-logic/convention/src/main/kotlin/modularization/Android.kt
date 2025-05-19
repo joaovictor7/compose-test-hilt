@@ -19,6 +19,7 @@ internal fun Project.configureAndroid(
         apply("org.jetbrains.kotlin.android")
         apply("org.jetbrains.kotlin.plugin.serialization")
         apply("com.google.devtools.ksp")
+        apply("kotlin-parcelize")
     }
     compileSdk = AppConfig.COMPILE_SDK_VERSION
     defaultConfig {
@@ -44,6 +45,7 @@ internal fun Project.configureAndroid(
         implementation(platform(getLibrary("firebase.bom")))
         implementation(getLibrary("androidx.lifecycle.runtime.ktx"))
         implementation(getLibrary("kotlin.coroutines.android"))
+        implementation(getLibrary("kotlin.json.serializable"))
         implementation(getLibrary("android.hilt"))
         ksp(getLibrary("android.hilt.compiler"))
     }

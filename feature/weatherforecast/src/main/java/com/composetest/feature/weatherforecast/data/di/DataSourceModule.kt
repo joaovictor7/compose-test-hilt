@@ -7,7 +7,7 @@ import com.composetest.core.network.di.qualifiers.ApiQualifier
 import com.composetest.feature.weatherforecast.data.datasources.OpenWeatherDataSource
 import com.composetest.feature.weatherforecast.data.datasources.local.OpenWeatherFakeDataSourceImpl
 import com.composetest.feature.weatherforecast.data.datasources.remote.OpenWeatherDataSourceImpl
-import com.composetest.feature.weatherforecast.network.constants.ApiConstants
+import com.composetest.feature.weatherforecast.network.api.Api
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,7 +23,7 @@ internal object DataSourceModule {
         environmentInstanceProvider: EnvironmentInstanceProvider,
         apiCallUtils: ApiCallUtils,
         assetsProvider: AssetsProvider,
-        @ApiQualifier(ApiConstants.OPEN_WEATHER_API) openWeatherApi: HttpClient
+        @ApiQualifier(Api.OPEN_WEATHER_API) openWeatherApi: HttpClient
     ): OpenWeatherDataSource = environmentInstanceProvider.getInstance(
         instance = OpenWeatherDataSourceImpl(
             apiCallUtils = apiCallUtils,

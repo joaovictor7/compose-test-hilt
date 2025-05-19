@@ -1,14 +1,14 @@
-package com.composetest.feature.news.ui.news.full
+package com.composetest.feature.news.presenter.ui.news.full
 
 import androidx.lifecycle.viewModelScope
 import com.composetest.core.analytic.AnalyticSender
-import com.composetest.core.analytic.enums.ScreensAnalytic
 import com.composetest.core.analytic.events.CommonAnalyticEvent
 import com.composetest.core.router.destinations.news.FullNewsDestination
 import com.composetest.core.ui.bases.BaseViewModel
 import com.composetest.core.ui.di.qualifiers.AsyncTaskUtilsQualifier
 import com.composetest.core.ui.interfaces.UiState
 import com.composetest.core.ui.utils.AsyncTaskUtils
+import com.composetest.feature.news.analytic.screens.FullNewsScreenAnalytic
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -19,7 +19,7 @@ import javax.inject.Inject
 internal class FullNewsViewModel @Inject constructor(
     private val destination: FullNewsDestination,
     private val analyticSender: AnalyticSender,
-    @AsyncTaskUtilsQualifier(ScreensAnalytic.FULL_NEWS) private val asyncTaskUtils: AsyncTaskUtils,
+    @AsyncTaskUtilsQualifier(FullNewsScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
 ) : BaseViewModel(), UiState<FullNewsUiState> {
 
     private val _uiState = MutableStateFlow(FullNewsUiState())
@@ -32,7 +32,7 @@ internal class FullNewsViewModel @Inject constructor(
 
     override fun sendOpenScreenAnalytic() {
         asyncTaskUtils.runAsyncTask(viewModelScope) {
-            analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(ScreensAnalytic.FULL_NEWS))
+            analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(FullNewsScreenAnalytic))
         }
     }
 

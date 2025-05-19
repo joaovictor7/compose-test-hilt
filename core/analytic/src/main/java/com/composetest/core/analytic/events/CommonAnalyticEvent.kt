@@ -1,14 +1,14 @@
 package com.composetest.core.analytic.events
 
 import com.composetest.core.analytic.AnalyticEvent
-import com.composetest.core.analytic.AnalyticScreen
+import com.composetest.core.analytic.ScreenAnalytic
 
 sealed class CommonAnalyticEvent(
-    analyticScreen: AnalyticScreen
-) : AnalyticEvent, AnalyticScreen by analyticScreen {
+    screenAnalytic: ScreenAnalytic
+) : AnalyticEvent, ScreenAnalytic by screenAnalytic {
     data class OpenScreen(
-        private val analyticScreen: AnalyticScreen
-    ) : CommonAnalyticEvent(analyticScreen) {
+        private val screenAnalytic: ScreenAnalytic
+    ) : CommonAnalyticEvent(screenAnalytic) {
         override val tag = "screen_view"
         override val params: Map<String, Any> = emptyMap()
     }

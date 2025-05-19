@@ -1,8 +1,8 @@
 package com.composetest.feature.news.analytic.screens
 
-import com.composetest.core.analytic.AnalyticScreen
+import com.composetest.core.analytic.ScreenAnalytic
 
-internal object FullNewsScreenAnalytic : AnalyticScreen {
+internal object FullNewsScreenAnalytic : ScreenAnalytic {
     const val SCREEN = "full_news"
     override val screen = SCREEN
 }

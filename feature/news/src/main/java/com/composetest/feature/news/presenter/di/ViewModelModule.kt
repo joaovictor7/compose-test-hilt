@@ -22,14 +22,14 @@ internal object ViewModelModule {
     ): FullNewsDestination = savedStateHandle.getDestination()
 
     @Provides
-    @AsyncTaskUtilsQualifier(NewsListScreenAnalytic.SCREEN)
-    fun newsListAsyncTaskUtils(
-        analyticSender: AnalyticSender,
-    ): AsyncTaskUtils = AsyncTaskUtils(analyticSender, NewsListScreenAnalytic)
-
-    @Provides
     @AsyncTaskUtilsQualifier(FullNewsScreenAnalytic.SCREEN)
     fun fullNewsAsyncTaskUtils(
-        analyticSender: AnalyticSender,
+        analyticSender: AnalyticSender
     ): AsyncTaskUtils = AsyncTaskUtils(analyticSender, FullNewsScreenAnalytic)
+
+    @Provides
+    @AsyncTaskUtilsQualifier(NewsListScreenAnalytic.SCREEN)
+    fun newsListAsyncTaskUtils(
+        analyticSender: AnalyticSender
+    ): AsyncTaskUtils = AsyncTaskUtils(analyticSender, NewsListScreenAnalytic)
 }

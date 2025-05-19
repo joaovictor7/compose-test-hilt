@@ -7,7 +7,7 @@ import com.composetest.core.data.utils.ApiCallUtils
 import com.composetest.feature.login.data.datasources.AuthenticationDataSource
 import com.composetest.feature.login.data.datasources.local.AuthenticationFakeDataSourceImpl
 import com.composetest.feature.login.data.datasources.remote.AuthenticationDataSourceImpl
-import com.composetest.feature.login.data.mappers.AuthenticationMapper
+import com.composetest.feature.login.data.mapper.AuthenticationMapper
 import com.google.firebase.auth.FirebaseAuth
 import dagger.Module
 import dagger.Provides

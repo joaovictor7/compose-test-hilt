@@ -6,7 +6,7 @@ import io.ktor.client.plugins.ServerResponseException
 import io.ktor.http.HttpStatusCode
 import kotlinx.io.IOException
 
-suspend fun <T> apiErrorHandler(call: suspend () -> T) = runCatching { call() }
+inline fun <T> apiErrorHandler(call: () -> T) = runCatching { call() }
     .getOrElse {
         throw when (it) {
             is ClientRequestException -> {

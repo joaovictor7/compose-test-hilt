@@ -1,7 +1,7 @@
 package com.composetest.core.domain.usecases.root
 
 import com.composetest.core.domain.enums.Feature
-import com.composetest.core.domain.usecases.remoteconfigs.GetBooleanRemoteConfigUseCase
+import com.composetest.core.domain.usecases.remoteconfig.GetBooleanRemoteConfigUseCase
 import javax.inject.Inject
 
 class GetAvailableFeaturesUseCase @Inject constructor(

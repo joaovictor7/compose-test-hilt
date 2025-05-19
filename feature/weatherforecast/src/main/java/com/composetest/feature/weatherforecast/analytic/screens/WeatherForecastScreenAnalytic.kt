@@ -1,8 +1,8 @@
 package com.composetest.feature.weatherforecast.analytic.screens
 
-import com.composetest.core.analytic.AnalyticScreen
+import com.composetest.core.analytic.ScreenAnalytic
 
-internal object WeatherForecastScreenAnalytic : AnalyticScreen {
-    const val WEATHER_FORECAST = "weather_forecast"
-    override val screen = WEATHER_FORECAST
+internal object WeatherForecastScreenAnalytic : ScreenAnalytic {
+    const val SCREEN = "weather_forecast"
+    override val screen = SCREEN
 }

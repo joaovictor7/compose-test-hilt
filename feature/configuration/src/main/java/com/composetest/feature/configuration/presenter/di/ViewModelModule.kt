@@ -18,18 +18,18 @@ internal object ViewModelModule {
     @Provides
     @AsyncTaskUtilsQualifier(ConfigurationScreenAnalytic.SCREEN)
     fun configurationAsyncTaskUtils(
-        analyticSender: AnalyticSender,
+        analyticSender: AnalyticSender
     ): AsyncTaskUtils = AsyncTaskUtils(analyticSender, ConfigurationScreenAnalytic)
 
     @Provides
-    @AsyncTaskUtilsQualifier(SecurityConfigurationScreenAnalytic.SCREEN)
-    fun securityConfigurationAsyncTaskUtils(
-        analyticSender: AnalyticSender,
-    ): AsyncTaskUtils = AsyncTaskUtils(analyticSender, SecurityConfigurationScreenAnalytic)
+    @AsyncTaskUtilsQualifier(ThemeConfigurationScreenAnalytic.SCREEN)
+    fun themeAsyncTaskUtils(
+        analyticSender: AnalyticSender
+    ): AsyncTaskUtils = AsyncTaskUtils(analyticSender, ThemeConfigurationScreenAnalytic)
 
     @Provides
-    @AsyncTaskUtilsQualifier(ThemeConfigurationScreenAnalytic.SCREEN)
-    fun themeConfigurationAsyncTaskUtils(
-        analyticSender: AnalyticSender,
-    ): AsyncTaskUtils = AsyncTaskUtils(analyticSender, ThemeConfigurationScreenAnalytic)
+    @AsyncTaskUtilsQualifier(SecurityConfigurationScreenAnalytic.SCREEN)
+    fun securityAsyncTaskUtils(
+        analyticSender: AnalyticSender
+    ): AsyncTaskUtils = AsyncTaskUtils(analyticSender, SecurityConfigurationScreenAnalytic)
 }

@@ -1,7 +1,6 @@
 package com.composetest.core.security.enums
 
 import androidx.biometric.BiometricPrompt
-import com.composetest.core.security.enums.BiometricError.entries
 
 enum class BiometricError(val code: Int) {
     HW_UNAVAILABLE(BiometricPrompt.ERROR_HW_UNAVAILABLE),
