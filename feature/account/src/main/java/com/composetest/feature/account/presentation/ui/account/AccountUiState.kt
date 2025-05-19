@@ -1,7 +1,7 @@
 package com.composetest.feature.account.presentation.ui.account
 
-import com.composetest.core.designsystem.enums.buttons.LoadingButtonState
-import com.composetest.feature.account.presentation.models.AccountScreenModel
+import com.composetest.core.designsystem.enum.button.LoadingButtonState
+import com.composetest.feature.account.presentation.model.AccountScreenModel
 
 internal data class AccountUiState(
     val accountScreenModels: List<AccountScreenModel> = emptyList(),

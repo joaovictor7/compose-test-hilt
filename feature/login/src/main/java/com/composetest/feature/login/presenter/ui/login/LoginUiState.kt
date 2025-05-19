@@ -1,10 +1,10 @@
 package com.composetest.feature.login.presenter.ui.login
 
-import com.composetest.core.designsystem.enums.textfields.TextFieldIcon
-import com.composetest.core.designsystem.params.alertdialogs.SimpleDialogParam
+import com.composetest.core.designsystem.enum.textfield.TextFieldIcon
+import com.composetest.core.designsystem.param.alertdialog.SimpleDialogParam
 import com.composetest.feature.login.R
-import com.composetest.feature.login.presenter.models.BiometricModel
-import com.composetest.feature.login.presenter.models.LoginFormModel
+import com.composetest.feature.login.presenter.model.BiometricModel
+import com.composetest.feature.login.presenter.model.LoginFormModel
 
 internal data class LoginUiState(
     val loginFormModel: LoginFormModel = LoginFormModel(),

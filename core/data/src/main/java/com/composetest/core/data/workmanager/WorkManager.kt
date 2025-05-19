@@ -1,6 +1,6 @@
 package com.composetest.core.data.workmanager
 
-import com.composetest.core.data.repositories.WorkManagerRepository
+import com.composetest.core.data.repository.WorkManagerRepository
 import javax.inject.Inject
 
 internal class WorkManager @Inject constructor(

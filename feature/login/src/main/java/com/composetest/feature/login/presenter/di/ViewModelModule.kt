@@ -2,10 +2,10 @@ package com.composetest.feature.login.presenter.di
 
 import androidx.lifecycle.SavedStateHandle
 import com.composetest.core.analytic.AnalyticSender
-import com.composetest.core.router.destinations.login.LoginDestination
-import com.composetest.core.router.extensions.getDestination
-import com.composetest.core.ui.di.qualifiers.AsyncTaskUtilsQualifier
-import com.composetest.core.ui.utils.AsyncTaskUtils
+import com.composetest.core.router.destination.login.LoginDestination
+import com.composetest.core.router.extension.getDestination
+import com.composetest.core.ui.di.qualifier.AsyncTaskUtilsQualifier
+import com.composetest.core.ui.util.AsyncTaskUtils
 import com.composetest.feature.login.analytic.screens.LoginScreenAnalytic
 import dagger.Module
 import dagger.Provides

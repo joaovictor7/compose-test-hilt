@@ -2,16 +2,16 @@ package com.composetest.feature.configuration.presenter.ui.security
 
 import androidx.lifecycle.viewModelScope
 import com.composetest.core.analytic.AnalyticSender
-import com.composetest.core.analytic.events.CommonAnalyticEvent
-import com.composetest.core.security.providers.BiometricProvider
-import com.composetest.core.ui.bases.BaseViewModel
-import com.composetest.core.ui.di.qualifiers.AsyncTaskUtilsQualifier
+import com.composetest.core.analytic.event.CommonAnalyticEvent
+import com.composetest.core.security.provider.BiometricProvider
+import com.composetest.core.ui.base.BaseViewModel
+import com.composetest.core.ui.di.qualifier.AsyncTaskUtilsQualifier
 import com.composetest.core.ui.interfaces.UiState
-import com.composetest.core.ui.utils.AsyncTaskUtils
-import com.composetest.feature.configuration.analytic.screens.SecurityConfigurationScreenAnalytic
-import com.composetest.feature.configuration.domain.models.SecurityConfigurationModel
-import com.composetest.feature.configuration.domain.usecases.GetSecurityConfigurationUseCase
-import com.composetest.feature.configuration.domain.usecases.UpdateSecurityConfigurationUseCase
+import com.composetest.core.ui.util.AsyncTaskUtils
+import com.composetest.feature.configuration.analytic.screen.SecurityConfigurationScreenAnalytic
+import com.composetest.feature.configuration.domain.model.SecurityConfigurationModel
+import com.composetest.feature.configuration.domain.usecase.GetSecurityConfigurationUseCase
+import com.composetest.feature.configuration.domain.usecase.UpdateSecurityConfigurationUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -25,9 +25,9 @@ internal class SecurityConfigurationViewModel @Inject constructor(
     private val biometricProvider: BiometricProvider,
     private val analyticSender: AnalyticSender,
     @AsyncTaskUtilsQualifier(SecurityConfigurationScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
-) : BaseViewModel(), UiState<SecurityConfigurationUiState>, SecurityConfigurationCommandReceiver {
+) : BaseViewModel(), UiState<SecurityConfigurationUiState>, SecurityConfigurationIntentReceiver {
 
-    override val commandReceiver = this
+    override val intentReceiver = this
 
     private var securityConfiguration: SecurityConfigurationModel? = null
 

@@ -3,7 +3,7 @@ package com.composetest.core.designsystem.theme
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.sp
-import com.composetest.core.designsystem.dimensions.FontSize
+import com.composetest.core.designsystem.dimension.FontSize
 
 internal val typography = Typography(
     titleLarge = TextStyle(

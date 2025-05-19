@@ -1,7 +1,7 @@
 package com.composetest.feature.configuration.data.di
 
-import com.composetest.core.domain.repositories.ConfigurationRepository
-import com.composetest.feature.configuration.data.repositories.ConfigurationRepositoryImpl
+import com.composetest.core.domain.repository.ConfigurationRepository
+import com.composetest.feature.configuration.data.repository.ConfigurationRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

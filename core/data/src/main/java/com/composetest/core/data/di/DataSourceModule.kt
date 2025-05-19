@@ -1,7 +1,7 @@
 package com.composetest.core.data.di
 
-import com.composetest.core.data.datasources.PreferenceDataSource
-import com.composetest.core.data.datasources.local.PreferenceDataSourceImpl
+import com.composetest.core.data.datasource.PreferenceDataSource
+import com.composetest.core.data.datasource.local.PreferenceDataSourceImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

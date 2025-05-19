@@ -1,7 +1,7 @@
 package com.composetest.core.data.di
 
 import com.composetest.core.data.R
-import com.composetest.core.domain.providers.BuildConfigProvider
+import com.composetest.core.domain.provider.BuildConfigProvider
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics

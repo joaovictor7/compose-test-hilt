@@ -1,6 +1,6 @@
 package com.composetest.feature.login.data.di
 
-import com.composetest.core.domain.repositories.AuthenticationRepository
+import com.composetest.core.domain.repository.AuthenticationRepository
 import com.composetest.feature.login.data.repository.AuthenticationRepositoryImpl
 import dagger.Binds
 import dagger.Module

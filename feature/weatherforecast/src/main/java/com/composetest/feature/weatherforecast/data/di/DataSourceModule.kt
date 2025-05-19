@@ -1,12 +1,12 @@
 package com.composetest.feature.weatherforecast.data.di
 
-import com.composetest.core.data.providers.AssetsProvider
-import com.composetest.core.data.providers.EnvironmentInstanceProvider
-import com.composetest.core.data.utils.ApiCallUtils
-import com.composetest.core.network.di.qualifiers.ApiQualifier
-import com.composetest.feature.weatherforecast.data.datasources.OpenWeatherDataSource
-import com.composetest.feature.weatherforecast.data.datasources.local.OpenWeatherFakeDataSourceImpl
-import com.composetest.feature.weatherforecast.data.datasources.remote.OpenWeatherDataSourceImpl
+import com.composetest.core.data.provider.AssetsProvider
+import com.composetest.core.data.provider.EnvironmentInstanceProvider
+import com.composetest.core.data.util.ApiCallUtils
+import com.composetest.core.network.di.qualifier.ApiQualifier
+import com.composetest.feature.weatherforecast.data.datasource.OpenWeatherDataSource
+import com.composetest.feature.weatherforecast.data.datasource.local.OpenWeatherFakeDataSourceImpl
+import com.composetest.feature.weatherforecast.data.datasource.remote.OpenWeatherDataSourceImpl
 import com.composetest.feature.weatherforecast.network.api.Api
 import dagger.Module
 import dagger.Provides

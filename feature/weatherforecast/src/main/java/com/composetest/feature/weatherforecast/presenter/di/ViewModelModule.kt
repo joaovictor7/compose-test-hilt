@@ -1,9 +1,9 @@
 package com.composetest.feature.weatherforecast.presenter.di
 
 import com.composetest.core.analytic.AnalyticSender
-import com.composetest.core.ui.di.qualifiers.AsyncTaskUtilsQualifier
-import com.composetest.core.ui.utils.AsyncTaskUtils
-import com.composetest.feature.weatherforecast.analytic.screens.WeatherForecastScreenAnalytic
+import com.composetest.core.ui.di.qualifier.AsyncTaskUtilsQualifier
+import com.composetest.core.ui.util.AsyncTaskUtils
+import com.composetest.feature.weatherforecast.analytic.screen.WeatherForecastScreenAnalytic
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

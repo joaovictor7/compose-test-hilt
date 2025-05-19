@@ -1,6 +1,6 @@
-import extensions.getLibrary
-import extensions.testImplementation
-import extensions.testRuntimeOnly
+import extension.getLibrary
+import extension.testImplementation
+import extension.testRuntimeOnly
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.testing.Test

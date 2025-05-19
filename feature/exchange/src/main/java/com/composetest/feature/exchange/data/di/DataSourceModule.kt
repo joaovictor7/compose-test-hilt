@@ -1,13 +1,13 @@
 package com.composetest.feature.exchange.data.di
 
-import com.composetest.core.data.providers.AssetsProvider
-import com.composetest.core.data.providers.EnvironmentInstanceProvider
-import com.composetest.core.data.utils.ApiCallUtils
-import com.composetest.core.network.di.qualifiers.ApiQualifier
-import com.composetest.feature.exchange.data.datasources.CoinDataSource
-import com.composetest.feature.exchange.data.datasources.local.CoinDataSourceFakeImpl
-import com.composetest.feature.exchange.data.datasources.remote.CoinDataSourceImpl
-import com.composetest.feature.exchange.network.constants.ApiConstants
+import com.composetest.core.data.provider.AssetsProvider
+import com.composetest.core.data.provider.EnvironmentInstanceProvider
+import com.composetest.core.data.util.ApiCallUtils
+import com.composetest.core.network.di.qualifier.ApiQualifier
+import com.composetest.feature.exchange.data.datasource.CoinDataSource
+import com.composetest.feature.exchange.data.datasource.local.CoinDataSourceFakeImpl
+import com.composetest.feature.exchange.data.datasource.remote.CoinDataSourceImpl
+import com.composetest.feature.exchange.network.api.Api
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,7 +23,7 @@ internal object DataSourceModule {
         apiCallUtils: ApiCallUtils,
         assetsProvider: AssetsProvider,
         environmentInstanceProvider: EnvironmentInstanceProvider,
-        @ApiQualifier(ApiConstants.COIN_API) httpClient: HttpClient
+        @ApiQualifier(Api.COIN_API) httpClient: HttpClient
     ): CoinDataSource = environmentInstanceProvider.getInstance(
         instance = CoinDataSourceImpl(apiCallUtils, httpClient),
         fakeInstance = CoinDataSourceFakeImpl(apiCallUtils, assetsProvider)

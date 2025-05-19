@@ -1,9 +1,9 @@
 package com.composetest.presentation.ui.main
 
 import android.os.Build
-import com.composetest.core.designsystem.extensions.systemBarStyles
-import com.composetest.core.designsystem.params.alertdialogs.SimpleDialogParam
-import com.composetest.core.domain.models.AppThemeModel
+import com.composetest.core.designsystem.extension.systemBarStyles
+import com.composetest.core.designsystem.param.alertdialog.SimpleDialogParam
+import com.composetest.core.domain.model.AppThemeModel
 import com.composetest.core.router.interfaces.Destination
 
 internal data class MainUiState(

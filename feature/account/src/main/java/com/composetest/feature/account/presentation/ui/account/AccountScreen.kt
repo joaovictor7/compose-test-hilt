@@ -12,20 +12,20 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.composetest.core.designsystem.components.buttons.LoadingButton
-import com.composetest.core.designsystem.components.scaffolds.ScreenScaffold
-import com.composetest.core.designsystem.components.textfields.TextField
-import com.composetest.core.designsystem.components.topbar.LeftTopBar
-import com.composetest.core.designsystem.constants.screenMargin
-import com.composetest.core.designsystem.dimensions.Spacing
-import com.composetest.core.designsystem.extensions.horizontalScreenMargin
+import com.composetest.core.designsystem.component.button.LoadingButton
+import com.composetest.core.designsystem.component.scaffold.ScreenScaffold
+import com.composetest.core.designsystem.component.textfield.TextField
+import com.composetest.core.designsystem.component.topbar.LeftTopBar
+import com.composetest.core.designsystem.dimension.Spacing
+import com.composetest.core.designsystem.dimension.screenMargin
+import com.composetest.core.designsystem.extension.horizontalScreenMargin
 import com.composetest.core.designsystem.theme.ComposeTestTheme
-import com.composetest.core.router.extensions.navigateBack
-import com.composetest.core.router.extensions.navigateTo
-import com.composetest.core.ui.interfaces.Command
-import com.composetest.core.ui.utils.UiEventsObserver
+import com.composetest.core.router.extension.navigateBack
+import com.composetest.core.router.extension.navigateTo
+import com.composetest.core.ui.interfaces.Intent
+import com.composetest.core.ui.util.UiEventsObserver
 import com.composetest.feature.account.presentation.enums.AccountDataRow
-import com.composetest.feature.account.presentation.models.AccountScreenModel
+import com.composetest.feature.account.presentation.model.AccountScreenModel
 import com.composetest.feature.profile.R
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
@@ -34,11 +34,11 @@ import kotlinx.coroutines.flow.emptyFlow
 internal fun AccountScreen(
     uiState: AccountUiState,
     uiEvent: Flow<AccountUiEvent> = emptyFlow(),
-    onExecuteCommand: (Command<AccountCommandReceiver>) -> Unit = {},
+    onExecuteCommand: (Intent<AccountIntentReceiver>) -> Unit = {},
     navController: NavHostController = rememberNavController(),
 ) {
     UiEventHandler(uiEvent = uiEvent, navController = navController)
-    BackHandler { onExecuteCommand(AccountCommand.BackHandler) }
+    BackHandler { onExecuteCommand(AccountIntent.BackHandler) }
     ScreenScaffold(
         modifier = Modifier
             .horizontalScreenMargin()
@@ -58,7 +58,7 @@ internal fun AccountScreen(
                         placeholderText = data.placeholder,
                         keyboardInput = data.keyboardType,
                     ) {
-                        onExecuteCommand(AccountCommand.UpdateFormData(data.id, it))
+                        onExecuteCommand(AccountIntent.UpdateFormData(data.id, it))
                     }
                 }
                 LoadingButton(
@@ -66,7 +66,7 @@ internal fun AccountScreen(
                     text = stringResource(R.string.account_update_button),
                     loadingState = uiState.loadingState,
                 ) {
-                    onExecuteCommand(AccountCommand.SaveData)
+                    onExecuteCommand(AccountIntent.SaveData)
                 }
             }
         }

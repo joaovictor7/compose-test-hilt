@@ -2,12 +2,12 @@ package com.composetest.feature.exchange.presenter.di
 
 import androidx.lifecycle.SavedStateHandle
 import com.composetest.core.analytic.AnalyticSender
-import com.composetest.core.router.destinations.exchange.ExchangeDetailDestination
-import com.composetest.core.router.extensions.getDestination
-import com.composetest.core.ui.di.qualifiers.AsyncTaskUtilsQualifier
-import com.composetest.core.ui.utils.AsyncTaskUtils
-import com.composetest.feature.exchange.analytics.screens.ExchangeDetailScreenAnalytic
-import com.composetest.feature.exchange.analytics.screens.ExchangeListScreenAnalytic
+import com.composetest.core.router.destination.exchange.ExchangeDetailDestination
+import com.composetest.core.router.extension.getDestination
+import com.composetest.core.ui.di.qualifier.AsyncTaskUtilsQualifier
+import com.composetest.core.ui.util.AsyncTaskUtils
+import com.composetest.feature.exchange.analytic.screen.ExchangeDetailScreenAnalytic
+import com.composetest.feature.exchange.analytic.screen.ExchangeListScreenAnalytic
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

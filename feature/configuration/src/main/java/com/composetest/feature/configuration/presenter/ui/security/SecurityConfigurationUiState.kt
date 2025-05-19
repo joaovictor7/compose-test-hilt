@@ -1,6 +1,6 @@
 package com.composetest.feature.configuration.presenter.ui.security
 
-import com.composetest.common.extensions.orFalse
+import com.composetest.common.extension.orFalse
 
 internal data class SecurityConfigurationUiState(
     val biometricIsAvailable: Boolean = true,

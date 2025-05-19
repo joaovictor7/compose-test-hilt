@@ -2,9 +2,9 @@ package modularization
 
 import com.android.build.api.dsl.ApplicationBuildType
 import com.android.build.api.dsl.ApplicationProductFlavor
-import enums.BuildType
-import enums.Flavor
-import files.LoadPropertiesFile
+import enum.BuildType
+import enum.Flavor
+import file.LoadPropertiesFile
 import org.gradle.api.Project
 
 internal fun ApplicationBuildType.setBuildConfigFields(

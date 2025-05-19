@@ -1,7 +1,7 @@
 package com.composetest.feature.account.data.datasource
 
-import com.composetest.core.database.daos.UserEntityDao
-import com.composetest.core.database.entities.UserEntity
+import com.composetest.core.database.dao.UserEntityDao
+import com.composetest.core.database.entity.UserEntity
 import javax.inject.Inject
 
 internal class UserDataSource @Inject constructor(

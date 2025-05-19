@@ -28,20 +28,20 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.composetest.core.designsystem.components.asyncimage.AsyncImage
-import com.composetest.core.designsystem.components.buttons.TryAgainButton
-import com.composetest.core.designsystem.components.pulltorefresh.PullToRefresh
-import com.composetest.core.designsystem.components.shimmer.Shimmer
-import com.composetest.core.designsystem.constants.screenMargin
-import com.composetest.core.designsystem.constants.topScreenMarginList
-import com.composetest.core.designsystem.dimensions.Spacing
-import com.composetest.core.designsystem.extensions.horizontalScreenMargin
+import com.composetest.core.designsystem.component.asyncimage.AsyncImage
+import com.composetest.core.designsystem.component.button.TryAgainButton
+import com.composetest.core.designsystem.component.pulltorefresh.PullToRefresh
+import com.composetest.core.designsystem.component.shimmer.Shimmer
+import com.composetest.core.designsystem.dimension.Spacing
+import com.composetest.core.designsystem.dimension.screenMargin
+import com.composetest.core.designsystem.dimension.topScreenMarginList
+import com.composetest.core.designsystem.extension.horizontalScreenMargin
 import com.composetest.core.designsystem.theme.ComposeTestTheme
-import com.composetest.core.designsystem.utils.getSharedShimmerOffset
-import com.composetest.core.router.extensions.navigateTo
-import com.composetest.core.ui.interfaces.Command
-import com.composetest.core.ui.utils.UiEventsObserver
-import com.composetest.feature.news.domain.models.ArticleModel
+import com.composetest.core.designsystem.util.getSharedShimmerOffset
+import com.composetest.core.router.extension.navigateTo
+import com.composetest.core.ui.interfaces.Intent
+import com.composetest.core.ui.util.UiEventsObserver
+import com.composetest.feature.news.domain.model.ArticleModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import java.time.LocalDateTime
@@ -50,14 +50,14 @@ import java.time.LocalDateTime
 internal fun NewsListScreen(
     uiState: NewsListUiState,
     uiEvent: Flow<NewsListUiEvent> = emptyFlow(),
-    onExecuteCommand: (Command<NewsListCommandReceiver>) -> Unit = {},
+    onExecuteCommand: (Intent<NewsListIntentReceiver>) -> Unit = {},
     navController: NavHostController = rememberNavController(),
 ) {
     val shimmerOffset by getSharedShimmerOffset()
     UiEventsHandler(uiEvent = uiEvent, navController = navController)
     PullToRefresh(
         isRefreshing = uiState.isLoading,
-        onRefresh = { onExecuteCommand(NewsListCommand.Refresh) }
+        onRefresh = { onExecuteCommand(NewsListIntent.Refresh) }
     ) {
         LazyColumn(
             modifier = Modifier
@@ -88,9 +88,9 @@ internal fun NewsListScreen(
 @Composable
 private fun NewsCard(
     articleModel: ArticleModel,
-    onExecuteCommand: (Command<NewsListCommandReceiver>) -> Unit
+    onExecuteCommand: (Intent<NewsListIntentReceiver>) -> Unit
 ) {
-    ElevatedCard(onClick = { onExecuteCommand(NewsListCommand.NavigateToFullNews(articleModel)) }) {
+    ElevatedCard(onClick = { onExecuteCommand(NewsListIntent.NavigateToFullNews(articleModel)) }) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
@@ -122,13 +122,13 @@ private fun NewsCard(
 }
 
 @Composable
-private fun RetryButton(onExecuteCommand: (Command<NewsListCommandReceiver>) -> Unit) {
+private fun RetryButton(onExecuteCommand: (Intent<NewsListIntentReceiver>) -> Unit) {
     Box(modifier = Modifier.fillMaxSize()) {
         TryAgainButton(
             modifier = Modifier
                 .background(color = MaterialTheme.colorScheme.surface)
                 .fillMaxSize()
-        ) { onExecuteCommand(NewsListCommand.Refresh) }
+        ) { onExecuteCommand(NewsListIntent.Refresh) }
     }
 }
 

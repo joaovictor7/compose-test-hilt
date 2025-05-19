@@ -1,20 +1,20 @@
 package com.composetest.feature.exchange.presenter.ui.list
 
 import androidx.lifecycle.viewModelScope
-import com.composetest.common.extensions.orFalse
+import com.composetest.common.extension.orFalse
 import com.composetest.core.analytic.AnalyticSender
-import com.composetest.core.analytic.events.CommonAnalyticEvent
-import com.composetest.core.router.models.NavigationModel
-import com.composetest.core.router.utils.getDialogErrorDestination
-import com.composetest.core.ui.bases.BaseViewModel
-import com.composetest.core.ui.di.qualifiers.AsyncTaskUtilsQualifier
+import com.composetest.core.analytic.event.CommonAnalyticEvent
+import com.composetest.core.router.model.NavigationModel
+import com.composetest.core.router.util.getDialogErrorDestination
+import com.composetest.core.ui.base.BaseViewModel
+import com.composetest.core.ui.di.qualifier.AsyncTaskUtilsQualifier
 import com.composetest.core.ui.interfaces.UiEvent
 import com.composetest.core.ui.interfaces.UiState
-import com.composetest.core.ui.utils.AsyncTaskUtils
-import com.composetest.feature.exchange.analytics.screens.ExchangeListScreenAnalytic
-import com.composetest.feature.exchange.domain.models.ExchangeModel
-import com.composetest.feature.exchange.domain.usecases.GetAllExchangesUseCase
-import com.composetest.feature.exchange.presenter.mappers.ExchangeMapper
+import com.composetest.core.ui.util.AsyncTaskUtils
+import com.composetest.feature.exchange.analytic.screen.ExchangeListScreenAnalytic
+import com.composetest.feature.exchange.domain.model.ExchangeModel
+import com.composetest.feature.exchange.domain.usecase.GetAllExchangesUseCase
+import com.composetest.feature.exchange.presenter.mapper.ExchangeMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,9 +30,9 @@ internal class ExchangeListViewModel @Inject constructor(
     private val analyticSender: AnalyticSender,
     @AsyncTaskUtilsQualifier(ExchangeListScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
 ) : BaseViewModel(), UiState<ExchangeListUiState>, UiEvent<ExchangeListUiEvent>,
-    ExchangeListCommandReceiver {
+    ExchangeListIntentReceiver {
 
-    override val commandReceiver = this
+    override val intentReceiver = this
 
     private var exchangeList = emptyList<ExchangeModel>()
 

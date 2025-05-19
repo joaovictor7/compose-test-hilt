@@ -24,14 +24,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import com.composetest.core.designsystem.components.linktext.LinkText
-import com.composetest.core.designsystem.components.scaffolds.ScreenScaffold
-import com.composetest.core.designsystem.components.topbar.LeftTopBar
-import com.composetest.core.designsystem.dimensions.Spacing
-import com.composetest.core.designsystem.extensions.horizontalScreenMargin
+import com.composetest.core.designsystem.component.linktext.LinkText
+import com.composetest.core.designsystem.component.scaffold.ScreenScaffold
+import com.composetest.core.designsystem.component.topbar.LeftTopBar
+import com.composetest.core.designsystem.dimension.Spacing
+import com.composetest.core.designsystem.extension.horizontalScreenMargin
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.feature.exchange.R
-import com.composetest.feature.exchange.presenter.models.ExchangeDetailRowScreenModel
+import com.composetest.feature.exchange.presenter.model.ExchangeDetailRowScreenModel
 
 @Composable
 internal fun ExchangeDetailScreen(uiState: ExchangeDetailUiState) {

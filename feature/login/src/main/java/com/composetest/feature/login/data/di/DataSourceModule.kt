@@ -1,12 +1,12 @@
 package com.composetest.feature.login.data.di
 
-import com.composetest.common.providers.DateTimeProvider
-import com.composetest.core.data.providers.AssetsProvider
-import com.composetest.core.data.providers.EnvironmentInstanceProvider
-import com.composetest.core.data.utils.ApiCallUtils
-import com.composetest.feature.login.data.datasources.AuthenticationDataSource
-import com.composetest.feature.login.data.datasources.local.AuthenticationFakeDataSourceImpl
-import com.composetest.feature.login.data.datasources.remote.AuthenticationDataSourceImpl
+import com.composetest.common.provider.DateTimeProvider
+import com.composetest.core.data.provider.AssetsProvider
+import com.composetest.core.data.provider.EnvironmentInstanceProvider
+import com.composetest.core.data.util.ApiCallUtils
+import com.composetest.feature.login.data.datasource.AuthenticationDataSource
+import com.composetest.feature.login.data.datasource.local.AuthenticationFakeDataSourceImpl
+import com.composetest.feature.login.data.datasource.remote.AuthenticationDataSourceImpl
 import com.composetest.feature.login.data.mapper.AuthenticationMapper
 import com.google.firebase.auth.FirebaseAuth
 import dagger.Module

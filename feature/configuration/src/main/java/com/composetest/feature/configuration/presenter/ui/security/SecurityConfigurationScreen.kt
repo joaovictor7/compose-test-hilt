@@ -7,20 +7,20 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
-import com.composetest.core.designsystem.components.scaffolds.ScreenScaffold
-import com.composetest.core.designsystem.components.switches.LabelSwitch
-import com.composetest.core.designsystem.components.topbar.LeftTopBar
-import com.composetest.core.designsystem.enums.switches.SwitchType
-import com.composetest.core.designsystem.extensions.screenMargin
-import com.composetest.core.designsystem.extensions.toSpanStyle
+import com.composetest.core.designsystem.component.scaffold.ScreenScaffold
+import com.composetest.core.designsystem.component.switch.LabelSwitch
+import com.composetest.core.designsystem.component.topbar.LeftTopBar
+import com.composetest.core.designsystem.enum.switch.SwitchType
+import com.composetest.core.designsystem.extension.screenMargin
+import com.composetest.core.designsystem.extension.toSpanStyle
 import com.composetest.core.designsystem.theme.ComposeTestTheme
-import com.composetest.core.ui.interfaces.Command
+import com.composetest.core.ui.interfaces.Intent
 import com.composetest.feature.configuration.R
 
 @Composable
 internal fun SecurityConfigurationScreen(
     uiState: SecurityConfigurationUiState,
-    onExecuteCommand: (Command<SecurityConfigurationCommandReceiver>) -> Unit = {}
+    onExecuteCommand: (Intent<SecurityConfigurationIntentReceiver>) -> Unit = {}
 ) {
     ScreenScaffold(
         modifier = Modifier.screenMargin(),
@@ -31,7 +31,7 @@ internal fun SecurityConfigurationScreen(
             checked = uiState.biometricIsEnabled,
             enable = uiState.biometricIsAvailable,
             switchType = SwitchType.CHECK
-        ) { onExecuteCommand(SecurityConfigurationCommand.ChangeSwitchBiometric(it)) }
+        ) { onExecuteCommand(SecurityConfigurationIntent.ChangeSwitchBiometric(it)) }
     }
 }
 

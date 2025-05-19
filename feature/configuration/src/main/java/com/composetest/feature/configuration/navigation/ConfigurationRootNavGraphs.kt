@@ -6,7 +6,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
-import com.composetest.core.router.destinations.configuration.ConfigurationDestination
+import com.composetest.core.router.destination.configuration.ConfigurationDestination
 import com.composetest.feature.configuration.presenter.ui.configuration.ConfigurationScreen
 import com.composetest.feature.configuration.presenter.ui.configuration.ConfigurationViewModel
 

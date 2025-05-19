@@ -6,7 +6,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
-import com.composetest.core.router.destinations.profile.ProfileDestination
+import com.composetest.core.router.destination.profile.ProfileDestination
 import com.composetest.feature.account.presentation.ui.account.AccountScreen
 import com.composetest.feature.account.presentation.ui.account.AccountViewModel
 

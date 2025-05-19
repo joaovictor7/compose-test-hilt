@@ -15,10 +15,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
-import com.composetest.core.designsystem.components.asyncimage.AsyncImage
-import com.composetest.core.designsystem.components.topbar.TopBarWithoutTitle
-import com.composetest.core.designsystem.constants.screenMargin
-import com.composetest.core.designsystem.dimensions.Spacing
+import com.composetest.core.designsystem.component.asyncimage.AsyncImage
+import com.composetest.core.designsystem.component.topbar.TopBarWithoutTitle
+import com.composetest.core.designsystem.dimension.Spacing
+import com.composetest.core.designsystem.dimension.screenMargin
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 
 @Composable

@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.executeCommand(MainCommand.FetchRemoteConfig)
+        viewModel.executeCommand(MainIntent.FetchRemoteConfig)
     }
 
     private fun uiStateObserver() = lifecycleScope.launch {

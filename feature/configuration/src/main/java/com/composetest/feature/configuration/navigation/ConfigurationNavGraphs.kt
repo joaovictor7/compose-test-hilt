@@ -5,8 +5,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.composetest.core.router.destinations.configuration.SecurityConfigurationDestination
-import com.composetest.core.router.destinations.configuration.ThemeConfigurationDestination
+import com.composetest.core.router.destination.configuration.SecurityConfigurationDestination
+import com.composetest.core.router.destination.configuration.ThemeConfigurationDestination
 import com.composetest.feature.configuration.presenter.ui.security.SecurityConfigurationScreen
 import com.composetest.feature.configuration.presenter.ui.security.SecurityConfigurationViewModel
 import com.composetest.feature.configuration.presenter.ui.theme.ThemeConfigurationScreen

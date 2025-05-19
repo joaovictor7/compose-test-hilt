@@ -2,11 +2,11 @@ package com.composetest.feature.home.presenter.ui.home
 
 import androidx.lifecycle.viewModelScope
 import com.composetest.core.analytic.AnalyticSender
-import com.composetest.core.analytic.events.CommonAnalyticEvent
-import com.composetest.core.ui.bases.BaseViewModel
-import com.composetest.core.ui.di.qualifiers.AsyncTaskUtilsQualifier
-import com.composetest.core.ui.utils.AsyncTaskUtils
-import com.composetest.feature.home.analytics.screens.HomeScreenAnalytic
+import com.composetest.core.analytic.event.CommonAnalyticEvent
+import com.composetest.core.ui.base.BaseViewModel
+import com.composetest.core.ui.di.qualifier.AsyncTaskUtilsQualifier
+import com.composetest.core.ui.util.AsyncTaskUtils
+import com.composetest.feature.home.analytic.screen.HomeScreenAnalytic
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

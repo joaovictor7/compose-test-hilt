@@ -6,7 +6,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
-import com.composetest.core.router.destinations.weatherforecast.WeatherForecastDestination
+import com.composetest.core.router.destination.weatherforecast.WeatherForecastDestination
 import com.composetest.feature.weatherforecast.presenter.ui.WeatherForecastScreen
 import com.composetest.feature.weatherforecast.presenter.ui.WeatherForecastViewModel
 

@@ -1,8 +1,8 @@
 import com.android.build.gradle.BaseExtension
-import extensions.debugImplementation
-import extensions.getLibrary
-import extensions.implementation
-import extensions.screenshotTestImplementation
+import extension.debugImplementation
+import extension.getLibrary
+import extension.implementation
+import extension.screenshotTestImplementation
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure

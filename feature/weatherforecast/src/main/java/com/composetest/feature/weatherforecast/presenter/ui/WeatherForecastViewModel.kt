@@ -3,25 +3,25 @@ package com.composetest.feature.weatherforecast.presenter.ui
 import android.location.Location
 import androidx.lifecycle.viewModelScope
 import com.composetest.core.analytic.AnalyticSender
-import com.composetest.core.analytic.events.CommonAnalyticEvent
-import com.composetest.core.router.utils.getDialogErrorDestination
-import com.composetest.core.ui.bases.BaseViewModel
-import com.composetest.core.ui.di.qualifiers.AsyncTaskUtilsQualifier
+import com.composetest.core.analytic.event.CommonAnalyticEvent
+import com.composetest.core.router.util.getDialogErrorDestination
+import com.composetest.core.ui.base.BaseViewModel
+import com.composetest.core.ui.di.qualifier.AsyncTaskUtilsQualifier
 import com.composetest.core.ui.enums.Permission
 import com.composetest.core.ui.interfaces.UiEvent
 import com.composetest.core.ui.interfaces.UiState
-import com.composetest.core.ui.providers.LocationProvider
-import com.composetest.core.ui.providers.PermissionProvider
-import com.composetest.core.ui.utils.AsyncTaskUtils
-import com.composetest.feature.weatherforecast.analytic.screens.WeatherForecastScreenAnalytic
-import com.composetest.feature.weatherforecast.domain.usescases.GetFutureWeatherForecastUseCase
-import com.composetest.feature.weatherforecast.domain.usescases.GetTodayWeatherForecastUseCase
-import com.composetest.feature.weatherforecast.domain.usescases.GetWeatherForecastsUseCase
-import com.composetest.feature.weatherforecast.domain.usescases.GetWeatherNowUseCase
+import com.composetest.core.ui.provider.LocationProvider
+import com.composetest.core.ui.provider.PermissionProvider
+import com.composetest.core.ui.util.AsyncTaskUtils
+import com.composetest.feature.weatherforecast.analytic.screen.WeatherForecastScreenAnalytic
+import com.composetest.feature.weatherforecast.domain.usescase.GetFutureWeatherForecastUseCase
+import com.composetest.feature.weatherforecast.domain.usescase.GetTodayWeatherForecastUseCase
+import com.composetest.feature.weatherforecast.domain.usescase.GetWeatherForecastsUseCase
+import com.composetest.feature.weatherforecast.domain.usescase.GetWeatherNowUseCase
 import com.composetest.feature.weatherforecast.presenter.enums.WeatherForecastScreenStatus
 import com.composetest.feature.weatherforecast.presenter.enums.WeatherForecastStatus
-import com.composetest.feature.weatherforecast.presenter.mappers.FutureWeatherForecastScreenModelsMapper
-import com.composetest.feature.weatherforecast.presenter.mappers.WeatherNowScreenModelMapper
+import com.composetest.feature.weatherforecast.presenter.mapper.FutureWeatherForecastScreenModelsMapper
+import com.composetest.feature.weatherforecast.presenter.mapper.WeatherNowScreenModelMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -43,9 +43,9 @@ internal class WeatherForecastViewModel @Inject constructor(
     private val analyticSender: AnalyticSender,
     @AsyncTaskUtilsQualifier(WeatherForecastScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
 ) : BaseViewModel(), UiState<WeatherForecastUiState>, UiEvent<WeatherForecastUiEvent>,
-    WeatherForecastCommandReceiver {
+    WeatherForecastIntentReceiver {
 
-    override val commandReceiver = this
+    override val intentReceiver = this
 
     private var location: Location? = null
     private var weatherForecastNowWasGet = false

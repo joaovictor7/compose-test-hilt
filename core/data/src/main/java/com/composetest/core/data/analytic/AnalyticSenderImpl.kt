@@ -4,10 +4,10 @@ import android.os.Bundle
 import androidx.core.os.bundleOf
 import com.composetest.core.analytic.AnalyticEvent
 import com.composetest.core.analytic.AnalyticSender
-import com.composetest.core.analytic.events.ErrorAnalyticEvent
-import com.composetest.core.domain.providers.BuildConfigProvider
-import com.composetest.core.domain.repositories.AnalyticsRepository
-import com.composetest.core.domain.repositories.UserRepository
+import com.composetest.core.analytic.event.ErrorAnalyticEvent
+import com.composetest.core.domain.provider.BuildConfigProvider
+import com.composetest.core.domain.repository.AnalyticsRepository
+import com.composetest.core.domain.repository.UserRepository
 import java.time.ZonedDateTime
 import javax.inject.Inject
 

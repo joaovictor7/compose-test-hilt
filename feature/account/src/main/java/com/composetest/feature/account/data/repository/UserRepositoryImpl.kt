@@ -1,7 +1,7 @@
 package com.composetest.feature.account.data.repository
 
-import com.composetest.core.domain.models.UserModel
-import com.composetest.core.domain.repositories.UserRepository
+import com.composetest.core.domain.model.UserModel
+import com.composetest.core.domain.repository.UserRepository
 import com.composetest.feature.account.data.datasource.UserDataSource
 import com.composetest.feature.account.data.mapper.UserMapper
 import javax.inject.Inject

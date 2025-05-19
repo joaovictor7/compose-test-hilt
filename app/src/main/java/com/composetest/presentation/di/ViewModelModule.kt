@@ -1,9 +1,9 @@
 package com.composetest.presentation.di
 
-import com.composetest.analytic.screens.MainScreenAnalytic
+import com.composetest.analytic.screen.MainScreenAnalytic
 import com.composetest.core.analytic.AnalyticSender
-import com.composetest.core.ui.di.qualifiers.AsyncTaskUtilsQualifier
-import com.composetest.core.ui.utils.AsyncTaskUtils
+import com.composetest.core.ui.di.qualifier.AsyncTaskUtilsQualifier
+import com.composetest.core.ui.util.AsyncTaskUtils
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

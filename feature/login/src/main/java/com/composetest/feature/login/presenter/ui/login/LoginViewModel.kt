@@ -1,38 +1,38 @@
 package com.composetest.feature.login.presenter.ui.login
 
 import androidx.lifecycle.viewModelScope
-import com.composetest.common.errors.ApiError
+import com.composetest.common.error.ApiError
 import com.composetest.core.analytic.AnalyticSender
-import com.composetest.core.analytic.events.CommonAnalyticEvent
+import com.composetest.core.analytic.event.CommonAnalyticEvent
 import com.composetest.core.domain.enums.Theme
-import com.composetest.core.domain.providers.BuildConfigProvider
-import com.composetest.core.domain.usecases.configuration.SetSystemBarsStyleUseCase
-import com.composetest.core.domain.usecases.remoteconfig.GetBooleanRemoteConfigUseCase
-import com.composetest.core.router.destinations.login.LoginDestination
-import com.composetest.core.router.destinations.root.RootDestination
+import com.composetest.core.domain.provider.BuildConfigProvider
+import com.composetest.core.domain.usecase.configuration.SetSystemBarsStyleUseCase
+import com.composetest.core.domain.usecase.remoteconfig.GetBooleanRemoteConfigUseCase
+import com.composetest.core.router.destination.login.LoginDestination
+import com.composetest.core.router.destination.root.RootDestination
 import com.composetest.core.router.enums.NavigationMode
-import com.composetest.core.router.models.NavigationModel
-import com.composetest.core.router.utils.getDialogErrorDestination
+import com.composetest.core.router.model.NavigationModel
+import com.composetest.core.router.util.getDialogErrorDestination
 import com.composetest.core.security.enums.BiometricError
 import com.composetest.core.security.enums.BiometricError.Companion.biometricIsLockout
 import com.composetest.core.security.enums.BiometricError.Companion.userClosedPrompt
-import com.composetest.core.security.providers.BiometricProvider
-import com.composetest.core.security.providers.CipherProvider
-import com.composetest.core.ui.bases.BaseViewModel
-import com.composetest.core.ui.di.qualifiers.AsyncTaskUtilsQualifier
+import com.composetest.core.security.provider.BiometricProvider
+import com.composetest.core.security.provider.CipherProvider
+import com.composetest.core.ui.base.BaseViewModel
+import com.composetest.core.ui.di.qualifier.AsyncTaskUtilsQualifier
 import com.composetest.core.ui.interfaces.UiEvent
 import com.composetest.core.ui.interfaces.UiState
-import com.composetest.core.ui.utils.AsyncTaskUtils
+import com.composetest.core.ui.util.AsyncTaskUtils
 import com.composetest.feature.login.R
 import com.composetest.feature.login.analytic.events.LoginEventAnalytic
 import com.composetest.feature.login.analytic.screens.LoginScreenAnalytic
-import com.composetest.feature.login.domain.usecases.AuthenticationByBiometricUseCase
-import com.composetest.feature.login.domain.usecases.AuthenticationUseCase
-import com.composetest.feature.login.domain.usecases.BiometricIsEnableUseCase
-import com.composetest.feature.login.presenter.enums.LoginRemoteConfig
-import com.composetest.feature.login.presenter.extensions.autoShowBiometricPrompt
-import com.composetest.feature.login.presenter.models.BiometricModel
-import com.composetest.feature.login.presenter.ui.dialogs.SimpleDialogParam
+import com.composetest.feature.login.domain.enums.LoginRemoteConfig
+import com.composetest.feature.login.domain.usecase.AuthenticationByBiometricUseCase
+import com.composetest.feature.login.domain.usecase.AuthenticationUseCase
+import com.composetest.feature.login.domain.usecase.BiometricIsEnableUseCase
+import com.composetest.feature.login.presenter.extension.autoShowBiometricPrompt
+import com.composetest.feature.login.presenter.model.BiometricModel
+import com.composetest.feature.login.presenter.ui.dialog.SimpleDialogParam
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -54,9 +54,9 @@ internal class LoginViewModel @Inject constructor(
     private val loginDestination: LoginDestination,
     private val analyticSender: AnalyticSender,
     @AsyncTaskUtilsQualifier(LoginScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
-) : BaseViewModel(), UiState<LoginUiState>, UiEvent<LoginUiEvent>, LoginCommandReceiver {
+) : BaseViewModel(), UiState<LoginUiState>, UiEvent<LoginUiEvent>, LoginIntentReceiver {
 
-    override val commandReceiver = this
+    override val intentReceiver = this
 
     private val loginFormModel get() = uiState.value.loginFormModel
     private val byPassLogin by lazy { getBooleanRemoteConfigUseCase(LoginRemoteConfig.BY_PASS_LOGIN) }

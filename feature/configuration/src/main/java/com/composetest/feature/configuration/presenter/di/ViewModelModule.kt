@@ -1,11 +1,11 @@
 package com.composetest.feature.configuration.presenter.di
 
 import com.composetest.core.analytic.AnalyticSender
-import com.composetest.core.ui.di.qualifiers.AsyncTaskUtilsQualifier
-import com.composetest.core.ui.utils.AsyncTaskUtils
-import com.composetest.feature.configuration.analytic.screens.ConfigurationScreenAnalytic
-import com.composetest.feature.configuration.analytic.screens.SecurityConfigurationScreenAnalytic
-import com.composetest.feature.configuration.analytic.screens.ThemeConfigurationScreenAnalytic
+import com.composetest.core.ui.di.qualifier.AsyncTaskUtilsQualifier
+import com.composetest.core.ui.util.AsyncTaskUtils
+import com.composetest.feature.configuration.analytic.screen.ConfigurationScreenAnalytic
+import com.composetest.feature.configuration.analytic.screen.SecurityConfigurationScreenAnalytic
+import com.composetest.feature.configuration.analytic.screen.ThemeConfigurationScreenAnalytic
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

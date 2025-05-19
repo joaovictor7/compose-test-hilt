@@ -10,11 +10,11 @@ import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkerParameters
 import com.composetest.core.analytic.AnalyticSender
-import com.composetest.core.analytic.events.ErrorAnalyticEvent
+import com.composetest.core.analytic.event.ErrorAnalyticEvent
 import com.composetest.core.data.enums.Worker
 import com.composetest.core.data.workmanager.WorkManagerRequest
-import com.composetest.core.domain.usecases.session.CheckSessionIsValidUseCase
-import com.composetest.core.domain.usecases.session.FinishSessionUseCase
+import com.composetest.core.domain.usecase.session.CheckSessionIsValidUseCase
+import com.composetest.core.domain.usecase.session.FinishSessionUseCase
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import java.time.Duration

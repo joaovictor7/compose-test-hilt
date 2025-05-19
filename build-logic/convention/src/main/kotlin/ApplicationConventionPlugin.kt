@@ -1,11 +1,11 @@
 import appconfig.AppConfig
 import com.android.build.api.dsl.ApkSigningConfig
 import com.android.build.api.dsl.ApplicationExtension
-import enums.Signing
-import extensions.getLibrary
-import extensions.implementation
-import files.LoadPropertiesFile
-import files.PropertiesFile
+import enum.Signing
+import extension.getLibrary
+import extension.implementation
+import file.LoadPropertiesFile
+import file.PropertiesFile
 import modularization.configureAndroid
 import modularization.setBuildTypes
 import modularization.setFlavors

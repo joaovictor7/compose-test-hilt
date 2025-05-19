@@ -1,12 +1,12 @@
 package com.composetest.feature.news.data.di
 
-import com.composetest.core.data.providers.AssetsProvider
-import com.composetest.core.data.providers.EnvironmentInstanceProvider
-import com.composetest.core.data.utils.ApiCallUtils
-import com.composetest.core.network.di.qualifiers.ApiQualifier
-import com.composetest.feature.news.data.datasources.NewsApiDataSource
-import com.composetest.feature.news.data.datasources.local.NewsApiFakeDataSourceImpl
-import com.composetest.feature.news.data.datasources.remote.NewsApiDataSourceImpl
+import com.composetest.core.data.provider.AssetsProvider
+import com.composetest.core.data.provider.EnvironmentInstanceProvider
+import com.composetest.core.data.util.ApiCallUtils
+import com.composetest.core.network.di.qualifier.ApiQualifier
+import com.composetest.feature.news.data.datasource.NewsApiDataSource
+import com.composetest.feature.news.data.datasource.local.NewsApiFakeDataSourceImpl
+import com.composetest.feature.news.data.datasource.remote.NewsApiDataSourceImpl
 import com.composetest.feature.news.network.api.Api
 import dagger.Module
 import dagger.Provides

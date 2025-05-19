@@ -23,13 +23,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.composetest.core.designsystem.constants.screenMargin
-import com.composetest.core.designsystem.dimensions.Spacing
-import com.composetest.core.designsystem.extensions.horizontalScreenMargin
+import com.composetest.core.designsystem.dimension.Spacing
+import com.composetest.core.designsystem.dimension.screenMargin
+import com.composetest.core.designsystem.extension.horizontalScreenMargin
 import com.composetest.core.designsystem.theme.ComposeTestTheme
-import com.composetest.core.router.extensions.navigateTo
-import com.composetest.core.ui.interfaces.Command
-import com.composetest.core.ui.utils.UiEventsObserver
+import com.composetest.core.router.extension.navigateTo
+import com.composetest.core.ui.interfaces.Intent
+import com.composetest.core.ui.util.UiEventsObserver
 import com.composetest.feature.configuration.presenter.enums.Configuration
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
@@ -41,7 +41,7 @@ internal fun ConfigurationScreen(
     uiState: ConfigurationUiState,
     uiEvent: Flow<ConfigurationUiEvent> = emptyFlow(),
     mainNavController: NavHostController = rememberNavController(),
-    onExecuteCommand: (Command<ConfigurationCommandReceiver>) -> Unit = {}
+    onExecuteCommand: (Intent<ConfigurationIntentReceiver>) -> Unit = {}
 ) {
     UiEventsHandler(uiEvent = uiEvent, mainNavController = mainNavController)
     LazyVerticalStaggeredGrid(
@@ -68,11 +68,11 @@ internal fun ConfigurationScreen(
 
 @Composable
 private fun ConfigurationCard(
-    onExecuteCommand: (Command<ConfigurationCommandReceiver>) -> Unit,
+    onExecuteCommand: (Intent<ConfigurationIntentReceiver>) -> Unit,
     configuration: Configuration
 ) {
     OutlinedCard(
-        onClick = { onExecuteCommand(ConfigurationCommand.ConfigurationClick(configuration)) }
+        onClick = { onExecuteCommand(ConfigurationIntent.ConfigurationClick(configuration)) }
     ) {
         Box(
             modifier = Modifier

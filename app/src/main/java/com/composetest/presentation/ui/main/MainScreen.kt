@@ -6,14 +6,14 @@ import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import com.composetest.core.designsystem.components.dialogs.SimpleDialog
-import com.composetest.core.designsystem.components.lifecycle.LifecycleEvent
+import com.composetest.core.designsystem.component.dialog.SimpleDialog
+import com.composetest.core.designsystem.component.lifecycle.LifecycleEvent
 import com.composetest.core.designsystem.theme.ComposeTestTheme
-import com.composetest.core.router.extensions.currentRoute
-import com.composetest.core.router.extensions.navigateTo
+import com.composetest.core.router.extension.currentRoute
+import com.composetest.core.router.extension.navigateTo
 import com.composetest.core.router.interfaces.Destination
-import com.composetest.core.ui.interfaces.Command
-import com.composetest.core.ui.utils.UiEventsObserver
+import com.composetest.core.ui.interfaces.Intent
+import com.composetest.core.ui.util.UiEventsObserver
 import com.composetest.navigation.DialogNavGraphs
 import com.composetest.navigation.ScreenNavGraphs
 import kotlinx.coroutines.flow.Flow
@@ -23,7 +23,7 @@ import kotlinx.coroutines.flow.emptyFlow
 internal fun MainScreen(
     uiState: MainUiState,
     uiEvent: Flow<MainUiEvent> = emptyFlow(),
-    onExecuteCommand: (Command<MainCommandReceiver>) -> Unit = {}
+    onExecuteCommand: (Intent<MainIntentReceiver>) -> Unit = {}
 ) {
     if (uiState.firstDestination == null) return
     ComposeTestTheme(
@@ -42,7 +42,7 @@ internal fun MainScreen(
 @Composable
 private fun Navigation(
     uiEvent: Flow<MainUiEvent>,
-    onExecuteCommand: (Command<MainCommandReceiver>) -> Unit,
+    onExecuteCommand: (Intent<MainIntentReceiver>) -> Unit,
     firstScreenDestination: Destination
 ) {
     val navController = rememberNavController()
@@ -57,12 +57,12 @@ private fun Navigation(
 
 @Composable
 private fun LifecycleHandler(
-    onExecuteCommand: (Command<MainCommandReceiver>) -> Unit,
+    onExecuteCommand: (Intent<MainIntentReceiver>) -> Unit,
     navController: NavHostController
 ) {
     LifecycleEvent {
         if (it == Lifecycle.Event.ON_RESUME) {
-            onExecuteCommand(MainCommand.VerifySession(navController.currentRoute))
+            onExecuteCommand(MainIntent.VerifySession(navController.currentRoute))
         }
     }
 }
@@ -70,10 +70,10 @@ private fun LifecycleHandler(
 @Composable
 private fun DialogHandler(
     uiState: MainUiState,
-    onExecuteCommand: (Command<MainCommandReceiver>) -> Unit
+    onExecuteCommand: (Intent<MainIntentReceiver>) -> Unit
 ) = uiState.simpleDialogParam?.let {
     SimpleDialog(param = it) {
-        onExecuteCommand(MainCommand.DismissAlertDialog)
+        onExecuteCommand(MainIntent.DismissAlertDialog)
     }
 }
 

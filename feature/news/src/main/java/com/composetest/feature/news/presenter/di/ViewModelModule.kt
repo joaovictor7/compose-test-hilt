@@ -2,12 +2,12 @@ package com.composetest.feature.news.presenter.di
 
 import androidx.lifecycle.SavedStateHandle
 import com.composetest.core.analytic.AnalyticSender
-import com.composetest.core.router.destinations.news.FullNewsDestination
-import com.composetest.core.router.extensions.getDestination
-import com.composetest.core.ui.di.qualifiers.AsyncTaskUtilsQualifier
-import com.composetest.core.ui.utils.AsyncTaskUtils
-import com.composetest.feature.news.analytic.screens.FullNewsScreenAnalytic
-import com.composetest.feature.news.analytic.screens.NewsListScreenAnalytic
+import com.composetest.core.router.destination.news.FullNewsDestination
+import com.composetest.core.router.extension.getDestination
+import com.composetest.core.ui.di.qualifier.AsyncTaskUtilsQualifier
+import com.composetest.core.ui.util.AsyncTaskUtils
+import com.composetest.feature.news.analytic.screen.FullNewsScreenAnalytic
+import com.composetest.feature.news.analytic.screen.NewsListScreenAnalytic
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

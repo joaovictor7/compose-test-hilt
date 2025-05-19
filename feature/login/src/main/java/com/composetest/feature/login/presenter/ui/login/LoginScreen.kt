@@ -26,22 +26,22 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.composetest.core.designsystem.components.buttons.Button
-import com.composetest.core.designsystem.components.dialogs.SimpleDialog
-import com.composetest.core.designsystem.components.icons.VibratingIcon
-import com.composetest.core.designsystem.components.textfields.OutlinedTextField
-import com.composetest.core.designsystem.compositions.LocalTheme
-import com.composetest.core.designsystem.constants.screenMargin
-import com.composetest.core.designsystem.dimensions.Spacing
-import com.composetest.core.designsystem.extensions.opacity
-import com.composetest.core.designsystem.extensions.screenMarginWithoutBar
-import com.composetest.core.designsystem.extensions.verticalTopBackgroundBrush
+import com.composetest.core.designsystem.component.button.Button
+import com.composetest.core.designsystem.component.dialog.SimpleDialog
+import com.composetest.core.designsystem.component.icon.VibratingIcon
+import com.composetest.core.designsystem.component.textfield.OutlinedTextField
+import com.composetest.core.designsystem.composition.LocalTheme
+import com.composetest.core.designsystem.dimension.Spacing
+import com.composetest.core.designsystem.dimension.screenMargin
+import com.composetest.core.designsystem.extension.opacity
+import com.composetest.core.designsystem.extension.screenMarginWithoutBar
+import com.composetest.core.designsystem.extension.verticalTopBackgroundBrush
 import com.composetest.core.designsystem.theme.ComposeTestTheme
-import com.composetest.core.router.extensions.navigateTo
-import com.composetest.core.security.utils.showBiometricPrompt
-import com.composetest.core.ui.interfaces.Command
+import com.composetest.core.router.extension.navigateTo
+import com.composetest.core.security.util.showBiometricPrompt
+import com.composetest.core.ui.interfaces.Intent
 import com.composetest.feature.login.R
-import com.composetest.feature.login.presenter.models.BiometricModel
+import com.composetest.feature.login.presenter.model.BiometricModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import com.composetest.core.designsystem.R as DesignSystemResources
@@ -54,7 +54,7 @@ private const val DISPLACEMENT = 15f
 internal fun LoginScreen(
     uiState: LoginUiState,
     uiEvent: Flow<LoginUiEvent> = emptyFlow(),
-    onExecuteCommand: (Command<LoginCommandReceiver>) -> Unit = {},
+    onExecuteCommand: (Intent<LoginIntentReceiver>) -> Unit = {},
     navController: NavHostController = rememberNavController()
 ) {
     DialogHandler(uiState = uiState, onExecuteCommand = onExecuteCommand)
@@ -79,7 +79,7 @@ internal fun LoginScreen(
 @Composable
 private fun LoginForm(
     uiState: LoginUiState,
-    onExecuteCommand: (Command<LoginCommandReceiver>) -> Unit
+    onExecuteCommand: (Intent<LoginIntentReceiver>) -> Unit
 ) {
     Column(
         modifier = Modifier.padding(screenMargin),
@@ -101,15 +101,15 @@ private fun LoginForm(
                 trailingIcon = uiState.emailTrailingIcon,
                 modifier = Modifier.fillMaxWidth(),
                 onFocusChanged = {
-                    onExecuteCommand(LoginCommand.CheckShowInvalidEmailMsg(it.hasFocus))
+                    onExecuteCommand(LoginIntent.CheckShowInvalidEmailMsg(it.hasFocus))
                 }
-            ) { email -> onExecuteCommand(LoginCommand.WriteData(email = email)) }
+            ) { email -> onExecuteCommand(LoginIntent.WriteData(email = email)) }
             OutlinedTextField(
                 textValue = uiState.loginFormModel.password,
                 labelText = stringResource(R.string.feature_login_password),
                 keyboardInput = KeyboardType.Password,
                 modifier = Modifier.fillMaxWidth()
-            ) { password -> onExecuteCommand(LoginCommand.WriteData(password = password)) }
+            ) { password -> onExecuteCommand(LoginIntent.WriteData(password = password)) }
             if (uiState.invalidCredentials) {
                 Text(
                     text = stringResource(R.string.feature_login_invalid_credentials),
@@ -131,7 +131,7 @@ private fun LoginForm(
 @Composable
 private fun ButtonsArea(
     uiState: LoginUiState,
-    onExecuteCommand: (Command<LoginCommandReceiver>) -> Unit
+    onExecuteCommand: (Intent<LoginIntentReceiver>) -> Unit
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -141,7 +141,7 @@ private fun ButtonsArea(
             text = stringResource(R.string.feature_login_enter),
             modifier = Modifier.fillMaxWidth(),
             enabled = uiState.loginButtonIsEnabled
-        ) { onExecuteCommand(LoginCommand.Login(false)) }
+        ) { onExecuteCommand(LoginIntent.Login(false)) }
         BiometricButton(uiState = uiState, onExecuteCommand = onExecuteCommand)
     }
 }
@@ -149,13 +149,13 @@ private fun ButtonsArea(
 @Composable
 private fun BiometricButton(
     uiState: LoginUiState,
-    onExecuteCommand: (Command<LoginCommandReceiver>) -> Unit
+    onExecuteCommand: (Intent<LoginIntentReceiver>) -> Unit
 ) = uiState.biometricModel?.let { biometric ->
     VibratingIcon(
         modifier = Modifier
             .clip(MaterialTheme.shapes.large)
             .setBiometricButtonClick(biometric.isAvailable) {
-                onExecuteCommand(LoginCommand.ShowBiometricPrompt)
+                onExecuteCommand(LoginIntent.ShowBiometricPrompt)
             }
             .padding(Spacing.four),
         iconId = DesignSystemResources.drawable.ic_fingerprint_extra_large,
@@ -168,7 +168,7 @@ private fun BiometricButton(
         duration = DURATION,
         displacement = DISPLACEMENT
     ) {
-        onExecuteCommand(LoginCommand.BiometricErrorAnimationFinished)
+        onExecuteCommand(LoginIntent.BiometricErrorAnimationFinished)
     }
     biometric.messageId?.let {
         Text(
@@ -205,7 +205,7 @@ private fun Modifier.setBiometricButtonClick(isAvailable: Boolean, onClick: () -
 @Composable
 private fun LaunchedEffectHandler(
     uiEvent: Flow<LoginUiEvent>,
-    onExecuteCommand: (Command<LoginCommandReceiver>) -> Unit,
+    onExecuteCommand: (Intent<LoginIntentReceiver>) -> Unit,
     navController: NavHostController
 ) {
     val context = LocalContext.current
@@ -217,9 +217,9 @@ private fun LaunchedEffectHandler(
                     context = context,
                     titleId = R.string.feature_login_biometric_title,
                     subtitleId = R.string.feature_login_biometric_subtitle,
-                    onSuccess = { onExecuteCommand(LoginCommand.Login(true)) },
+                    onSuccess = { onExecuteCommand(LoginIntent.Login(true)) },
                     onError = { error ->
-                        onExecuteCommand(LoginCommand.BiometricErrorHandler(error))
+                        onExecuteCommand(LoginIntent.BiometricErrorHandler(error))
                     }
                 )
                 is LoginUiEvent.NavigateTo -> navController.navigateTo(it.navigationModel)
@@ -227,11 +227,11 @@ private fun LaunchedEffectHandler(
         }
     }
     LaunchedEffect(Unit) {
-        onExecuteCommand(LoginCommand.SetStatusBarsTheme(true, currentAppTheme))
+        onExecuteCommand(LoginIntent.SetStatusBarsTheme(true, currentAppTheme))
     }
     DisposableEffect(Unit) {
         onDispose {
-            onExecuteCommand(LoginCommand.SetStatusBarsTheme(false, currentAppTheme))
+            onExecuteCommand(LoginIntent.SetStatusBarsTheme(false, currentAppTheme))
         }
     }
 }
@@ -239,10 +239,10 @@ private fun LaunchedEffectHandler(
 @Composable
 private fun DialogHandler(
     uiState: LoginUiState,
-    onExecuteCommand: (Command<LoginCommandReceiver>) -> Unit
+    onExecuteCommand: (Intent<LoginIntentReceiver>) -> Unit
 ) = uiState.simpleDialogParam?.let {
     SimpleDialog(param = it) {
-        onExecuteCommand(LoginCommand.DismissSimpleDialog)
+        onExecuteCommand(LoginIntent.DismissSimpleDialog)
     }
 }
 

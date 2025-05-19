@@ -2,14 +2,14 @@ package com.composetest.feature.configuration.presenter.ui.configuration
 
 import androidx.lifecycle.viewModelScope
 import com.composetest.core.analytic.AnalyticSender
-import com.composetest.core.analytic.events.CommonAnalyticEvent
-import com.composetest.core.router.models.NavigationModel
-import com.composetest.core.ui.bases.BaseViewModel
-import com.composetest.core.ui.di.qualifiers.AsyncTaskUtilsQualifier
+import com.composetest.core.analytic.event.CommonAnalyticEvent
+import com.composetest.core.router.model.NavigationModel
+import com.composetest.core.ui.base.BaseViewModel
+import com.composetest.core.ui.di.qualifier.AsyncTaskUtilsQualifier
 import com.composetest.core.ui.interfaces.UiEvent
 import com.composetest.core.ui.interfaces.UiState
-import com.composetest.core.ui.utils.AsyncTaskUtils
-import com.composetest.feature.configuration.analytic.screens.ConfigurationScreenAnalytic
+import com.composetest.core.ui.util.AsyncTaskUtils
+import com.composetest.feature.configuration.analytic.screen.ConfigurationScreenAnalytic
 import com.composetest.feature.configuration.presenter.enums.Configuration
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -24,9 +24,9 @@ internal class ConfigurationViewModel @Inject constructor(
     private val analyticSender: AnalyticSender,
     @AsyncTaskUtilsQualifier(ConfigurationScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
 ) : BaseViewModel(), UiState<ConfigurationUiState>, UiEvent<ConfigurationUiEvent>,
-    ConfigurationCommandReceiver {
+    ConfigurationIntentReceiver {
 
-    override val commandReceiver = this
+    override val intentReceiver = this
 
     private val _uiState = MutableStateFlow(ConfigurationUiState())
     override val uiState = _uiState.asStateFlow()

@@ -1,6 +1,6 @@
 package com.composetest.feature.account.data.di
 
-import com.composetest.core.domain.repositories.UserRepository
+import com.composetest.core.domain.repository.UserRepository
 import com.composetest.feature.account.data.repository.UserRepositoryImpl
 import dagger.Binds
 import dagger.Module

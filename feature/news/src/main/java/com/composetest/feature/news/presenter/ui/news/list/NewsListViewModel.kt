@@ -2,19 +2,19 @@ package com.composetest.feature.news.presenter.ui.news.list
 
 import androidx.lifecycle.viewModelScope
 import com.composetest.core.analytic.AnalyticSender
-import com.composetest.core.analytic.events.CommonAnalyticEvent
-import com.composetest.core.router.destinations.news.FullNewsDestination
-import com.composetest.core.router.models.NavigationModel
-import com.composetest.core.router.utils.getDialogErrorDestination
-import com.composetest.core.ui.bases.BaseViewModel
-import com.composetest.core.ui.di.qualifiers.AsyncTaskUtilsQualifier
+import com.composetest.core.analytic.event.CommonAnalyticEvent
+import com.composetest.core.router.destination.news.FullNewsDestination
+import com.composetest.core.router.model.NavigationModel
+import com.composetest.core.router.util.getDialogErrorDestination
+import com.composetest.core.ui.base.BaseViewModel
+import com.composetest.core.ui.di.qualifier.AsyncTaskUtilsQualifier
 import com.composetest.core.ui.interfaces.UiEvent
 import com.composetest.core.ui.interfaces.UiState
-import com.composetest.core.ui.utils.AsyncTaskUtils
-import com.composetest.feature.news.analytic.screens.FullNewsScreenAnalytic
-import com.composetest.feature.news.analytic.screens.NewsListScreenAnalytic
-import com.composetest.feature.news.domain.models.ArticleModel
-import com.composetest.feature.news.domain.usecases.GetTopHeadlinesUseCase
+import com.composetest.core.ui.util.AsyncTaskUtils
+import com.composetest.feature.news.analytic.screen.FullNewsScreenAnalytic
+import com.composetest.feature.news.analytic.screen.NewsListScreenAnalytic
+import com.composetest.feature.news.domain.model.ArticleModel
+import com.composetest.feature.news.domain.usecase.GetTopHeadlinesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,9 +28,9 @@ internal class NewsListViewModel @Inject constructor(
     private val getTopHeadlinesUseCase: GetTopHeadlinesUseCase,
     private val analyticSender: AnalyticSender,
     @AsyncTaskUtilsQualifier(NewsListScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
-) : BaseViewModel(), UiState<NewsListUiState>, UiEvent<NewsListUiEvent>, NewsListCommandReceiver {
+) : BaseViewModel(), UiState<NewsListUiState>, UiEvent<NewsListUiEvent>, NewsListIntentReceiver {
 
-    override val commandReceiver = this
+    override val intentReceiver = this
 
     private val _uiState = MutableStateFlow(NewsListUiState())
     override val uiState = _uiState.asStateFlow()

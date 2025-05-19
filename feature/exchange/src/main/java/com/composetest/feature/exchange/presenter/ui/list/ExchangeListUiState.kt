@@ -1,7 +1,7 @@
 package com.composetest.feature.exchange.presenter.ui.list
 
-import com.composetest.core.designsystem.params.alertdialogs.SimpleDialogParam
-import com.composetest.feature.exchange.presenter.models.ExchangeScreenModel
+import com.composetest.core.designsystem.param.alertdialog.SimpleDialogParam
+import com.composetest.feature.exchange.presenter.model.ExchangeScreenModel
 
 internal data class ExchangeListUiState(
     val exchangeFilter: String = String(),

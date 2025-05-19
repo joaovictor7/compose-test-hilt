@@ -1,5 +1,5 @@
 import appconfig.AppConfig
-import extensions.findVersion
+import extension.findVersion
 import kotlinx.kover.gradle.plugin.dsl.KoverProjectExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project

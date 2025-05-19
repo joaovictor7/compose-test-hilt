@@ -1,9 +1,9 @@
 package com.composetest.feature.weatherforecast.network.di
 
-import com.composetest.core.domain.providers.BuildConfigProvider
-import com.composetest.core.domain.repositories.RemoteConfigRepository
+import com.composetest.core.domain.provider.BuildConfigProvider
+import com.composetest.core.domain.repository.RemoteConfigRepository
 import com.composetest.core.network.HttpClientBuilder
-import com.composetest.core.network.di.qualifiers.ApiQualifier
+import com.composetest.core.network.di.qualifier.ApiQualifier
 import com.composetest.feature.weatherforecast.network.OpenWeatherApi
 import com.composetest.feature.weatherforecast.network.api.Api
 import com.composetest.feature.weatherforecast.network.enums.ApiKeyRemoteConfig

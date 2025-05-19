@@ -1,19 +1,19 @@
 package com.composetest.feature.configuration.presenter.ui.theme
 
 import androidx.lifecycle.viewModelScope
-import com.composetest.common.extensions.orFalse
+import com.composetest.common.extension.orFalse
 import com.composetest.core.analytic.AnalyticSender
-import com.composetest.core.analytic.events.CommonAnalyticEvent
+import com.composetest.core.analytic.event.CommonAnalyticEvent
 import com.composetest.core.domain.enums.Theme
-import com.composetest.core.domain.models.configuration.ThemeConfigurationModel
-import com.composetest.core.ui.bases.BaseViewModel
-import com.composetest.core.ui.di.qualifiers.AsyncTaskUtilsQualifier
+import com.composetest.core.domain.model.configuration.ThemeConfigurationModel
+import com.composetest.core.ui.base.BaseViewModel
+import com.composetest.core.ui.di.qualifier.AsyncTaskUtilsQualifier
 import com.composetest.core.ui.interfaces.UiState
-import com.composetest.core.ui.utils.AsyncTaskUtils
-import com.composetest.feature.configuration.analytic.events.ThemeConfigurationEventAnalytic
-import com.composetest.feature.configuration.analytic.screens.ThemeConfigurationScreenAnalytic
-import com.composetest.feature.configuration.domain.usecases.GetThemeConfigurationUseCase
-import com.composetest.feature.configuration.domain.usecases.UpdateThemeConfigurationUseCase
+import com.composetest.core.ui.util.AsyncTaskUtils
+import com.composetest.feature.configuration.analytic.event.ThemeConfigurationEventAnalytic
+import com.composetest.feature.configuration.analytic.screen.ThemeConfigurationScreenAnalytic
+import com.composetest.feature.configuration.domain.usecase.GetThemeConfigurationUseCase
+import com.composetest.feature.configuration.domain.usecase.UpdateThemeConfigurationUseCase
 import com.composetest.feature.configuration.presenter.enums.ThemeConfiguration
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,9 +28,9 @@ internal class ThemeConfigurationViewModel @Inject constructor(
     private val updateThemeConfigurationUseCase: UpdateThemeConfigurationUseCase,
     private val analyticSender: AnalyticSender,
     @AsyncTaskUtilsQualifier(ThemeConfigurationScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
-) : BaseViewModel(), UiState<ThemeConfigurationUiState>, ThemeConfigurationCommandReceiver {
+) : BaseViewModel(), UiState<ThemeConfigurationUiState>, ThemeConfigurationIntentReceiver {
 
-    override val commandReceiver = this
+    override val intentReceiver = this
 
     private var themeConfiguration: ThemeConfigurationModel? = null
 

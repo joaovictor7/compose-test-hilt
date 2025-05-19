@@ -8,8 +8,8 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.platform.LocalContext
-import com.composetest.core.designsystem.compositions.LocalTheme
-import com.composetest.core.designsystem.extensions.isDarkMode
+import com.composetest.core.designsystem.composition.LocalTheme
+import com.composetest.core.designsystem.extension.isDarkMode
 import com.composetest.core.domain.enums.Theme
 
 @Composable

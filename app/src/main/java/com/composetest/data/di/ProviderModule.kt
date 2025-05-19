@@ -1,7 +1,7 @@
 package com.composetest.data.di
 
-import com.composetest.core.domain.providers.BuildConfigProvider
-import com.composetest.data.providers.BuildConfigProviderImpl
+import com.composetest.core.domain.provider.BuildConfigProvider
+import com.composetest.data.provider.BuildConfigProviderImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

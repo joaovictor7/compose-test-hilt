@@ -3,10 +3,10 @@ package modularization
 import com.android.build.api.dsl.ApplicationBuildType
 import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.internal.dsl.BuildType
-import enums.Signing
+import enum.Signing
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
-import enums.BuildType as BuildTypeEnum
+import enum.BuildType as BuildTypeEnum
 
 internal fun Project.setBuildTypes(isApplication: Boolean) = extensions.configure<BaseExtension> {
     buildTypes {

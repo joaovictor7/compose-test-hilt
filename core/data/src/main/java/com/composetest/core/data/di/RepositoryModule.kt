@@ -1,15 +1,15 @@
 package com.composetest.core.data.di
 
-import com.composetest.core.data.repositories.AnalyticsRepositoryImpl
-import com.composetest.core.data.repositories.DatabaseRepositoryImpl
-import com.composetest.core.data.repositories.RemoteConfigRepositoryImpl
-import com.composetest.core.data.repositories.SessionRepositoryImpl
-import com.composetest.core.data.repositories.SystemBarsThemeRepositoryImpl
-import com.composetest.core.domain.repositories.AnalyticsRepository
-import com.composetest.core.domain.repositories.DatabaseRepository
-import com.composetest.core.domain.repositories.RemoteConfigRepository
-import com.composetest.core.domain.repositories.SessionRepository
-import com.composetest.core.domain.repositories.SystemBarsThemeRepository
+import com.composetest.core.data.repository.AnalyticsRepositoryImpl
+import com.composetest.core.data.repository.DatabaseRepositoryImpl
+import com.composetest.core.data.repository.RemoteConfigRepositoryImpl
+import com.composetest.core.data.repository.SessionRepositoryImpl
+import com.composetest.core.data.repository.SystemBarsThemeRepositoryImpl
+import com.composetest.core.domain.repository.AnalyticsRepository
+import com.composetest.core.domain.repository.DatabaseRepository
+import com.composetest.core.domain.repository.RemoteConfigRepository
+import com.composetest.core.domain.repository.SessionRepository
+import com.composetest.core.domain.repository.SystemBarsThemeRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

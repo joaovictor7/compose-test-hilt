@@ -6,9 +6,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
-import com.composetest.core.router.destinations.root.RootDestination
-import com.composetest.feature.root.ui.root.RootScreen
-import com.composetest.feature.root.ui.root.RootViewModel
+import com.composetest.core.router.destination.root.RootDestination
+import com.composetest.feature.root.presentation.ui.root.RootScreen
+import com.composetest.feature.root.presentation.ui.root.RootViewModel
 
 fun NavGraphBuilder.rootNavGraphs(mainNavController: NavHostController) {
     composable<RootDestination> {

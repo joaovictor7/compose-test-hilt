@@ -1,9 +1,9 @@
 package com.composetest.feature.login.data.mapper
 
-import com.composetest.common.extensions.convertedFromSeconds
-import com.composetest.common.providers.DateTimeProvider
-import com.composetest.core.domain.models.session.AuthenticationModel
-import com.composetest.feature.login.network.responses.AuthenticationResponse
+import com.composetest.common.extension.convertedFromSeconds
+import com.composetest.common.provider.DateTimeProvider
+import com.composetest.core.domain.model.session.AuthenticationModel
+import com.composetest.feature.login.network.response.AuthenticationResponse
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GetTokenResult
 import java.time.LocalDateTime

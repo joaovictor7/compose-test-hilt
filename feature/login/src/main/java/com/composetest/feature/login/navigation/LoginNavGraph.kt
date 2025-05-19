@@ -6,7 +6,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
-import com.composetest.core.router.destinations.login.LoginDestination
+import com.composetest.core.router.destination.login.LoginDestination
 import com.composetest.feature.login.presenter.ui.login.LoginScreen
 import com.composetest.feature.login.presenter.ui.login.LoginViewModel
 

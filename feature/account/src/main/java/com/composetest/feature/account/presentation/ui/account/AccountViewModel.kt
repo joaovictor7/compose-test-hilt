@@ -3,23 +3,23 @@ package com.composetest.feature.account.presentation.ui.account
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.lifecycle.viewModelScope
 import com.composetest.core.analytic.AnalyticSender
-import com.composetest.core.analytic.events.CommonAnalyticEvent
-import com.composetest.core.designsystem.enums.buttons.LoadingButtonState
-import com.composetest.core.domain.models.UserModel
-import com.composetest.core.domain.usecases.user.GetCurrentUserUseCase
-import com.composetest.core.router.results.account.AccountUpdateResult
-import com.composetest.core.router.utils.getDialogErrorDestination
-import com.composetest.core.security.providers.CipherProvider
-import com.composetest.core.ui.bases.BaseViewModel
-import com.composetest.core.ui.di.qualifiers.AsyncTaskUtilsQualifier
+import com.composetest.core.analytic.event.CommonAnalyticEvent
+import com.composetest.core.designsystem.enum.button.LoadingButtonState
+import com.composetest.core.domain.model.UserModel
+import com.composetest.core.domain.usecase.user.GetCurrentUserUseCase
+import com.composetest.core.router.result.account.AccountUpdateResult
+import com.composetest.core.router.util.getDialogErrorDestination
+import com.composetest.core.security.provider.CipherProvider
+import com.composetest.core.ui.base.BaseViewModel
+import com.composetest.core.ui.di.qualifier.AsyncTaskUtilsQualifier
 import com.composetest.core.ui.interfaces.UiEvent
 import com.composetest.core.ui.interfaces.UiState
-import com.composetest.core.ui.providers.StringResourceProvider
-import com.composetest.core.ui.utils.AsyncTaskUtils
+import com.composetest.core.ui.provider.StringResourceProvider
+import com.composetest.core.ui.util.AsyncTaskUtils
 import com.composetest.feature.account.analytic.screens.AccountScreenAnalytic
 import com.composetest.feature.account.domain.UpdateUserUseCase
 import com.composetest.feature.account.presentation.enums.AccountDataRow
-import com.composetest.feature.account.presentation.models.AccountScreenModel
+import com.composetest.feature.account.presentation.model.AccountScreenModel
 import com.composetest.feature.profile.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -37,9 +37,9 @@ internal class AccountViewModel @Inject constructor(
     private val cipherProvider: CipherProvider,
     private val analyticSender: AnalyticSender,
     @AsyncTaskUtilsQualifier(AccountScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
-) : BaseViewModel(), UiState<AccountUiState>, UiEvent<AccountUiEvent>, AccountCommandReceiver {
+) : BaseViewModel(), UiState<AccountUiState>, UiEvent<AccountUiEvent>, AccountIntentReceiver {
 
-    override val commandReceiver = this
+    override val intentReceiver = this
 
     private var originalUser: UserModel? = null
 

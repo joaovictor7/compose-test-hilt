@@ -1,10 +1,10 @@
 package com.composetest.feature.login.data.repository
 
-import com.composetest.common.errors.ApiError
-import com.composetest.core.data.utils.apiErrorHandler
-import com.composetest.core.domain.repositories.AuthenticationRepository
-import com.composetest.core.security.providers.CipherProvider
-import com.composetest.feature.login.data.datasources.AuthenticationDataSource
+import com.composetest.common.error.ApiError
+import com.composetest.core.data.util.apiErrorHandler
+import com.composetest.core.domain.repository.AuthenticationRepository
+import com.composetest.core.security.provider.CipherProvider
+import com.composetest.feature.login.data.datasource.AuthenticationDataSource
 import com.composetest.feature.login.data.mapper.AuthenticationMapper
 import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException

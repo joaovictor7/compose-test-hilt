@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import com.composetest.core.designsystem.extensions.horizontalScreenMargin
+import com.composetest.core.designsystem.extension.horizontalScreenMargin
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.feature.home.R
 

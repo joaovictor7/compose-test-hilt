@@ -1,7 +1,7 @@
 package com.composetest.feature.login.data.mapper
 
-import com.composetest.core.domain.models.UserModel
-import com.composetest.feature.login.network.responses.AuthenticationResponse
+import com.composetest.core.domain.model.UserModel
+import com.composetest.feature.login.network.response.AuthenticationResponse
 import javax.inject.Inject
 
 internal class UserMapper @Inject constructor() {

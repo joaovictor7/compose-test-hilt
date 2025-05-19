@@ -1,12 +1,12 @@
 package com.composetest.feature.weatherforecast.presenter.ui
 
-import com.composetest.core.designsystem.enums.topbar.TopBarAction
-import com.composetest.feature.weatherforecast.domain.models.TodayWeatherForecastModel
+import com.composetest.core.designsystem.enum.topbar.TopBarAction
+import com.composetest.feature.weatherforecast.domain.model.TodayWeatherForecastModel
 import com.composetest.feature.weatherforecast.presenter.enums.WeatherForecastScreenStatus
 import com.composetest.feature.weatherforecast.presenter.enums.WeatherForecastStatus
-import com.composetest.feature.weatherforecast.presenter.models.FutureWeatherForecastScreenModel
-import com.composetest.feature.weatherforecast.presenter.models.TodayWeatherForecastScreenModel
-import com.composetest.feature.weatherforecast.presenter.models.WeatherNowScreenModel
+import com.composetest.feature.weatherforecast.presenter.model.FutureWeatherForecastScreenModel
+import com.composetest.feature.weatherforecast.presenter.model.TodayWeatherForecastScreenModel
+import com.composetest.feature.weatherforecast.presenter.model.WeatherNowScreenModel
 
 internal data class WeatherForecastUiState(
     val screenStatus: WeatherForecastScreenStatus = WeatherForecastScreenStatus.INITIAL,

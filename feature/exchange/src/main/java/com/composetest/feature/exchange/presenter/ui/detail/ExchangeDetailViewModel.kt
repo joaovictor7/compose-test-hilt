@@ -2,14 +2,14 @@ package com.composetest.feature.exchange.presenter.ui.detail
 
 import androidx.lifecycle.viewModelScope
 import com.composetest.core.analytic.AnalyticSender
-import com.composetest.core.analytic.events.CommonAnalyticEvent
-import com.composetest.core.router.destinations.exchange.ExchangeDetailDestination
-import com.composetest.core.ui.bases.BaseViewModel
-import com.composetest.core.ui.di.qualifiers.AsyncTaskUtilsQualifier
+import com.composetest.core.analytic.event.CommonAnalyticEvent
+import com.composetest.core.router.destination.exchange.ExchangeDetailDestination
+import com.composetest.core.ui.base.BaseViewModel
+import com.composetest.core.ui.di.qualifier.AsyncTaskUtilsQualifier
 import com.composetest.core.ui.interfaces.UiState
-import com.composetest.core.ui.utils.AsyncTaskUtils
-import com.composetest.feature.exchange.analytics.screens.ExchangeDetailScreenAnalytic
-import com.composetest.feature.exchange.presenter.mappers.ExchangeMapper
+import com.composetest.core.ui.util.AsyncTaskUtils
+import com.composetest.feature.exchange.analytic.screen.ExchangeDetailScreenAnalytic
+import com.composetest.feature.exchange.presenter.mapper.ExchangeMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

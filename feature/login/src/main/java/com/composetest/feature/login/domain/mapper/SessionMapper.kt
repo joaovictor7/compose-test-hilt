@@ -1,0 +1,15 @@
+package com.composetest.feature.login.domain.mapper
+
+import com.composetest.core.domain.model.session.AuthenticationModel
+import com.composetest.core.domain.model.session.SessionModel
+import javax.inject.Inject
+
+internal class SessionMapper @Inject constructor() {
+
+    fun mapperToModel(authenticationModel: AuthenticationModel, sessionDuration: Long) =
+        SessionModel(
+            token = authenticationModel.sessionToken,
+            startDate = authenticationModel.sessionStartDateTime,
+            endDate = authenticationModel.sessionStartDateTime.plusWeeks(sessionDuration),
+        )
+}

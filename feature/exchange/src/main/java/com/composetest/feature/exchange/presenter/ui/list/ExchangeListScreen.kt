@@ -30,23 +30,23 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.composetest.core.designsystem.components.dialogs.SimpleDialog
-import com.composetest.core.designsystem.components.pulltorefresh.PullToRefresh
-import com.composetest.core.designsystem.components.shimmer.Shimmer
-import com.composetest.core.designsystem.components.textfields.TextField
-import com.composetest.core.designsystem.components.topbar.LeftTopBar
-import com.composetest.core.designsystem.constants.screenMargin
-import com.composetest.core.designsystem.dimensions.Spacing
-import com.composetest.core.designsystem.enums.textfields.TextFieldIcon
-import com.composetest.core.designsystem.extensions.horizontalScreenMargin
+import com.composetest.core.designsystem.component.dialog.SimpleDialog
+import com.composetest.core.designsystem.component.pulltorefresh.PullToRefresh
+import com.composetest.core.designsystem.component.shimmer.Shimmer
+import com.composetest.core.designsystem.component.textfield.TextField
+import com.composetest.core.designsystem.component.topbar.LeftTopBar
+import com.composetest.core.designsystem.dimension.Spacing
+import com.composetest.core.designsystem.dimension.screenMargin
+import com.composetest.core.designsystem.enum.textfield.TextFieldIcon
+import com.composetest.core.designsystem.extension.horizontalScreenMargin
 import com.composetest.core.designsystem.theme.ComposeTestTheme
-import com.composetest.core.designsystem.utils.getSharedShimmerOffset
-import com.composetest.core.router.extensions.navigateTo
-import com.composetest.core.ui.interfaces.Command
-import com.composetest.core.ui.utils.UiEventsObserver
+import com.composetest.core.designsystem.util.getSharedShimmerOffset
+import com.composetest.core.router.extension.navigateTo
+import com.composetest.core.ui.interfaces.Intent
+import com.composetest.core.ui.util.UiEventsObserver
 import com.composetest.feature.exchange.R
-import com.composetest.feature.exchange.presenter.models.ExchangeListRowScreenModel
-import com.composetest.feature.exchange.presenter.models.ExchangeScreenModel
+import com.composetest.feature.exchange.presenter.model.ExchangeListRowScreenModel
+import com.composetest.feature.exchange.presenter.model.ExchangeScreenModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 
@@ -54,7 +54,7 @@ import kotlinx.coroutines.flow.emptyFlow
 internal fun ExchangeListScreen(
     uiState: ExchangeListUiState,
     uiEvent: Flow<ExchangeListUiEvent> = emptyFlow(),
-    onExecuteCommand: (Command<ExchangeListCommandReceiver>) -> Unit = {},
+    onExecuteCommand: (Intent<ExchangeListIntentReceiver>) -> Unit = {},
     navController: NavHostController = rememberNavController(),
 ) {
     val shimmerOffset by getSharedShimmerOffset()
@@ -66,7 +66,7 @@ internal fun ExchangeListScreen(
             ExchangeListFilter(uiState = uiState, onExecuteCommand = onExecuteCommand)
             PullToRefresh(
                 isRefreshing = uiState.isLoading,
-                onRefresh = { onExecuteCommand(ExchangeListCommand.GetAllExchanges) }
+                onRefresh = { onExecuteCommand(ExchangeListIntent.GetAllExchanges) }
             ) {
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
@@ -96,12 +96,12 @@ internal fun ExchangeListScreen(
 
 @Composable
 private fun ExchangeItem(
-    onExecuteCommand: (Command<ExchangeListCommandReceiver>) -> Unit,
+    onExecuteCommand: (Intent<ExchangeListIntentReceiver>) -> Unit,
     exchangeScreenModel: ExchangeScreenModel,
 ) = with(exchangeScreenModel) {
     ElevatedCard(
         modifier = Modifier.fillMaxSize(),
-        onClick = { onExecuteCommand(ExchangeListCommand.NavigateToDetail(exchangeScreenModel.id)) },
+        onClick = { onExecuteCommand(ExchangeListIntent.NavigateToDetail(exchangeScreenModel.id)) },
     ) {
         Column(
             modifier = Modifier.padding(screenMargin),
@@ -139,7 +139,7 @@ private fun ExchangeDataRow(dataRows: List<ExchangeListRowScreenModel>) = dataRo
 @Composable
 private fun ExchangeListFilter(
     uiState: ExchangeListUiState,
-    onExecuteCommand: (Command<ExchangeListCommandReceiver>) -> Unit
+    onExecuteCommand: (Intent<ExchangeListIntentReceiver>) -> Unit
 ) {
     TextField(
         modifier = Modifier.fillMaxWidth(),
@@ -148,7 +148,7 @@ private fun ExchangeListFilter(
         trailingIcon = TextFieldIcon.CLEAR_TEXT,
         leadingIcon = TextFieldIcon.SEARCH
     ) {
-        onExecuteCommand(ExchangeListCommand.ExchangeFilter(it))
+        onExecuteCommand(ExchangeListIntent.ExchangeFilter(it))
     }
 }
 
@@ -165,10 +165,10 @@ private fun ExchangeItemShimmer(shimmerOffset: Float) {
 @Composable
 private fun DialogHandler(
     uiState: ExchangeListUiState,
-    onExecuteCommand: (Command<ExchangeListCommandReceiver>) -> Unit
+    onExecuteCommand: (Intent<ExchangeListIntentReceiver>) -> Unit
 ) = uiState.simpleDialogParam?.let {
     SimpleDialog(it) {
-        onExecuteCommand(ExchangeListCommand.DismissSimpleDialog)
+        onExecuteCommand(ExchangeListIntent.DismissSimpleDialog)
     }
 }
 

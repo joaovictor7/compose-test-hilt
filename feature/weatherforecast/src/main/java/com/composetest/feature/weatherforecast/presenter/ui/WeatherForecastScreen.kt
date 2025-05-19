@@ -35,29 +35,29 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.composetest.core.designsystem.components.asyncimage.AsyncImage
-import com.composetest.core.designsystem.components.buttons.Button
-import com.composetest.core.designsystem.components.buttons.TryAgainButton
-import com.composetest.core.designsystem.components.graphics.SimpleScatterPlotGraphic
-import com.composetest.core.designsystem.components.lifecycle.LifecycleEvent
-import com.composetest.core.designsystem.components.shimmer.Shimmer
-import com.composetest.core.designsystem.components.topbar.LeftTopBar
-import com.composetest.core.designsystem.dimensions.Spacing
-import com.composetest.core.designsystem.extensions.screenMargin
+import com.composetest.core.designsystem.component.asyncimage.AsyncImage
+import com.composetest.core.designsystem.component.button.Button
+import com.composetest.core.designsystem.component.button.TryAgainButton
+import com.composetest.core.designsystem.component.graphic.SimpleScatterPlotGraphic
+import com.composetest.core.designsystem.component.lifecycle.LifecycleEvent
+import com.composetest.core.designsystem.component.shimmer.Shimmer
+import com.composetest.core.designsystem.component.topbar.LeftTopBar
+import com.composetest.core.designsystem.dimension.Spacing
+import com.composetest.core.designsystem.extension.screenMargin
 import com.composetest.core.designsystem.theme.ComposeTestTheme
-import com.composetest.core.designsystem.utils.getSharedShimmerOffset
-import com.composetest.core.router.extensions.navigateTo
+import com.composetest.core.designsystem.util.getSharedShimmerOffset
+import com.composetest.core.router.extension.navigateTo
 import com.composetest.core.ui.enums.Permission
-import com.composetest.core.ui.extensions.navigateToApplicationDetailSettings
-import com.composetest.core.ui.interfaces.Command
-import com.composetest.core.ui.utils.UiEventsObserver
-import com.composetest.core.ui.utils.getMultiplePermissionState
+import com.composetest.core.ui.extension.navigateToApplicationDetailSettings
+import com.composetest.core.ui.interfaces.Intent
+import com.composetest.core.ui.util.UiEventsObserver
+import com.composetest.core.ui.util.getMultiplePermissionState
 import com.composetest.feature.weatherforecast.R
 import com.composetest.feature.weatherforecast.presenter.enums.WeatherForecastScreenStatus
 import com.composetest.feature.weatherforecast.presenter.enums.WeatherForecastStatus
-import com.composetest.feature.weatherforecast.presenter.models.FutureDailyWeatherForecastScreenModel
-import com.composetest.feature.weatherforecast.presenter.models.FutureWeatherForecastScreenModel
-import com.composetest.feature.weatherforecast.presenter.models.WeatherNowScreenModel
+import com.composetest.feature.weatherforecast.presenter.model.FutureDailyWeatherForecastScreenModel
+import com.composetest.feature.weatherforecast.presenter.model.FutureWeatherForecastScreenModel
+import com.composetest.feature.weatherforecast.presenter.model.WeatherNowScreenModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.MultiplePermissionsState
 import kotlinx.coroutines.flow.Flow
@@ -68,7 +68,7 @@ import com.composetest.feature.weatherforecast.R as WeatherForecastResources
 internal fun WeatherForecastScreen(
     uiState: WeatherForecastUiState,
     uiEvent: Flow<WeatherForecastUiEvent> = emptyFlow(),
-    onExecuteCommand: (Command<WeatherForecastCommandReceiver>) -> Unit = {},
+    onExecuteCommand: (Intent<WeatherForecastIntentReceiver>) -> Unit = {},
     navController: NavHostController = rememberNavController(),
 ) {
     val permissionState = getMultiplePermissionState(Permission.localization)
@@ -83,7 +83,7 @@ internal fun WeatherForecastScreen(
         LeftTopBar(
             titleId = WeatherForecastResources.string.weather_forecast_title,
             actionIcons = uiState.refreshButton,
-            onClickAction = { onExecuteCommand(WeatherForecastCommand.GetLocationAndWeatherForecastsData) }
+            onClickAction = { onExecuteCommand(WeatherForecastIntent.GetLocationAndWeatherForecastsData) }
         )
         Column(
             modifier = Modifier.screenMargin(),
@@ -115,7 +115,7 @@ internal fun WeatherForecastScreen(
 @Composable
 private fun FullScreenMessage(
     uiState: WeatherForecastUiState,
-    onExecuteCommand: (Command<WeatherForecastCommandReceiver>) -> Unit,
+    onExecuteCommand: (Intent<WeatherForecastIntentReceiver>) -> Unit,
     permissionState: MultiplePermissionsState,
 ) {
     Box(
@@ -139,7 +139,7 @@ private fun FullScreenMessage(
                         .background(color = MaterialTheme.colorScheme.surface)
                         .fillMaxSize(),
                 ) {
-                    onExecuteCommand(WeatherForecastCommand.GetLocationAndWeatherForecastsData)
+                    onExecuteCommand(WeatherForecastIntent.GetLocationAndWeatherForecastsData)
                 }
             }
         }
@@ -168,7 +168,7 @@ private fun NeedsPermissionButton(permissionState: MultiplePermissionsState) {
 @Composable
 private fun WeatherNow(
     uiState: WeatherForecastUiState,
-    onExecuteCommand: (Command<WeatherForecastCommandReceiver>) -> Unit,
+    onExecuteCommand: (Intent<WeatherForecastIntentReceiver>) -> Unit,
     shimmerOffset: Float,
 ) {
     Row(
@@ -182,7 +182,7 @@ private fun WeatherNow(
                 modifier = Modifier
                     .fillMaxHeight(0.1f)
                     .fillMaxWidth(),
-            ) { onExecuteCommand(WeatherForecastCommand.GetWeatherForecastNowData) }
+            ) { onExecuteCommand(WeatherForecastIntent.GetWeatherForecastNowData) }
             else -> WeatherNowContent(uiState = uiState)
         }
     }
@@ -229,7 +229,7 @@ private fun WeatherNowContent(uiState: WeatherForecastUiState) {
 @Composable
 private fun WeatherForecasts(
     uiState: WeatherForecastUiState,
-    onExecuteCommand: (Command<WeatherForecastCommandReceiver>) -> Unit,
+    onExecuteCommand: (Intent<WeatherForecastIntentReceiver>) -> Unit,
     shimmerOffset: Float,
 ) {
     when (uiState.weatherForecastsStatus) {
@@ -238,7 +238,7 @@ private fun WeatherForecasts(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(200.dp),
-        ) { onExecuteCommand(WeatherForecastCommand.GetWeatherForecastsData) }
+        ) { onExecuteCommand(WeatherForecastIntent.GetWeatherForecastsData) }
         else -> WeatherForecastsContent(uiState = uiState)
     }
 }
@@ -377,11 +377,11 @@ private fun UiEventsHandler(
 
 @Composable
 private fun LifecycleEventHandler(
-    onExecuteCommand: (Command<WeatherForecastCommandReceiver>) -> Unit
+    onExecuteCommand: (Intent<WeatherForecastIntentReceiver>) -> Unit
 ) {
     LifecycleEvent {
         if (it == Lifecycle.Event.ON_RESUME) {
-            onExecuteCommand(WeatherForecastCommand.CheckPermissionsResult)
+            onExecuteCommand(WeatherForecastIntent.CheckPermissionsResult)
         }
     }
 }

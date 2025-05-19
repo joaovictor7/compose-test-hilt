@@ -1,11 +1,11 @@
 package com.composetest.core.ui.di
 
-import com.composetest.core.ui.providers.LocationProvider
-import com.composetest.core.ui.providers.LocationProviderImpl
-import com.composetest.core.ui.providers.PermissionProvider
-import com.composetest.core.ui.providers.PermissionProviderImpl
-import com.composetest.core.ui.providers.StringResourceProvider
-import com.composetest.core.ui.providers.StringResourceProviderImpl
+import com.composetest.core.ui.provider.LocationProvider
+import com.composetest.core.ui.provider.LocationProviderImpl
+import com.composetest.core.ui.provider.PermissionProvider
+import com.composetest.core.ui.provider.PermissionProviderImpl
+import com.composetest.core.ui.provider.StringResourceProvider
+import com.composetest.core.ui.provider.StringResourceProviderImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

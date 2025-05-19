@@ -1,8 +1,8 @@
 package com.composetest.feature.account.domain
 
-import com.composetest.core.domain.models.UserModel
-import com.composetest.core.domain.repositories.AuthenticationRepository
-import com.composetest.core.domain.repositories.UserRepository
+import com.composetest.core.domain.model.UserModel
+import com.composetest.core.domain.repository.AuthenticationRepository
+import com.composetest.core.domain.repository.UserRepository
 import javax.inject.Inject
 
 internal class UpdateUserUseCase @Inject constructor(

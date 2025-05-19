@@ -22,22 +22,22 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import com.composetest.core.designsystem.components.scaffolds.ScreenScaffold
-import com.composetest.core.designsystem.components.switches.ThumbSwitch
-import com.composetest.core.designsystem.components.topbar.LeftTopBar
-import com.composetest.core.designsystem.dimensions.Spacing
-import com.composetest.core.designsystem.enums.switches.SwitchType
-import com.composetest.core.designsystem.extensions.opacity
-import com.composetest.core.designsystem.extensions.screenMargin
+import com.composetest.core.designsystem.component.scaffold.ScreenScaffold
+import com.composetest.core.designsystem.component.switch.ThumbSwitch
+import com.composetest.core.designsystem.component.topbar.LeftTopBar
+import com.composetest.core.designsystem.dimension.Spacing
+import com.composetest.core.designsystem.enum.switch.SwitchType
+import com.composetest.core.designsystem.extension.opacity
+import com.composetest.core.designsystem.extension.screenMargin
 import com.composetest.core.designsystem.theme.ComposeTestTheme
-import com.composetest.core.ui.interfaces.Command
+import com.composetest.core.ui.interfaces.Intent
 import com.composetest.feature.configuration.presenter.enums.ThemeConfiguration
 import com.composetest.feature.configuration.R as ConfigurationResources
 
 @Composable
 internal fun ThemeConfigurationScreen(
     uiState: ThemeConfigurationUiState,
-    onExecuteCommand: (Command<ThemeConfigurationCommandReceiver>) -> Unit = {}
+    onExecuteCommand: (Intent<ThemeConfigurationIntentReceiver>) -> Unit = {}
 ) {
     ScreenScaffold(
         modifier = Modifier.screenMargin(),
@@ -69,7 +69,7 @@ private fun Section(
 @Composable
 private fun Theme(
     uiState: ThemeConfigurationUiState,
-    onExecuteCommand: (Command<ThemeConfigurationCommandReceiver>) -> Unit
+    onExecuteCommand: (Intent<ThemeConfigurationIntentReceiver>) -> Unit
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -85,7 +85,7 @@ private fun Theme(
                     .setSelectedBackgroundColor(selectedTheme = theme == uiState.selectedTheme)
                     .size(100.dp)
                     .clickable {
-                        onExecuteCommand(ThemeConfigurationCommand.ChangeThemeConfiguration(theme))
+                        onExecuteCommand(ThemeConfigurationIntent.ChangeThemeConfiguration(theme))
                     }
             ) {
                 Icon(painter = painterResource(theme.iconId), contentDescription = null)
@@ -102,7 +102,7 @@ private fun Theme(
 @Composable
 private fun DynamicColor(
     uiState: ThemeConfigurationUiState,
-    onExecuteCommand: (Command<ThemeConfigurationCommandReceiver>) -> Unit
+    onExecuteCommand: (Intent<ThemeConfigurationIntentReceiver>) -> Unit
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -116,7 +116,7 @@ private fun DynamicColor(
         ThumbSwitch(
             checked = uiState.dynamicColor,
             type = SwitchType.CHECK,
-            onCheckedChange = { onExecuteCommand(ThemeConfigurationCommand.ChangeDynamicColor(it)) }
+            onCheckedChange = { onExecuteCommand(ThemeConfigurationIntent.ChangeDynamicColor(it)) }
         )
     }
 }

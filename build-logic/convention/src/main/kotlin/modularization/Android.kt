@@ -2,9 +2,9 @@ package modularization
 
 import appconfig.AppConfig
 import com.android.build.api.dsl.CommonExtension
-import extensions.getLibrary
-import extensions.implementation
-import extensions.ksp
+import extension.getLibrary
+import extension.implementation
+import extension.ksp
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
