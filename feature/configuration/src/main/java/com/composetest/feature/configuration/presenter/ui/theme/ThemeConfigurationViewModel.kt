@@ -5,7 +5,7 @@ import com.composetest.common.extension.orFalse
 import com.composetest.core.analytic.AnalyticSender
 import com.composetest.core.analytic.event.CommonAnalyticEvent
 import com.composetest.core.domain.enums.Theme
-import com.composetest.core.domain.model.configuration.ThemeConfigurationModel
+import com.composetest.core.domain.model.ThemeConfigurationModel
 import com.composetest.core.ui.base.BaseViewModel
 import com.composetest.core.ui.di.qualifier.AsyncTaskUtilsQualifier
 import com.composetest.core.ui.interfaces.UiState

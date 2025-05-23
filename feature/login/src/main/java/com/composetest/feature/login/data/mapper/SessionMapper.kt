@@ -1,8 +1,8 @@
-package com.composetest.core.data.mapper
+package com.composetest.feature.login.data.mapper
 
 import com.composetest.core.database.entity.SessionEntity
 import com.composetest.core.domain.model.UserModel
-import com.composetest.core.domain.model.session.SessionModel
+import com.composetest.core.domain.model.SessionModel
 import javax.inject.Inject
 
 internal class SessionMapper @Inject constructor() {

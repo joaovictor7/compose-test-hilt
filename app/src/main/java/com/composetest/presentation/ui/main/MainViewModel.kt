@@ -2,9 +2,9 @@ package com.composetest.presentation.ui.main
 
 import androidx.lifecycle.viewModelScope
 import com.composetest.analytic.screen.MainScreenAnalytic
-import com.composetest.core.domain.usecase.configuration.GetAppThemeUseCase
+import com.composetest.domain.usecase.GetAppThemeUseCase
 import com.composetest.core.domain.usecase.remoteconfig.FetchRemoteConfigUseCase
-import com.composetest.core.domain.usecase.session.CheckNeedsLoginUseCase
+import com.composetest.domain.usecase.CheckNeedsLoginUseCase
 import com.composetest.core.domain.usecase.session.CheckSessionIsValidUseCase
 import com.composetest.core.router.destination.login.LoginDestination
 import com.composetest.core.router.destination.root.RootDestination

@@ -1,4 +1,4 @@
-package com.composetest.core.data.workmanager.workes
+package com.composetest.feature.login.data.workes
 
 import android.content.Context
 import android.content.res.Resources.NotFoundException
@@ -20,7 +20,7 @@ import dagger.assisted.AssistedInject
 import java.time.Duration
 
 @HiltWorker
-class SessionWorker @AssistedInject constructor(
+internal class MonitoringSessionWorker @AssistedInject constructor(
     private val checkSessionIsValidUseCase: CheckSessionIsValidUseCase,
     private val finishSessionUseCase: FinishSessionUseCase,
     private val analyticSender: AnalyticSender,
@@ -41,7 +41,7 @@ class SessionWorker @AssistedInject constructor(
     class Builder(initialDelay: Duration) : WorkManagerRequest.OneTimeWorkManagerRequest {
         override val worker = Worker.SESSION
         override val existingWorkPolicy = ExistingWorkPolicy.REPLACE
-        override val workRequest = OneTimeWorkRequestBuilder<SessionWorker>()
+        override val workRequest = OneTimeWorkRequestBuilder<MonitoringSessionWorker>()
             .addTag(Worker.SESSION.name)
             .setConstraints(Constraints(requiredNetworkType = NetworkType.CONNECTED))
             .setInitialDelay(initialDelay)

@@ -20,4 +20,6 @@ dependencies {
     implementation(projects.core.security)
     implementation(projects.core.analytic)
     implementation(libs.firebase.auth)
+    implementation(libs.androidx.hilt.work)
+    implementation(libs.androidx.work.manager)
 }

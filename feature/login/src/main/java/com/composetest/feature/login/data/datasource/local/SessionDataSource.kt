@@ -1,4 +1,4 @@
-package com.composetest.core.data.datasource.local
+package com.composetest.feature.login.data.datasource.local
 
 import com.composetest.core.database.dao.SessionEntityDao
 import com.composetest.core.database.entity.SessionEntity

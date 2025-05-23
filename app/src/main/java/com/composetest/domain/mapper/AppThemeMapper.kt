@@ -1,8 +1,8 @@
-package com.composetest.core.domain.mapper
+package com.composetest.domain.mapper
 
 import com.composetest.core.domain.enums.Theme
 import com.composetest.core.domain.model.AppThemeModel
-import com.composetest.core.domain.model.configuration.ThemeConfigurationModel
+import com.composetest.core.domain.model.ThemeConfigurationModel
 import javax.inject.Inject
 
 internal class AppThemeMapper @Inject constructor() {

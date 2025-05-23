@@ -1,7 +1,9 @@
 package com.composetest.feature.login.data.di
 
 import com.composetest.core.domain.repository.AuthenticationRepository
+import com.composetest.core.domain.repository.SessionRepository
 import com.composetest.feature.login.data.repository.AuthenticationRepositoryImpl
+import com.composetest.feature.login.data.repository.SessionRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -15,4 +17,9 @@ internal abstract class RepositoryModule {
     abstract fun authenticationRepository(
         authenticationRepository: AuthenticationRepositoryImpl
     ): AuthenticationRepository
+
+    @Binds
+    abstract fun sessionRepository(
+        sessionRepositoryImpl: SessionRepositoryImpl
+    ): SessionRepository
 }

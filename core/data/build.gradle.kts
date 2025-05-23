@@ -13,7 +13,6 @@ dependencies {
     implementation(projects.core.security)
     implementation(projects.common)
     implementation(projects.core.analytic)
-    implementation(libs.androidx.hilt.work)
     implementation(libs.androidx.work.manager)
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.crashlytics)

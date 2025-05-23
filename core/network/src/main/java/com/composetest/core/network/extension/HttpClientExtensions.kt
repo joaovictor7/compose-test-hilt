@@ -1,4 +1,4 @@
-package com.composetest.core.data.extension
+package com.composetest.core.network.extension
 
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body

@@ -1,9 +1,9 @@
-package com.composetest.core.domain.model.session
+package com.composetest.feature.login.domain.model
 
 import com.composetest.core.domain.model.UserModel
 import java.time.LocalDateTime
 
-data class AuthenticationModel(
+internal data class AuthenticationModel(
     val sessionToken: String,
     val sessionStartDateTime: LocalDateTime,
     val user: UserModel

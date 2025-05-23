@@ -1,4 +1,4 @@
-package com.composetest.core.domain.model.session
+package com.composetest.core.domain.model
 
 import java.time.LocalDateTime
 

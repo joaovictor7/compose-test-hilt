@@ -1,4 +1,4 @@
-package com.composetest.core.domain.model.configuration
+package com.composetest.core.domain.model
 
 import com.composetest.core.domain.enums.Theme
 

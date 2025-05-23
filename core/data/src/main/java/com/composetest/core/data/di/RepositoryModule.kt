@@ -3,12 +3,10 @@ package com.composetest.core.data.di
 import com.composetest.core.data.repository.AnalyticsRepositoryImpl
 import com.composetest.core.data.repository.DatabaseRepositoryImpl
 import com.composetest.core.data.repository.RemoteConfigRepositoryImpl
-import com.composetest.core.data.repository.SessionRepositoryImpl
 import com.composetest.core.data.repository.SystemBarsThemeRepositoryImpl
 import com.composetest.core.domain.repository.AnalyticsRepository
 import com.composetest.core.domain.repository.DatabaseRepository
 import com.composetest.core.domain.repository.RemoteConfigRepository
-import com.composetest.core.domain.repository.SessionRepository
 import com.composetest.core.domain.repository.SystemBarsThemeRepository
 import dagger.Binds
 import dagger.Module
@@ -34,11 +32,6 @@ internal abstract class RepositoryModule {
     abstract fun systemBarsThemeRepository(
         systemBarsThemeRepositoryImpl: SystemBarsThemeRepositoryImpl
     ): SystemBarsThemeRepository
-
-    @Binds
-    abstract fun sessionRepository(
-        sessionRepositoryImpl: SessionRepositoryImpl
-    ): SessionRepository
 
     // Remotes
     @Binds

@@ -2,7 +2,7 @@ package com.composetest.feature.configuration.data.mapper
 
 import com.composetest.common.extension.orFalse
 import com.composetest.core.domain.enums.Theme
-import com.composetest.core.domain.model.configuration.ThemeConfigurationModel
+import com.composetest.core.domain.model.ThemeConfigurationModel
 import javax.inject.Inject
 
 internal class ThemeConfigurationMapper @Inject constructor() {

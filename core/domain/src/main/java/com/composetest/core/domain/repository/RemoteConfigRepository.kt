@@ -3,8 +3,8 @@ package com.composetest.core.domain.repository
 import com.composetest.common.remoteconfig.RemoteConfig
 
 interface RemoteConfigRepository {
-    fun getString(key: RemoteConfig): String
-    fun getLong(key: RemoteConfig): Long
-    fun getDouble(key: RemoteConfig): Double
+    fun getString(remoteConfig: RemoteConfig): String
+    fun getLong(remoteConfig: RemoteConfig): Long
+    fun getDouble(remoteConfig: RemoteConfig): Double
     fun fetch()
 }
