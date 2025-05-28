@@ -17,7 +17,7 @@ fun NavGraphBuilder.loginNavGraphs(naController: NavHostController) {
         LoginScreen(
             uiState = uiState,
             uiEvent = viewModel.uiEvent,
-            onExecuteCommand = viewModel::executeCommand,
+            onExecuteIntent = viewModel::executeIntent,
             navController = naController
         )
     }

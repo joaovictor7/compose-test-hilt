@@ -33,6 +33,6 @@ internal class AuthenticationRepositoryImpl @Inject constructor(
     }
 
     override fun updateUserNameAndEmail(name: String, email: String) {
-        TODO("Not yet implemented")
+        // TODO: Not yet implemented
     }
 }

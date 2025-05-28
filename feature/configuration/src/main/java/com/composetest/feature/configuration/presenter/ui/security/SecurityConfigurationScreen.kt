@@ -20,7 +20,7 @@ import com.composetest.feature.configuration.R
 @Composable
 internal fun SecurityConfigurationScreen(
     uiState: SecurityConfigurationUiState,
-    onExecuteCommand: (Intent<SecurityConfigurationIntentReceiver>) -> Unit = {}
+    onExecuteIntent: (Intent<SecurityConfigurationIntentReceiver>) -> Unit = {}
 ) {
     ScreenScaffold(
         modifier = Modifier.screenMargin(),
@@ -31,7 +31,7 @@ internal fun SecurityConfigurationScreen(
             checked = uiState.biometricIsEnabled,
             enable = uiState.biometricIsAvailable,
             switchType = SwitchType.CHECK
-        ) { onExecuteCommand(SecurityConfigurationIntent.ChangeSwitchBiometric(it)) }
+        ) { onExecuteIntent(SecurityConfigurationIntent.ChangeSwitchBiometric(it)) }
     }
 }
 

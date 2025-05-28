@@ -2,9 +2,7 @@ package com.composetest.feature.login.presenter.ui.login
 
 import com.composetest.common.error.ApiError
 import com.composetest.core.analytic.AnalyticSender
-import com.composetest.core.analytic.enums.ScreensAnalytic
 import com.composetest.core.analytic.event.CommonAnalyticEvent
-import com.composetest.core.analytic.event.login.LoginEventAnalytic
 import com.composetest.core.domain.enums.BuildType
 import com.composetest.core.domain.enums.Flavor
 import com.composetest.core.domain.model.buildconfig.BuildConfigFieldsModel
@@ -12,6 +10,7 @@ import com.composetest.core.domain.model.buildconfig.BuildConfigModel
 import com.composetest.core.domain.provider.BuildConfigProvider
 import com.composetest.core.domain.usecase.configuration.SetSystemBarsStyleUseCase
 import com.composetest.core.domain.usecase.remoteconfig.GetBooleanRemoteConfigUseCase
+import com.composetest.core.router.destination.dialog.NetworkErrorDialog
 import com.composetest.core.router.destination.login.LoginDestination
 import com.composetest.core.router.destination.root.RootDestination
 import com.composetest.core.router.enums.NavigationMode
@@ -20,6 +19,9 @@ import com.composetest.core.security.provider.BiometricProvider
 import com.composetest.core.security.provider.CipherProvider
 import com.composetest.core.test.BaseTest
 import com.composetest.core.test.extension.runFlowTest
+import com.composetest.core.ui.util.AsyncTaskUtils
+import com.composetest.feature.login.analytic.events.LoginEventAnalytic
+import com.composetest.feature.login.analytic.screens.LoginScreenAnalytic
 import com.composetest.feature.login.domain.usecase.AuthenticationByBiometricUseCase
 import com.composetest.feature.login.domain.usecase.AuthenticationUseCase
 import com.composetest.feature.login.domain.usecase.BiometricIsEnableUseCase
@@ -68,7 +70,7 @@ internal class LoginViewModelTest : BaseTest() {
         onCancelJob()
         assertEquals(LoginUiState(versionName = "1.0.0 - 0"), states[0])
         coVerifySequence {
-            analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(ScreensAnalytic.LOGIN))
+            analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(LoginScreenAnalytic))
         }
     }
 
@@ -77,8 +79,8 @@ internal class LoginViewModelTest : BaseTest() {
         runFlowTest(viewModel.uiState) { onCancelJob, states ->
             coEvery { authenticationUseCase(any(), any()) } throws ApiError.Unauthorized()
 
-            viewModel.executeCommand(LoginIntent.WriteData("teste@teste.com", "password"))
-            viewModel.executeCommand(LoginIntent.Login(false))
+            viewModel.executeIntent(LoginIntent.WriteData("teste@teste.com", "password"))
+            viewModel.executeIntent(LoginIntent.Login(false))
             onCancelJob()
 
             assertTrue(states[1].loginButtonIsEnabled)
@@ -99,10 +101,10 @@ internal class LoginViewModelTest : BaseTest() {
         viewModel.uiState,
         viewModel.uiEvent
     ) { onCancelJob, firstStates, secondStates ->
-        viewModel.executeCommand(
+        viewModel.executeIntent(
             LoginIntent.WriteData(email = "teste@teste.com", password = "password")
         )
-        viewModel.executeCommand(LoginIntent.Login(false))
+        viewModel.executeIntent(LoginIntent.Login(false))
         onCancelJob()
 
         assertTrue(firstStates[1].loginButtonIsEnabled)
@@ -115,7 +117,8 @@ internal class LoginViewModelTest : BaseTest() {
         assertEquals(
             LoginUiEvent.NavigateTo(
                 NavigationModel(RootDestination, NavigationMode.REMOVE_ALL_SCREENS_STACK)
-            ), secondStates[0]
+            ),
+            secondStates[0]
         )
         coVerifyOrder {
             authenticationUseCase("teste@teste.com", "encryptedData")
@@ -124,19 +127,21 @@ internal class LoginViewModelTest : BaseTest() {
     }
 
     @Test
-    fun `error network`() =
-        runFlowTest(
-            viewModel.uiState,
-            viewModel.uiEvent
-        ) { onCancelJob, firstStates, secondStates ->
-            coEvery { authenticationUseCase(any(), any()) } throws ApiError.Network()
+    fun `error network`() = runFlowTest(
+        viewModel.uiState,
+        viewModel.uiEvent
+    ) { onCancelJob, firstStates, secondStates ->
+        coEvery { authenticationUseCase(any(), any()) } throws ApiError.Network()
 
-            viewModel.executeCommand(LoginIntent.WriteData("teste@teste.com", "password"))
-            viewModel.executeCommand(LoginIntent.Login(false))
-            onCancelJob()
+        viewModel.executeIntent(LoginIntent.WriteData("teste@teste.com", "password"))
+        viewModel.executeIntent(LoginIntent.Login(false))
+        onCancelJob()
 
-            assertEquals(CommonSimpleDialog.NetworkError, firstStates[3].simpleDialogParam)
-        }
+        assertEquals(
+            LoginUiEvent.NavigateTo(NavigationModel(NetworkErrorDialog)),
+            secondStates[0]
+        )
+    }
 
     private fun initViewModel() = LoginViewModel(
         buildConfigProvider = buildConfigProvider,
@@ -149,7 +154,7 @@ internal class LoginViewModelTest : BaseTest() {
         getBooleanRemoteConfigUseCase = getBooleanRemoteConfigUseCase,
         loginDestination = LoginDestination(),
         analyticSender = analyticSender,
-        asyncTaskUtils = mockk(relaxed = true)
+        asyncTaskUtils = AsyncTaskUtils(analyticSender, LoginScreenAnalytic)
     )
 
     private companion object {

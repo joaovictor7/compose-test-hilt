@@ -18,7 +18,7 @@ fun NavGraphBuilder.configurationNavGraphs() {
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
         ThemeConfigurationScreen(
             uiState = uiState,
-            onExecuteCommand = viewModel::executeCommand,
+            onExecuteIntent = viewModel::executeIntent,
         )
     }
     composable<SecurityConfigurationDestination> {
@@ -26,7 +26,7 @@ fun NavGraphBuilder.configurationNavGraphs() {
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
         SecurityConfigurationScreen(
             uiState = uiState,
-            onExecuteCommand = viewModel::executeCommand,
+            onExecuteIntent = viewModel::executeIntent,
         )
     }
 }

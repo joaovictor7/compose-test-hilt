@@ -3,7 +3,7 @@ package com.composetest.core.ui.interfaces
 interface IntentReceiver<IntentReceiver> {
     val intentReceiver: IntentReceiver
 
-    fun executeCommand(intent: Intent<IntentReceiver>) {
+    fun executeIntent(intent: Intent<IntentReceiver>) {
         intent.execute(intentReceiver)
     }
 }

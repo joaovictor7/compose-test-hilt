@@ -20,7 +20,7 @@ fun NavGraphBuilder.exchangeNavGraphs(navController: NavHostController) {
         ExchangeListScreen(
             uiState = uiState,
             uiEvent = viewModel.uiEvent,
-            onExecuteCommand = viewModel::executeCommand,
+            onExecuteIntent = viewModel::executeIntent,
             navController = navController
         )
     }

@@ -17,7 +17,7 @@ fun NavGraphBuilder.rootNavGraphs(mainNavController: NavHostController) {
         RootScreen(
             uiState = uiState,
             uiEvent = viewModel.uiEvent,
-            onExecuteCommand = viewModel::executeCommand,
+            onExecuteIntent = viewModel::executeIntent,
             mainNavController = mainNavController
         )
     }

@@ -17,7 +17,7 @@ fun NavGraphBuilder.accountNavGraphs(navController: NavHostController) {
         AccountScreen(
             uiState = uiState,
             uiEvent = viewModel.uiEvent,
-            onExecuteCommand = viewModel::executeCommand,
+            onExecuteIntent = viewModel::executeIntent,
             navController = navController
         )
     }

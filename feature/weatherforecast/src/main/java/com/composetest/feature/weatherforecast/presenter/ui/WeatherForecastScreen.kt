@@ -68,7 +68,7 @@ import com.composetest.feature.weatherforecast.R as WeatherForecastResources
 internal fun WeatherForecastScreen(
     uiState: WeatherForecastUiState,
     uiEvent: Flow<WeatherForecastUiEvent> = emptyFlow(),
-    onExecuteCommand: (Intent<WeatherForecastIntentReceiver>) -> Unit = {},
+    onExecuteIntent: (Intent<WeatherForecastIntentReceiver>) -> Unit = {},
     navController: NavHostController = rememberNavController(),
 ) {
     val permissionState = getMultiplePermissionState(Permission.localization)
@@ -78,12 +78,12 @@ internal fun WeatherForecastScreen(
         navController = navController,
         permissionState = permissionState
     )
-    LifecycleEventHandler(onExecuteCommand = onExecuteCommand)
+    LifecycleEventHandler(onExecuteIntent = onExecuteIntent)
     Column(modifier = Modifier.fillMaxSize()) {
         LeftTopBar(
             titleId = WeatherForecastResources.string.weather_forecast_title,
             actionIcons = uiState.refreshButton,
-            onClickAction = { onExecuteCommand(WeatherForecastIntent.GetLocationAndWeatherForecastsData) }
+            onClickAction = { onExecuteIntent(WeatherForecastIntent.GetLocationAndWeatherForecastsData) }
         )
         Column(
             modifier = Modifier.screenMargin(),
@@ -92,19 +92,19 @@ internal fun WeatherForecastScreen(
             if (uiState.showFullScreenMsg) {
                 FullScreenMessage(
                     uiState = uiState,
-                    onExecuteCommand = onExecuteCommand,
+                    onExecuteIntent = onExecuteIntent,
                     permissionState = permissionState
                 )
                 return
             }
             WeatherNow(
                 uiState = uiState,
-                onExecuteCommand = onExecuteCommand,
+                onExecuteIntent = onExecuteIntent,
                 shimmerOffset = shimmerOffset
             )
             WeatherForecasts(
                 uiState = uiState,
-                onExecuteCommand = onExecuteCommand,
+                onExecuteIntent = onExecuteIntent,
                 shimmerOffset = shimmerOffset
             )
         }
@@ -115,7 +115,7 @@ internal fun WeatherForecastScreen(
 @Composable
 private fun FullScreenMessage(
     uiState: WeatherForecastUiState,
-    onExecuteCommand: (Intent<WeatherForecastIntentReceiver>) -> Unit,
+    onExecuteIntent: (Intent<WeatherForecastIntentReceiver>) -> Unit,
     permissionState: MultiplePermissionsState,
 ) {
     Box(
@@ -139,7 +139,7 @@ private fun FullScreenMessage(
                         .background(color = MaterialTheme.colorScheme.surface)
                         .fillMaxSize(),
                 ) {
-                    onExecuteCommand(WeatherForecastIntent.GetLocationAndWeatherForecastsData)
+                    onExecuteIntent(WeatherForecastIntent.GetLocationAndWeatherForecastsData)
                 }
             }
         }
@@ -168,7 +168,7 @@ private fun NeedsPermissionButton(permissionState: MultiplePermissionsState) {
 @Composable
 private fun WeatherNow(
     uiState: WeatherForecastUiState,
-    onExecuteCommand: (Intent<WeatherForecastIntentReceiver>) -> Unit,
+    onExecuteIntent: (Intent<WeatherForecastIntentReceiver>) -> Unit,
     shimmerOffset: Float,
 ) {
     Row(
@@ -182,7 +182,7 @@ private fun WeatherNow(
                 modifier = Modifier
                     .fillMaxHeight(0.1f)
                     .fillMaxWidth(),
-            ) { onExecuteCommand(WeatherForecastIntent.GetWeatherForecastNowData) }
+            ) { onExecuteIntent(WeatherForecastIntent.GetWeatherForecastNowData) }
             else -> WeatherNowContent(uiState = uiState)
         }
     }
@@ -229,7 +229,7 @@ private fun WeatherNowContent(uiState: WeatherForecastUiState) {
 @Composable
 private fun WeatherForecasts(
     uiState: WeatherForecastUiState,
-    onExecuteCommand: (Intent<WeatherForecastIntentReceiver>) -> Unit,
+    onExecuteIntent: (Intent<WeatherForecastIntentReceiver>) -> Unit,
     shimmerOffset: Float,
 ) {
     when (uiState.weatherForecastsStatus) {
@@ -238,7 +238,7 @@ private fun WeatherForecasts(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(200.dp),
-        ) { onExecuteCommand(WeatherForecastIntent.GetWeatherForecastsData) }
+        ) { onExecuteIntent(WeatherForecastIntent.GetWeatherForecastsData) }
         else -> WeatherForecastsContent(uiState = uiState)
     }
 }
@@ -377,11 +377,11 @@ private fun UiEventsHandler(
 
 @Composable
 private fun LifecycleEventHandler(
-    onExecuteCommand: (Intent<WeatherForecastIntentReceiver>) -> Unit
+    onExecuteIntent: (Intent<WeatherForecastIntentReceiver>) -> Unit
 ) {
     LifecycleEvent {
         if (it == Lifecycle.Event.ON_RESUME) {
-            onExecuteCommand(WeatherForecastIntent.CheckPermissionsResult)
+            onExecuteIntent(WeatherForecastIntent.CheckPermissionsResult)
         }
     }
 }

@@ -54,19 +54,19 @@ import kotlinx.coroutines.flow.emptyFlow
 internal fun ExchangeListScreen(
     uiState: ExchangeListUiState,
     uiEvent: Flow<ExchangeListUiEvent> = emptyFlow(),
-    onExecuteCommand: (Intent<ExchangeListIntentReceiver>) -> Unit = {},
+    onExecuteIntent: (Intent<ExchangeListIntentReceiver>) -> Unit = {},
     navController: NavHostController = rememberNavController(),
 ) {
     val shimmerOffset by getSharedShimmerOffset()
     UiEventsHandler(uiEvent = uiEvent, navController = navController)
-    DialogHandler(uiState = uiState, onExecuteCommand = onExecuteCommand)
+    DialogHandler(uiState = uiState, onExecuteIntent = onExecuteIntent)
     Column(modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars)) {
         LeftTopBar(R.string.exchange_title)
         Column(modifier = Modifier.horizontalScreenMargin()) {
-            ExchangeListFilter(uiState = uiState, onExecuteCommand = onExecuteCommand)
+            ExchangeListFilter(uiState = uiState, onExecuteIntent = onExecuteIntent)
             PullToRefresh(
                 isRefreshing = uiState.isLoading,
-                onRefresh = { onExecuteCommand(ExchangeListIntent.GetAllExchanges) }
+                onRefresh = { onExecuteIntent(ExchangeListIntent.GetAllExchanges) }
             ) {
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
@@ -80,7 +80,7 @@ internal fun ExchangeListScreen(
                     } else {
                         items(uiState.exchangeScreenList) {
                             ExchangeItem(
-                                onExecuteCommand = onExecuteCommand,
+                                onExecuteIntent = onExecuteIntent,
                                 exchangeScreenModel = it
                             )
                         }
@@ -96,12 +96,12 @@ internal fun ExchangeListScreen(
 
 @Composable
 private fun ExchangeItem(
-    onExecuteCommand: (Intent<ExchangeListIntentReceiver>) -> Unit,
+    onExecuteIntent: (Intent<ExchangeListIntentReceiver>) -> Unit,
     exchangeScreenModel: ExchangeScreenModel,
 ) = with(exchangeScreenModel) {
     ElevatedCard(
         modifier = Modifier.fillMaxSize(),
-        onClick = { onExecuteCommand(ExchangeListIntent.NavigateToDetail(exchangeScreenModel.id)) },
+        onClick = { onExecuteIntent(ExchangeListIntent.NavigateToDetail(exchangeScreenModel.id)) },
     ) {
         Column(
             modifier = Modifier.padding(screenMargin),
@@ -139,7 +139,7 @@ private fun ExchangeDataRow(dataRows: List<ExchangeListRowScreenModel>) = dataRo
 @Composable
 private fun ExchangeListFilter(
     uiState: ExchangeListUiState,
-    onExecuteCommand: (Intent<ExchangeListIntentReceiver>) -> Unit
+    onExecuteIntent: (Intent<ExchangeListIntentReceiver>) -> Unit
 ) {
     TextField(
         modifier = Modifier.fillMaxWidth(),
@@ -148,7 +148,7 @@ private fun ExchangeListFilter(
         trailingIcon = TextFieldIcon.CLEAR_TEXT,
         leadingIcon = TextFieldIcon.SEARCH
     ) {
-        onExecuteCommand(ExchangeListIntent.ExchangeFilter(it))
+        onExecuteIntent(ExchangeListIntent.ExchangeFilter(it))
     }
 }
 
@@ -165,10 +165,10 @@ private fun ExchangeItemShimmer(shimmerOffset: Float) {
 @Composable
 private fun DialogHandler(
     uiState: ExchangeListUiState,
-    onExecuteCommand: (Intent<ExchangeListIntentReceiver>) -> Unit
+    onExecuteIntent: (Intent<ExchangeListIntentReceiver>) -> Unit
 ) = uiState.simpleDialogParam?.let {
     SimpleDialog(it) {
-        onExecuteCommand(ExchangeListIntent.DismissSimpleDialog)
+        onExecuteIntent(ExchangeListIntent.DismissSimpleDialog)
     }
 }
 

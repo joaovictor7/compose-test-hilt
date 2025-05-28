@@ -23,17 +23,17 @@ import kotlinx.coroutines.flow.emptyFlow
 internal fun MainScreen(
     uiState: MainUiState,
     uiEvent: Flow<MainUiEvent> = emptyFlow(),
-    onExecuteCommand: (Intent<MainIntentReceiver>) -> Unit = {}
+    onExecuteIntent: (Intent<MainIntentReceiver>) -> Unit = {}
 ) {
     if (uiState.firstDestination == null) return
     ComposeTestTheme(
         dynamicColor = uiState.appTheme.dynamicColor,
         theme = uiState.appTheme.theme
     ) {
-        DialogHandler(uiState = uiState, onExecuteCommand = onExecuteCommand)
+        DialogHandler(uiState = uiState, onExecuteIntent = onExecuteIntent)
         Navigation(
             uiEvent = uiEvent,
-            onExecuteCommand = onExecuteCommand,
+            onExecuteIntent = onExecuteIntent,
             firstScreenDestination = uiState.firstDestination
         )
     }
@@ -42,7 +42,7 @@ internal fun MainScreen(
 @Composable
 private fun Navigation(
     uiEvent: Flow<MainUiEvent>,
-    onExecuteCommand: (Intent<MainIntentReceiver>) -> Unit,
+    onExecuteIntent: (Intent<MainIntentReceiver>) -> Unit,
     firstScreenDestination: Destination
 ) {
     val navController = rememberNavController()
@@ -52,17 +52,17 @@ private fun Navigation(
         listOf(screenNavGraphs, dialogNavGraphs).flatten().forEach { it() }
     }
     UiEventsHandler(uiEvent = uiEvent, navController = navController)
-    LifecycleHandler(onExecuteCommand = onExecuteCommand, navController = navController)
+    LifecycleHandler(onExecuteIntent = onExecuteIntent, navController = navController)
 }
 
 @Composable
 private fun LifecycleHandler(
-    onExecuteCommand: (Intent<MainIntentReceiver>) -> Unit,
+    onExecuteIntent: (Intent<MainIntentReceiver>) -> Unit,
     navController: NavHostController
 ) {
     LifecycleEvent {
         if (it == Lifecycle.Event.ON_RESUME) {
-            onExecuteCommand(MainIntent.VerifySession(navController.currentRoute))
+            onExecuteIntent(MainIntent.VerifySession(navController.currentRoute))
         }
     }
 }
@@ -70,10 +70,10 @@ private fun LifecycleHandler(
 @Composable
 private fun DialogHandler(
     uiState: MainUiState,
-    onExecuteCommand: (Intent<MainIntentReceiver>) -> Unit
+    onExecuteIntent: (Intent<MainIntentReceiver>) -> Unit
 ) = uiState.simpleDialogParam?.let {
     SimpleDialog(param = it) {
-        onExecuteCommand(MainIntent.DismissAlertDialog)
+        onExecuteIntent(MainIntent.DismissAlertDialog)
     }
 }
 

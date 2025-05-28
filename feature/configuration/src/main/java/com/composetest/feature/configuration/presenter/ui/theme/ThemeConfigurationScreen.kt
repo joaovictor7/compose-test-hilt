@@ -37,17 +37,17 @@ import com.composetest.feature.configuration.R as ConfigurationResources
 @Composable
 internal fun ThemeConfigurationScreen(
     uiState: ThemeConfigurationUiState,
-    onExecuteCommand: (Intent<ThemeConfigurationIntentReceiver>) -> Unit = {}
+    onExecuteIntent: (Intent<ThemeConfigurationIntentReceiver>) -> Unit = {}
 ) {
     ScreenScaffold(
         modifier = Modifier.screenMargin(),
         topBar = { LeftTopBar(titleId = ConfigurationResources.string.configuration_theme_text) }
     ) {
         Section(titleId = ConfigurationResources.string.configuration_theme_mode_title) {
-            Theme(uiState = uiState, onExecuteCommand = onExecuteCommand)
+            Theme(uiState = uiState, onExecuteIntent = onExecuteIntent)
         }
         Section(titleId = ConfigurationResources.string.configuration_theme_colors_title) {
-            DynamicColor(uiState = uiState, onExecuteCommand = onExecuteCommand)
+            DynamicColor(uiState = uiState, onExecuteIntent = onExecuteIntent)
         }
     }
 }
@@ -69,7 +69,7 @@ private fun Section(
 @Composable
 private fun Theme(
     uiState: ThemeConfigurationUiState,
-    onExecuteCommand: (Intent<ThemeConfigurationIntentReceiver>) -> Unit
+    onExecuteIntent: (Intent<ThemeConfigurationIntentReceiver>) -> Unit
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -85,7 +85,7 @@ private fun Theme(
                     .setSelectedBackgroundColor(selectedTheme = theme == uiState.selectedTheme)
                     .size(100.dp)
                     .clickable {
-                        onExecuteCommand(ThemeConfigurationIntent.ChangeThemeConfiguration(theme))
+                        onExecuteIntent(ThemeConfigurationIntent.ChangeThemeConfiguration(theme))
                     }
             ) {
                 Icon(painter = painterResource(theme.iconId), contentDescription = null)
@@ -102,7 +102,7 @@ private fun Theme(
 @Composable
 private fun DynamicColor(
     uiState: ThemeConfigurationUiState,
-    onExecuteCommand: (Intent<ThemeConfigurationIntentReceiver>) -> Unit
+    onExecuteIntent: (Intent<ThemeConfigurationIntentReceiver>) -> Unit
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -116,7 +116,7 @@ private fun DynamicColor(
         ThumbSwitch(
             checked = uiState.dynamicColor,
             type = SwitchType.CHECK,
-            onCheckedChange = { onExecuteCommand(ThemeConfigurationIntent.ChangeDynamicColor(it)) }
+            onCheckedChange = { onExecuteIntent(ThemeConfigurationIntent.ChangeDynamicColor(it)) }
         )
     }
 }

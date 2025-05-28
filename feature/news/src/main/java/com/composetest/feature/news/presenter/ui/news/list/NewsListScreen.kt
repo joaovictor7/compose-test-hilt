@@ -50,14 +50,14 @@ import java.time.LocalDateTime
 internal fun NewsListScreen(
     uiState: NewsListUiState,
     uiEvent: Flow<NewsListUiEvent> = emptyFlow(),
-    onExecuteCommand: (Intent<NewsListIntentReceiver>) -> Unit = {},
+    onExecuteIntent: (Intent<NewsListIntentReceiver>) -> Unit = {},
     navController: NavHostController = rememberNavController(),
 ) {
     val shimmerOffset by getSharedShimmerOffset()
     UiEventsHandler(uiEvent = uiEvent, navController = navController)
     PullToRefresh(
         isRefreshing = uiState.isLoading,
-        onRefresh = { onExecuteCommand(NewsListIntent.Refresh) }
+        onRefresh = { onExecuteIntent(NewsListIntent.Refresh) }
     ) {
         LazyColumn(
             modifier = Modifier
@@ -72,7 +72,7 @@ internal fun NewsListScreen(
                 }
             } else {
                 items(uiState.articles) {
-                    NewsCard(articleModel = it, onExecuteCommand = onExecuteCommand)
+                    NewsCard(articleModel = it, onExecuteIntent = onExecuteIntent)
                 }
                 item {
                     Spacer(Modifier.windowInsetsPadding(WindowInsets.navigationBars))
@@ -80,7 +80,7 @@ internal fun NewsListScreen(
             }
         }
         if (uiState.showRetryButton) {
-            RetryButton(onExecuteCommand = onExecuteCommand)
+            RetryButton(onExecuteIntent = onExecuteIntent)
         }
     }
 }
@@ -88,9 +88,9 @@ internal fun NewsListScreen(
 @Composable
 private fun NewsCard(
     articleModel: ArticleModel,
-    onExecuteCommand: (Intent<NewsListIntentReceiver>) -> Unit
+    onExecuteIntent: (Intent<NewsListIntentReceiver>) -> Unit
 ) {
-    ElevatedCard(onClick = { onExecuteCommand(NewsListIntent.NavigateToFullNews(articleModel)) }) {
+    ElevatedCard(onClick = { onExecuteIntent(NewsListIntent.NavigateToFullNews(articleModel)) }) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
@@ -122,13 +122,13 @@ private fun NewsCard(
 }
 
 @Composable
-private fun RetryButton(onExecuteCommand: (Intent<NewsListIntentReceiver>) -> Unit) {
+private fun RetryButton(onExecuteIntent: (Intent<NewsListIntentReceiver>) -> Unit) {
     Box(modifier = Modifier.fillMaxSize()) {
         TryAgainButton(
             modifier = Modifier
                 .background(color = MaterialTheme.colorScheme.surface)
                 .fillMaxSize()
-        ) { onExecuteCommand(NewsListIntent.Refresh) }
+        ) { onExecuteIntent(NewsListIntent.Refresh) }
     }
 }
 

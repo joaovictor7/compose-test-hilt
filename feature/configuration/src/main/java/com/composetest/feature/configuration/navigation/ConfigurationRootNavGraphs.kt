@@ -18,7 +18,7 @@ fun NavGraphBuilder.rootConfigurationNavGraphs(mainNavController: NavHostControl
             uiState = uiState,
             uiEvent = viewModel.uiEvent,
             mainNavController = mainNavController,
-            onExecuteCommand = viewModel::executeCommand,
+            onExecuteIntent = viewModel::executeIntent,
         )
     }
 }

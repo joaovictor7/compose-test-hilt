@@ -17,7 +17,7 @@ fun NavGraphBuilder.weatherForecastNavGraphs(navController: NavHostController) {
         WeatherForecastScreen(
             uiState = uiState,
             uiEvent = viewModel.uiEvent,
-            onExecuteCommand = viewModel::executeCommand,
+            onExecuteIntent = viewModel::executeIntent,
             navController = navController,
         )
     }

@@ -54,13 +54,13 @@ private const val DISPLACEMENT = 15f
 internal fun LoginScreen(
     uiState: LoginUiState,
     uiEvent: Flow<LoginUiEvent> = emptyFlow(),
-    onExecuteCommand: (Intent<LoginIntentReceiver>) -> Unit = {},
+    onExecuteIntent: (Intent<LoginIntentReceiver>) -> Unit = {},
     navController: NavHostController = rememberNavController()
 ) {
-    DialogHandler(uiState = uiState, onExecuteCommand = onExecuteCommand)
+    DialogHandler(uiState = uiState, onExecuteIntent = onExecuteIntent)
     LaunchedEffectHandler(
         uiEvent = uiEvent,
-        onExecuteCommand = onExecuteCommand,
+        onExecuteIntent = onExecuteIntent,
         navController = navController
     )
     Box(
@@ -70,7 +70,7 @@ internal fun LoginScreen(
             .fillMaxSize()
     ) {
         ElevatedCard(modifier = Modifier.align(Alignment.Center)) {
-            LoginForm(uiState = uiState, onExecuteCommand = onExecuteCommand)
+            LoginForm(uiState = uiState, onExecuteIntent = onExecuteIntent)
         }
         VersionName(uiState = uiState)
     }
@@ -79,7 +79,7 @@ internal fun LoginScreen(
 @Composable
 private fun LoginForm(
     uiState: LoginUiState,
-    onExecuteCommand: (Intent<LoginIntentReceiver>) -> Unit
+    onExecuteIntent: (Intent<LoginIntentReceiver>) -> Unit
 ) {
     Column(
         modifier = Modifier.padding(screenMargin),
@@ -101,15 +101,15 @@ private fun LoginForm(
                 trailingIcon = uiState.emailTrailingIcon,
                 modifier = Modifier.fillMaxWidth(),
                 onFocusChanged = {
-                    onExecuteCommand(LoginIntent.CheckShowInvalidEmailMsg(it.hasFocus))
+                    onExecuteIntent(LoginIntent.CheckShowInvalidEmailMsg(it.hasFocus))
                 }
-            ) { email -> onExecuteCommand(LoginIntent.WriteData(email = email)) }
+            ) { email -> onExecuteIntent(LoginIntent.WriteData(email = email)) }
             OutlinedTextField(
                 textValue = uiState.loginFormModel.password,
                 labelText = stringResource(R.string.feature_login_password),
                 keyboardInput = KeyboardType.Password,
                 modifier = Modifier.fillMaxWidth()
-            ) { password -> onExecuteCommand(LoginIntent.WriteData(password = password)) }
+            ) { password -> onExecuteIntent(LoginIntent.WriteData(password = password)) }
             if (uiState.invalidCredentials) {
                 Text(
                     text = stringResource(R.string.feature_login_invalid_credentials),
@@ -118,7 +118,7 @@ private fun LoginForm(
                 )
             }
             if (!uiState.isLoading) {
-                ButtonsArea(uiState = uiState, onExecuteCommand = onExecuteCommand)
+                ButtonsArea(uiState = uiState, onExecuteIntent = onExecuteIntent)
             } else {
                 CircularProgressIndicator(
                     modifier = Modifier.align(alignment = Alignment.CenterHorizontally)
@@ -131,7 +131,7 @@ private fun LoginForm(
 @Composable
 private fun ButtonsArea(
     uiState: LoginUiState,
-    onExecuteCommand: (Intent<LoginIntentReceiver>) -> Unit
+    onExecuteIntent: (Intent<LoginIntentReceiver>) -> Unit
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -141,21 +141,21 @@ private fun ButtonsArea(
             text = stringResource(R.string.feature_login_enter),
             modifier = Modifier.fillMaxWidth(),
             enabled = uiState.loginButtonIsEnabled
-        ) { onExecuteCommand(LoginIntent.Login(false)) }
-        BiometricButton(uiState = uiState, onExecuteCommand = onExecuteCommand)
+        ) { onExecuteIntent(LoginIntent.Login(false)) }
+        BiometricButton(uiState = uiState, onExecuteIntent = onExecuteIntent)
     }
 }
 
 @Composable
 private fun BiometricButton(
     uiState: LoginUiState,
-    onExecuteCommand: (Intent<LoginIntentReceiver>) -> Unit
+    onExecuteIntent: (Intent<LoginIntentReceiver>) -> Unit
 ) = uiState.biometricModel?.let { biometric ->
     VibratingIcon(
         modifier = Modifier
             .clip(MaterialTheme.shapes.large)
             .setBiometricButtonClick(biometric.isAvailable) {
-                onExecuteCommand(LoginIntent.ShowBiometricPrompt)
+                onExecuteIntent(LoginIntent.ShowBiometricPrompt)
             }
             .padding(Spacing.four),
         iconId = DesignSystemResources.drawable.ic_fingerprint_extra_large,
@@ -168,7 +168,7 @@ private fun BiometricButton(
         duration = DURATION,
         displacement = DISPLACEMENT
     ) {
-        onExecuteCommand(LoginIntent.BiometricErrorAnimationFinished)
+        onExecuteIntent(LoginIntent.BiometricErrorAnimationFinished)
     }
     biometric.messageId?.let {
         Text(
@@ -205,7 +205,7 @@ private fun Modifier.setBiometricButtonClick(isAvailable: Boolean, onClick: () -
 @Composable
 private fun LaunchedEffectHandler(
     uiEvent: Flow<LoginUiEvent>,
-    onExecuteCommand: (Intent<LoginIntentReceiver>) -> Unit,
+    onExecuteIntent: (Intent<LoginIntentReceiver>) -> Unit,
     navController: NavHostController
 ) {
     val context = LocalContext.current
@@ -217,9 +217,9 @@ private fun LaunchedEffectHandler(
                     context = context,
                     titleId = R.string.feature_login_biometric_title,
                     subtitleId = R.string.feature_login_biometric_subtitle,
-                    onSuccess = { onExecuteCommand(LoginIntent.Login(true)) },
+                    onSuccess = { onExecuteIntent(LoginIntent.Login(true)) },
                     onError = { error ->
-                        onExecuteCommand(LoginIntent.BiometricErrorHandler(error))
+                        onExecuteIntent(LoginIntent.BiometricErrorHandler(error))
                     }
                 )
                 is LoginUiEvent.NavigateTo -> navController.navigateTo(it.navigationModel)
@@ -227,11 +227,11 @@ private fun LaunchedEffectHandler(
         }
     }
     LaunchedEffect(Unit) {
-        onExecuteCommand(LoginIntent.SetStatusBarsTheme(true, currentAppTheme))
+        onExecuteIntent(LoginIntent.SetStatusBarsTheme(true, currentAppTheme))
     }
     DisposableEffect(Unit) {
         onDispose {
-            onExecuteCommand(LoginIntent.SetStatusBarsTheme(false, currentAppTheme))
+            onExecuteIntent(LoginIntent.SetStatusBarsTheme(false, currentAppTheme))
         }
     }
 }
@@ -239,10 +239,10 @@ private fun LaunchedEffectHandler(
 @Composable
 private fun DialogHandler(
     uiState: LoginUiState,
-    onExecuteCommand: (Intent<LoginIntentReceiver>) -> Unit
+    onExecuteIntent: (Intent<LoginIntentReceiver>) -> Unit
 ) = uiState.simpleDialogParam?.let {
     SimpleDialog(param = it) {
-        onExecuteCommand(LoginIntent.DismissSimpleDialog)
+        onExecuteIntent(LoginIntent.DismissSimpleDialog)
     }
 }
 

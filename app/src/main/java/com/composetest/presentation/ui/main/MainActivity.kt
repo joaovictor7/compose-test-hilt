@@ -27,14 +27,14 @@ class MainActivity : AppCompatActivity() {
             MainScreen(
                 uiState = uiState,
                 uiEvent = viewModel.uiEvent,
-                onExecuteCommand = viewModel::executeCommand
+                onExecuteIntent = viewModel::executeIntent
             )
         }
     }
 
     override fun onResume() {
         super.onResume()
-        viewModel.executeCommand(MainIntent.FetchRemoteConfig)
+        viewModel.executeIntent(MainIntent.FetchRemoteConfig)
     }
 
     private fun uiStateObserver() = lifecycleScope.launch {

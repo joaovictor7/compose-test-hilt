@@ -34,11 +34,11 @@ import kotlinx.coroutines.flow.emptyFlow
 internal fun AccountScreen(
     uiState: AccountUiState,
     uiEvent: Flow<AccountUiEvent> = emptyFlow(),
-    onExecuteCommand: (Intent<AccountIntentReceiver>) -> Unit = {},
+    onExecuteIntent: (Intent<AccountIntentReceiver>) -> Unit = {},
     navController: NavHostController = rememberNavController(),
 ) {
     UiEventHandler(uiEvent = uiEvent, navController = navController)
-    BackHandler { onExecuteCommand(AccountIntent.BackHandler) }
+    BackHandler { onExecuteIntent(AccountIntent.BackHandler) }
     ScreenScaffold(
         modifier = Modifier
             .horizontalScreenMargin()
@@ -58,7 +58,7 @@ internal fun AccountScreen(
                         placeholderText = data.placeholder,
                         keyboardInput = data.keyboardType,
                     ) {
-                        onExecuteCommand(AccountIntent.UpdateFormData(data.id, it))
+                        onExecuteIntent(AccountIntent.UpdateFormData(data.id, it))
                     }
                 }
                 LoadingButton(
@@ -66,7 +66,7 @@ internal fun AccountScreen(
                     text = stringResource(R.string.account_update_button),
                     loadingState = uiState.loadingState,
                 ) {
-                    onExecuteCommand(AccountIntent.SaveData)
+                    onExecuteIntent(AccountIntent.SaveData)
                 }
             }
         }

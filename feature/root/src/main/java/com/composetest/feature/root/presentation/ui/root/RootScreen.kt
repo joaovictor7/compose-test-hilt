@@ -74,24 +74,24 @@ import com.composetest.core.designsystem.R as DesignSystemResources
 internal fun RootScreen(
     uiState: RootUiState,
     uiEvent: Flow<RootUiEvent> = emptyFlow(),
-    onExecuteCommand: (Intent<RootIntentReceiver>) -> Unit = {},
+    onExecuteIntent: (Intent<RootIntentReceiver>) -> Unit = {},
     mainNavController: NavHostController = rememberNavController(),
 ) {
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     ModalNavigationDrawer(
         drawerState = drawerState,
-        drawerContent = getModalDrawerContent(uiState, onExecuteCommand, drawerState),
+        drawerContent = getModalDrawerContent(uiState, onExecuteIntent, drawerState),
     ) {
         ScreenScaffold(
             topBar = getTopBar(drawerState),
-            bottomBar = getBottomBar(uiState, onExecuteCommand)
+            bottomBar = getBottomBar(uiState, onExecuteIntent)
         ) {
             Navigation(
                 drawerState = drawerState,
                 uiState = uiState,
                 uiEvent = uiEvent,
                 mainNavController = mainNavController,
-                onExecuteCommand = onExecuteCommand
+                onExecuteIntent = onExecuteIntent
             )
         }
     }
@@ -103,7 +103,7 @@ private fun Navigation(
     uiState: RootUiState,
     uiEvent: Flow<RootUiEvent>,
     mainNavController: NavHostController,
-    onExecuteCommand: (Intent<RootIntentReceiver>) -> Unit
+    onExecuteIntent: (Intent<RootIntentReceiver>) -> Unit
 ) {
     if (uiState.firstDestination == null) return
     val navController = rememberNavController()
@@ -117,29 +117,29 @@ private fun Navigation(
         mainNavController = mainNavController
     )
     LaunchedEffectHandler(
-        onExecuteCommand = onExecuteCommand,
+        onExecuteIntent = onExecuteIntent,
         rootNavController = navController,
         mainNavController = mainNavController
     )
-    BackHandler(drawerState = drawerState, onExecuteCommand = onExecuteCommand)
+    BackHandler(drawerState = drawerState, onExecuteIntent = onExecuteIntent)
 }
 
 private fun getModalDrawerContent(
     uiState: RootUiState,
-    onExecuteCommand: (Intent<RootIntentReceiver>) -> Unit,
+    onExecuteIntent: (Intent<RootIntentReceiver>) -> Unit,
     drawerState: DrawerState,
 ) = @Composable {
     ModalDrawerSheet {
         Column(verticalArrangement = Arrangement.spacedBy(Spacing.twenty)) {
-            ModalDrawerHeader(uiState = uiState, onExecuteCommand = onExecuteCommand)
+            ModalDrawerHeader(uiState = uiState, onExecuteIntent = onExecuteIntent)
             HorizontalDivider()
             ModalDrawerItems(
                 uiState = uiState,
-                onExecuteCommand = onExecuteCommand,
+                onExecuteIntent = onExecuteIntent,
                 drawerState = drawerState
             )
             Spacer(Modifier.weight(1f))
-            LogoutButton(onExecuteCommand = onExecuteCommand)
+            LogoutButton(onExecuteIntent = onExecuteIntent)
         }
     }
 }
@@ -147,7 +147,7 @@ private fun getModalDrawerContent(
 @Composable
 private fun ModalDrawerHeader(
     uiState: RootUiState,
-    onExecuteCommand: (Intent<RootIntentReceiver>) -> Unit
+    onExecuteIntent: (Intent<RootIntentReceiver>) -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -186,7 +186,7 @@ private fun ModalDrawerHeader(
         }
         if (uiState.showEditProfile) {
             IconButton(
-                onClick = { onExecuteCommand(RootIntent.NavigateToFeature(NavigationFeature.PROFILE)) },
+                onClick = { onExecuteIntent(RootIntent.NavigateToFeature(NavigationFeature.PROFILE)) },
                 modifier = Modifier.weight(0.15f)
             ) {
                 Icon(
@@ -201,7 +201,7 @@ private fun ModalDrawerHeader(
 @Composable
 private fun ModalDrawerItems(
     uiState: RootUiState,
-    onExecuteCommand: (Intent<RootIntentReceiver>) -> Unit,
+    onExecuteIntent: (Intent<RootIntentReceiver>) -> Unit,
     drawerState: DrawerState,
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -224,7 +224,7 @@ private fun ModalDrawerItems(
                 },
                 onClick = {
                     coroutineScope.launch { drawerState.close() }
-                    onExecuteCommand(RootIntent.NavigateToFeature(item))
+                    onExecuteIntent(RootIntent.NavigateToFeature(item))
                 }
             )
         }
@@ -232,7 +232,7 @@ private fun ModalDrawerItems(
 }
 
 @Composable
-private fun LogoutButton(onExecuteCommand: (Intent<RootIntentReceiver>) -> Unit) {
+private fun LogoutButton(onExecuteIntent: (Intent<RootIntentReceiver>) -> Unit) {
     Row(
         modifier = Modifier
             .windowInsetsPadding(WindowInsets.navigationBars)
@@ -240,7 +240,7 @@ private fun LogoutButton(onExecuteCommand: (Intent<RootIntentReceiver>) -> Unit)
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(Spacing.twelve)
     ) {
-        TextButton(onClick = { onExecuteCommand(RootIntent.Logout) }) {
+        TextButton(onClick = { onExecuteIntent(RootIntent.Logout) }) {
             Icon(
                 painter = painterResource(DesignSystemResources.drawable.ic_logout_medium),
                 contentDescription = null
@@ -266,14 +266,14 @@ private fun getTopBar(modalDrawerState: DrawerState) = @Composable {
 
 private fun getBottomBar(
     uiState: RootUiState,
-    onExecuteCommand: (Intent<RootIntentReceiver>) -> Unit
+    onExecuteIntent: (Intent<RootIntentReceiver>) -> Unit
 ) = @Composable {
     NavigationBar {
         uiState.bottomNavigationFeatures.forEach { bottomNavigation ->
             val label = bottomNavigation.feature.textId?.let { stringResource(it) }.orEmpty()
             NavigationBarItem(
                 selected = bottomNavigation.selected,
-                onClick = { onExecuteCommand(RootIntent.NavigateToFeature(bottomNavigation.feature)) },
+                onClick = { onExecuteIntent(RootIntent.NavigateToFeature(bottomNavigation.feature)) },
                 label = {
                     Text(text = label, style = MaterialTheme.typography.labelLarge)
                 },
@@ -306,18 +306,18 @@ private fun UiEventsHandler(
 
 @Composable
 private fun LaunchedEffectHandler(
-    onExecuteCommand: (Intent<RootIntentReceiver>) -> Unit,
+    onExecuteIntent: (Intent<RootIntentReceiver>) -> Unit,
     rootNavController: NavHostController,
     mainNavController: NavHostController,
 ) {
     LaunchedEffect(Unit) {
         mainNavController.getResultFlow(AccountUpdateResult::class).collect {
-            onExecuteCommand(RootIntent.UpdateUserData)
+            onExecuteIntent(RootIntent.UpdateUserData)
         }
     }
     LaunchedEffect(Unit) {
         rootNavController.currentRouteChangesFlow.collect {
-            onExecuteCommand(RootIntent.CurrentScreenObservable(it))
+            onExecuteIntent(RootIntent.CurrentScreenObservable(it))
         }
     }
 }
@@ -325,14 +325,14 @@ private fun LaunchedEffectHandler(
 @Composable
 private fun BackHandler(
     drawerState: DrawerState,
-    onExecuteCommand: (Intent<RootIntentReceiver>) -> Unit
+    onExecuteIntent: (Intent<RootIntentReceiver>) -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
     BackHandler {
         if (drawerState.isOpen) {
             coroutineScope.launch { drawerState.close() }
         } else {
-            onExecuteCommand(RootIntent.BackHandler)
+            onExecuteIntent(RootIntent.BackHandler)
         }
     }
 }

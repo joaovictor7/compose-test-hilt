@@ -20,7 +20,7 @@ fun NavGraphBuilder.newsNavGraphs(navController: NavHostController) {
         NewsListScreen(
             uiState = uiState,
             uiEvent = viewModel.uiEvent,
-            onExecuteCommand = viewModel::executeCommand,
+            onExecuteIntent = viewModel::executeIntent,
             navController = navController
         )
     }

@@ -41,7 +41,7 @@ internal fun ConfigurationScreen(
     uiState: ConfigurationUiState,
     uiEvent: Flow<ConfigurationUiEvent> = emptyFlow(),
     mainNavController: NavHostController = rememberNavController(),
-    onExecuteCommand: (Intent<ConfigurationIntentReceiver>) -> Unit = {}
+    onExecuteIntent: (Intent<ConfigurationIntentReceiver>) -> Unit = {}
 ) {
     UiEventsHandler(uiEvent = uiEvent, mainNavController = mainNavController)
     LazyVerticalStaggeredGrid(
@@ -52,7 +52,7 @@ internal fun ConfigurationScreen(
     ) {
         items(uiState.configurations) { item ->
             ConfigurationCard(
-                onExecuteCommand = onExecuteCommand,
+                onExecuteIntent = onExecuteIntent,
                 configuration = item
             )
         }
@@ -68,11 +68,11 @@ internal fun ConfigurationScreen(
 
 @Composable
 private fun ConfigurationCard(
-    onExecuteCommand: (Intent<ConfigurationIntentReceiver>) -> Unit,
+    onExecuteIntent: (Intent<ConfigurationIntentReceiver>) -> Unit,
     configuration: Configuration
 ) {
     OutlinedCard(
-        onClick = { onExecuteCommand(ConfigurationIntent.ConfigurationClick(configuration)) }
+        onClick = { onExecuteIntent(ConfigurationIntent.ConfigurationClick(configuration)) }
     ) {
         Box(
             modifier = Modifier
