@@ -1,4 +1,4 @@
-package com.composetest.common.error
+package com.composetest.core.network.model
 
 sealed class ApiError : Throwable() {
 

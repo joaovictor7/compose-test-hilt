@@ -4,8 +4,8 @@ import androidx.lifecycle.viewModelScope
 import com.composetest.core.analytic.AnalyticSender
 import com.composetest.core.analytic.event.CommonAnalyticEvent
 import com.composetest.core.router.destination.news.FullNewsDestination
+import com.composetest.core.router.extension.dialogErrorDestination
 import com.composetest.core.router.model.NavigationModel
-import com.composetest.core.router.util.getDialogErrorDestination
 import com.composetest.core.ui.base.BaseViewModel
 import com.composetest.core.ui.di.qualifier.AsyncTaskUtilsQualifier
 import com.composetest.core.ui.interfaces.UiEvent
@@ -82,6 +82,6 @@ internal class NewsListViewModel @Inject constructor(
 
     private fun requestErrorHandler(error: Throwable) {
         _uiState.update { it.setShowRetryButton() }
-        _uiEvent.emitEvent(NewsListUiEvent.NavigateTo(getDialogErrorDestination(error)))
+        _uiEvent.emitEvent(NewsListUiEvent.NavigateTo(error.dialogErrorDestination()))
     }
 }

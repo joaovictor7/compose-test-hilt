@@ -2,7 +2,7 @@ package com.composetest.feature.exchange.data.di
 
 import com.composetest.core.data.provider.AssetsProvider
 import com.composetest.core.data.provider.EnvironmentInstanceProvider
-import com.composetest.core.data.util.ApiCallUtils
+import com.composetest.core.network.util.ApiCallUtils
 import com.composetest.core.network.di.qualifier.ApiQualifier
 import com.composetest.feature.exchange.data.datasource.CoinDataSource
 import com.composetest.feature.exchange.data.datasource.local.CoinDataSourceFakeImpl

@@ -1,6 +1,6 @@
 package com.composetest.feature.news.data.repositorie
 
-import com.composetest.core.data.util.apiErrorHandler
+import com.composetest.core.network.util.apiErrorHandler
 import com.composetest.feature.news.data.datasource.NewsApiDataSource
 import com.composetest.feature.news.data.mapper.ArticleMapper
 import com.composetest.feature.news.domain.model.ArticleModel

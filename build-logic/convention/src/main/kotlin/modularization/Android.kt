@@ -18,6 +18,7 @@ internal fun Project.configureAndroid(
     with(pluginManager) {
         apply("org.jetbrains.kotlin.android")
         apply("org.jetbrains.kotlin.plugin.serialization")
+        apply("com.google.dagger.hilt.android")
         apply("com.google.devtools.ksp")
         apply("kotlin-parcelize")
     }
@@ -42,7 +43,6 @@ internal fun Project.configureAndroid(
     }
     experimentalProperties["android.experimental.enableScreenshotTest"] = true
     dependencies {
-        implementation(platform(getLibrary("firebase.bom")))
         implementation(getLibrary("androidx.lifecycle.runtime.ktx"))
         implementation(getLibrary("kotlin.coroutines.android"))
         implementation(getLibrary("kotlin.json.serializable"))

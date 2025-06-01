@@ -1,6 +1,6 @@
 package com.composetest.feature.login.presenter.ui.login
 
-import com.composetest.common.error.ApiError
+import com.composetest.core.network.model.ApiError
 import com.composetest.core.analytic.AnalyticSender
 import com.composetest.core.analytic.event.CommonAnalyticEvent
 import com.composetest.core.domain.enums.BuildType

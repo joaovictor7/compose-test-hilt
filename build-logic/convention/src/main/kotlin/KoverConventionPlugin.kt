@@ -54,6 +54,6 @@ internal class KoverConventionPlugin : Plugin<Project> {
     }
 
     private companion object {
-        private const val KOVER_VARIANT_NAME_REPORT = "project"
+        const val KOVER_VARIANT_NAME_REPORT = "project"
     }
 }

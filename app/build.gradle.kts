@@ -28,6 +28,7 @@ dependencies {
     implementation(projects.feature.weatherforecast)
     implementation(projects.feature.news)
     implementation(projects.feature.exchange)
+    implementation(platform(libs.firebase.bom))
     implementation(libs.androidx.hilt.work)
     implementation(libs.androidx.splash.screen)
     implementation(libs.androidx.appcompat)

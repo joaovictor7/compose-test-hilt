@@ -1,7 +1,7 @@
 package com.composetest.feature.login.presenter.ui.login
 
 import androidx.lifecycle.viewModelScope
-import com.composetest.common.error.ApiError
+import com.composetest.core.network.model.ApiError
 import com.composetest.core.analytic.AnalyticSender
 import com.composetest.core.analytic.event.CommonAnalyticEvent
 import com.composetest.core.domain.enums.Theme
@@ -11,8 +11,8 @@ import com.composetest.core.domain.usecase.remoteconfig.GetBooleanRemoteConfigUs
 import com.composetest.core.router.destination.login.LoginDestination
 import com.composetest.core.router.destination.root.RootDestination
 import com.composetest.core.router.enums.NavigationMode
+import com.composetest.core.router.extension.dialogErrorDestination
 import com.composetest.core.router.model.NavigationModel
-import com.composetest.core.router.util.getDialogErrorDestination
 import com.composetest.core.security.enums.BiometricError
 import com.composetest.core.security.enums.BiometricError.Companion.biometricIsLockout
 import com.composetest.core.security.enums.BiometricError.Companion.userClosedPrompt
@@ -169,7 +169,7 @@ internal class LoginViewModel @Inject constructor(
         if (error is ApiError.Unauthorized) {
             _uiState.update { it.setShowInvalidCredentialsMsg(true) }
         } else {
-            _uiEvent.emitEvent(LoginUiEvent.NavigateTo(getDialogErrorDestination(error)))
+            _uiEvent.emitEvent(LoginUiEvent.NavigateTo(error.dialogErrorDestination()))
         }
     }
 

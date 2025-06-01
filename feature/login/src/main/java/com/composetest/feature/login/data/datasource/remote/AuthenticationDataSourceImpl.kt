@@ -1,6 +1,6 @@
 package com.composetest.feature.login.data.datasource.remote
 
-import com.composetest.core.data.util.ApiCallUtils
+import com.composetest.core.network.util.ApiCallUtils
 import com.composetest.feature.login.data.datasource.AuthenticationDataSource
 import com.composetest.feature.login.data.mapper.AuthenticationMapper
 import com.google.firebase.auth.FirebaseAuth

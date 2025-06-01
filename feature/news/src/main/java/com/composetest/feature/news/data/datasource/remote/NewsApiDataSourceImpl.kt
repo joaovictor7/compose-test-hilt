@@ -1,7 +1,7 @@
 package com.composetest.feature.news.data.datasource.remote
 
 import com.composetest.core.network.extension.get
-import com.composetest.core.data.util.ApiCallUtils
+import com.composetest.core.network.util.ApiCallUtils
 import com.composetest.core.network.di.qualifier.ApiQualifier
 import com.composetest.feature.news.data.datasource.NewsApiDataSource
 import com.composetest.feature.news.network.api.Api

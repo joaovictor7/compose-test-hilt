@@ -1,4 +1,4 @@
-package com.composetest.core.data.util
+package com.composetest.core.network.util
 
 import com.composetest.common.provider.DispatcherProvider
 import com.composetest.core.domain.enums.Flavor

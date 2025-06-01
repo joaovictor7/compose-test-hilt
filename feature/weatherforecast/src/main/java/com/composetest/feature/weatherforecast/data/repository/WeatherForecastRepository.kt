@@ -1,6 +1,6 @@
 package com.composetest.feature.weatherforecast.data.repository
 
-import com.composetest.core.data.util.apiErrorHandler
+import com.composetest.core.network.util.apiErrorHandler
 import com.composetest.feature.weatherforecast.data.datasource.OpenWeatherDataSource
 import com.composetest.feature.weatherforecast.data.mapper.WeatherForecastMapper
 import com.composetest.feature.weatherforecast.domain.model.WeatherForecastLocationModel

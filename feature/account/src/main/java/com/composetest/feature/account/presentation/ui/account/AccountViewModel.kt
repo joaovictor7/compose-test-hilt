@@ -7,8 +7,8 @@ import com.composetest.core.analytic.event.CommonAnalyticEvent
 import com.composetest.core.designsystem.enum.button.LoadingButtonState
 import com.composetest.core.domain.model.UserModel
 import com.composetest.core.domain.usecase.user.GetCurrentUserUseCase
+import com.composetest.core.router.extension.dialogErrorDestination
 import com.composetest.core.router.result.account.AccountUpdateResult
-import com.composetest.core.router.util.getDialogErrorDestination
 import com.composetest.core.security.provider.CipherProvider
 import com.composetest.core.ui.base.BaseViewModel
 import com.composetest.core.ui.di.qualifier.AsyncTaskUtilsQualifier
@@ -125,7 +125,7 @@ internal class AccountViewModel @Inject constructor(
     )
 
     private fun handleUpdateAccountError(error: Throwable) {
-        _uiEvent.emitEvent(AccountUiEvent.NavigateTo(getDialogErrorDestination(error)))
+        _uiEvent.emitEvent(AccountUiEvent.NavigateTo(error.dialogErrorDestination()))
         _uiState.update { it.setLoadingState(LoadingButtonState.IDLE) }
     }
 }

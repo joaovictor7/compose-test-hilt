@@ -1,6 +1,6 @@
-package com.composetest.core.data.util
+package com.composetest.core.network.util
 
-import com.composetest.common.error.ApiError
+import com.composetest.core.network.model.ApiError
 import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.ServerResponseException
 import io.ktor.http.HttpStatusCode

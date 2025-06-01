@@ -4,4 +4,4 @@ import javax.inject.Qualifier
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
-annotation class ApiQualifier(val t: String)
+annotation class ApiQualifier(val api: String)

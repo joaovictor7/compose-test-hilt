@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 
 class AsyncTaskUtils(
     private val analyticSender: AnalyticSender,
-    private val screenAnalytic: ScreenAnalytic
+    private val screenAnalytic: ScreenAnalytic,
 ) {
 
     fun runAsyncTask(
