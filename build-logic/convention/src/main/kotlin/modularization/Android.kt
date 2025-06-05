@@ -20,6 +20,7 @@ internal fun Project.configureAndroid(
         apply("org.jetbrains.kotlin.plugin.serialization")
         apply("com.google.dagger.hilt.android")
         apply("com.google.devtools.ksp")
+        apply("com.composetest.kover")
         apply("kotlin-parcelize")
     }
     compileSdk = AppConfig.COMPILE_SDK_VERSION
