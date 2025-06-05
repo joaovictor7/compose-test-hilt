@@ -1,6 +1,6 @@
 package com.composetest.feature.account.data.mapper
 
-import com.composetest.core.database.entity.UserEntity
+import com.composetest.core.database.data.entity.UserEntity
 import com.composetest.core.domain.model.UserModel
 import javax.inject.Inject
 

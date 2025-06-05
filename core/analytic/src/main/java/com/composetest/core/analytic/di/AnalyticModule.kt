@@ -1,7 +1,7 @@
-package com.composetest.core.data.di
+package com.composetest.core.analytic.di
 
-import com.composetest.core.analytic.AnalyticSender
-import com.composetest.core.data.analytic.AnalyticSenderImpl
+import com.composetest.core.analytic.sender.AnalyticSender
+import com.composetest.core.analytic.sender.AnalyticSenderImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

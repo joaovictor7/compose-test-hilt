@@ -1,9 +1,9 @@
-package com.composetest.core.database.dao
+package com.composetest.core.database.data.dao
 
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Upsert
-import com.composetest.core.database.entity.UserEntity
+import com.composetest.core.database.data.entity.UserEntity
 
 @Dao
 interface UserEntityDao {

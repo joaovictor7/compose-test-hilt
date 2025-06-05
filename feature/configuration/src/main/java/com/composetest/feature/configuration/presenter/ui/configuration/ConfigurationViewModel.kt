@@ -1,7 +1,7 @@
 package com.composetest.feature.configuration.presenter.ui.configuration
 
 import androidx.lifecycle.viewModelScope
-import com.composetest.core.analytic.AnalyticSender
+import com.composetest.core.analytic.sender.AnalyticSender
 import com.composetest.core.analytic.event.CommonAnalyticEvent
 import com.composetest.core.router.model.NavigationModel
 import com.composetest.core.ui.base.BaseViewModel

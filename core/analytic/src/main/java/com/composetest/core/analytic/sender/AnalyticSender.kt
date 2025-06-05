@@ -1,5 +1,6 @@
-package com.composetest.core.analytic
+package com.composetest.core.analytic.sender
 
+import com.composetest.core.analytic.event.AnalyticEvent
 import com.composetest.core.analytic.event.ErrorAnalyticEvent
 
 interface AnalyticSender {

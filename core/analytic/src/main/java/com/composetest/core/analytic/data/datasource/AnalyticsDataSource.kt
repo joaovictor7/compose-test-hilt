@@ -1,4 +1,4 @@
-package com.composetest.core.data.datasource.remote
+package com.composetest.core.analytic.data.datasource
 
 import android.os.Bundle
 import com.google.firebase.analytics.FirebaseAnalytics

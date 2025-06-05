@@ -1,8 +1,8 @@
 package com.composetest.core.database.di
 
-import com.composetest.core.database.dao.ConfigurationEntityDao
-import com.composetest.core.database.dao.SessionEntityDao
-import com.composetest.core.database.dao.UserEntityDao
+import com.composetest.core.database.data.dao.ConfigurationEntityDao
+import com.composetest.core.database.data.dao.SessionEntityDao
+import com.composetest.core.database.data.dao.UserEntityDao
 import com.composetest.core.database.database.Database
 import dagger.Module
 import dagger.Provides

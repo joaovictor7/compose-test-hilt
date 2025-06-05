@@ -1,7 +1,7 @@
 package com.composetest.feature.news.presenter.di
 
 import androidx.lifecycle.SavedStateHandle
-import com.composetest.core.analytic.AnalyticSender
+import com.composetest.core.analytic.sender.AnalyticSender
 import com.composetest.core.router.destination.news.FullNewsDestination
 import com.composetest.core.router.extension.getDestination
 import com.composetest.core.ui.di.qualifier.AsyncTaskUtilsQualifier

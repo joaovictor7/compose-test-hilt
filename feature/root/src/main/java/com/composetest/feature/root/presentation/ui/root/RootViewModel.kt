@@ -1,7 +1,7 @@
 package com.composetest.feature.root.presentation.ui.root
 
 import androidx.lifecycle.viewModelScope
-import com.composetest.core.analytic.AnalyticSender
+import com.composetest.core.analytic.sender.AnalyticSender
 import com.composetest.core.domain.usecase.session.FinishSessionUseCase
 import com.composetest.core.domain.usecase.user.GetCurrentUserUseCase
 import com.composetest.core.router.destination.login.LoginDestination

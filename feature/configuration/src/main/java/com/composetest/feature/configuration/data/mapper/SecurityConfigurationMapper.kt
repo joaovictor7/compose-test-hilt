@@ -1,8 +1,8 @@
 package com.composetest.feature.configuration.data.mapper
 
-import com.composetest.core.database.dao.partialupdate.SecurityConfigurationUpdate
-import com.composetest.core.database.entity.configuration.ConfigurationEntity
-import com.composetest.core.database.entity.configuration.SecurityConfigurationEntity
+import com.composetest.core.database.data.dao.partialupdate.SecurityConfigurationUpdate
+import com.composetest.core.database.data.entity.configuration.ConfigurationEntity
+import com.composetest.core.database.data.entity.configuration.SecurityConfigurationEntity
 import javax.inject.Inject
 
 internal class SecurityConfigurationMapper @Inject constructor() {

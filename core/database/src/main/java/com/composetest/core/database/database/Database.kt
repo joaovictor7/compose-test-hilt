@@ -3,13 +3,13 @@ package com.composetest.core.database.database
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.composetest.core.database.converter.LocalDateTimeConverter
-import com.composetest.core.database.dao.ConfigurationEntityDao
-import com.composetest.core.database.dao.SessionEntityDao
-import com.composetest.core.database.dao.UserEntityDao
-import com.composetest.core.database.entity.SessionEntity
-import com.composetest.core.database.entity.UserEntity
-import com.composetest.core.database.entity.configuration.ConfigurationEntity
+import com.composetest.core.database.data.converter.LocalDateTimeConverter
+import com.composetest.core.database.data.dao.ConfigurationEntityDao
+import com.composetest.core.database.data.dao.SessionEntityDao
+import com.composetest.core.database.data.dao.UserEntityDao
+import com.composetest.core.database.data.entity.SessionEntity
+import com.composetest.core.database.data.entity.UserEntity
+import com.composetest.core.database.data.entity.configuration.ConfigurationEntity
 
 private const val DATABASE_VERSION = 1
 

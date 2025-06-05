@@ -1,12 +1,11 @@
 package com.composetest.core.database.di
 
 import android.content.Context
-import android.util.Log
 import androidx.room.Room
-import androidx.room.RoomDatabase
-import com.composetest.core.database.converter.LocalDateTimeConverter
+import com.composetest.core.database.data.converter.LocalDateTimeConverter
+import com.composetest.core.database.data.extension.addLogs
 import com.composetest.core.database.database.Database
-import com.composetest.core.database.manager.DatabaseSecurityManager
+import com.composetest.core.database.domain.usecase.GetDatabaseKeyUseCase
 import com.composetest.core.domain.provider.BuildConfigProvider
 import dagger.Module
 import dagger.Provides
@@ -14,7 +13,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.runBlocking
-import java.util.concurrent.Executors
+import net.zetetic.database.sqlcipher.SupportOpenHelperFactory
 import javax.inject.Singleton
 
 @Module
@@ -28,28 +27,19 @@ internal object DatabaseModule {
     fun appDatabase(
         @ApplicationContext context: Context,
         buildConfigProvider: BuildConfigProvider,
-        databaseSecurityManager: DatabaseSecurityManager
+        getDatabaseKeyUseCase: GetDatabaseKeyUseCase,
     ): Database = Room.databaseBuilder(
         context,
         Database::class.java,
         DATABASE_NAME
     )
-        .openHelperFactory(getHelperFactory(databaseSecurityManager))
+        .openHelperFactory(getHelperFactory(getDatabaseKeyUseCase))
         .addTypeConverter(LocalDateTimeConverter())
-        .addLogs(buildConfigProvider)
+        .addLogs(buildConfigProvider.buildConfig)
         .build()
 
-    private fun getHelperFactory(databaseSecurityManager: DatabaseSecurityManager) = runBlocking {
-        databaseSecurityManager.getDatabaseCipherFactory()
-    }
-
-    private fun RoomDatabase.Builder<Database>.addLogs(
-        buildConfigProvider: BuildConfigProvider
-    ) = also {
-        if (buildConfigProvider.buildConfig.isRelease) return@also
-        setQueryCallback({ sqlQuery, bindArgs ->
-            Log.i("SQLite", "SQL Query: $sqlQuery")
-            if (bindArgs.isNotEmpty()) Log.i("SQLite", "SQL Args: $bindArgs")
-        }, Executors.newSingleThreadExecutor())
+    private fun getHelperFactory(getDatabaseKeyUseCase: GetDatabaseKeyUseCase) = runBlocking {
+        System.loadLibrary("sqlcipher")
+        SupportOpenHelperFactory(getDatabaseKeyUseCase())
     }
 }

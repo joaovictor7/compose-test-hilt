@@ -1,6 +1,6 @@
 package com.composetest.analytic.screen
 
-import com.composetest.core.analytic.ScreenAnalytic
+import com.composetest.core.analytic.screen.ScreenAnalytic
 
 internal object MainScreenAnalytic : ScreenAnalytic {
     const val SCREEN = "main"

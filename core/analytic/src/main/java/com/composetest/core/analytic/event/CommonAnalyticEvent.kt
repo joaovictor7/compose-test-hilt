@@ -1,7 +1,7 @@
 package com.composetest.core.analytic.event
 
-import com.composetest.core.analytic.AnalyticEvent
-import com.composetest.core.analytic.ScreenAnalytic
+import com.composetest.core.analytic.event.AnalyticEvent
+import com.composetest.core.analytic.screen.ScreenAnalytic
 
 sealed class CommonAnalyticEvent(
     screenAnalytic: ScreenAnalytic

@@ -1,9 +1,9 @@
-package com.composetest.core.database.dao
+package com.composetest.core.database.data.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import com.composetest.core.database.entity.SessionEntity
+import com.composetest.core.database.data.entity.SessionEntity
 
 @Dao
 interface SessionEntityDao {

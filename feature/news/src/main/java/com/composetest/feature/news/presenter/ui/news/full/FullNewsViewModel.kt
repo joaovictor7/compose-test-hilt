@@ -1,7 +1,7 @@
 package com.composetest.feature.news.presenter.ui.news.full
 
 import androidx.lifecycle.viewModelScope
-import com.composetest.core.analytic.AnalyticSender
+import com.composetest.core.analytic.sender.AnalyticSender
 import com.composetest.core.analytic.event.CommonAnalyticEvent
 import com.composetest.core.router.destination.news.FullNewsDestination
 import com.composetest.core.ui.base.BaseViewModel

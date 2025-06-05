@@ -1,11 +1,7 @@
 package com.composetest.core.data.di
 
-import com.composetest.core.data.repository.AnalyticsRepositoryImpl
-import com.composetest.core.data.repository.DatabaseRepositoryImpl
 import com.composetest.core.data.repository.RemoteConfigRepositoryImpl
 import com.composetest.core.data.repository.SystemBarsThemeRepositoryImpl
-import com.composetest.core.domain.repository.AnalyticsRepository
-import com.composetest.core.domain.repository.DatabaseRepository
 import com.composetest.core.domain.repository.RemoteConfigRepository
 import com.composetest.core.domain.repository.SystemBarsThemeRepository
 import dagger.Binds
@@ -17,23 +13,11 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 internal abstract class RepositoryModule {
 
-    // Locals
-    @Binds
-    abstract fun analyticsRepository(
-        analyticsRepositoryImpl: AnalyticsRepositoryImpl
-    ): AnalyticsRepository
-
-    @Binds
-    abstract fun databaseRepository(
-        databaseRepositoryImpl: DatabaseRepositoryImpl
-    ): DatabaseRepository
-
     @Binds
     abstract fun systemBarsThemeRepository(
         systemBarsThemeRepositoryImpl: SystemBarsThemeRepositoryImpl
     ): SystemBarsThemeRepository
 
-    // Remotes
     @Binds
     abstract fun remoteConfigRepository(
         remoteConfigRepositoryImpl: RemoteConfigRepositoryImpl

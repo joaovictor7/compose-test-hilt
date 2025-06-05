@@ -1,11 +1,11 @@
-package com.composetest.core.database.dao
+package com.composetest.core.database.data.dao
 
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Update
 import androidx.room.Upsert
-import com.composetest.core.database.dao.partialupdate.SecurityConfigurationUpdate
-import com.composetest.core.database.entity.configuration.ConfigurationEntity
+import com.composetest.core.database.data.dao.partialupdate.SecurityConfigurationUpdate
+import com.composetest.core.database.data.entity.configuration.ConfigurationEntity
 
 @Dao
 interface ConfigurationEntityDao {

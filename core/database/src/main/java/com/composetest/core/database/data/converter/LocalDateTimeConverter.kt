@@ -1,4 +1,4 @@
-package com.composetest.core.database.converter
+package com.composetest.core.database.data.converter
 
 import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter

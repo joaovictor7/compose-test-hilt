@@ -1,4 +1,4 @@
-package com.composetest.core.database.dao.partialupdate
+package com.composetest.core.database.data.dao.partialupdate
 
 import androidx.room.ColumnInfo
 

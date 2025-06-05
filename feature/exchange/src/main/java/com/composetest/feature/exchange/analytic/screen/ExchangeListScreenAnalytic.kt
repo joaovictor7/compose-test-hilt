@@ -1,6 +1,6 @@
 package com.composetest.feature.exchange.analytic.screen
 
-import com.composetest.core.analytic.ScreenAnalytic
+import com.composetest.core.analytic.screen.ScreenAnalytic
 
 internal object ExchangeListScreenAnalytic : ScreenAnalytic {
     const val SCREEN = "exchange_list"

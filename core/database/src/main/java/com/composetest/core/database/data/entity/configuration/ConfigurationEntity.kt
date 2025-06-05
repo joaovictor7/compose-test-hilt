@@ -1,4 +1,4 @@
-package com.composetest.core.database.entity.configuration
+package com.composetest.core.database.data.entity.configuration
 
 import androidx.room.ColumnInfo
 import androidx.room.Embedded
@@ -6,7 +6,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import com.composetest.core.database.entity.UserEntity
+import com.composetest.core.database.data.entity.UserEntity
 
 @Entity(
     tableName = "Configuration",
