@@ -1,14 +1,17 @@
 package com.composetest.application
 
 import android.app.Application
+import android.util.Log
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
 import com.composetest.common.provider.ApplicationModule
-import com.composetest.core.ui.util.AsyncTaskUtils
+import com.composetest.core.analytic.event.ErrorAnalyticEvent
+import com.composetest.core.analytic.sender.AnalyticSender
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltAndroidApp
@@ -21,10 +24,10 @@ internal class MainApplication :
     lateinit var workerFactory: HiltWorkerFactory
 
     @Inject
-    lateinit var asyncTaskUtils: AsyncTaskUtils
+    lateinit var analyticSender: AnalyticSender
 
     @Inject
-    lateinit var moduleApplications: Array<ApplicationModule>
+    lateinit var applicationModules: Array<ApplicationModule>
 
     override val workManagerConfiguration
         get() = Configuration.Builder()
@@ -33,10 +36,15 @@ internal class MainApplication :
 
     override fun onCreate() {
         super.onCreate()
-        executeModuleApplications()
+        executeApplicationModules()
     }
 
-    private fun executeModuleApplications() = asyncTaskUtils.runAsyncTask(this) {
-        moduleApplications.forEach { it.onCreate(this) }
+    private fun executeApplicationModules() = applicationModules.forEach {
+        runCatching {
+            it.onCreate()
+        }.onFailure {
+            Log.e("Application Modules", it.message, it)
+            launch { analyticSender.sendErrorEvent(ErrorAnalyticEvent(it)) }
+        }
     }
 }

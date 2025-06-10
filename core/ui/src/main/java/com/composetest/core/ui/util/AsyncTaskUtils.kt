@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 
 class AsyncTaskUtils(
     private val analyticSender: AnalyticSender,
-    private val screenAnalytic: ScreenAnalytic? = null,
+    private val screenAnalytic: ScreenAnalytic,
 ) {
 
     fun runAsyncTask(
@@ -53,11 +53,8 @@ class AsyncTaskUtils(
         error: Throwable,
         onError: (suspend (Throwable) -> Unit)? = null
     ) {
-        val event = screenAnalytic?.let {
-            ErrorAnalyticEvent(error, it)
-        } ?: ErrorAnalyticEvent(error)
         Log.e("AsyncTaskError", error.message, error)
-        analyticSender.sendErrorEvent(event)
+        analyticSender.sendErrorEvent(ErrorAnalyticEvent(error, screenAnalytic))
         onError?.invoke(error)
     }
 }
