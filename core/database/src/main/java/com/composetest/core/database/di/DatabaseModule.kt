@@ -39,7 +39,6 @@ internal object DatabaseModule {
         .build()
 
     private fun getHelperFactory(getDatabaseKeyUseCase: GetDatabaseKeyUseCase) = runBlocking {
-        System.loadLibrary("sqlcipher")
         SupportOpenHelperFactory(getDatabaseKeyUseCase())
     }
 }

@@ -10,7 +10,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.composetest.core.designsystem.component.scaffold.ScreenScaffold
 import com.composetest.core.designsystem.component.switch.LabelSwitch
 import com.composetest.core.designsystem.component.topbar.LeftTopBar
-import com.composetest.core.designsystem.enum.switch.SwitchType
+import com.composetest.core.designsystem.enums.switchs.SwitchType
 import com.composetest.core.designsystem.extension.screenMargin
 import com.composetest.core.designsystem.extension.toSpanStyle
 import com.composetest.core.designsystem.theme.ComposeTestTheme

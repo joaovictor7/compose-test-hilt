@@ -7,7 +7,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.painterResource
-import com.composetest.core.designsystem.enum.topbar.TopBarAction
+import com.composetest.core.designsystem.enums.topbar.TopBarAction
 
 internal fun getTopBarTitle(title: String): @Composable () -> Unit = {
     Text(

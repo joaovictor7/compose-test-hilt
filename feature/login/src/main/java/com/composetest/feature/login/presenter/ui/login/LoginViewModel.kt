@@ -1,13 +1,13 @@
 package com.composetest.feature.login.presenter.ui.login
 
 import androidx.lifecycle.viewModelScope
-import com.composetest.core.network.model.ApiError
-import com.composetest.core.analytic.sender.AnalyticSender
 import com.composetest.core.analytic.event.CommonAnalyticEvent
+import com.composetest.core.analytic.sender.AnalyticSender
 import com.composetest.core.domain.enums.Theme
 import com.composetest.core.domain.provider.BuildConfigProvider
 import com.composetest.core.domain.usecase.configuration.SetSystemBarsStyleUseCase
 import com.composetest.core.domain.usecase.remoteconfig.GetBooleanRemoteConfigUseCase
+import com.composetest.core.network.model.ApiError
 import com.composetest.core.router.destination.login.LoginDestination
 import com.composetest.core.router.destination.root.RootDestination
 import com.composetest.core.router.enums.NavigationMode
@@ -20,6 +20,7 @@ import com.composetest.core.security.provider.BiometricProvider
 import com.composetest.core.security.provider.CipherProvider
 import com.composetest.core.ui.base.BaseViewModel
 import com.composetest.core.ui.di.qualifier.AsyncTaskUtilsQualifier
+import com.composetest.core.ui.extension.uiStateValue
 import com.composetest.core.ui.interfaces.UiEvent
 import com.composetest.core.ui.interfaces.UiState
 import com.composetest.core.ui.util.AsyncTaskUtils
@@ -58,7 +59,7 @@ internal class LoginViewModel @Inject constructor(
 
     override val intentReceiver = this
 
-    private val loginFormModel get() = uiState.value.loginFormModel
+    private val loginFormModel get() = uiStateValue.loginFormModel
     private val byPassLogin by lazy { getBooleanRemoteConfigUseCase(LoginRemoteConfig.BY_PASS_LOGIN) }
 
     private val _uiState = MutableStateFlow(LoginUiState())

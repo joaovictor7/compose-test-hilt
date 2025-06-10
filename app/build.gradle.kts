@@ -17,6 +17,7 @@ dependencies {
     implementation(projects.core.designsystem)
     implementation(projects.core.ui)
     implementation(projects.core.router)
+    implementation(projects.core.database)
     implementation(projects.core.data)
     implementation(projects.core.domain)
     implementation(projects.core.analytic)
@@ -32,4 +33,5 @@ dependencies {
     implementation(libs.androidx.hilt.work)
     implementation(libs.androidx.splash.screen)
     implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.startup)
 }

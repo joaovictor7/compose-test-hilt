@@ -10,6 +10,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import com.composetest.core.ui.extension.uiStateValue
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -52,7 +53,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setSplashScreen() {
         installSplashScreen().setKeepOnScreenCondition {
-            viewModel.uiState.value.showSplashScreen
+            viewModel.uiStateValue.showSplashScreen
         }
     }
 }

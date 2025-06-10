@@ -2,12 +2,13 @@ package com.composetest.feature.weatherforecast.presenter.ui
 
 import android.location.Location
 import androidx.lifecycle.viewModelScope
-import com.composetest.core.analytic.sender.AnalyticSender
 import com.composetest.core.analytic.event.CommonAnalyticEvent
+import com.composetest.core.analytic.sender.AnalyticSender
 import com.composetest.core.router.extension.dialogErrorDestination
 import com.composetest.core.ui.base.BaseViewModel
 import com.composetest.core.ui.di.qualifier.AsyncTaskUtilsQualifier
 import com.composetest.core.ui.enums.Permission
+import com.composetest.core.ui.extension.uiStateValue
 import com.composetest.core.ui.interfaces.UiEvent
 import com.composetest.core.ui.interfaces.UiState
 import com.composetest.core.ui.provider.LocationProvider
@@ -59,7 +60,6 @@ internal class WeatherForecastViewModel @Inject constructor(
 
     init {
         sendOpenScreenAnalytic()
-        checkPermissions()
     }
 
     override fun sendOpenScreenAnalytic() {
@@ -68,14 +68,8 @@ internal class WeatherForecastViewModel @Inject constructor(
         }
     }
 
-    override fun checkPermissionsResult() {
-        if (uiState.value.screenStatus == WeatherForecastScreenStatus.READY) return
-        if (permissionProvider.somePermissionIsGranted(Permission.localization)) {
-            _uiState.update { it.setScreenStatus(WeatherForecastScreenStatus.READY) }
-            getLocationAndWeatherForecastsData()
-        } else {
-            _uiState.update { it.setScreenStatus(WeatherForecastScreenStatus.PERMISSION_NOT_GRANTED) }
-        }
+    override fun onResume() {
+        checkIsLocationEnabled()
     }
 
     override fun getLocationAndWeatherForecastsData() {
@@ -84,7 +78,7 @@ internal class WeatherForecastViewModel @Inject constructor(
             coroutineScope = viewModelScope,
             onError = ::handleLocationError
         ) {
-            location = locationProvider.getLastLocation()
+            location = locationProvider.getCurrentLocation()
             location?.let {
                 getWeatherNow(it)
                 getWeatherForecastsNow(it)
@@ -103,12 +97,6 @@ internal class WeatherForecastViewModel @Inject constructor(
         location?.let { location ->
             _uiState.update { it.setWeatherForecastsStatus(WeatherForecastStatus.LOADING) }
             getWeatherForecastsNow(location)
-        }
-    }
-
-    private fun checkPermissions() {
-        if (!permissionProvider.permissionIsGranted(Permission.localization)) {
-            _uiEvent.emitEvent(WeatherForecastUiEvent.LaunchPermissionRequest)
         }
     }
 
@@ -164,5 +152,34 @@ internal class WeatherForecastViewModel @Inject constructor(
         } else {
             WeatherForecastStatus.ERROR
         }
+    }
+
+    private fun checkIsLocationEnabled() {
+        if (uiStateValue.screenStatus in listOf(
+                WeatherForecastScreenStatus.READY,
+                WeatherForecastScreenStatus.TRY_AGAIN
+            )
+        ) return
+        asyncTaskUtils.runAsyncTask(viewModelScope) {
+            if (locationProvider.isLocationEnabled()) {
+                checkPermissions()
+            } else {
+                _uiState.update { it.setScreenStatus(WeatherForecastScreenStatus.NEEDS_LOCATION) }
+            }
+        }
+    }
+
+    private fun checkPermissions() {
+        val hasSomePermission = permissionProvider.somePermissionIsGranted(Permission.localization)
+        val hasAllPermission = permissionProvider.permissionIsGranted(Permission.localization)
+        var status = WeatherForecastScreenStatus.PERMISSION_NOT_GRANTED
+        if (hasAllPermission || hasSomePermission) {
+            getLocationAndWeatherForecastsData()
+            status = WeatherForecastScreenStatus.READY
+        }
+        if (!hasAllPermission && uiStateValue.screenStatus != WeatherForecastScreenStatus.PERMISSION_NOT_GRANTED) {
+            _uiEvent.emitEvent(WeatherForecastUiEvent.LaunchPermissionRequest)
+        }
+        _uiState.update { it.setScreenStatus(status) }
     }
 }

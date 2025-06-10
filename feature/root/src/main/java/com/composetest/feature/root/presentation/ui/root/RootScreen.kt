@@ -50,7 +50,7 @@ import androidx.navigation.compose.rememberNavController
 import com.composetest.core.designsystem.component.scaffold.ScreenScaffold
 import com.composetest.core.designsystem.component.topbar.TopBarWithoutTitle
 import com.composetest.core.designsystem.dimension.Spacing
-import com.composetest.core.designsystem.enum.topbar.TopBarAction
+import com.composetest.core.designsystem.enums.topbar.TopBarAction
 import com.composetest.core.designsystem.extension.horizontalScreenMargin
 import com.composetest.core.designsystem.extension.screenMargin
 import com.composetest.core.designsystem.theme.ComposeTestTheme

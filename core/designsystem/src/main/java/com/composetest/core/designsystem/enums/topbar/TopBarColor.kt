@@ -1,4 +1,4 @@
-package com.composetest.core.designsystem.enum.topbar
+package com.composetest.core.designsystem.enums.topbar
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable

@@ -1,4 +1,4 @@
-package com.composetest.core.designsystem.enum.button
+package com.composetest.core.designsystem.enums.button
 
 enum class LoadingButtonState {
     IDLE, LOADING, SUCCESS

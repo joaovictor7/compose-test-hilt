@@ -2,9 +2,9 @@ package com.composetest.feature.account.presentation.ui.account
 
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.lifecycle.viewModelScope
-import com.composetest.core.analytic.sender.AnalyticSender
 import com.composetest.core.analytic.event.CommonAnalyticEvent
-import com.composetest.core.designsystem.enum.button.LoadingButtonState
+import com.composetest.core.analytic.sender.AnalyticSender
+import com.composetest.core.designsystem.enums.button.LoadingButtonState
 import com.composetest.core.domain.model.UserModel
 import com.composetest.core.domain.usecase.user.GetCurrentUserUseCase
 import com.composetest.core.router.extension.dialogErrorDestination
@@ -12,6 +12,7 @@ import com.composetest.core.router.result.account.AccountUpdateResult
 import com.composetest.core.security.provider.CipherProvider
 import com.composetest.core.ui.base.BaseViewModel
 import com.composetest.core.ui.di.qualifier.AsyncTaskUtilsQualifier
+import com.composetest.core.ui.extension.uiStateValue
 import com.composetest.core.ui.interfaces.UiEvent
 import com.composetest.core.ui.interfaces.UiState
 import com.composetest.core.ui.provider.StringResourceProvider
@@ -61,18 +62,18 @@ internal class AccountViewModel @Inject constructor(
     }
 
     override fun updateFormData(dataRowId: AccountDataRow, value: String) {
-        val index = _uiState.value.accountScreenModels.indexOfFirst { it.id == dataRowId }
-        val newModels = _uiState.value.accountScreenModels.toMutableList()
-        newModels[index] = _uiState.value.accountScreenModels[index].copy(text = value)
+        val index = uiStateValue.accountScreenModels.indexOfFirst { it.id == dataRowId }
+        val newModels = uiStateValue.accountScreenModels.toMutableList()
+        newModels[index] = uiStateValue.accountScreenModels[index].copy(text = value)
         _uiState.update { it.setAccountScreenModels(newModels) }
     }
 
     override fun saveData() {
-        val email = _uiState.value.accountScreenModels.find { it.id == AccountDataRow.EMAIL }?.text
+        val email = uiStateValue.accountScreenModels.find { it.id == AccountDataRow.EMAIL }?.text
         val name =
-            _uiState.value.accountScreenModels.find { it.id == AccountDataRow.USERNAME }?.text
+            uiStateValue.accountScreenModels.find { it.id == AccountDataRow.USERNAME }?.text
         val password =
-            _uiState.value.accountScreenModels.find { it.id == AccountDataRow.PASSWORD }?.text
+            uiStateValue.accountScreenModels.find { it.id == AccountDataRow.PASSWORD }?.text
         val userModel = UserModel(
             id = originalUser?.id.orEmpty(),
             email = email ?: originalUser?.email.orEmpty(),

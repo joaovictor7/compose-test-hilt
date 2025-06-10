@@ -1,4 +1,4 @@
-package com.composetest.core.designsystem.enum.topbar
+package com.composetest.core.designsystem.enums.topbar
 
 import androidx.annotation.DrawableRes
 import com.composetest.core.designsystem.R

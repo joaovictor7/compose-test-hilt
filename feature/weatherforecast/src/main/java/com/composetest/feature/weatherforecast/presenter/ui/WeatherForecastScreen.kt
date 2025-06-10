@@ -28,7 +28,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -44,6 +43,7 @@ import com.composetest.core.designsystem.component.shimmer.Shimmer
 import com.composetest.core.designsystem.component.topbar.LeftTopBar
 import com.composetest.core.designsystem.dimension.Spacing
 import com.composetest.core.designsystem.extension.screenMargin
+import com.composetest.core.designsystem.extension.stringResource
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.designsystem.util.getSharedShimmerOffset
 import com.composetest.core.router.extension.navigateTo
@@ -52,7 +52,6 @@ import com.composetest.core.ui.extension.navigateToApplicationDetailSettings
 import com.composetest.core.ui.interfaces.Intent
 import com.composetest.core.ui.util.UiEventsObserver
 import com.composetest.core.ui.util.getMultiplePermissionState
-import com.composetest.feature.weatherforecast.R
 import com.composetest.feature.weatherforecast.presenter.enums.WeatherForecastScreenStatus
 import com.composetest.feature.weatherforecast.presenter.enums.WeatherForecastStatus
 import com.composetest.feature.weatherforecast.presenter.model.FutureDailyWeatherForecastScreenModel
@@ -126,20 +125,22 @@ private fun FullScreenMessage(
             verticalArrangement = Arrangement.spacedBy(Spacing.eight),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            if (uiState.screenStatusIsPermissionNotGranted) {
-                Text(
-                    text = stringResource(R.string.weather_forecast_required_permission_msg),
-                    style = MaterialTheme.typography.bodyLarge,
-                    textAlign = TextAlign.Center
-                )
-                NeedsPermissionButton(permissionState = permissionState)
-            } else {
+            if (uiState.screenStatusIsTryAgain) {
                 TryAgainButton(
                     modifier = Modifier
-                        .background(color = MaterialTheme.colorScheme.surface)
+                        .background(MaterialTheme.colorScheme.surface)
                         .fillMaxSize(),
                 ) {
                     onExecuteIntent(WeatherForecastIntent.GetLocationAndWeatherForecastsData)
+                }
+            } else {
+                Text(
+                    text = stringResource(uiState.screenStatus.titleId),
+                    style = MaterialTheme.typography.bodyLarge,
+                    textAlign = TextAlign.Center
+                )
+                if (uiState.screenStatusIsPermissionNotGranted) {
+                    NeedsPermissionButton(permissionState = permissionState)
                 }
             }
         }
@@ -381,7 +382,7 @@ private fun LifecycleEventHandler(
 ) {
     LifecycleEvent {
         if (it == Lifecycle.Event.ON_RESUME) {
-            onExecuteIntent(WeatherForecastIntent.CheckPermissionsResult)
+            onExecuteIntent(WeatherForecastIntent.OnResume)
         }
     }
 }
@@ -393,7 +394,7 @@ private fun Preview() {
     ComposeTestTheme {
         WeatherForecastScreen(
             uiState = WeatherForecastUiState(
-                screenStatus = WeatherForecastScreenStatus.READY,
+                screenStatus = WeatherForecastScreenStatus.TRY_AGAIN,
                 weatherNowStatus = WeatherForecastStatus.READY,
                 weatherForecastsStatus = WeatherForecastStatus.READY,
                 weatherNow = WeatherNowScreenModel(

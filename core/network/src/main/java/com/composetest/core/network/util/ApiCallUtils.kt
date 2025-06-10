@@ -22,6 +22,6 @@ class ApiCallUtils @Inject constructor(
         }
 
     private companion object {
-        val fakeCallDelay = 2.seconds
+        val fakeCallDelay = 1.seconds
     }
 }

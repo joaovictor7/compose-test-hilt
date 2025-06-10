@@ -1,6 +1,6 @@
 package com.composetest.feature.weatherforecast.presenter.ui
 
-import com.composetest.core.designsystem.enum.topbar.TopBarAction
+import com.composetest.core.designsystem.enums.topbar.TopBarAction
 import com.composetest.feature.weatherforecast.domain.model.TodayWeatherForecastModel
 import com.composetest.feature.weatherforecast.presenter.enums.WeatherForecastScreenStatus
 import com.composetest.feature.weatherforecast.presenter.enums.WeatherForecastStatus
@@ -27,10 +27,13 @@ internal data class WeatherForecastUiState(
     val showFullScreenMsg
         get() = screenStatus in listOf(
             WeatherForecastScreenStatus.TRY_AGAIN,
-            WeatherForecastScreenStatus.PERMISSION_NOT_GRANTED
+            WeatherForecastScreenStatus.PERMISSION_NOT_GRANTED,
+            WeatherForecastScreenStatus.NEEDS_LOCATION,
         ) || (weatherNowStatus == WeatherForecastStatus.ERROR && weatherForecastsStatus == WeatherForecastStatus.ERROR)
 
     val screenStatusIsPermissionNotGranted get() = screenStatus == WeatherForecastScreenStatus.PERMISSION_NOT_GRANTED
+
+    val screenStatusIsTryAgain get() = screenStatus == WeatherForecastScreenStatus.TRY_AGAIN
 
     fun setScreenStatus(screenStatus: WeatherForecastScreenStatus) =
         copy(screenStatus = screenStatus)

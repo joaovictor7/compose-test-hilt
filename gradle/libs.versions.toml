@@ -3,8 +3,8 @@ agp = "8.10.1"
 kotlin = "2.1.21"
 kotlinJsonSerialization = "1.8.1"
 kotlinCoroutine = "1.10.2"
-junit5 = "5.12.2"
-junitLauncher = "1.12.2"
+junit5 = "5.13.1"
+junitLauncher = "1.13.1"
 lifecycleRuntime = "2.9.1"
 activityCompose = "1.10.1"
 androidDataStore = "1.1.7"
@@ -12,6 +12,7 @@ androidHilt = "2.56.2"
 androidXHilt = "1.2.0"
 androidXAppCompat = "1.7.1"
 androidXBiometric = "1.4.0-alpha04"
+androidXStartup = "1.2.0"
 composeBom = "2025.06.00"
 composeNavigation = "2.9.0"
 googleServices = "4.4.2"
@@ -56,6 +57,7 @@ androidx-work-manager = { group = "androidx.work", name = "work-runtime-ktx", ve
 androidx-splash-screen = { group = "androidx.core", name = "core-splashscreen", version.ref = "splashScreen" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidXAppCompat" }
 androidx-biometric = { group = "androidx.biometric", name = "biometric", version.ref = "androidXBiometric" }
+androidx-startup = { group = "androidx.startup", name = "startup-runtime", version.ref = "androidXStartup" }
 
 # Room
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }

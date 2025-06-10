@@ -1,4 +1,4 @@
-package com.composetest.core.designsystem.enum.textfield
+package com.composetest.core.designsystem.enums.textfield
 
 import androidx.annotation.DrawableRes
 import com.composetest.core.designsystem.R

@@ -17,7 +17,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
-import com.composetest.core.designsystem.enum.textfield.TextFieldIcon
+import com.composetest.core.designsystem.enums.textfield.TextFieldIcon
 import com.composetest.core.designsystem.extension.opacity
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.designsystem.util.getTextFieldTrailingIcon

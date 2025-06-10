@@ -4,9 +4,9 @@ import com.composetest.core.ui.interfaces.Intent
 
 internal sealed interface WeatherForecastIntent : Intent<WeatherForecastIntentReceiver> {
 
-    data object CheckPermissionsResult : WeatherForecastIntent {
+    data object OnResume : WeatherForecastIntent {
         override fun execute(intentReceiver: WeatherForecastIntentReceiver) {
-            intentReceiver.checkPermissionsResult()
+            intentReceiver.onResume()
         }
     }
 
