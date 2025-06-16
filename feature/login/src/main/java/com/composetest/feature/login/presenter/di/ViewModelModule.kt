@@ -6,7 +6,7 @@ import com.composetest.core.router.destination.login.LoginDestination
 import com.composetest.core.router.extension.getDestination
 import com.composetest.core.ui.di.qualifier.AsyncTaskUtilsQualifier
 import com.composetest.core.ui.util.AsyncTaskUtils
-import com.composetest.feature.login.analytic.screens.LoginScreenAnalytic
+import com.composetest.feature.login.analytic.screen.LoginScreenAnalytic
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

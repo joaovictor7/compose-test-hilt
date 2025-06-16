@@ -3,7 +3,7 @@ package com.composetest.feature.root.presentation.di
 import com.composetest.core.analytic.sender.AnalyticSender
 import com.composetest.core.ui.di.qualifier.AsyncTaskUtilsQualifier
 import com.composetest.core.ui.util.AsyncTaskUtils
-import com.composetest.feature.root.analytic.screens.RootScreenAnalytic
+import com.composetest.feature.root.analytic.screen.RootScreenAnalytic
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -1,8 +1,8 @@
 package com.composetest.feature.configuration.presenter.ui.security
 
 import androidx.lifecycle.viewModelScope
-import com.composetest.core.analytic.sender.AnalyticSender
 import com.composetest.core.analytic.event.CommonAnalyticEvent
+import com.composetest.core.analytic.sender.AnalyticSender
 import com.composetest.core.security.provider.BiometricProvider
 import com.composetest.core.ui.base.BaseViewModel
 import com.composetest.core.ui.di.qualifier.AsyncTaskUtilsQualifier

@@ -2,8 +2,8 @@ package com.composetest.feature.exchange.presenter.ui.list
 
 import androidx.lifecycle.viewModelScope
 import com.composetest.common.extension.orFalse
-import com.composetest.core.analytic.sender.AnalyticSender
 import com.composetest.core.analytic.event.CommonAnalyticEvent
+import com.composetest.core.analytic.sender.AnalyticSender
 import com.composetest.core.router.extension.dialogErrorDestination
 import com.composetest.core.router.model.NavigationModel
 import com.composetest.core.ui.base.BaseViewModel
@@ -29,7 +29,9 @@ internal class ExchangeListViewModel @Inject constructor(
     private val exchangeMapper: ExchangeMapper,
     private val analyticSender: AnalyticSender,
     @AsyncTaskUtilsQualifier(ExchangeListScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
-) : BaseViewModel(), UiState<ExchangeListUiState>, UiEvent<ExchangeListUiEvent>,
+) : BaseViewModel(),
+    UiState<ExchangeListUiState>,
+    UiEvent<ExchangeListUiEvent>,
     ExchangeListIntentReceiver {
 
     override val intentReceiver = this

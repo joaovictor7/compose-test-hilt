@@ -1,8 +1,7 @@
 package com.composetest.feature.login.presenter.ui.login
 
-import com.composetest.core.network.model.ApiError
-import com.composetest.core.analytic.sender.AnalyticSender
 import com.composetest.core.analytic.event.CommonAnalyticEvent
+import com.composetest.core.analytic.sender.AnalyticSender
 import com.composetest.core.domain.enums.BuildType
 import com.composetest.core.domain.enums.Flavor
 import com.composetest.core.domain.model.buildconfig.BuildConfigFieldsModel
@@ -10,6 +9,7 @@ import com.composetest.core.domain.model.buildconfig.BuildConfigModel
 import com.composetest.core.domain.provider.BuildConfigProvider
 import com.composetest.core.domain.usecase.configuration.SetSystemBarsStyleUseCase
 import com.composetest.core.domain.usecase.remoteconfig.GetBooleanRemoteConfigUseCase
+import com.composetest.core.network.model.ApiError
 import com.composetest.core.router.destination.dialog.NetworkErrorDialog
 import com.composetest.core.router.destination.login.LoginDestination
 import com.composetest.core.router.destination.root.RootDestination
@@ -20,8 +20,8 @@ import com.composetest.core.security.provider.CipherProvider
 import com.composetest.core.test.BaseTest
 import com.composetest.core.test.extension.runFlowTest
 import com.composetest.core.ui.util.AsyncTaskUtils
-import com.composetest.feature.login.analytic.events.LoginEventAnalytic
-import com.composetest.feature.login.analytic.screens.LoginScreenAnalytic
+import com.composetest.feature.login.analytic.event.LoginEventAnalytic
+import com.composetest.feature.login.analytic.screen.LoginScreenAnalytic
 import com.composetest.feature.login.domain.usecase.AuthenticationByBiometricUseCase
 import com.composetest.feature.login.domain.usecase.AuthenticationUseCase
 import com.composetest.feature.login.domain.usecase.BiometricIsEnableUseCase

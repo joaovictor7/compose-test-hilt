@@ -25,8 +25,8 @@ import com.composetest.core.ui.interfaces.UiEvent
 import com.composetest.core.ui.interfaces.UiState
 import com.composetest.core.ui.util.AsyncTaskUtils
 import com.composetest.feature.login.R
-import com.composetest.feature.login.analytic.events.LoginEventAnalytic
-import com.composetest.feature.login.analytic.screens.LoginScreenAnalytic
+import com.composetest.feature.login.analytic.event.LoginEventAnalytic
+import com.composetest.feature.login.analytic.screen.LoginScreenAnalytic
 import com.composetest.feature.login.domain.enums.LoginRemoteConfig
 import com.composetest.feature.login.domain.usecase.AuthenticationByBiometricUseCase
 import com.composetest.feature.login.domain.usecase.AuthenticationUseCase

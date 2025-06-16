@@ -21,7 +21,7 @@ internal object ApiModule {
     @ApiQualifier(Api.OPEN_WEATHER_API)
     fun openWeatherApi(
         remoteConfigRepository: RemoteConfigRepository,
-        buildConfigProvider: BuildConfigProvider
+        buildConfigProvider: BuildConfigProvider,
     ): HttpClient = HttpClientBuilder.build(
         OpenWeatherApi(
             apiId = remoteConfigRepository.getString(ApiKeyRemoteConfig.OPEN_WEATHER_API),

@@ -17,19 +17,21 @@ internal data class WeatherForecastUiState(
     val weatherForecastsStatus: WeatherForecastStatus = WeatherForecastStatus.LOADING,
 ) {
 
+    val isLoading
+        get() = WeatherForecastStatus.LOADING in listOf(
+            weatherNowStatus,
+            weatherForecastsStatus
+        )
+
     val refreshButton
-        get() = if (!showFullScreenMsg && WeatherForecastStatus.LOADING !in listOf(
-                weatherNowStatus,
-                weatherForecastsStatus
-            )
-        ) listOf(TopBarAction.REFRESH) else null
+        get() = if (!showFullScreenMsg && !isLoading) listOf(TopBarAction.REFRESH) else null
 
     val showFullScreenMsg
-        get() = screenStatus in listOf(
+        get() = !isLoading && screenStatus in listOf(
             WeatherForecastScreenStatus.TRY_AGAIN,
             WeatherForecastScreenStatus.PERMISSION_NOT_GRANTED,
             WeatherForecastScreenStatus.NEEDS_LOCATION,
-        ) || (weatherNowStatus == WeatherForecastStatus.ERROR && weatherForecastsStatus == WeatherForecastStatus.ERROR)
+        )
 
     val screenStatusIsPermissionNotGranted get() = screenStatus == WeatherForecastScreenStatus.PERMISSION_NOT_GRANTED
 
@@ -37,6 +39,12 @@ internal data class WeatherForecastUiState(
 
     fun setScreenStatus(screenStatus: WeatherForecastScreenStatus) =
         copy(screenStatus = screenStatus)
+
+    fun setTryAgainScreenError() = copy(
+        screenStatus = WeatherForecastScreenStatus.TRY_AGAIN,
+        weatherNowStatus = WeatherForecastStatus.ERROR,
+        weatherForecastsStatus = WeatherForecastStatus.ERROR,
+    )
 
     fun setScreenLoading() = copy(
         weatherNowStatus = WeatherForecastStatus.LOADING,
@@ -69,17 +77,5 @@ internal data class WeatherForecastUiState(
             )
         },
         futureWeatherForecasts = futureWeatherForecastScreens
-    )
-
-    fun setWeatherNowError(
-        weatherNowStatus: WeatherForecastStatus,
-    ) = copy(
-        weatherNowStatus = weatherNowStatus,
-    )
-
-    fun setWeatherForecastsError(
-        weatherForecastsStatus: WeatherForecastStatus,
-    ) = copy(
-        weatherForecastsStatus = weatherForecastsStatus,
     )
 }

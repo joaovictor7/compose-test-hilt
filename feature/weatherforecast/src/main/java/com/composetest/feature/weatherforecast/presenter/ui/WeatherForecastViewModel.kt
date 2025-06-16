@@ -129,17 +129,17 @@ internal class WeatherForecastViewModel @Inject constructor(
 
     private fun handleLocationError(error: Throwable) {
         _uiEvent.emitEvent(WeatherForecastUiEvent.NavigateTo(error.dialogErrorDestination()))
-        _uiState.update { it.setScreenStatus(WeatherForecastScreenStatus.TRY_AGAIN) }
+        _uiState.update { it.setTryAgainScreenError() }
     }
 
     private fun handleWeatherForecastNowError(error: Throwable) = _uiState.update {
         val status = getStatusErrorAndOpenDialog(error, weatherForecastNowWasGet)
-        it.setWeatherNowError(status)
+        it.setWeatherNowStatus(status)
     }
 
     private fun handleWeatherForecastsError(error: Throwable) = _uiState.update {
         val status = getStatusErrorAndOpenDialog(error, weatherForecastsWasGet)
-        it.setWeatherForecastsError(status)
+        it.setWeatherForecastsStatus(status)
     }
 
     private fun getStatusErrorAndOpenDialog(

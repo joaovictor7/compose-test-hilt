@@ -12,8 +12,8 @@ import com.composetest.core.ui.di.qualifier.AsyncTaskUtilsQualifier
 import com.composetest.core.ui.interfaces.UiEvent
 import com.composetest.core.ui.interfaces.UiState
 import com.composetest.core.ui.util.AsyncTaskUtils
-import com.composetest.feature.root.analytic.events.RootEventAnalytic
-import com.composetest.feature.root.analytic.screens.RootScreenAnalytic
+import com.composetest.feature.root.analytic.event.RootEventAnalytic
+import com.composetest.feature.root.analytic.screen.RootScreenAnalytic
 import com.composetest.feature.root.domain.usecase.GetAvailableFeaturesUseCase
 import com.composetest.feature.root.presentation.enums.NavigationFeature
 import com.composetest.feature.root.presentation.enums.NavigationLocal

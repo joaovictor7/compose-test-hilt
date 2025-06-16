@@ -1,8 +1,8 @@
 package com.composetest.analytic.screen
 
-import com.composetest.core.analytic.screen.ScreenAnalytic
+import com.composetest.analytic.MainModuleAnalytic
 
-internal object MainScreenAnalytic : ScreenAnalytic {
+internal object MainScreenAnalytic : MainModuleAnalytic() {
     const val SCREEN = "main"
     override val screen = SCREEN
 }

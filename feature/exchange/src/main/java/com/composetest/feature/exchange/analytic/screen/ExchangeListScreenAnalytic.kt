@@ -1,8 +1,8 @@
 package com.composetest.feature.exchange.analytic.screen
 
-import com.composetest.core.analytic.screen.ScreenAnalytic
+import com.composetest.feature.exchange.analytic.ExchangeModuleAnalytic
 
-internal object ExchangeListScreenAnalytic : ScreenAnalytic {
+internal object ExchangeListScreenAnalytic : ExchangeModuleAnalytic() {
     const val SCREEN = "exchange_list"
     override val screen = SCREEN
 }

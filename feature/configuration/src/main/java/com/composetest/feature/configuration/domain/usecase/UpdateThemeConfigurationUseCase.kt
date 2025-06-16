@@ -1,7 +1,7 @@
 package com.composetest.feature.configuration.domain.usecase
 
-import com.composetest.feature.configuration.data.repository.ConfigurationRepositoryImpl
 import com.composetest.core.domain.model.ThemeConfigurationModel
+import com.composetest.feature.configuration.data.repository.ConfigurationRepositoryImpl
 import javax.inject.Inject
 
 internal class UpdateThemeConfigurationUseCase @Inject constructor(

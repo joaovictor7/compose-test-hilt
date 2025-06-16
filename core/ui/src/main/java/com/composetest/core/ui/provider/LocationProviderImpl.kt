@@ -12,6 +12,7 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
 import kotlin.time.Duration.Companion.seconds
 
 internal class LocationProviderImpl @Inject constructor(
@@ -23,10 +24,10 @@ internal class LocationProviderImpl @Inject constructor(
     }
     private val client by lazy { LocationServices.getSettingsClient(context) }
     private val builder by lazy {
-        val locationRequest =
-            LocationRequest.Builder(ACCURACY, locationRequestDelay.inWholeSeconds).build()
         LocationSettingsRequest.Builder()
-            .addLocationRequest(locationRequest)
+            .addLocationRequest(
+                LocationRequest.Builder(ACCURACY, locationRequestDelay.inWholeSeconds).build()
+            )
             .build()
     }
 
@@ -44,12 +45,12 @@ internal class LocationProviderImpl @Inject constructor(
             }
     }
 
-    override suspend fun isLocationEnabled() = suspendCancellableCoroutine { coroutine ->
+    override suspend fun isLocationEnabled() = suspendCoroutine { coroutine ->
         client.checkLocationSettings(builder)
             .addOnSuccessListener {
                 coroutine.resume(true)
-            }.addOnFailureListener { error ->
-                coroutine.resumeWithException(error)
+            }.addOnFailureListener {
+                coroutine.resume(false)
             }
     }
 

@@ -1,11 +1,11 @@
 package com.composetest.core.analytic.event
 
-import com.composetest.core.analytic.event.AnalyticEvent
 import com.composetest.core.analytic.screen.ScreenAnalytic
 
 open class ErrorAnalyticEvent(
     val error: Throwable,
     screenAnalytic: ScreenAnalytic = object : ScreenAnalytic {
+        override val feature = "no feature"
         override val screen = null
     }
 ) : AnalyticEvent, ScreenAnalytic by screenAnalytic {

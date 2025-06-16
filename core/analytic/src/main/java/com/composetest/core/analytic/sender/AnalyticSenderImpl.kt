@@ -2,8 +2,8 @@ package com.composetest.core.analytic.sender
 
 import android.os.Bundle
 import androidx.core.os.bundleOf
-import com.composetest.core.analytic.event.AnalyticEvent
 import com.composetest.core.analytic.data.repository.AnalyticsRepository
+import com.composetest.core.analytic.event.AnalyticEvent
 import com.composetest.core.analytic.event.ErrorAnalyticEvent
 import com.composetest.core.domain.provider.BuildConfigProvider
 import com.composetest.core.domain.repository.UserRepository
@@ -33,6 +33,7 @@ internal class AnalyticSenderImpl @Inject constructor(
             LOGGED_SESSION to (user != null).toString(),
             DATE_TIME to ZonedDateTime.now().toString(),
             APP_VERSION to buildConfigProvider.buildConfig.versionName,
+            FEATURE to event.feature,
             ANDROID_SDK_VERSION to buildConfigProvider.buildConfig.androidSdkVersion.toString(),
             platform,
             *event.params.map { it.key to it.value.toString() }.toTypedArray()
@@ -48,6 +49,7 @@ internal class AnalyticSenderImpl @Inject constructor(
         const val APP_VERSION = "app_version"
         const val ANDROID_SDK_VERSION = "android_sdk_version"
         const val SCREEN = "screen"
+        const val FEATURE = "feature"
         val platform = "platform" to "android"
     }
 }

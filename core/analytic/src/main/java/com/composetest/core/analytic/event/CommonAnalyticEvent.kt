@@ -1,6 +1,5 @@
 package com.composetest.core.analytic.event
 
-import com.composetest.core.analytic.event.AnalyticEvent
 import com.composetest.core.analytic.screen.ScreenAnalytic
 
 sealed class CommonAnalyticEvent(
