@@ -49,6 +49,8 @@ fun <Result : ResultParam> NavHostController.getResultFlow(resultClass: KClass<R
         }
     }
 
+val NavHostController.backStackBundle get() = currentBackStackEntry?.arguments
+
 private fun NavHostController.getNavigateOptions(mode: NavigationMode?) =
     NavOptions.Builder().apply {
         when (mode) {

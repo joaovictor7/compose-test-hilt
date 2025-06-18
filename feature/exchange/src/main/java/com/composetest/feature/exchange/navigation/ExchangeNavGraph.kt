@@ -1,5 +1,6 @@
 package com.composetest.feature.exchange.navigation
 
+import android.annotation.SuppressLint
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -8,14 +9,24 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import com.composetest.core.router.destination.exchange.ExchangeDetailDestination
 import com.composetest.core.router.destination.exchange.ExchangeListDestination
+import com.composetest.core.ui.util.hiltViewModelWithParam
+import com.composetest.core.ui.util.rememberDeepLinkParam
+import com.composetest.core.ui.util.transformDeepLinks
+import com.composetest.feature.exchange.presenter.mapper.ExchangeDeepLinkParamMapper
 import com.composetest.feature.exchange.presenter.ui.detail.ExchangeDetailScreen
 import com.composetest.feature.exchange.presenter.ui.detail.ExchangeDetailViewModel
 import com.composetest.feature.exchange.presenter.ui.list.ExchangeListScreen
 import com.composetest.feature.exchange.presenter.ui.list.ExchangeListViewModel
 
+private const val EXCHANGES_URI = "composetest://exchange?filter={filter}"
+
 fun NavGraphBuilder.exchangeNavGraphs(navController: NavHostController) {
-    composable<ExchangeListDestination> {
-        val viewModel = hiltViewModel<ExchangeListViewModel>()
+    composable<ExchangeListDestination>(
+        deepLinks = transformDeepLinks(EXCHANGES_URI)
+    ) {
+        val deepLinkParam =
+            rememberDeepLinkParam(navController, ExchangeDeepLinkParamMapper::mapperToParam)
+        val viewModel: ExchangeListViewModel = hiltViewModelWithParam(deepLinkParam)
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
         ExchangeListScreen(
             uiState = uiState,
