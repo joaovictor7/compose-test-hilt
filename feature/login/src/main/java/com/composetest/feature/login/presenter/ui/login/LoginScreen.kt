@@ -83,7 +83,7 @@ private fun LoginForm(
 ) {
     Column(
         modifier = Modifier.padding(screenMargin),
-        verticalArrangement = Arrangement.spacedBy(Spacing.twelve)
+        verticalArrangement = Arrangement.spacedBy(Spacing.medium)
     ) {
         Text(
             text = stringResource(R.string.feature_login_login),
@@ -91,7 +91,7 @@ private fun LoginForm(
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center
         )
-        Column(verticalArrangement = Arrangement.spacedBy(Spacing.sixteen)) {
+        Column(verticalArrangement = Arrangement.spacedBy(Spacing.semiLarge)) {
             OutlinedTextField(
                 labelText = stringResource(R.string.feature_login_email),
                 textValue = uiState.loginFormModel.email,
@@ -135,7 +135,7 @@ private fun ButtonsArea(
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(Spacing.eight)
+        verticalArrangement = Arrangement.spacedBy(Spacing.small)
     ) {
         Button(
             text = stringResource(R.string.feature_login_enter),
@@ -157,7 +157,7 @@ private fun BiometricButton(
             .setBiometricButtonClick(biometric.isAvailable) {
                 onExecuteIntent(LoginIntent.ShowBiometricPrompt)
             }
-            .padding(Spacing.four),
+            .padding(Spacing.tiny),
         iconId = DesignSystemResources.drawable.ic_fingerprint_extra_large,
         iconTint = when {
             !biometric.isAvailable -> MaterialTheme.colorScheme.onSurface.opacity(0.38f)
@@ -185,7 +185,7 @@ private fun BoxScope.VersionName(uiState: LoginUiState) {
     Column(
         modifier = Modifier
             .align(Alignment.BottomCenter)
-            .padding(bottom = Spacing.twelve),
+            .padding(bottom = Spacing.medium),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(

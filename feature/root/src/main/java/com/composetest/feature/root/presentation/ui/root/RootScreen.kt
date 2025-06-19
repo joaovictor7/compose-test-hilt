@@ -130,7 +130,7 @@ private fun getModalDrawerContent(
     drawerState: DrawerState,
 ) = @Composable {
     ModalDrawerSheet {
-        Column(verticalArrangement = Arrangement.spacedBy(Spacing.twenty)) {
+        Column(verticalArrangement = Arrangement.spacedBy(Spacing.large)) {
             ModalDrawerHeader(uiState = uiState, onExecuteIntent = onExecuteIntent)
             HorizontalDivider()
             ModalDrawerItems(
@@ -158,7 +158,7 @@ private fun ModalDrawerHeader(
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(Spacing.twelve),
+            horizontalArrangement = Arrangement.spacedBy(Spacing.medium),
             modifier = Modifier.weight(0.85f)
         ) {
             Image(
@@ -170,7 +170,7 @@ private fun ModalDrawerHeader(
                 contentScale = ContentScale.Crop,
                 colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary)
             )
-            Column(verticalArrangement = Arrangement.spacedBy(Spacing.four)) {
+            Column(verticalArrangement = Arrangement.spacedBy(Spacing.tiny)) {
                 uiState.userModalDrawerModel.username?.let {
                     Text(
                         text = uiState.userModalDrawerModel.username,
@@ -205,7 +205,7 @@ private fun ModalDrawerItems(
     drawerState: DrawerState,
 ) {
     val coroutineScope = rememberCoroutineScope()
-    LazyColumn(verticalArrangement = Arrangement.spacedBy(Spacing.four)) {
+    LazyColumn(verticalArrangement = Arrangement.spacedBy(Spacing.tiny)) {
         items(uiState.modalDrawerNavigationFeaturesToList) { item ->
             val label = item.textId?.let { stringResource(it) }.orEmpty()
             NavigationDrawerItem(
@@ -238,14 +238,14 @@ private fun LogoutButton(onExecuteIntent: (Intent<RootIntentReceiver>) -> Unit) 
             .windowInsetsPadding(WindowInsets.navigationBars)
             .screenMargin(),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(Spacing.twelve)
+        horizontalArrangement = Arrangement.spacedBy(Spacing.medium)
     ) {
         TextButton(onClick = { onExecuteIntent(RootIntent.Logout) }) {
             Icon(
                 painter = painterResource(DesignSystemResources.drawable.ic_logout_medium),
                 contentDescription = null
             )
-            Spacer(Modifier.width(Spacing.twelve))
+            Spacer(Modifier.width(Spacing.medium))
             Text(
                 text = stringResource(R.string.logout),
                 style = MaterialTheme.typography.bodyMedium

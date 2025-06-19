@@ -51,8 +51,8 @@ fun IconDock(
     onSelectionChange: (selectedIndex: Int) -> Unit
 ) {
     if (dockItems.isEmpty()) return
-    val internalPadding = Spacing.one
-    val zeroSpacing = Spacing.zero
+    val internalPadding = Spacing.micro
+    val zeroSpacing = Spacing.none
     val currentDensity = LocalDensity.current
     val containerColor = TabRowDefaults.primaryContainerColor.opacity(0.7f)
     var componentHeight by remember { mutableStateOf(zeroSpacing) }

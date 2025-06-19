@@ -47,8 +47,8 @@ internal fun ConfigurationScreen(
     LazyVerticalStaggeredGrid(
         modifier = Modifier.horizontalScreenMargin(),
         columns = StaggeredGridCells.Fixed(LIMIT_CONFIGURATIONS_PER_LINE),
-        verticalItemSpacing = Spacing.sixteen,
-        horizontalArrangement = Arrangement.spacedBy(Spacing.sixteen),
+        verticalItemSpacing = Spacing.semiLarge,
+        horizontalArrangement = Arrangement.spacedBy(Spacing.semiLarge),
     ) {
         items(uiState.configurations) { item ->
             ConfigurationCard(
@@ -76,7 +76,7 @@ private fun ConfigurationCard(
     ) {
         Box(
             modifier = Modifier
-                .padding(Spacing.twenty)
+                .padding(Spacing.large)
                 .fillMaxSize()
         ) {
             Icon(painter = painterResource(configuration.iconId), contentDescription = null)

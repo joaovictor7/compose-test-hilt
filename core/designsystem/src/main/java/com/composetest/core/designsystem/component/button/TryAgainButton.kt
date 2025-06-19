@@ -37,7 +37,7 @@ fun TryAgainButton(
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            modifier = Modifier.padding(top = Spacing.twelve),
+            modifier = Modifier.padding(top = Spacing.medium),
             text = stringResource(UiRes.string.try_again),
             style = MaterialTheme.typography.bodyLarge,
             textAlign = TextAlign.Center

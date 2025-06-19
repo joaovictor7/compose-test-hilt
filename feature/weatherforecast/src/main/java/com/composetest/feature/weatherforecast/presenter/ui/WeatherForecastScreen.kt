@@ -86,7 +86,7 @@ internal fun WeatherForecastScreen(
         )
         Column(
             modifier = Modifier.screenMargin(),
-            verticalArrangement = Arrangement.spacedBy(Spacing.twentyFour)
+            verticalArrangement = Arrangement.spacedBy(Spacing.extraLarge)
         ) {
             if (uiState.showFullScreenMsg) {
                 FullScreenMessage(
@@ -122,7 +122,7 @@ private fun FullScreenMessage(
         contentAlignment = Alignment.Center
     ) {
         Column(
-            verticalArrangement = Arrangement.spacedBy(Spacing.eight),
+            verticalArrangement = Arrangement.spacedBy(Spacing.small),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             if (uiState.screenStatusIsTryAgain) {
@@ -193,11 +193,11 @@ private fun WeatherNow(
 private fun WeatherNowContent(uiState: WeatherForecastUiState) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(Spacing.twelve)
+        horizontalArrangement = Arrangement.spacedBy(Spacing.medium)
     ) {
         Column(
             horizontalAlignment = Alignment.End,
-            verticalArrangement = Arrangement.spacedBy(Spacing.eight)
+            verticalArrangement = Arrangement.spacedBy(Spacing.small)
         ) {
             Text(
                 text = uiState.weatherNow.city,
@@ -247,7 +247,7 @@ private fun WeatherForecasts(
 @Composable
 private fun WeatherForecastsContent(uiState: WeatherForecastUiState) {
     WeatherForecastGraphic(uiState = uiState)
-    LazyColumn(verticalArrangement = Arrangement.spacedBy(Spacing.twelve)) {
+    LazyColumn(verticalArrangement = Arrangement.spacedBy(Spacing.medium)) {
         items(uiState.futureWeatherForecasts) {
             FutureWeatherForecast(futureWeatherForecastScreen = it)
         }
@@ -270,7 +270,7 @@ private fun WeatherForecastGraphic(uiState: WeatherForecastUiState) {
                 SimpleScatterPlotGraphic(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(Spacing.twelve),
+                        .padding(Spacing.medium),
                     yPoints = uiState.todayWeatherForecast.temperatures,
                     minLabel = uiState.todayWeatherForecast.minTemperature,
                     maxLabel = uiState.todayWeatherForecast.maxTemperature,
@@ -288,7 +288,7 @@ private fun WeatherForecastGraphic(uiState: WeatherForecastUiState) {
 
 @Composable
 private fun FutureWeatherForecast(futureWeatherForecastScreen: FutureWeatherForecastScreenModel) {
-    Column(verticalArrangement = Arrangement.spacedBy(Spacing.eight)) {
+    Column(verticalArrangement = Arrangement.spacedBy(Spacing.small)) {
         Text(
             text = futureWeatherForecastScreen.day,
             style = MaterialTheme.typography.titleLarge
@@ -304,7 +304,7 @@ private fun FutureWeatherForecast(futureWeatherForecastScreen: FutureWeatherFore
                         text = it.temperature,
                         style = MaterialTheme.typography.bodyLarge
                     )
-                    Spacer(Modifier.padding(vertical = Spacing.four))
+                    Spacer(Modifier.padding(vertical = Spacing.tiny))
                     Text(
                         text = it.hour,
                         style = MaterialTheme.typography.bodySmall
@@ -335,9 +335,9 @@ private fun WeatherForecastsShimmer(shimmerOffset: Float) {
             .height(200.dp),
         offset = shimmerOffset,
     )
-    Column(verticalArrangement = Arrangement.spacedBy(Spacing.twelve)) {
+    Column(verticalArrangement = Arrangement.spacedBy(Spacing.medium)) {
         repeat(4) {
-            Column(verticalArrangement = Arrangement.spacedBy(Spacing.sixteen)) {
+            Column(verticalArrangement = Arrangement.spacedBy(Spacing.semiLarge)) {
                 Shimmer(
                     modifier = Modifier
                         .fillMaxWidth(0.6f)
@@ -346,7 +346,7 @@ private fun WeatherForecastsShimmer(shimmerOffset: Float) {
                 )
                 Shimmer(
                     modifier = Modifier
-                        .padding(horizontal = Spacing.eight)
+                        .padding(horizontal = Spacing.small)
                         .height(70.dp)
                         .fillMaxWidth(),
                     offset = shimmerOffset,

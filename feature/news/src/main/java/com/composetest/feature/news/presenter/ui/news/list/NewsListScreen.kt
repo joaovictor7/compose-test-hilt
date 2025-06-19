@@ -64,7 +64,7 @@ internal fun NewsListScreen(
                 .fillMaxSize()
                 .horizontalScreenMargin(),
             contentPadding = topScreenMarginList,
-            verticalArrangement = Arrangement.spacedBy(Spacing.twentyEight)
+            verticalArrangement = Arrangement.spacedBy(Spacing.xxLarge)
         ) {
             if (uiState.isLoading) {
                 items(4) {
@@ -98,7 +98,7 @@ private fun NewsCard(
             articleModel.urlToImage?.let {
                 AsyncImage(
                     modifier = Modifier.sizeIn(maxHeight = 180.dp),
-                    loadingModifier = Modifier.padding(vertical = Spacing.twentyEight),
+                    loadingModifier = Modifier.padding(vertical = Spacing.xxLarge),
                     url = it,
                     alignment = Alignment.TopCenter,
                     contentScale = ContentScale.None
@@ -107,7 +107,7 @@ private fun NewsCard(
         }
         Column(
             modifier = Modifier.padding(screenMargin),
-            verticalArrangement = Arrangement.spacedBy(Spacing.twelve)
+            verticalArrangement = Arrangement.spacedBy(Spacing.medium)
         ) {
             Text(
                 text = articleModel.provider,

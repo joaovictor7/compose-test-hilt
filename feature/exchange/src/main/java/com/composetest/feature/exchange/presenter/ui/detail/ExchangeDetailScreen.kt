@@ -39,7 +39,7 @@ internal fun ExchangeDetailScreen(uiState: ExchangeDetailUiState) {
         modifier = Modifier.horizontalScreenMargin(),
         topBar = { LeftTopBar(titleId = R.string.exchange_detail_title) }
     ) {
-        LazyColumn(verticalArrangement = Arrangement.spacedBy(Spacing.twelve)) {
+        LazyColumn(verticalArrangement = Arrangement.spacedBy(Spacing.medium)) {
             items(uiState.exchangeDataRowsScreen) {
                 if (it.valueIsGrid) {
                     GridDataRow(exchangeDataRowScreen = it)
@@ -55,7 +55,7 @@ internal fun ExchangeDetailScreen(uiState: ExchangeDetailUiState) {
 private fun LabelDataRow(
     exchangeDataRowScreen: ExchangeDetailRowScreenModel
 ) = with(exchangeDataRowScreen) {
-    Row(horizontalArrangement = Arrangement.spacedBy(Spacing.four)) {
+    Row(horizontalArrangement = Arrangement.spacedBy(Spacing.tiny)) {
         LabelTextDataRow(labelId = labelId)
         if (isLink && value != null && url != null) {
             LinkText(
@@ -80,7 +80,7 @@ private fun GridDataRow(
 ) = with(exchangeDataRowScreen) {
     Column {
         LabelTextDataRow(labelId = labelId)
-        Spacer(Modifier.height(Spacing.eight))
+        Spacer(Modifier.height(Spacing.small))
         gridValues.forEach {
             Row(
                 modifier = Modifier
@@ -98,7 +98,7 @@ private fun GridDataRow(
                         horizontalArrangement = Arrangement.Center
                     ) {
                         Text(
-                            modifier = Modifier.padding(Spacing.four),
+                            modifier = Modifier.padding(Spacing.tiny),
                             text = it.first ?: stringResource(R.string.exchange_detail_no_value),
                             style = MaterialTheme.typography.bodyMedium,
                             textAlign = TextAlign.Center,

@@ -49,7 +49,7 @@ internal fun AccountScreen(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
         ) {
-            Column(verticalArrangement = Arrangement.spacedBy(Spacing.twentyFour)) {
+            Column(verticalArrangement = Arrangement.spacedBy(Spacing.extraLarge)) {
                 uiState.accountScreenModels.forEach { data ->
                     TextField(
                         modifier = Modifier.fillMaxWidth(),

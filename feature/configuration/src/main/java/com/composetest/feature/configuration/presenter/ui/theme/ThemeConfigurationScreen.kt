@@ -61,9 +61,9 @@ private fun Section(
         text = stringResource(titleId),
         style = MaterialTheme.typography.titleMedium
     )
-    Spacer(Modifier.height(Spacing.sixteen))
+    Spacer(Modifier.height(Spacing.semiLarge))
     content()
-    Spacer(Modifier.height(Spacing.twentyEight))
+    Spacer(Modifier.height(Spacing.xxLarge))
 }
 
 @Composable
@@ -80,7 +80,7 @@ private fun Theme(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
                 modifier = Modifier
-                    .padding(horizontal = Spacing.four)
+                    .padding(horizontal = Spacing.tiny)
                     .clip(MaterialTheme.shapes.medium)
                     .setSelectedBackgroundColor(selectedTheme = theme == uiState.selectedTheme)
                     .size(100.dp)
@@ -89,7 +89,7 @@ private fun Theme(
                     }
             ) {
                 Icon(painter = painterResource(theme.iconId), contentDescription = null)
-                Spacer(Modifier.height(Spacing.eight))
+                Spacer(Modifier.height(Spacing.small))
                 Text(
                     text = stringResource(theme.textId),
                     style = MaterialTheme.typography.labelLarge

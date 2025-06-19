@@ -1,6 +1,5 @@
 package com.composetest.feature.exchange.navigation
 
-import android.annotation.SuppressLint
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle

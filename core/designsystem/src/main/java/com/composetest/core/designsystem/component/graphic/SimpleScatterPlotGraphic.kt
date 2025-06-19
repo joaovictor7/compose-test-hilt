@@ -39,7 +39,7 @@ fun SimpleScatterPlotGraphic(
 
     Canvas(
         modifier = modifier
-            .padding(all = Spacing.sixteen)
+            .padding(Spacing.semiLarge)
             .fillMaxWidth()
     ) {
         val spacingPx = spacing.toPx()

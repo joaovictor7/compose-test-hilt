@@ -31,8 +31,8 @@ fun DataLabel(
 ) {
     Column {
         Column(
-            modifier = Modifier.padding(horizontal = Spacing.eight, vertical = Spacing.twelve),
-            verticalArrangement = Arrangement.spacedBy(Spacing.four)
+            modifier = Modifier.padding(horizontal = Spacing.small, vertical = Spacing.medium),
+            verticalArrangement = Arrangement.spacedBy(Spacing.tiny)
         ) {
             Text(
                 text = stringResource(labelTitleId),

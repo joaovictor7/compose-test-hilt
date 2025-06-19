@@ -70,8 +70,8 @@ internal fun ExchangeListScreen(
             ) {
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
-                    contentPadding = PaddingValues(top = Spacing.twelve),
-                    verticalArrangement = Arrangement.spacedBy(Spacing.sixteen)
+                    contentPadding = PaddingValues(top = Spacing.medium),
+                    verticalArrangement = Arrangement.spacedBy(Spacing.semiLarge)
                 ) {
                     if (uiState.isLoading) {
                         items(7) {
@@ -105,7 +105,7 @@ private fun ExchangeItem(
     ) {
         Column(
             modifier = Modifier.padding(screenMargin),
-            verticalArrangement = Arrangement.spacedBy(Spacing.eight)
+            verticalArrangement = Arrangement.spacedBy(Spacing.small)
         ) {
             Text(
                 text = name ?: stringResource(R.string.exchange_without_name),
@@ -121,7 +121,7 @@ private fun ExchangeItem(
 private fun ExchangeDataRow(dataRows: List<ExchangeListRowScreenModel>) = dataRows.forEach {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(Spacing.four)
+        horizontalArrangement = Arrangement.spacedBy(Spacing.tiny)
     ) {
         Text(
             modifier = Modifier.widthIn(max = 160.dp),

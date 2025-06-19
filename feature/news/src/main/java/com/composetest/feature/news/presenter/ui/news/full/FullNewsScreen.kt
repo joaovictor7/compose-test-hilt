@@ -43,7 +43,7 @@ internal fun FullNewsScreen(uiState: FullNewsUiState) {
             }
             Column(
                 modifier = Modifier.padding(screenMargin),
-                verticalArrangement = Arrangement.spacedBy(Spacing.twelve)
+                verticalArrangement = Arrangement.spacedBy(Spacing.medium)
             ) {
                 Text(
                     text = uiState.title,
