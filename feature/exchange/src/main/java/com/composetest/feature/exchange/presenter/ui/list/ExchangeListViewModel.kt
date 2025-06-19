@@ -15,7 +15,7 @@ import com.composetest.core.ui.util.AsyncTaskUtils
 import com.composetest.feature.exchange.analytic.screen.ExchangeListScreenAnalytic
 import com.composetest.feature.exchange.domain.model.ExchangeModel
 import com.composetest.feature.exchange.domain.usecase.GetAllExchangesUseCase
-import com.composetest.feature.exchange.navigation.model.ExchangeListDeepLinkParam
+import com.composetest.feature.exchange.navigation.param.ExchangeListDeepLinkParam
 import com.composetest.feature.exchange.presenter.mapper.ExchangeMapper
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory

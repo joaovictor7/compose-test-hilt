@@ -2,7 +2,7 @@ package com.composetest.feature.exchange.presenter.mapper
 
 import com.composetest.common.extension.convertFromString
 import com.composetest.common.extension.convertToString
-import com.composetest.core.router.destination.exchange.ExchangeDetailDestination
+import com.composetest.feature.exchange.navigation.destination.ExchangeDetailDestination
 import com.composetest.core.ui.provider.StringResourceProvider
 import com.composetest.feature.exchange.R
 import com.composetest.feature.exchange.domain.model.ExchangeModel

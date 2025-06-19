@@ -6,7 +6,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
-import com.composetest.core.router.destination.news.FullNewsDestination
+import com.composetest.feature.news.navigation.destination.FullNewsDestination
 import com.composetest.core.router.destination.news.NewsListDestination
 import com.composetest.core.ui.util.transformDeepLinks
 import com.composetest.feature.news.presenter.ui.news.full.FullNewsScreen

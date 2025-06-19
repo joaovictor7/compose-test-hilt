@@ -1,7 +1,7 @@
 package com.composetest.feature.exchange.presenter.mapper
 
 import android.os.Bundle
-import com.composetest.feature.exchange.navigation.model.ExchangeListDeepLinkParam
+import com.composetest.feature.exchange.navigation.param.ExchangeListDeepLinkParam
 
 internal object ExchangeDeepLinkParamMapper {
     fun mapperToParam(bundle: Bundle?): ExchangeListDeepLinkParam? {

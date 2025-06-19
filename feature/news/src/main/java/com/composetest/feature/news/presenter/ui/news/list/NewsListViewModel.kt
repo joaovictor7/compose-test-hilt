@@ -3,7 +3,7 @@ package com.composetest.feature.news.presenter.ui.news.list
 import androidx.lifecycle.viewModelScope
 import com.composetest.core.analytic.event.CommonAnalyticEvent
 import com.composetest.core.analytic.sender.AnalyticSender
-import com.composetest.core.router.destination.news.FullNewsDestination
+import com.composetest.feature.news.navigation.destination.FullNewsDestination
 import com.composetest.core.router.extension.dialogErrorDestination
 import com.composetest.core.router.model.NavigationModel
 import com.composetest.core.ui.base.BaseViewModel

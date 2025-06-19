@@ -1,10 +1,10 @@
-package com.composetest.core.router.destination.news
+package com.composetest.feature.news.navigation.destination
 
 import com.composetest.core.router.interfaces.Destination
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class FullNewsDestination(
+internal data class FullNewsDestination(
     val imageUrl: String?,
     val title: String,
     val description: String?,

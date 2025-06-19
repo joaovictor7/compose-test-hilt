@@ -6,7 +6,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
-import com.composetest.core.router.destination.exchange.ExchangeDetailDestination
+import com.composetest.feature.exchange.navigation.destination.ExchangeDetailDestination
 import com.composetest.core.router.destination.exchange.ExchangeListDestination
 import com.composetest.core.ui.util.hiltViewModelWithParam
 import com.composetest.core.ui.util.rememberDeepLinkParam

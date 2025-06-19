@@ -1,10 +1,10 @@
-package com.composetest.core.router.destination.exchange
+package com.composetest.feature.exchange.navigation.destination
 
 import com.composetest.core.router.interfaces.Destination
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ExchangeDetailDestination(
+internal data class ExchangeDetailDestination(
     val id: String,
     val website: String? = null,
     val name: String? = null,
