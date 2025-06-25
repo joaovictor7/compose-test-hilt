@@ -7,8 +7,8 @@ import com.composetest.core.designsystem.R as DesignSystemResources
 import com.composetest.feature.configuration.R as ConfigurationResources
 
 internal enum class ThemeConfiguration(
-    @StringRes val textId: Int,
-    @DrawableRes val iconId: Int,
+    @param:StringRes val textId: Int,
+    @param:DrawableRes val iconId: Int,
     val theme: Theme
 ) {
     DARK(

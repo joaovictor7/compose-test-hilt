@@ -19,7 +19,7 @@ import javax.inject.Inject
 internal class FullNewsViewModel @Inject constructor(
     private val destination: FullNewsDestination,
     private val analyticSender: AnalyticSender,
-    @AsyncTaskUtilsQualifier(FullNewsScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
+    @param:AsyncTaskUtilsQualifier(FullNewsScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
 ) : BaseViewModel(), UiState<FullNewsUiState> {
 
     private val _uiState = MutableStateFlow(FullNewsUiState())

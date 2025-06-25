@@ -2,19 +2,20 @@ package com.composetest.presentation.ui.main
 
 import androidx.lifecycle.viewModelScope
 import com.composetest.analytic.screen.MainScreenAnalytic
-import com.composetest.domain.usecase.GetAppThemeUseCase
 import com.composetest.core.domain.usecase.remoteconfig.FetchRemoteConfigUseCase
-import com.composetest.domain.usecase.CheckNeedsLoginUseCase
 import com.composetest.core.domain.usecase.session.CheckSessionIsValidUseCase
 import com.composetest.core.router.destination.login.LoginDestination
 import com.composetest.core.router.destination.root.RootDestination
 import com.composetest.core.router.enums.NavigationMode
+import com.composetest.core.router.interfaces.NavGraph
 import com.composetest.core.router.model.NavigationModel
 import com.composetest.core.ui.base.BaseViewModel
 import com.composetest.core.ui.di.qualifier.AsyncTaskUtilsQualifier
 import com.composetest.core.ui.interfaces.UiEvent
 import com.composetest.core.ui.interfaces.UiState
 import com.composetest.core.ui.util.AsyncTaskUtils
+import com.composetest.domain.usecase.CheckNeedsLoginUseCase
+import com.composetest.domain.usecase.GetAppThemeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,7 +30,8 @@ internal class MainViewModel @Inject constructor(
     private val checkNeedsLoginUseCase: CheckNeedsLoginUseCase,
     private val getAppThemeUseCase: GetAppThemeUseCase,
     private val fetchRemoteConfigUseCase: FetchRemoteConfigUseCase,
-    @AsyncTaskUtilsQualifier(MainScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
+    private val navGraphs: Array<NavGraph>,
+    @param:AsyncTaskUtilsQualifier(MainScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
 ) : BaseViewModel(), UiState<MainUiState>, UiEvent<MainUiEvent>, MainIntentReceiver {
 
     override val intentReceiver = this
@@ -73,7 +75,7 @@ internal class MainViewModel @Inject constructor(
         } else {
             RootDestination
         }
-        _uiState.update { it.setInitUiState(firstDestination) }
+        _uiState.update { it.setInitUiState(firstDestination, navGraphs) }
     }
 
     private fun appThemeObservable() {

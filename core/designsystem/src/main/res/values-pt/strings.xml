@@ -5,6 +5,8 @@
     <string name="error_alert_dialog_generic_title">Deu ruim 😥</string>
     <string name="error_alert_dialog_generic_text">Aconteceu algo inesperado, não temos uma resposta adequada no momento.</string>
     <string name="error_alert_dialog_generic_text_update_failed">Não foi possível atualizar os dados no momento.</string>
+    <string name="error_alert_dialog_network_title">Você não está online ☹️</string>
+    <string name="error_alert_dialog_network_text">Há algum problema com a sua conexão de internet. Verifique o sinal de Wi-Fi ou dados móveis e volte a tentar.</string>
 
     <!-- Toolbar -->
     <string name="toolbar_back_button_content_description">Voltar para a tela anterior</string>

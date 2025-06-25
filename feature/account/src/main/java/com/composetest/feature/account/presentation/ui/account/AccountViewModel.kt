@@ -37,7 +37,7 @@ internal class AccountViewModel @Inject constructor(
     private val stringResourceProvider: StringResourceProvider,
     private val cipherProvider: CipherProvider,
     private val analyticSender: AnalyticSender,
-    @AsyncTaskUtilsQualifier(AccountScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
+    @param:AsyncTaskUtilsQualifier(AccountScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
 ) : BaseViewModel(), UiState<AccountUiState>, UiEvent<AccountUiEvent>, AccountIntentReceiver {
 
     override val intentReceiver = this

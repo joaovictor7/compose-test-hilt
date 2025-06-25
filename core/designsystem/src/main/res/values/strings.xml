@@ -5,6 +5,8 @@
     <string name="error_alert_dialog_generic_title">It went bad 😥</string>
     <string name="error_alert_dialog_generic_text">Something unexpected happened. We haven\'t appropriate response now.</string>
     <string name="error_alert_dialog_generic_text_update_failed">couldn\'t update the data now.</string>
+    <string name="error_alert_dialog_network_title">You isn\'t online ☹️</string>
+    <string name="error_alert_dialog_network_text">There is a problem with your internet connection. Verify your Wi-Fi or mobile data and retry.</string>
 
     <!-- Toolbar -->
     <string name="toolbar_back_button_content_description">Going back to previous screen</string>

@@ -10,61 +10,61 @@ import com.composetest.core.router.destination.profile.ProfileDestination
 import com.composetest.core.router.destination.weatherforecast.WeatherForecastDestination
 import com.composetest.core.router.interfaces.Destination
 import com.composetest.feature.root.domain.enums.Feature
-import com.composetest.core.designsystem.R as DesignSystemResources
-import com.composetest.feature.configuration.R as ConfigurationResources
-import com.composetest.feature.exchange.R as ExchangeResources
-import com.composetest.feature.home.R as HomeResources
-import com.composetest.feature.news.R as NewsResources
-import com.composetest.feature.profile.R as AccountResources
-import com.composetest.feature.weatherforecast.R as WeatherForecastResources
+import com.composetest.core.designsystem.R as DesignSystemRes
+import com.composetest.feature.configuration.R as ConfigurationRes
+import com.composetest.feature.exchange.R as ExchangeRes
+import com.composetest.feature.home.R as HomeRes
+import com.composetest.feature.news.R as NewsRes
+import com.composetest.feature.profile.R as AccountRes
+import com.composetest.feature.weatherforecast.R as WeatherForecastRes
 
 internal enum class NavigationFeature(
     val feature: Feature,
     val destination: Destination,
     val navigationLocal: NavigationLocal,
-    @DrawableRes val iconId: Int,
-    @StringRes val textId: Int? = null,
+    @param:DrawableRes val iconId: Int,
+    @param:StringRes val textId: Int? = null,
 ) {
     HOME(
         Feature.HOME,
         HomeDestination,
         NavigationLocal.BOTTOM,
-        DesignSystemResources.drawable.ic_house_filled,
-        HomeResources.string.home_title
+        DesignSystemRes.drawable.ic_house_filled,
+        HomeRes.string.home_title
     ),
     CONFIGURATION(
         Feature.CONFIGURATION,
         ConfigurationDestination,
         NavigationLocal.BOTTOM,
-        DesignSystemResources.drawable.ic_config_filled,
-        ConfigurationResources.string.configuration_title
+        DesignSystemRes.drawable.ic_config_filled,
+        ConfigurationRes.string.configuration_title
     ),
     WEATHER_FORECAST(
         Feature.WEATHER_FORECAST,
         WeatherForecastDestination,
         NavigationLocal.MODAL_DRAWER,
-        DesignSystemResources.drawable.ic_partly_cloudy_medium,
-        WeatherForecastResources.string.weather_forecast_title
+        DesignSystemRes.drawable.ic_partly_cloudy_medium,
+        WeatherForecastRes.string.weather_forecast_title
     ),
     NEWS(
         Feature.NEWS,
         NewsListDestination,
         NavigationLocal.MODAL_DRAWER,
-        DesignSystemResources.drawable.ic_news_medium,
-        NewsResources.string.news_title
+        DesignSystemRes.drawable.ic_news_medium,
+        NewsRes.string.news_title
     ),
     PROFILE(
         Feature.PROFILE,
         ProfileDestination,
         NavigationLocal.MODAL_DRAWER,
-        AccountResources.string.account_title
+        AccountRes.string.account_title
     ),
     EXCHANGE(
         Feature.EXCHANGE,
         ExchangeListDestination,
         NavigationLocal.MODAL_DRAWER,
-        DesignSystemResources.drawable.ic_exchange_medium,
-        ExchangeResources.string.exchange_title
+        DesignSystemRes.drawable.ic_exchange_medium,
+        ExchangeRes.string.exchange_title
     );
 
     val noText get() = textId == null

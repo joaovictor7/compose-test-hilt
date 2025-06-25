@@ -54,7 +54,7 @@ internal class LoginViewModel @Inject constructor(
     private val getBooleanRemoteConfigUseCase: GetBooleanRemoteConfigUseCase,
     private val loginDestination: LoginDestination,
     private val analyticSender: AnalyticSender,
-    @AsyncTaskUtilsQualifier(LoginScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
+    @param:AsyncTaskUtilsQualifier(LoginScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
 ) : BaseViewModel(), UiState<LoginUiState>, UiEvent<LoginUiEvent>, LoginIntentReceiver {
 
     override val intentReceiver = this

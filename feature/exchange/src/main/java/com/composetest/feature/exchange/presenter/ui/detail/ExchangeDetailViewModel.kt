@@ -21,7 +21,7 @@ internal class ExchangeDetailViewModel @Inject constructor(
     private val destination: ExchangeDetailDestination,
     private val exchangeMapper: ExchangeMapper,
     private val analyticSender: AnalyticSender,
-    @AsyncTaskUtilsQualifier(ExchangeDetailScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
+    @param:AsyncTaskUtilsQualifier(ExchangeDetailScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
 ) : BaseViewModel(), UiState<ExchangeDetailUiState> {
 
     private val _uiState = MutableStateFlow(ExchangeDetailUiState())

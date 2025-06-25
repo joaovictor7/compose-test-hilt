@@ -15,7 +15,7 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 @Composable
 fun LifecycleEvent(
     lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
-    onEvent: (Lifecycle.Event) -> Unit
+    onResume: () -> Unit = {},
 ) {
     var lifecycleEvent by remember { mutableStateOf(Lifecycle.Event.ON_ANY) }
     DisposableEffect(lifecycleOwner) {
@@ -30,6 +30,9 @@ fun LifecycleEvent(
         }
     }
     LaunchedEffect(lifecycleEvent) {
-        onEvent(lifecycleEvent)
+        when (lifecycleEvent) {
+            Lifecycle.Event.ON_RESUME -> onResume()
+            else -> Unit
+        }
     }
 }

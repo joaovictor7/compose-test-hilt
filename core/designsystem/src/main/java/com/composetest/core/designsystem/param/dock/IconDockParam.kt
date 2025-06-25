@@ -4,6 +4,6 @@ import androidx.annotation.DrawableRes
 
 data class IconDockParam(
     val index: Int,
-    @DrawableRes val iconId: Int,
+    @param:DrawableRes val iconId: Int,
     val contentDescription: String? = null
 )

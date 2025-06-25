@@ -1,8 +1,8 @@
 package com.composetest.core.router.interfaces
 
 import androidx.navigation.NavGraphBuilder
-import kotlin.reflect.KProperty
+import androidx.navigation.NavHostController
 
 interface NavGraph {
-    operator fun getValue(thisRef: Any?, property: KProperty<*>): List<NavGraphBuilder.() -> Unit>
+    fun NavGraphBuilder.register(navController: NavHostController)
 }

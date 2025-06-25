@@ -381,9 +381,7 @@ private fun LifecycleEventHandler(
     onExecuteIntent: (Intent<WeatherForecastIntentReceiver>) -> Unit
 ) {
     LifecycleEvent {
-        if (it == Lifecycle.Event.ON_RESUME) {
-            onExecuteIntent(WeatherForecastIntent.OnResume)
-        }
+        onExecuteIntent(WeatherForecastIntent.OnResume)
     }
 }
 // endregion

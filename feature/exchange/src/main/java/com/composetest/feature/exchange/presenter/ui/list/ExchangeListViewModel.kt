@@ -33,7 +33,7 @@ internal class ExchangeListViewModel @AssistedInject constructor(
     private val exchangeMapper: ExchangeMapper,
     private val analyticSender: AnalyticSender,
     @Assisted private val deepLinkParam: ExchangeListDeepLinkParam?,
-    @AsyncTaskUtilsQualifier(ExchangeListScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
+    @param:AsyncTaskUtilsQualifier(ExchangeListScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
 ) : BaseViewModel(),
     UiState<ExchangeListUiState>,
     UiEvent<ExchangeListUiEvent>,

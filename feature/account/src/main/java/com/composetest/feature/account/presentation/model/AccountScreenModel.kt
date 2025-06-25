@@ -6,7 +6,7 @@ import com.composetest.feature.account.presentation.enums.AccountDataRow
 
 internal data class AccountScreenModel(
     val id: AccountDataRow,
-    @StringRes val labelTextId: Int,
+    @param:StringRes val labelTextId: Int,
     val text: String = String(),
     val placeholder: String? = null,
     val keyboardType: KeyboardType = KeyboardType.Text

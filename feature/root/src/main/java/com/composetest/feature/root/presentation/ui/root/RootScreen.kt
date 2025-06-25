@@ -62,7 +62,6 @@ import com.composetest.core.router.result.account.AccountUpdateResult
 import com.composetest.core.ui.interfaces.Intent
 import com.composetest.core.ui.util.UiEventsObserver
 import com.composetest.feature.root.R
-import com.composetest.feature.root.navigation.NavGraphs
 import com.composetest.feature.root.presentation.enums.NavigationFeature
 import com.composetest.feature.root.presentation.model.BottomFeatureNavigationModel
 import kotlinx.coroutines.flow.Flow
@@ -75,7 +74,7 @@ internal fun RootScreen(
     uiState: RootUiState,
     uiEvent: Flow<RootUiEvent> = emptyFlow(),
     onExecuteIntent: (Intent<RootIntentReceiver>) -> Unit = {},
-    mainNavController: NavHostController = rememberNavController(),
+    navController: NavHostController = rememberNavController(),
 ) {
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     ModalNavigationDrawer(
@@ -90,7 +89,7 @@ internal fun RootScreen(
                 drawerState = drawerState,
                 uiState = uiState,
                 uiEvent = uiEvent,
-                mainNavController = mainNavController,
+                navController = navController,
                 onExecuteIntent = onExecuteIntent
             )
         }
@@ -102,24 +101,23 @@ private fun Navigation(
     drawerState: DrawerState,
     uiState: RootUiState,
     uiEvent: Flow<RootUiEvent>,
-    mainNavController: NavHostController,
+    navController: NavHostController,
     onExecuteIntent: (Intent<RootIntentReceiver>) -> Unit
 ) {
     if (uiState.firstDestination == null) return
-    val navController = rememberNavController()
-    val navGraphs by NavGraphs(mainNavController)
-    NavHost(navController = navController, startDestination = uiState.firstDestination) {
-        navGraphs.forEach { it() }
+    val rootNavController = rememberNavController()
+    NavHost(navController = rootNavController, startDestination = uiState.firstDestination) {
+        uiState.navGraphs.forEach { it.run { register(navController) } }
     }
     UiEventsHandler(
         uiEvent = uiEvent,
-        rootNavController = navController,
-        mainNavController = mainNavController
+        rootNavController = rootNavController,
+        navController = navController
     )
     LaunchedEffectHandler(
         onExecuteIntent = onExecuteIntent,
-        rootNavController = navController,
-        mainNavController = mainNavController
+        rootNavController = rootNavController,
+        navController = navController
     )
     BackHandler(drawerState = drawerState, onExecuteIntent = onExecuteIntent)
 }
@@ -292,13 +290,13 @@ private fun getBottomBar(
 private fun UiEventsHandler(
     uiEvent: Flow<RootUiEvent>,
     rootNavController: NavHostController,
-    mainNavController: NavHostController,
+    navController: NavHostController,
 ) {
     val activity = LocalActivity.current
     UiEventsObserver(uiEvent) {
         when (it) {
             is RootUiEvent.FinishApp -> activity?.finish()
-            is RootUiEvent.NavigateToFeature -> mainNavController.navigateTo(it.navigationModel)
+            is RootUiEvent.NavigateToFeature -> navController.navigateTo(it.navigationModel)
             is RootUiEvent.NavigateToBottomFeature -> rootNavController.navigateTo(it.navigationModel)
         }
     }
@@ -308,10 +306,10 @@ private fun UiEventsHandler(
 private fun LaunchedEffectHandler(
     onExecuteIntent: (Intent<RootIntentReceiver>) -> Unit,
     rootNavController: NavHostController,
-    mainNavController: NavHostController,
+    navController: NavHostController,
 ) {
     LaunchedEffect(Unit) {
-        mainNavController.getResultFlow(AccountUpdateResult::class).collect {
+        navController.getResultFlow(AccountUpdateResult::class).collect {
             onExecuteIntent(RootIntent.UpdateUserData)
         }
     }

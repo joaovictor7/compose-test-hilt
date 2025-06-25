@@ -24,7 +24,7 @@ internal class SecurityConfigurationViewModel @Inject constructor(
     private val updateSecurityConfigurationUseCase: UpdateSecurityConfigurationUseCase,
     private val biometricProvider: BiometricProvider,
     private val analyticSender: AnalyticSender,
-    @AsyncTaskUtilsQualifier(SecurityConfigurationScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
+    @param:AsyncTaskUtilsQualifier(SecurityConfigurationScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
 ) : BaseViewModel(), UiState<SecurityConfigurationUiState>, SecurityConfigurationIntentReceiver {
 
     override val intentReceiver = this

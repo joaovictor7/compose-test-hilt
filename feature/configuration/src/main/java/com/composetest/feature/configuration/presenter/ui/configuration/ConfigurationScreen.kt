@@ -40,10 +40,10 @@ private const val LIMIT_CONFIGURATIONS_PER_LINE = 2
 internal fun ConfigurationScreen(
     uiState: ConfigurationUiState,
     uiEvent: Flow<ConfigurationUiEvent> = emptyFlow(),
-    mainNavController: NavHostController = rememberNavController(),
+    navController: NavHostController = rememberNavController(),
     onExecuteIntent: (Intent<ConfigurationIntentReceiver>) -> Unit = {}
 ) {
-    UiEventsHandler(uiEvent = uiEvent, mainNavController = mainNavController)
+    UiEventsHandler(uiEvent = uiEvent, mainNavController = navController)
     LazyVerticalStaggeredGrid(
         modifier = Modifier.horizontalScreenMargin(),
         columns = StaggeredGridCells.Fixed(LIMIT_CONFIGURATIONS_PER_LINE),

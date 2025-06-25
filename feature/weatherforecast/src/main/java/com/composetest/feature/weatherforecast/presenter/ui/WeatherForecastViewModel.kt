@@ -42,7 +42,7 @@ internal class WeatherForecastViewModel @Inject constructor(
     private val locationProvider: LocationProvider,
     private val permissionProvider: PermissionProvider,
     private val analyticSender: AnalyticSender,
-    @AsyncTaskUtilsQualifier(WeatherForecastScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
+    @param:AsyncTaskUtilsQualifier(WeatherForecastScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
 ) : BaseViewModel(), UiState<WeatherForecastUiState>, UiEvent<WeatherForecastUiEvent>,
     WeatherForecastIntentReceiver {
 

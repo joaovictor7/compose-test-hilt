@@ -5,7 +5,9 @@ import com.composetest.core.analytic.sender.AnalyticSender
 import com.composetest.core.domain.usecase.session.FinishSessionUseCase
 import com.composetest.core.domain.usecase.user.GetCurrentUserUseCase
 import com.composetest.core.router.destination.login.LoginDestination
+import com.composetest.core.router.di.quailifier.NavGraphQualifier
 import com.composetest.core.router.enums.NavigationMode
+import com.composetest.core.router.interfaces.NavGraph
 import com.composetest.core.router.model.NavigationModel
 import com.composetest.core.ui.base.BaseViewModel
 import com.composetest.core.ui.di.qualifier.AsyncTaskUtilsQualifier
@@ -15,6 +17,7 @@ import com.composetest.core.ui.util.AsyncTaskUtils
 import com.composetest.feature.root.analytic.event.RootEventAnalytic
 import com.composetest.feature.root.analytic.screen.RootScreenAnalytic
 import com.composetest.feature.root.domain.usecase.GetAvailableFeaturesUseCase
+import com.composetest.feature.root.navigation.di.NavigationModule.Companion.ROOT_NAV_GRAPH
 import com.composetest.feature.root.presentation.enums.NavigationFeature
 import com.composetest.feature.root.presentation.enums.NavigationLocal
 import com.composetest.feature.root.presentation.mapper.UserModalDrawerMapper
@@ -33,7 +36,8 @@ internal class RootViewModel @Inject constructor(
     private val getCurrentUserUseCase: GetCurrentUserUseCase,
     private val userModalDrawerMapper: UserModalDrawerMapper,
     private val analyticSender: AnalyticSender,
-    @AsyncTaskUtilsQualifier(RootScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
+    @param:NavGraphQualifier(ROOT_NAV_GRAPH) private val navGraphs: Array<NavGraph>,
+    @param:AsyncTaskUtilsQualifier(RootScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
     getAvailableFeaturesUseCase: GetAvailableFeaturesUseCase,
 ) : BaseViewModel(), UiState<RootUiState>, UiEvent<RootUiEvent>, RootIntentReceiver {
 
@@ -119,6 +123,7 @@ internal class RootViewModel @Inject constructor(
             _uiState.update {
                 it.initUiState(
                     firstBottomNavigationFeature?.destination,
+                    navGraphs,
                     modalDrawerNavigationFeatures,
                     bottomNavigationFeatures,
                     userModalDrawerMapper.mapperToModel(user)

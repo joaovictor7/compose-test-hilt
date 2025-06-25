@@ -22,7 +22,7 @@ import javax.inject.Inject
 @HiltViewModel
 internal class ConfigurationViewModel @Inject constructor(
     private val analyticSender: AnalyticSender,
-    @AsyncTaskUtilsQualifier(ConfigurationScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
+    @param:AsyncTaskUtilsQualifier(ConfigurationScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
 ) : BaseViewModel(), UiState<ConfigurationUiState>, UiEvent<ConfigurationUiEvent>,
     ConfigurationIntentReceiver {
 

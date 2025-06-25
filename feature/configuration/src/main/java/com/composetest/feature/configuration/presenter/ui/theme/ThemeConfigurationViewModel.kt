@@ -27,7 +27,7 @@ internal class ThemeConfigurationViewModel @Inject constructor(
     private val getThemeConfigurationUseCase: GetThemeConfigurationUseCase,
     private val updateThemeConfigurationUseCase: UpdateThemeConfigurationUseCase,
     private val analyticSender: AnalyticSender,
-    @AsyncTaskUtilsQualifier(ThemeConfigurationScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
+    @param:AsyncTaskUtilsQualifier(ThemeConfigurationScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
 ) : BaseViewModel(), UiState<ThemeConfigurationUiState>, ThemeConfigurationIntentReceiver {
 
     override val intentReceiver = this

@@ -16,7 +16,7 @@ import kotlin.coroutines.suspendCoroutine
 import kotlin.time.Duration.Companion.seconds
 
 internal class LocationProviderImpl @Inject constructor(
-    @ApplicationContext private val context: Context
+    @param:ApplicationContext private val context: Context
 ) : LocationProvider {
 
     private val fusedLocationClient by lazy {
