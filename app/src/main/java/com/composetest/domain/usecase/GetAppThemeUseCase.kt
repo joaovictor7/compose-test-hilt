@@ -1,8 +1,8 @@
 package com.composetest.domain.usecase
 
-import com.composetest.domain.mapper.AppThemeMapper
 import com.composetest.core.domain.repository.ConfigurationRepository
 import com.composetest.core.domain.repository.SystemBarsThemeRepository
+import com.composetest.domain.mapper.AppThemeMapper
 import kotlinx.coroutines.flow.combine
 import javax.inject.Inject
 

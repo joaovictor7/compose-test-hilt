@@ -19,7 +19,11 @@ internal data class MainUiState(
     val forceNavigationBarTransparency get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
 
     fun setInitUiState(firstDestination: Destination, navGraphs: Array<NavGraph>) =
-        copy(showSplashScreen = false, firstDestination = firstDestination, navGraphs = navGraphs.toList())
+        copy(
+            showSplashScreen = false,
+            firstDestination = firstDestination,
+            navGraphs = navGraphs.toList()
+        )
 
     fun setAppTheme(appTheme: AppThemeModel?) = copy(appTheme = appTheme ?: this.appTheme)
     fun setSimpleDialog(param: SimpleDialogParam?) = copy(simpleDialogParam = param)

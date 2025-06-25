@@ -3,12 +3,12 @@ package com.composetest.feature.exchange.presenter.ui.detail
 import androidx.lifecycle.viewModelScope
 import com.composetest.core.analytic.event.CommonAnalyticEvent
 import com.composetest.core.analytic.sender.AnalyticSender
-import com.composetest.feature.exchange.navigation.destination.ExchangeDetailDestination
 import com.composetest.core.ui.base.BaseViewModel
 import com.composetest.core.ui.di.qualifier.AsyncTaskUtilsQualifier
 import com.composetest.core.ui.interfaces.UiState
 import com.composetest.core.ui.util.AsyncTaskUtils
 import com.composetest.feature.exchange.analytic.screen.ExchangeDetailScreenAnalytic
+import com.composetest.feature.exchange.navigation.destination.ExchangeDetailDestination
 import com.composetest.feature.exchange.presenter.mapper.ExchangeMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
