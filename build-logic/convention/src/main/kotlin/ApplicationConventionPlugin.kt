@@ -1,7 +1,7 @@
 import appconfig.AppConfig
 import com.android.build.api.dsl.ApkSigningConfig
 import com.android.build.api.dsl.ApplicationExtension
-import enum.Signing
+import enums.Signing
 import extension.getLibrary
 import extension.implementation
 import file.LoadPropertiesFile

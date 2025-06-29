@@ -27,7 +27,7 @@ internal fun MainScreen(
     ) {
         DialogHandler(uiState = uiState, onExecuteIntent = onExecuteIntent)
         Navigation(
-            uiState,
+            uiState = uiState,
             uiEvent = uiEvent,
             onExecuteIntent = onExecuteIntent,
         )

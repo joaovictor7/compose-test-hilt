@@ -1,4 +1,4 @@
-package enum
+package enums
 
 internal enum class Signing(
     val buildTypes: List<BuildType>

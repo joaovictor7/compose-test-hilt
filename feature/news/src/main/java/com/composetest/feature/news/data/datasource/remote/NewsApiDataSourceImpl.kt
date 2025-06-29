@@ -10,7 +10,7 @@ import io.ktor.client.HttpClient
 
 internal class NewsApiDataSourceImpl(
     private val apiCallUtils: ApiCallUtils,
-    @ApiQualifier(Api.NEWS_API) private val newsApi: HttpClient
+    @param:ApiQualifier(Api.NEWS_API) private val newsApi: HttpClient
 ) : NewsApiDataSource {
 
     override suspend fun getTopHeadlinesNews() = apiCallUtils.executeApiCall {

@@ -1,4 +1,4 @@
-package enum
+package enums
 
 internal enum class BuildType(val isInternal: Boolean = false, val isDebuggable: Boolean = true) {
     RELEASE(isInternal = true, isDebuggable = false),

@@ -26,6 +26,7 @@ internal object DatabaseModule {
     @Singleton
     fun appDatabase(
         @ApplicationContext context: Context,
+        localDateTimeConverter: LocalDateTimeConverter,
         buildConfigProvider: BuildConfigProvider,
         getDatabaseKeyUseCase: GetDatabaseKeyUseCase,
     ): Database = Room.databaseBuilder(
@@ -34,7 +35,7 @@ internal object DatabaseModule {
         DATABASE_NAME
     )
         .openHelperFactory(getHelperFactory(getDatabaseKeyUseCase))
-        .addTypeConverter(LocalDateTimeConverter())
+        .addTypeConverter(localDateTimeConverter)
         .addLogs(buildConfigProvider.buildConfig)
         .build()
 

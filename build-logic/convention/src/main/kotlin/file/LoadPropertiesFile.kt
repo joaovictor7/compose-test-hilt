@@ -1,6 +1,6 @@
 package file
 
-import enum.Flavor
+import enums.Flavor
 import org.gradle.api.Project
 import java.util.Properties
 

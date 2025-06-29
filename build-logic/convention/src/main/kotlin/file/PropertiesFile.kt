@@ -1,7 +1,7 @@
 package file
 
-import enum.Flavor
-import enum.Signing
+import enums.Flavor
+import enums.Signing
 import java.io.File
 
 internal sealed class PropertiesFile {
