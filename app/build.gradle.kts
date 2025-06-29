@@ -33,5 +33,4 @@ dependencies {
     implementation(libs.androidx.hilt.work)
     implementation(libs.androidx.splash.screen)
     implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.startup)
 }

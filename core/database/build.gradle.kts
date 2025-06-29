@@ -15,6 +15,5 @@ dependencies {
     implementation(libs.room.kotlin)
     implementation(libs.sql.cipher)
     implementation(libs.sqlite)
-    implementation(libs.androidx.startup)
     ksp(libs.room.compiler)
 }

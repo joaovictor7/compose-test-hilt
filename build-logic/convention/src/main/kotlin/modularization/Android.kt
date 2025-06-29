@@ -42,7 +42,7 @@ internal fun Project.configureAndroid(
             excludes += "/META-INF/LICENSE*"
         }
     }
-    experimentalProperties["android.experimental.enableScreenshotTest"] = true
+//    experimentalProperties["android.experimental.enableScreenshotTest"] = true //~> revert after update
     dependencies {
         implementation(getLibrary("androidx.lifecycle.runtime.ktx"))
         implementation(getLibrary("kotlin.coroutines.android"))

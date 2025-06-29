@@ -12,7 +12,6 @@ androidHilt = "2.56.2"
 androidXHilt = "1.2.0"
 androidXAppCompat = "1.7.1"
 androidXBiometric = "1.4.0-alpha04"
-androidXStartup = "1.2.0"
 composeBom = "2025.06.01"
 composeNavigation = "2.9.0"
 googleServices = "4.4.3"
@@ -46,6 +45,7 @@ kotlin-kover = { group = "org.jetbrains.kotlinx", name = "kover-gradle-plugin", 
 
 # Android
 android-tools-build-gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
+android-screenshot-validation = { group = "com.android.tools.screenshot", name = "screenshot-validation-api", version.ref = "screenshot" }
 android-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "permissions" }
 android-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "location" }
 
@@ -57,7 +57,6 @@ androidx-work-manager = { group = "androidx.work", name = "work-runtime-ktx", ve
 androidx-splash-screen = { group = "androidx.core", name = "core-splashscreen", version.ref = "splashScreen" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidXAppCompat" }
 androidx-biometric = { group = "androidx.biometric", name = "biometric", version.ref = "androidXBiometric" }
-androidx-startup = { group = "androidx.startup", name = "startup-runtime", version.ref = "androidXStartup" }
 
 # Room
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
