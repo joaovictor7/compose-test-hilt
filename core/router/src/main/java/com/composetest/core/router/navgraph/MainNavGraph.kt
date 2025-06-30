@@ -1,0 +1,12 @@
+package com.composetest.core.router.navgraph
+
+object MainNavGraph {
+    const val NEWS_NAV_GRAPH = "NEWS_NAV_GRAPH"
+    const val DESIGN_SYSTEM_NAV_GRAPH = "DESIGN_SYSTEM_NAV_GRAPH"
+    const val LOGIN_NAV_GRAPH = "LOGIN_NAV_GRAPH"
+    const val ROOT_NAV_GRAPH = "ROOT_NAV_GRAPH"
+    const val EXCHANGE_NAV_GRAPH = "EXCHANGE_NAV_GRAPH"
+    const val ACCOUNT_NAV_GRAPH = "ACCOUNT_NAV_GRAPH"
+    const val WEATHER_FORECAST_NAV_GRAPH = "WEATHER_FORECAST_NAV_GRAPH"
+    const val CONFIGURATION_NAV_GRAPH = "CONFIGURATION_NAV_GRAPH"
+}

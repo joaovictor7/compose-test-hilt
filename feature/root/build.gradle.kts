@@ -15,10 +15,4 @@ dependencies {
     implementation(projects.core.domain)
     implementation(projects.core.ui)
     implementation(projects.core.analytic)
-    implementation(projects.feature.home)
-    implementation(projects.feature.configuration)
-    implementation(projects.feature.account)
-    implementation(projects.feature.weatherforecast)
-    implementation(projects.feature.news)
-    implementation(projects.feature.exchange)
 }

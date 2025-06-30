@@ -10,11 +10,10 @@ import com.composetest.core.router.destination.root.RootDestination
 import com.composetest.core.router.interfaces.NavGraph
 import com.composetest.feature.root.presentation.ui.root.RootScreen
 import com.composetest.feature.root.presentation.ui.root.RootViewModel
+import javax.inject.Inject
 
-object RootNavGraph : NavGraph {
-    override fun NavGraphBuilder.register(
-        navController: NavHostController
-    ) {
+internal class NavGraphImpl @Inject constructor() : NavGraph {
+    override fun NavGraphBuilder.register(navController: NavHostController) {
         composable<RootDestination> {
             val viewModel = hiltViewModel<RootViewModel>()
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()

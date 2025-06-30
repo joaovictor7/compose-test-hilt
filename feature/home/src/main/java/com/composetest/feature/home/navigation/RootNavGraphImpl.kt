@@ -8,11 +8,10 @@ import com.composetest.core.router.destination.home.HomeDestination
 import com.composetest.core.router.interfaces.NavGraph
 import com.composetest.feature.home.presenter.ui.home.HomeScreen
 import com.composetest.feature.home.presenter.ui.home.HomeViewModel
+import javax.inject.Inject
 
-object RootHomeNavGraph : NavGraph {
-    override fun NavGraphBuilder.register(
-        navController: NavHostController
-    ) {
+internal class RootNavGraphImpl @Inject constructor() : NavGraph {
+    override fun NavGraphBuilder.register(navController: NavHostController) {
         composable<HomeDestination> {
             hiltViewModel<HomeViewModel>()
             HomeScreen()

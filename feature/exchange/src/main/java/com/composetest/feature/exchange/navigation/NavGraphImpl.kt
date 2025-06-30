@@ -17,13 +17,12 @@ import com.composetest.feature.exchange.presenter.ui.detail.ExchangeDetailScreen
 import com.composetest.feature.exchange.presenter.ui.detail.ExchangeDetailViewModel
 import com.composetest.feature.exchange.presenter.ui.list.ExchangeListScreen
 import com.composetest.feature.exchange.presenter.ui.list.ExchangeListViewModel
+import javax.inject.Inject
 
 private const val EXCHANGES_URI = "composetest://exchange?filter={filter}"
 
-object ExchangeNavGraph : NavGraph {
-    override fun NavGraphBuilder.register(
-        navController: NavHostController
-    ) {
+internal class NavGraphImpl @Inject constructor() : NavGraph {
+    override fun NavGraphBuilder.register(navController: NavHostController) {
         composable<ExchangeListDestination>(
             deepLinks = transformDeepLinks(EXCHANGES_URI)
         ) {

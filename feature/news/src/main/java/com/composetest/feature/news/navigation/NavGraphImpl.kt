@@ -14,13 +14,12 @@ import com.composetest.feature.news.presenter.ui.news.full.FullNewsScreen
 import com.composetest.feature.news.presenter.ui.news.full.FullNewsViewModel
 import com.composetest.feature.news.presenter.ui.news.list.NewsListScreen
 import com.composetest.feature.news.presenter.ui.news.list.NewsListViewModel
+import javax.inject.Inject
 
 private const val NEWS_URI = "composetest://news"
 
-object NewsNavGraph : NavGraph {
-    override fun NavGraphBuilder.register(
-        navController: NavHostController
-    ) {
+internal class NavGraphImpl @Inject constructor() : NavGraph {
+    override fun NavGraphBuilder.register(navController: NavHostController) {
         composable<NewsListDestination>(
             deepLinks = transformDeepLinks(NEWS_URI)
         ) {

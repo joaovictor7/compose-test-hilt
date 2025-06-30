@@ -13,11 +13,10 @@ import com.composetest.feature.configuration.presenter.ui.security.SecurityConfi
 import com.composetest.feature.configuration.presenter.ui.security.SecurityConfigurationViewModel
 import com.composetest.feature.configuration.presenter.ui.theme.ThemeConfigurationScreen
 import com.composetest.feature.configuration.presenter.ui.theme.ThemeConfigurationViewModel
+import javax.inject.Inject
 
-object ConfigurationNavGraph : NavGraph {
-    override fun NavGraphBuilder.register(
-        navController: NavHostController
-    ) {
+internal class NavGraphImpl @Inject constructor() : NavGraph {
+    override fun NavGraphBuilder.register(navController: NavHostController) {
         composable<ThemeConfigurationDestination> {
             val viewModel = hiltViewModel<ThemeConfigurationViewModel>()
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()

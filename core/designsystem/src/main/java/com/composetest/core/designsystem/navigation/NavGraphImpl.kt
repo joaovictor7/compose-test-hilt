@@ -10,11 +10,10 @@ import com.composetest.core.router.destination.dialog.GenericErrorDialog
 import com.composetest.core.router.destination.dialog.NetworkErrorDialog
 import com.composetest.core.router.extension.navigateBack
 import com.composetest.core.router.interfaces.NavGraph
+import javax.inject.Inject
 
-object DesignSystemNavGraph : NavGraph {
-    override fun NavGraphBuilder.register(
-        navController: NavHostController
-    ) {
+internal class NavGraphImpl @Inject constructor() : NavGraph {
+    override fun NavGraphBuilder.register(navController: NavHostController) {
         dialog<GenericErrorDialog> {
             SimpleDialog(GenericErrorParam) {
                 navController.navigateBack()

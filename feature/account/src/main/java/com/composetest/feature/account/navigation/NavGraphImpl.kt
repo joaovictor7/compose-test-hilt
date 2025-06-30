@@ -10,11 +10,10 @@ import com.composetest.core.router.destination.profile.ProfileDestination
 import com.composetest.core.router.interfaces.NavGraph
 import com.composetest.feature.account.presentation.ui.account.AccountScreen
 import com.composetest.feature.account.presentation.ui.account.AccountViewModel
+import javax.inject.Inject
 
-object AccountNavGraph : NavGraph {
-    override fun NavGraphBuilder.register(
-        navController: NavHostController
-    ) {
+internal class NavGraphImpl @Inject constructor() : NavGraph {
+    override fun NavGraphBuilder.register(navController: NavHostController) {
         composable<ProfileDestination> {
             val viewModel = hiltViewModel<AccountViewModel>()
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()

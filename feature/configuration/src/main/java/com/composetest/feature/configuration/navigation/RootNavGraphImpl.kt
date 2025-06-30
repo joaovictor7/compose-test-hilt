@@ -1,4 +1,4 @@
-package com.composetest.feature.login.navigation
+package com.composetest.feature.configuration.navigation
 
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -6,21 +6,22 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
-import com.composetest.core.router.destination.login.LoginDestination
+import com.composetest.core.router.destination.configuration.ConfigurationDestination
 import com.composetest.core.router.interfaces.NavGraph
-import com.composetest.feature.login.presenter.ui.login.LoginScreen
-import com.composetest.feature.login.presenter.ui.login.LoginViewModel
+import com.composetest.feature.configuration.presenter.ui.configuration.ConfigurationScreen
+import com.composetest.feature.configuration.presenter.ui.configuration.ConfigurationViewModel
+import javax.inject.Inject
 
-object LoginNavGraph : NavGraph {
+internal class RootNavGraphImpl @Inject constructor() : NavGraph {
     override fun NavGraphBuilder.register(navController: NavHostController) {
-        composable<LoginDestination> {
-            val viewModel = hiltViewModel<LoginViewModel>()
+        composable<ConfigurationDestination> {
+            val viewModel = hiltViewModel<ConfigurationViewModel>()
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-            LoginScreen(
+            ConfigurationScreen(
                 uiState = uiState,
                 uiEvent = viewModel.uiEvent,
+                navController = navController,
                 onExecuteIntent = viewModel::executeIntent,
-                navController = navController
             )
         }
     }

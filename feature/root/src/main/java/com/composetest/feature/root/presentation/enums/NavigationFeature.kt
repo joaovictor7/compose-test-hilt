@@ -9,14 +9,9 @@ import com.composetest.core.router.destination.news.NewsListDestination
 import com.composetest.core.router.destination.profile.ProfileDestination
 import com.composetest.core.router.destination.weatherforecast.WeatherForecastDestination
 import com.composetest.core.router.interfaces.Destination
+import com.composetest.feature.root.R
 import com.composetest.feature.root.domain.enums.Feature
 import com.composetest.core.designsystem.R as DesignSystemRes
-import com.composetest.feature.configuration.R as ConfigurationRes
-import com.composetest.feature.exchange.R as ExchangeRes
-import com.composetest.feature.home.R as HomeRes
-import com.composetest.feature.news.R as NewsRes
-import com.composetest.feature.profile.R as AccountRes
-import com.composetest.feature.weatherforecast.R as WeatherForecastRes
 
 internal enum class NavigationFeature(
     val feature: Feature,
@@ -30,41 +25,41 @@ internal enum class NavigationFeature(
         HomeDestination,
         NavigationLocal.BOTTOM,
         DesignSystemRes.drawable.ic_house_filled,
-        HomeRes.string.home_title
+        R.string.username_unregistered,
     ),
     CONFIGURATION(
         Feature.CONFIGURATION,
         ConfigurationDestination,
         NavigationLocal.BOTTOM,
         DesignSystemRes.drawable.ic_config_filled,
-        ConfigurationRes.string.configuration_title
+        R.string.username_unregistered,
     ),
     WEATHER_FORECAST(
         Feature.WEATHER_FORECAST,
         WeatherForecastDestination,
         NavigationLocal.MODAL_DRAWER,
         DesignSystemRes.drawable.ic_partly_cloudy_medium,
-        WeatherForecastRes.string.weather_forecast_title
+        R.string.username_unregistered,
     ),
     NEWS(
         Feature.NEWS,
         NewsListDestination,
         NavigationLocal.MODAL_DRAWER,
         DesignSystemRes.drawable.ic_news_medium,
-        NewsRes.string.news_title
+        R.string.username_unregistered,
     ),
     PROFILE(
         Feature.PROFILE,
         ProfileDestination,
         NavigationLocal.MODAL_DRAWER,
-        AccountRes.string.account_title
+        R.string.username_unregistered,
     ),
     EXCHANGE(
         Feature.EXCHANGE,
         ExchangeListDestination,
         NavigationLocal.MODAL_DRAWER,
         DesignSystemRes.drawable.ic_exchange_medium,
-        ExchangeRes.string.exchange_title
+        R.string.username_unregistered,
     );
 
     val noText get() = textId == null
