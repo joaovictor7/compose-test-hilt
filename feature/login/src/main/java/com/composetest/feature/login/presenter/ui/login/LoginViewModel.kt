@@ -3,6 +3,7 @@ package com.composetest.feature.login.presenter.ui.login
 import androidx.lifecycle.viewModelScope
 import com.composetest.core.analytic.event.CommonAnalyticEvent
 import com.composetest.core.analytic.sender.AnalyticSender
+import com.composetest.core.designsystem.extension.dialogErrorNavigation
 import com.composetest.core.domain.enums.Theme
 import com.composetest.core.domain.provider.BuildConfigProvider
 import com.composetest.core.domain.usecase.configuration.SetSystemBarsStyleUseCase
@@ -11,7 +12,6 @@ import com.composetest.core.network.model.ApiError
 import com.composetest.core.router.destination.login.LoginDestination
 import com.composetest.core.router.destination.root.RootDestination
 import com.composetest.core.router.enums.NavigationMode
-import com.composetest.core.designsystem.extension.dialogErrorNavigation
 import com.composetest.core.router.model.NavigationModel
 import com.composetest.core.security.enums.BiometricError
 import com.composetest.core.security.enums.BiometricError.Companion.biometricIsLockout

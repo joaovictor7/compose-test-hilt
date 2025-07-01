@@ -1,7 +1,7 @@
 package com.composetest.core.database.di
 
-import com.composetest.common.application.di.qualifier.ApplicationRunnerQualifier
 import com.composetest.common.application.ApplicationRunner
+import com.composetest.common.application.di.qualifier.ApplicationRunnerQualifier
 import com.composetest.common.application.enums.ApplicationModule
 import com.composetest.core.database.application.ApplicationRunnerImpl
 import dagger.Binds

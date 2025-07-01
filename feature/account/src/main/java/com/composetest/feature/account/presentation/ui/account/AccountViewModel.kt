@@ -5,9 +5,9 @@ import androidx.lifecycle.viewModelScope
 import com.composetest.core.analytic.event.CommonAnalyticEvent
 import com.composetest.core.analytic.sender.AnalyticSender
 import com.composetest.core.designsystem.enums.button.LoadingButtonState
+import com.composetest.core.designsystem.extension.dialogErrorNavigation
 import com.composetest.core.domain.model.UserModel
 import com.composetest.core.domain.usecase.user.GetCurrentUserUseCase
-import com.composetest.core.designsystem.extension.dialogErrorNavigation
 import com.composetest.core.router.result.account.AccountUpdateResult
 import com.composetest.core.security.provider.CipherProvider
 import com.composetest.core.ui.base.BaseViewModel

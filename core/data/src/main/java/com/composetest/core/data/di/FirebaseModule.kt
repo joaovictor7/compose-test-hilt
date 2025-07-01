@@ -1,6 +1,5 @@
 package com.composetest.core.data.di
 
-import com.composetest.core.data.R
 import com.composetest.core.domain.provider.BuildConfigProvider
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig

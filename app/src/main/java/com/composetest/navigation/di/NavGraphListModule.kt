@@ -1,8 +1,8 @@
 package com.composetest.navigation.di
 
 import com.composetest.core.router.di.quailifier.NavGraphQualifier
-import com.composetest.core.router.interfaces.NavGraph
 import com.composetest.core.router.enums.ModuleNavGraph
+import com.composetest.core.router.interfaces.NavGraph
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -30,7 +30,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.composetest.core.designsystem.component.dialog.SimpleDialog
 import com.composetest.core.designsystem.component.pulltorefresh.PullToRefresh
 import com.composetest.core.designsystem.component.shimmer.Shimmer
 import com.composetest.core.designsystem.component.textfield.TextField
