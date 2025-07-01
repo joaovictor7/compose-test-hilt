@@ -7,8 +7,8 @@ import kotlinx.coroutines.launch
 
 abstract class BaseViewModel : ViewModel() {
 
+    open fun sendOpenScreenAnalytic() {}
+
     protected fun <UiEvent> MutableSharedFlow<UiEvent>.emitEvent(uiEvent: UiEvent) =
         viewModelScope.launch { emit(uiEvent) }
-
-    open fun sendOpenScreenAnalytic() {}
 }

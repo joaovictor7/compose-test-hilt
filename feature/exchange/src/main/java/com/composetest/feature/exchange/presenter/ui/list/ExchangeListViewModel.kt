@@ -4,7 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.composetest.common.extension.orFalse
 import com.composetest.core.analytic.event.CommonAnalyticEvent
 import com.composetest.core.analytic.sender.AnalyticSender
-import com.composetest.core.router.extension.dialogErrorDestination
+import com.composetest.core.designsystem.extension.dialogErrorNavigation
 import com.composetest.core.router.model.NavigationModel
 import com.composetest.core.ui.base.BaseViewModel
 import com.composetest.core.ui.di.qualifier.AsyncTaskUtilsQualifier
@@ -92,12 +92,8 @@ internal class ExchangeListViewModel @AssistedInject constructor(
         }
     }
 
-    override fun dismissSimpleDialog() {
-        _uiState.update { it.setSimpleDialogParam(null) }
-    }
-
     private fun errorHandler(error: Throwable) {
-        _uiEvent.emitEvent(ExchangeListUiEvent.NavigateTo(error.dialogErrorDestination()))
+        _uiEvent.emitEvent(ExchangeListUiEvent.NavigateTo(error.dialogErrorNavigation()))
     }
 
     @AssistedFactory

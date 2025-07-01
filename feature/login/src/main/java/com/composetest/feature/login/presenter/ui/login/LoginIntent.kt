@@ -41,12 +41,6 @@ internal sealed interface LoginIntent : Intent<LoginIntentReceiver> {
         }
     }
 
-    data object DismissSimpleDialog : LoginIntent {
-        override fun execute(intentReceiver: LoginIntentReceiver) {
-            intentReceiver.dismissSimpleDialog()
-        }
-    }
-
     data object BiometricErrorAnimationFinished : LoginIntent {
         override fun execute(intentReceiver: LoginIntentReceiver) {
             intentReceiver.biometricErrorAnimationFinished()

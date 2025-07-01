@@ -13,8 +13,6 @@ import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -27,8 +25,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.composetest.core.designsystem.component.button.Button
-import com.composetest.core.designsystem.component.dialog.SimpleDialog
 import com.composetest.core.designsystem.component.icon.VibratingIcon
+import com.composetest.core.designsystem.component.lifecycle.LifecycleEvent
 import com.composetest.core.designsystem.component.textfield.OutlinedTextField
 import com.composetest.core.designsystem.composition.LocalTheme
 import com.composetest.core.designsystem.dimension.Spacing
@@ -40,6 +38,7 @@ import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.router.extension.navigateTo
 import com.composetest.core.security.util.showBiometricPrompt
 import com.composetest.core.ui.interfaces.Intent
+import com.composetest.core.ui.util.UiEventsObserver
 import com.composetest.feature.login.R
 import com.composetest.feature.login.presenter.model.BiometricModel
 import kotlinx.coroutines.flow.Flow
@@ -57,12 +56,12 @@ internal fun LoginScreen(
     onExecuteIntent: (Intent<LoginIntentReceiver>) -> Unit = {},
     navController: NavHostController = rememberNavController()
 ) {
-    DialogHandler(uiState = uiState, onExecuteIntent = onExecuteIntent)
-    LaunchedEffectHandler(
+    UiEventHandler(
         uiEvent = uiEvent,
         onExecuteIntent = onExecuteIntent,
-        navController = navController
+        navController = navController,
     )
+    LifecycleEventHandler(onExecuteIntent = onExecuteIntent)
     Box(
         modifier = Modifier
             .verticalTopBackgroundBrush()
@@ -203,47 +202,41 @@ private fun Modifier.setBiometricButtonClick(isAvailable: Boolean, onClick: () -
 }
 
 @Composable
-private fun LaunchedEffectHandler(
+private fun UiEventHandler(
     uiEvent: Flow<LoginUiEvent>,
     onExecuteIntent: (Intent<LoginIntentReceiver>) -> Unit,
     navController: NavHostController
 ) {
     val context = LocalContext.current
-    val currentAppTheme = LocalTheme.current
-    LaunchedEffect(Unit) {
-        uiEvent.collect {
-            when (it) {
-                is LoginUiEvent.ShowBiometricPrompt -> showBiometricPrompt(
-                    context = context,
-                    titleId = R.string.feature_login_biometric_title,
-                    subtitleId = R.string.feature_login_biometric_subtitle,
-                    onSuccess = { onExecuteIntent(LoginIntent.Login(true)) },
-                    onError = { error ->
-                        onExecuteIntent(LoginIntent.BiometricErrorHandler(error))
-                    }
-                )
-                is LoginUiEvent.NavigateTo -> navController.navigateTo(it.navigationModel)
-            }
-        }
-    }
-    LaunchedEffect(Unit) {
-        onExecuteIntent(LoginIntent.SetStatusBarsTheme(true, currentAppTheme))
-    }
-    DisposableEffect(Unit) {
-        onDispose {
-            onExecuteIntent(LoginIntent.SetStatusBarsTheme(false, currentAppTheme))
+    UiEventsObserver(uiEvent) {
+        when (it) {
+            is LoginUiEvent.NavigateTo -> navController.navigateTo(it.navigation)
+            is LoginUiEvent.ShowBiometricPrompt -> showBiometricPrompt(
+                context = context,
+                titleId = R.string.feature_login_biometric_title,
+                subtitleId = R.string.feature_login_biometric_subtitle,
+                onSuccess = { onExecuteIntent(LoginIntent.Login(true)) },
+                onError = { error ->
+                    onExecuteIntent(LoginIntent.BiometricErrorHandler(error))
+                }
+            )
         }
     }
 }
 
 @Composable
-private fun DialogHandler(
-    uiState: LoginUiState,
-    onExecuteIntent: (Intent<LoginIntentReceiver>) -> Unit
-) = uiState.simpleDialogParam?.let {
-    SimpleDialog(param = it) {
-        onExecuteIntent(LoginIntent.DismissSimpleDialog)
-    }
+private fun LifecycleEventHandler(
+    onExecuteIntent: (Intent<LoginIntentReceiver>) -> Unit,
+) {
+    val currentAppTheme = LocalTheme.current
+    LifecycleEvent(
+        onCreate = {
+            onExecuteIntent(LoginIntent.SetStatusBarsTheme(true, currentAppTheme))
+        },
+        onDestroy = {
+            onExecuteIntent(LoginIntent.SetStatusBarsTheme(false, currentAppTheme))
+        }
+    )
 }
 
 @Composable

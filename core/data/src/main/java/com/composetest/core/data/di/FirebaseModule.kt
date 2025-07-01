@@ -19,13 +19,10 @@ internal object FirebaseModule {
     fun firebaseRemoteConfig(
         buildConfigProvider: BuildConfigProvider
     ): FirebaseRemoteConfig = Firebase.remoteConfig.apply {
-        setDefaultsAsync(R.xml.remote_config_defaults)
         if (!buildConfigProvider.buildConfig.isProduction) {
-            setConfigSettingsAsync(
-                remoteConfigSettings {
-                    minimumFetchIntervalInSeconds = 0
-                }
-            )
+            setConfigSettingsAsync(remoteConfigSettings {
+                minimumFetchIntervalInSeconds = 0
+            })
         }
     }
 }

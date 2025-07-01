@@ -11,7 +11,7 @@ import com.composetest.core.network.model.ApiError
 import com.composetest.core.router.destination.login.LoginDestination
 import com.composetest.core.router.destination.root.RootDestination
 import com.composetest.core.router.enums.NavigationMode
-import com.composetest.core.router.extension.dialogErrorDestination
+import com.composetest.core.designsystem.extension.dialogErrorNavigation
 import com.composetest.core.router.model.NavigationModel
 import com.composetest.core.security.enums.BiometricError
 import com.composetest.core.security.enums.BiometricError.Companion.biometricIsLockout
@@ -33,7 +33,7 @@ import com.composetest.feature.login.domain.usecase.AuthenticationUseCase
 import com.composetest.feature.login.domain.usecase.BiometricIsEnableUseCase
 import com.composetest.feature.login.presenter.extension.autoShowBiometricPrompt
 import com.composetest.feature.login.presenter.model.BiometricModel
-import com.composetest.feature.login.presenter.ui.dialog.SimpleDialogParam
+import com.composetest.feature.login.presenter.ui.dialog.SimpleDialogDestination
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -121,10 +121,6 @@ internal class LoginViewModel @Inject constructor(
         setSystemBarsStyleUseCase(theme)
     }
 
-    override fun dismissSimpleDialog() {
-        _uiState.update { it.setSimpleDialog(null) }
-    }
-
     override fun biometricErrorHandler(biometricError: BiometricError) {
         if (biometricError.userClosedPrompt) return
         if (biometricError.biometricIsLockout) {
@@ -154,9 +150,9 @@ internal class LoginViewModel @Inject constructor(
         asyncTaskUtils.runAsyncTask(viewModelScope) {
             val biometricIsEnable = biometricIsEnableUseCase()
             autoShowBiometricPrompt(biometricIsEnable, biometricIsAvailable)
+            showDialogExpiredSession()
             _uiState.update {
                 it.initUiState(
-                    simpleDialogParam = showDialogExpiredSession(),
                     versionName = "${buildConfigProvider.buildConfig.versionName} - ${buildConfigProvider.buildConfig.versionCode}",
                     loginButtonIsEnabled = byPassLogin,
                     biometricModel = if (biometricIsAvailable && biometricIsEnable) BiometricModel() else null,
@@ -170,7 +166,7 @@ internal class LoginViewModel @Inject constructor(
         if (error is ApiError.Unauthorized) {
             _uiState.update { it.setShowInvalidCredentialsMsg(true) }
         } else {
-            _uiEvent.emitEvent(LoginUiEvent.NavigateTo(error.dialogErrorDestination()))
+            _uiEvent.emitEvent(LoginUiEvent.NavigateTo(error.dialogErrorNavigation()))
         }
     }
 
@@ -193,9 +189,13 @@ internal class LoginViewModel @Inject constructor(
         )
     }
 
-    private fun showDialogExpiredSession() = if (loginDestination.expiredSession) {
-        SimpleDialogParam.ExpiredSession
-    } else null
+    private fun showDialogExpiredSession() {
+        if (loginDestination.expiredSession) {
+            _uiEvent.emitEvent(
+                LoginUiEvent.NavigateTo(NavigationModel(SimpleDialogDestination.expiredSession))
+            )
+        }
+    }
 
     private fun autoShowBiometricPrompt(biometricIsEnable: Boolean, biometricIsAvailable: Boolean) {
         if (loginDestination.autoShowBiometricPrompt && biometricIsEnable && biometricIsAvailable) {

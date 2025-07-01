@@ -6,5 +6,4 @@ internal interface ExchangeListIntentReceiver : IntentReceiver<ExchangeListInten
     fun getAllExchanges()
     fun navigateToDetail(exchangeId: String)
     fun exchangeFilter(exchange: String)
-    fun dismissSimpleDialog()
 }

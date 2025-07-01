@@ -59,7 +59,6 @@ internal fun ExchangeListScreen(
 ) {
     val shimmerOffset by getSharedShimmerOffset()
     UiEventsHandler(uiEvent = uiEvent, navController = navController)
-    DialogHandler(uiState = uiState, onExecuteIntent = onExecuteIntent)
     Column(modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars)) {
         LeftTopBar(R.string.exchange_title)
         Column(modifier = Modifier.horizontalScreenMargin()) {
@@ -160,16 +159,6 @@ private fun ExchangeItemShimmer(shimmerOffset: Float) {
             .height(110.dp),
         offset = shimmerOffset,
     )
-}
-
-@Composable
-private fun DialogHandler(
-    uiState: ExchangeListUiState,
-    onExecuteIntent: (Intent<ExchangeListIntentReceiver>) -> Unit
-) = uiState.simpleDialogParam?.let {
-    SimpleDialog(it) {
-        onExecuteIntent(ExchangeListIntent.DismissSimpleDialog)
-    }
 }
 
 @Composable

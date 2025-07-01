@@ -9,6 +9,7 @@ android {
 
 dependencies {
     implementation(projects.common)
+    implementation(projects.core.network)
     implementation(projects.core.domain)
     implementation(projects.core.ui)
     implementation(projects.core.router)

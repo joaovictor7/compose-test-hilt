@@ -13,9 +13,11 @@ class GetBooleanRemoteConfigUseCase @Inject constructor(
 ) {
     operator fun invoke(remoteConfig: RemoteConfig): Boolean {
         val versionOrBoolean = remoteConfigRepository.getString(remoteConfig)
-        val boolean = versionOrBoolean.toBooleanStrictOrNull()
+            .takeIf { it.isNotBlank() }
+            ?: return false
+        versionOrBoolean.toBooleanStrictOrNull()?.let { return it }
         val remoteConfigVersionName = versionOrBoolean.digits.toIntOrZero
         val localVersionName = buildConfigProvider.buildConfig.fullyVersion.digits.toIntOrZero
-        return boolean ?: (localVersionName >= remoteConfigVersionName)
+        return localVersionName >= remoteConfigVersionName
     }
 }

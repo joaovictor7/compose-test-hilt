@@ -10,7 +10,6 @@ internal interface LoginIntentReceiver : IntentReceiver<LoginIntentReceiver> {
     fun checkShowInvalidEmailMsg(hasFocus: Boolean)
     fun login(byBiometric: Boolean)
     fun biometricErrorAnimationFinished()
-    fun dismissSimpleDialog()
     fun biometricErrorHandler(biometricError: BiometricError)
     fun showBiometricPrompt()
 }

@@ -1,7 +1,6 @@
 package com.composetest.feature.login.presenter.ui.login
 
 import com.composetest.core.designsystem.enums.textfield.TextFieldIcon
-import com.composetest.core.designsystem.param.alertdialog.SimpleDialogParam
 import com.composetest.feature.login.R
 import com.composetest.feature.login.presenter.model.BiometricModel
 import com.composetest.feature.login.presenter.model.LoginFormModel
@@ -13,19 +12,16 @@ internal data class LoginUiState(
     val loginButtonIsEnabled: Boolean = false,
     val invalidCredentials: Boolean = false,
     val biometricModel: BiometricModel? = null,
-    val simpleDialogParam: SimpleDialogParam? = null,
     val isLoading: Boolean = false
 ) {
     val emailTrailingIcon get() = if (invalidEmail) TextFieldIcon.ERROR else null
     val emailSupporting get() = if (invalidEmail) R.string.feature_login_invalid_email else null
 
     fun initUiState(
-        simpleDialogParam: SimpleDialogParam?,
         versionName: String,
         loginButtonIsEnabled: Boolean,
         biometricModel: BiometricModel?,
     ) = copy(
-        simpleDialogParam = simpleDialogParam,
         versionName = versionName,
         loginButtonIsEnabled = loginButtonIsEnabled,
         biometricModel = biometricModel
@@ -46,9 +42,5 @@ internal data class LoginUiState(
     fun setLoading(isLoading: Boolean) = copy(
         isLoading = isLoading,
         invalidCredentials = if (isLoading) false else invalidCredentials
-    )
-
-    fun setSimpleDialog(simpleDialogParam: SimpleDialogParam?) = copy(
-        simpleDialogParam = simpleDialogParam
     )
 }

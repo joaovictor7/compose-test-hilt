@@ -10,7 +10,6 @@ import com.composetest.core.domain.provider.BuildConfigProvider
 import com.composetest.core.domain.usecase.configuration.SetSystemBarsStyleUseCase
 import com.composetest.core.domain.usecase.remoteconfig.GetBooleanRemoteConfigUseCase
 import com.composetest.core.network.model.ApiError
-import com.composetest.core.router.destination.dialog.NetworkErrorDialog
 import com.composetest.core.router.destination.login.LoginDestination
 import com.composetest.core.router.destination.root.RootDestination
 import com.composetest.core.router.enums.NavigationMode

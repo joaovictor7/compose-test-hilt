@@ -40,6 +40,6 @@ internal object DatabaseModule {
         .build()
 
     private fun getHelperFactory(getDatabaseKeyUseCase: GetDatabaseKeyUseCase) = runBlocking {
-        SupportOpenHelperFactory(getDatabaseKeyUseCase())
+        getDatabaseKeyUseCase()?.let { SupportOpenHelperFactory(it) }
     }
 }

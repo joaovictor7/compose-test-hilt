@@ -9,12 +9,6 @@ internal sealed interface ExchangeListIntent : Intent<ExchangeListIntentReceiver
         }
     }
 
-    data object DismissSimpleDialog : ExchangeListIntent {
-        override fun execute(intentReceiver: ExchangeListIntentReceiver) {
-            intentReceiver.dismissSimpleDialog()
-        }
-    }
-
     data class NavigateToDetail(private val exchangeId: String) : ExchangeListIntent {
         override fun execute(intentReceiver: ExchangeListIntentReceiver) {
             intentReceiver.navigateToDetail(exchangeId)
