@@ -10,34 +10,34 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.composetest.core.designsystem.R
 import com.composetest.core.designsystem.component.button.Button
-import com.composetest.core.designsystem.param.alertdialog.SimpleDialogParam
 import com.composetest.core.designsystem.theme.ComposeTestTheme
+import com.composetest.core.router.destination.dialog.SimpleDialogDestination
 
 @Composable
 fun SimpleDialog(
-    param: SimpleDialogParam,
-    onConfirm: ((SimpleDialogParam) -> Unit)? = null,
-    onDismiss: ((SimpleDialogParam) -> Unit)? = null
+    destination: SimpleDialogDestination,
+    onConfirm: (() -> Unit)? = null,
+    onDismiss: (() -> Unit)? = null
 ) {
     AlertDialog(
-        onDismissRequest = { onDismiss?.invoke(param) },
-        icon = { Icon(painter = painterResource(param.iconId), contentDescription = null) },
+        onDismissRequest = { onDismiss?.invoke() },
+        icon = { Icon(painter = painterResource(destination.iconId), contentDescription = null) },
         iconContentColor = MaterialTheme.colorScheme.error,
-        title = { Text(text = stringResource(param.titleId)) },
-        text = { Text(text = stringResource(param.textId)) },
-        dismissButton = param.dismissButtonTextId?.let {
+        title = { Text(text = stringResource(destination.titleId)) },
+        text = { Text(text = stringResource(destination.textId)) },
+        dismissButton = destination.dismissButtonTextId?.let {
             {
                 Button(
                     text = stringResource(it),
-                    onClick = { onDismiss?.invoke(param) }
+                    onClick = { onDismiss?.invoke() }
                 )
             }
         },
         confirmButton = {
-            param.confirmButtonTextId?.let {
+            destination.confirmButtonTextId?.let {
                 Button(
                     text = stringResource(it),
-                    onClick = { onConfirm?.invoke(param) }
+                    onClick = { onConfirm?.invoke() }
                 )
             }
         }
@@ -48,10 +48,12 @@ fun SimpleDialog(
 @Preview
 private fun Preview() {
     ComposeTestTheme {
-        SimpleDialog(param = object : SimpleDialogParam {
-            override val iconId = R.string.error_alert_dialog_generic_text
-            override val titleId = R.string.error_alert_dialog_generic_title
-            override val textId = R.string.error_alert_dialog_generic_title
-        }) {}
+        SimpleDialog(
+            destination = SimpleDialogDestination(
+                iconId = R.string.error_alert_dialog_generic_text,
+                titleId = R.string.error_alert_dialog_generic_title,
+                textId = R.string.error_alert_dialog_generic_title,
+            )
+        )
     }
 }

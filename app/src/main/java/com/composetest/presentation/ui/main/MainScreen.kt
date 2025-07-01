@@ -5,7 +5,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import com.composetest.core.designsystem.component.dialog.SimpleDialog
 import com.composetest.core.designsystem.component.lifecycle.LifecycleEvent
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.router.extension.currentRoute
@@ -25,7 +24,6 @@ internal fun MainScreen(
         dynamicColor = uiState.appTheme.dynamicColor,
         theme = uiState.appTheme.theme
     ) {
-        DialogHandler(uiState = uiState, onExecuteIntent = onExecuteIntent)
         Navigation(
             uiState = uiState,
             uiEvent = uiEvent,
@@ -54,19 +52,9 @@ private fun LifecycleHandler(
     onExecuteIntent: (Intent<MainIntentReceiver>) -> Unit,
     navController: NavHostController
 ) {
-    LifecycleEvent {
+    LifecycleEvent(onResume = {
         onExecuteIntent(MainIntent.VerifySession(navController.currentRoute))
-    }
-}
-
-@Composable
-private fun DialogHandler(
-    uiState: MainUiState,
-    onExecuteIntent: (Intent<MainIntentReceiver>) -> Unit
-) = uiState.simpleDialogParam?.let {
-    SimpleDialog(param = it) {
-        onExecuteIntent(MainIntent.DismissAlertDialog)
-    }
+    })
 }
 
 @Composable

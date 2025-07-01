@@ -1,7 +1,8 @@
 package com.composetest.data.di
 
-import com.composetest.common.provider.ApplicationModule
-import com.composetest.core.database.application.DatabaseApplication
+import com.composetest.common.application.ApplicationRunner
+import com.composetest.common.application.di.qualifier.ApplicationRunnerQualifier
+import com.composetest.common.application.enums.ApplicationModule
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -12,7 +13,9 @@ import dagger.hilt.components.SingletonComponent
 internal object ApplicationModule {
 
     @Provides
-    fun applicationModules(): Array<ApplicationModule> = arrayOf(
-        DatabaseApplication
+    fun applicationModules(
+        @ApplicationRunnerQualifier(ApplicationModule.DATABASE) databaseApplicationRunner: ApplicationRunner,
+    ): Array<ApplicationRunner> = arrayOf(
+        databaseApplicationRunner
     )
 }

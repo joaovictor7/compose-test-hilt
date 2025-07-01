@@ -65,10 +65,6 @@ internal class MainViewModel @Inject constructor(
         fetchRemoteConfigUseCase()
     }
 
-    override fun dismissAlertDialog() {
-        _uiState.update { it.setSimpleDialog(null) }
-    }
-
     private fun initUiState() = asyncTaskUtils.runAsyncTask(viewModelScope) {
         val firstDestination = if (checkNeedsLoginUseCase()) {
             LoginDestination()

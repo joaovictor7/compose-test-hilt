@@ -14,10 +14,4 @@ internal sealed interface MainIntent : Intent<MainIntentReceiver> {
             intentReceiver.fetchRemoteConfig()
         }
     }
-
-    data object DismissAlertDialog : MainIntent {
-        override fun execute(intentReceiver: MainIntentReceiver) {
-            intentReceiver.dismissAlertDialog()
-        }
-    }
 }

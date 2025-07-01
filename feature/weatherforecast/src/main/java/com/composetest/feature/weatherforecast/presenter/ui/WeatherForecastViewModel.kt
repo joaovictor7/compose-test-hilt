@@ -4,7 +4,7 @@ import android.location.Location
 import androidx.lifecycle.viewModelScope
 import com.composetest.core.analytic.event.CommonAnalyticEvent
 import com.composetest.core.analytic.sender.AnalyticSender
-import com.composetest.core.router.extension.dialogErrorDestination
+import com.composetest.core.designsystem.extension.dialogErrorNavigation
 import com.composetest.core.ui.base.BaseViewModel
 import com.composetest.core.ui.di.qualifier.AsyncTaskUtilsQualifier
 import com.composetest.core.ui.enums.Permission
@@ -128,7 +128,7 @@ internal class WeatherForecastViewModel @Inject constructor(
     }
 
     private fun handleLocationError(error: Throwable) {
-        _uiEvent.emitEvent(WeatherForecastUiEvent.NavigateTo(error.dialogErrorDestination()))
+        _uiEvent.emitEvent(WeatherForecastUiEvent.NavigateTo(error.dialogErrorNavigation()))
         _uiState.update { it.setTryAgainScreenError() }
     }
 
@@ -146,7 +146,7 @@ internal class WeatherForecastViewModel @Inject constructor(
         error: Throwable,
         dataWasGet: Boolean
     ): WeatherForecastStatus {
-        _uiEvent.emitEvent(WeatherForecastUiEvent.NavigateTo(error.dialogErrorDestination()))
+        _uiEvent.emitEvent(WeatherForecastUiEvent.NavigateTo(error.dialogErrorNavigation()))
         return if (dataWasGet) {
             WeatherForecastStatus.READY
         } else {

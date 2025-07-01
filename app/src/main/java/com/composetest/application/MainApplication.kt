@@ -4,7 +4,7 @@ import android.app.Application
 import android.util.Log
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
-import com.composetest.common.provider.ApplicationModule
+import com.composetest.common.application.ApplicationRunner
 import com.composetest.core.analytic.event.ErrorAnalyticEvent
 import com.composetest.core.analytic.sender.AnalyticSender
 import dagger.hilt.android.HiltAndroidApp
@@ -27,7 +27,7 @@ internal class MainApplication :
     lateinit var analyticSender: AnalyticSender
 
     @Inject
-    lateinit var applicationModules: Array<ApplicationModule>
+    lateinit var applicationRunners: Array<ApplicationRunner>
 
     override val workManagerConfiguration
         get() = Configuration.Builder()
@@ -39,7 +39,7 @@ internal class MainApplication :
         executeApplicationModules()
     }
 
-    private fun executeApplicationModules() = applicationModules.forEach {
+    private fun executeApplicationModules() = applicationRunners.forEach {
         runCatching {
             it.onCreate()
         }.onFailure {

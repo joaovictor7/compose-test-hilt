@@ -2,7 +2,7 @@ package com.composetest.feature.login.navigation.di
 
 import com.composetest.core.router.di.quailifier.NavGraphQualifier
 import com.composetest.core.router.interfaces.NavGraph
-import com.composetest.core.router.navgraph.MainNavGraph
+import com.composetest.core.router.enums.ModuleNavGraph
 import com.composetest.feature.login.navigation.NavGraphImpl
 import dagger.Binds
 import dagger.Module
@@ -14,6 +14,6 @@ import dagger.hilt.components.SingletonComponent
 internal abstract class NavGraphModule {
 
     @Binds
-    @NavGraphQualifier(MainNavGraph.LOGIN_NAV_GRAPH)
+    @NavGraphQualifier(ModuleNavGraph.LOGIN_NAV_GRAPH)
     abstract fun navGraph(navGraphImpl: NavGraphImpl): NavGraph
 }

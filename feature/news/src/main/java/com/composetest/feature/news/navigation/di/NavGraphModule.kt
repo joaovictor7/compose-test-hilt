@@ -2,7 +2,7 @@ package com.composetest.feature.news.navigation.di
 
 import com.composetest.core.router.di.quailifier.NavGraphQualifier
 import com.composetest.core.router.interfaces.NavGraph
-import com.composetest.core.router.navgraph.MainNavGraph
+import com.composetest.core.router.enums.ModuleNavGraph
 import com.composetest.feature.news.navigation.NavGraphImpl
 import dagger.Binds
 import dagger.Module
@@ -14,6 +14,6 @@ import dagger.hilt.components.SingletonComponent
 internal abstract class NavGraphModule {
 
     @Binds
-    @NavGraphQualifier(MainNavGraph.NEWS_NAV_GRAPH)
+    @NavGraphQualifier(ModuleNavGraph.NEWS_NAV_GRAPH)
     abstract fun navGraph(navGraphImpl: NavGraphImpl): NavGraph
 }

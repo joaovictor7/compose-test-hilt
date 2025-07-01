@@ -4,6 +4,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import com.composetest.core.router.enums.NavigationMode
+import com.composetest.core.router.interfaces.Destination
 import com.composetest.core.router.interfaces.ResultParam
 import com.composetest.core.router.model.NavigationModel
 import kotlinx.coroutines.Dispatchers
@@ -14,15 +15,17 @@ import kotlin.reflect.KClass
 
 val NavHostController.currentRoute get() = currentDestination?.route?.substringBefore("?")
 
+val NavHostController.backStackBundle get() = currentBackStackEntry?.arguments
+
 val NavHostController.currentRouteChangesFlow
     get() = currentBackStackEntryFlow
         .map { it.destination.route }
         .flowOn(Dispatchers.IO)
 
-fun NavHostController.navigateTo(navigateModel: NavigationModel) {
+fun NavHostController.navigateTo(navigate: NavigationModel) {
     navigate(
-        route = navigateModel.destination,
-        navOptions = getNavigateOptions(navigateModel.navigationMode)
+        route = navigate.destination,
+        navOptions = getNavigateOptions(navigate.navigationMode)
     )
 }
 
@@ -49,7 +52,8 @@ fun <Result : ResultParam> NavHostController.getResultFlow(resultClass: KClass<R
         }
     }
 
-val NavHostController.backStackBundle get() = currentBackStackEntry?.arguments
+inline fun <reified D : Destination> NavHostController.getDestination() =
+    currentBackStackEntry?.savedStateHandle?.getDestination<D>()
 
 private fun NavHostController.getNavigateOptions(mode: NavigationMode?) =
     NavOptions.Builder().apply {

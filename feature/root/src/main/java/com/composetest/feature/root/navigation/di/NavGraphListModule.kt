@@ -3,8 +3,7 @@ package com.composetest.feature.root.navigation.di
 import com.composetest.core.router.di.quailifier.NavGraphListQualifier
 import com.composetest.core.router.di.quailifier.NavGraphQualifier
 import com.composetest.core.router.interfaces.NavGraph
-import com.composetest.core.router.navgraph.MainNavGraph
-import com.composetest.core.router.navgraph.RootNavGraph
+import com.composetest.core.router.enums.ModuleNavGraph
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,11 +13,13 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 internal object NavGraphListModule {
 
+    const val ROOT_NAV_GRAPH_LIST = "ROOT_NAV_GRAPH_LIST"
+
     @Provides
-    @NavGraphListQualifier(MainNavGraph.ROOT_NAV_GRAPH)
+    @NavGraphListQualifier(ROOT_NAV_GRAPH_LIST)
     fun navGraphList(
-        @NavGraphQualifier(RootNavGraph.HOME_ROOT_NAV_GRAPH) rootHomeNavGraph: NavGraph,
-        @NavGraphQualifier(RootNavGraph.CONFIGURATION_ROOT_NAV_GRAPH) rootConfigurationNavGraph: NavGraph,
+        @NavGraphQualifier(ModuleNavGraph.HOME_ROOT_NAV_GRAPH) rootHomeNavGraph: NavGraph,
+        @NavGraphQualifier(ModuleNavGraph.CONFIGURATION_ROOT_NAV_GRAPH) rootConfigurationNavGraph: NavGraph,
     ): Array<NavGraph> = arrayOf(
         rootHomeNavGraph,
         rootConfigurationNavGraph,
