@@ -9,6 +9,7 @@ import com.composetest.core.domain.provider.BuildConfigProvider
 import com.composetest.core.domain.usecase.configuration.SetSystemBarsStyleUseCase
 import com.composetest.core.domain.usecase.remoteconfig.GetBooleanRemoteConfigUseCase
 import com.composetest.core.network.model.ApiError
+import com.composetest.core.router.destination.dialog.SimpleDialogDestination
 import com.composetest.core.router.destination.login.LoginDestination
 import com.composetest.core.router.destination.root.RootDestination
 import com.composetest.core.router.enums.NavigationMode
@@ -33,7 +34,6 @@ import com.composetest.feature.login.domain.usecase.AuthenticationUseCase
 import com.composetest.feature.login.domain.usecase.BiometricIsEnableUseCase
 import com.composetest.feature.login.presenter.extension.autoShowBiometricPrompt
 import com.composetest.feature.login.presenter.model.BiometricModel
-import com.composetest.feature.login.presenter.ui.dialog.SimpleDialogDestination
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -41,6 +41,8 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
+import com.composetest.core.designsystem.R as DesignSystemRes
+import com.composetest.core.ui.R as UiRes
 
 @HiltViewModel
 internal class LoginViewModel @Inject constructor(
@@ -191,8 +193,14 @@ internal class LoginViewModel @Inject constructor(
 
     private fun showDialogExpiredSession() {
         if (loginDestination.expiredSession) {
+            val sessionExpiredDialogDestination = SimpleDialogDestination(
+                iconId = DesignSystemRes.drawable.ic_person_off,
+                titleId = R.string.alert_dialog_session_invalid_title,
+                textId = R.string.alert_dialog_session_invalid_text,
+                dismissButtonTextId = UiRes.string.close,
+            )
             _uiEvent.emitEvent(
-                LoginUiEvent.NavigateTo(NavigationModel(SimpleDialogDestination.expiredSession))
+                LoginUiEvent.NavigateTo(NavigationModel(sessionExpiredDialogDestination))
             )
         }
     }
