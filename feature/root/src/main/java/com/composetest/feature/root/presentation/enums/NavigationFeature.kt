@@ -25,28 +25,28 @@ internal enum class NavigationFeature(
         HomeDestination,
         NavigationLocal.BOTTOM,
         DesignSystemRes.drawable.ic_house_filled,
-        R.string.username_unregistered,
+        R.string.feature_home_title,
     ),
     CONFIGURATION(
         Feature.CONFIGURATION,
         ConfigurationDestination,
         NavigationLocal.BOTTOM,
         DesignSystemRes.drawable.ic_config_filled,
-        R.string.username_unregistered,
+        R.string.feature_configuration_title,
     ),
     WEATHER_FORECAST(
         Feature.WEATHER_FORECAST,
         WeatherForecastDestination,
         NavigationLocal.MODAL_DRAWER,
         DesignSystemRes.drawable.ic_partly_cloudy_medium,
-        R.string.username_unregistered,
+        R.string.feature_weather_forecast_title,
     ),
     NEWS(
         Feature.NEWS,
         NewsListDestination,
         NavigationLocal.MODAL_DRAWER,
         DesignSystemRes.drawable.ic_news_medium,
-        R.string.username_unregistered,
+        R.string.feature_news_title,
     ),
     PROFILE(
         Feature.PROFILE,
@@ -59,7 +59,7 @@ internal enum class NavigationFeature(
         ExchangeListDestination,
         NavigationLocal.MODAL_DRAWER,
         DesignSystemRes.drawable.ic_exchange_medium,
-        R.string.username_unregistered,
+        R.string.feature_exchange_title,
     );
 
     val noText get() = textId == null

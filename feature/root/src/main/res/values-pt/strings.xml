@@ -2,4 +2,9 @@
 <resources>
     <string name="username_unregistered">Nome de usuário não registrado</string>
     <string name="logout">Sair</string>
+    <string name="feature_home_title">Ínicio</string>
+    <string name="feature_configuration_title">Configurações</string>
+    <string name="feature_weather_forecast_title">Previsão do Tempo</string>
+    <string name="feature_exchange_title">Criptos</string>
+    <string name="feature_news_title">Notícias</string>
 </resources>
