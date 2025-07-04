@@ -6,20 +6,17 @@ import com.composetest.core.ui.interfaces.Intent
 
 internal sealed interface LoginIntent : Intent<LoginIntentReceiver> {
     data class WriteData(
-        val email: String? = null,
-        val password: String? = null
+        private val email: String? = null,
+        private val password: String? = null
     ) : LoginIntent {
         override fun execute(intentReceiver: LoginIntentReceiver) {
             intentReceiver.writeData(email, password)
         }
     }
 
-    data class SetStatusBarsTheme(
-        val enterScreen: Boolean,
-        val currentAppTheme: Theme
-    ) : LoginIntent {
+    data class SetStatusBarsTheme(private val currentAppTheme: Theme) : LoginIntent {
         override fun execute(intentReceiver: LoginIntentReceiver) {
-            intentReceiver.setStatusBarsTheme(enterScreen, currentAppTheme)
+            intentReceiver.setStatusBarsTheme(currentAppTheme)
         }
     }
 

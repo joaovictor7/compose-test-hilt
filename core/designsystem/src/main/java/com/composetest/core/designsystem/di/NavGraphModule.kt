@@ -1,4 +1,4 @@
-package com.composetest.core.designsystem.navigation.di
+package com.composetest.core.designsystem.di
 
 import com.composetest.core.designsystem.navigation.NavGraphImpl
 import com.composetest.core.router.di.quailifier.NavGraphQualifier

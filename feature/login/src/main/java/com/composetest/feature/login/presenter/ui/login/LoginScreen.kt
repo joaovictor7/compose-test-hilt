@@ -13,6 +13,7 @@ import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,7 +27,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.composetest.core.designsystem.component.button.Button
 import com.composetest.core.designsystem.component.icon.VibratingIcon
-import com.composetest.core.designsystem.component.lifecycle.LifecycleEvent
 import com.composetest.core.designsystem.component.textfield.OutlinedTextField
 import com.composetest.core.designsystem.composition.LocalTheme
 import com.composetest.core.designsystem.dimension.Spacing
@@ -225,18 +225,11 @@ private fun UiEventHandler(
 }
 
 @Composable
-private fun LifecycleEventHandler(
-    onExecuteIntent: (Intent<LoginIntentReceiver>) -> Unit,
-) {
+private fun LifecycleEventHandler(onExecuteIntent: (Intent<LoginIntentReceiver>) -> Unit) {
     val currentAppTheme = LocalTheme.current
-    LifecycleEvent(
-        onCreate = {
-            onExecuteIntent(LoginIntent.SetStatusBarsTheme(true, currentAppTheme))
-        },
-        onDestroy = {
-            onExecuteIntent(LoginIntent.SetStatusBarsTheme(false, currentAppTheme))
-        }
-    )
+    LaunchedEffect(Unit) {
+        onExecuteIntent(LoginIntent.SetStatusBarsTheme(currentAppTheme))
+    }
 }
 
 @Composable

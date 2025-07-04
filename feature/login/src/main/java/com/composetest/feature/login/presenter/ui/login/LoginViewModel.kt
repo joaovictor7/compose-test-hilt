@@ -75,6 +75,11 @@ internal class LoginViewModel @Inject constructor(
         initUiState()
     }
 
+    override fun onCleared() {
+        super.onCleared()
+        setSystemBarsStyleUseCase(null)
+    }
+
     override fun sendOpenScreenAnalytic() {
         asyncTaskUtils.runAsyncTask(viewModelScope) {
             analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(LoginScreenAnalytic))
@@ -118,9 +123,10 @@ internal class LoginViewModel @Inject constructor(
         }
     }
 
-    override fun setStatusBarsTheme(enterScreen: Boolean, currentAppTheme: Theme) {
-        val theme = if (enterScreen && currentAppTheme != Theme.DARK) Theme.DARK else null
-        setSystemBarsStyleUseCase(theme)
+    override fun setStatusBarsTheme(currentAppTheme: Theme) {
+        if (currentAppTheme != Theme.DARK) {
+            setSystemBarsStyleUseCase(Theme.DARK)
+        }
     }
 
     override fun biometricErrorHandler(biometricError: BiometricError) {
