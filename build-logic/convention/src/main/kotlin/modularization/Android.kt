@@ -42,6 +42,8 @@ internal fun Project.configureAndroid(
         }
     }
 //    experimentalProperties["android.experimental.enableScreenshotTest"] = true //~> revert after update
+    setBuildTypes()
+    setFlavors()
     dependencies {
         implementation(getLibrary("androidx.lifecycle.runtime.ktx"))
         implementation(getLibrary("kotlin.coroutines.android"))

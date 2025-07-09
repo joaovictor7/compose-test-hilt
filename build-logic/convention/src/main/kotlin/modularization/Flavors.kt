@@ -5,10 +5,11 @@ import com.android.build.api.dsl.ApplicationProductFlavor
 import com.android.build.gradle.BaseExtension
 import enums.Flavor
 import enums.FlavorDimension
+import extension.isApplication
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 
-internal fun Project.setFlavors(isApplication: Boolean) = extensions.configure<BaseExtension> {
+internal fun Project.setFlavors() = extensions.configure<BaseExtension> {
     flavorDimensions(*FlavorDimension.allDimensions.toTypedArray())
     productFlavors {
         FlavorDimension.values().forEach { dimension ->
