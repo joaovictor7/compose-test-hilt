@@ -20,7 +20,6 @@ internal class ApplicationConventionPlugin : Plugin<Project> {
         with(target) {
             with(pluginManager) {
                 apply("com.android.application")
-                apply("com.google.dagger.hilt.android")
                 apply("com.google.gms.google-services")
                 apply("com.google.firebase.crashlytics")
             }

@@ -5,22 +5,22 @@ import com.android.build.api.dsl.CommonExtension
 import extension.getLibrary
 import extension.implementation
 import extension.ksp
-import org.gradle.api.JavaVersion
 import org.gradle.api.Project
+import org.gradle.api.plugins.JavaPluginExtension
+import org.gradle.jvm.toolchain.JavaLanguageVersion
+import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
-import org.gradle.kotlin.dsl.withType
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
 
 internal fun Project.configureAndroid(
     commonExtension: CommonExtension<*, *, *, *, *, *>
 ) = with(commonExtension) {
     with(pluginManager) {
-        apply("org.jetbrains.kotlin.android")
-        apply("org.jetbrains.kotlin.plugin.serialization")
+        apply("com.composetest.kover")
         apply("com.google.dagger.hilt.android")
         apply("com.google.devtools.ksp")
-        apply("com.composetest.kover")
+        apply("org.jetbrains.kotlin.android")
+        apply("org.jetbrains.kotlin.plugin.serialization")
         apply("kotlin-parcelize")
     }
     compileSdk = AppConfig.COMPILE_SDK_VERSION
@@ -28,14 +28,13 @@ internal fun Project.configureAndroid(
         minSdk = AppConfig.MIN_SDK_VERSION
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_22
-        targetCompatibility = JavaVersion.VERSION_22
-    }
-    tasks.withType<KotlinCompile> {
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_22)
+    extensions.configure<JavaPluginExtension> {
+        toolchain {
+            languageVersion.set(JavaLanguageVersion.of(AppConfig.JDK_TARGET))
         }
+    }
+    extensions.configure<KotlinAndroidProjectExtension> {
+        jvmToolchain(AppConfig.JDK_TARGET)
     }
     packaging {
         resources {
@@ -46,7 +45,6 @@ internal fun Project.configureAndroid(
     dependencies {
         implementation(getLibrary("androidx.lifecycle.runtime.ktx"))
         implementation(getLibrary("kotlin.coroutines.android"))
-        implementation(getLibrary("kotlin.json.serializable"))
         implementation(getLibrary("android.hilt"))
         ksp(getLibrary("android.hilt.compiler"))
     }
