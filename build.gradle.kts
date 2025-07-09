@@ -13,4 +13,5 @@ plugins {
     alias(libs.plugins.hilt) apply false
 //    alias(libs.plugins.screenshot) apply false // ~> revert after update
     alias(libs.plugins.kover) apply false
+    alias(libs.plugins.jetbrains.kotlin.jvm) apply false
 }

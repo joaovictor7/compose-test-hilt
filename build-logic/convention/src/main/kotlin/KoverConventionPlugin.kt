@@ -13,44 +13,44 @@ internal class KoverConventionPlugin : Plugin<Project> {
         }?.path?.replace(":", "/") ?: project.name
 
     override fun apply(target: Project) {
-        with(target) {
-            with(pluginManager) {
-                apply("org.jetbrains.kotlinx.kover")
-            }
-            extensions.configure<KoverProjectExtension> {
-                useJacoco(findVersion("jacoco"))
-                currentProject {
-                    createVariant(KOVER_VARIANT_NAME_REPORT) {
-                        if (name != AppConfig.PROJECT_NAME) {
-                            add("developDebug")
-                        }
-                    }
-                }
-                if (name == AppConfig.PROJECT_NAME) {
-                    merge {
-                        allProjects()
-                        createVariant(KOVER_VARIANT_NAME_REPORT) { }
-                    }
-                }
-                reports {
-                    variant(KOVER_VARIANT_NAME_REPORT) {
-                        html {
-                            htmlDir.set(file("$rootDir/kover/$koverDirectoryByModule"))
-                        }
-                    }
-                    filters {
-                        excludes {
-                            androidGeneratedClasses()
-                        }
-                        includes {
-                            classes("com.composetest.*ViewModel")
-                            classes("com.composetest.*UseCase")
-                            classes("com.composetest.*Repository")
-                        }
-                    }
-                }
-            }
-        }
+//        with(target) {
+//            with(pluginManager) {
+//                apply("org.jetbrains.kotlinx.kover")
+//            }
+//            extensions.configure<KoverProjectExtension> {
+//                useJacoco(findVersion("jacoco"))
+//                currentProject {
+//                    createVariant(KOVER_VARIANT_NAME_REPORT) {
+//                        if (name != AppConfig.PROJECT_NAME) {
+//                            add("developDebug")
+//                        }
+//                    }
+//                }
+//                if (name == AppConfig.PROJECT_NAME) {
+//                    merge {
+//                        allProjects()
+//                        createVariant(KOVER_VARIANT_NAME_REPORT) { }
+//                    }
+//                }
+//                reports {
+//                    variant(KOVER_VARIANT_NAME_REPORT) {
+//                        html {
+//                            htmlDir.set(file("$rootDir/kover/$koverDirectoryByModule"))
+//                        }
+//                    }
+//                    filters {
+//                        excludes {
+//                            androidGeneratedClasses()
+//                        }
+//                        includes {
+//                            classes("com.composetest.*ViewModel")
+//                            classes("com.composetest.*UseCase")
+//                            classes("com.composetest.*Repository")
+//                        }
+//                    }
+//                }
+//            }
+//        }
     }
 
     private companion object {

@@ -1,5 +1,6 @@
 plugins {
     `kotlin-dsl`
+    alias(libs.plugins.jetbrains.kotlin.jvm)
 }
 
 dependencies {
@@ -36,6 +37,10 @@ gradlePlugin {
         registerPlugin(
             id = "kover",
             className = "KoverConventionPlugin"
+        )
+        registerPlugin(
+            id = "kotlin",
+            className = "KotlinConventionPlugin"
         )
     }
 }
