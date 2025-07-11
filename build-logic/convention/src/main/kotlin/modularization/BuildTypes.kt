@@ -4,20 +4,21 @@ import com.android.build.api.dsl.ApplicationBuildType
 import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.internal.dsl.BuildType
 import enums.Signing
+import extension.isApplication
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 import enums.BuildType as BuildTypeEnum
 
-internal fun Project.setBuildTypes(isApplication: Boolean) = extensions.configure<BaseExtension> {
+internal fun Project.setBuildTypes() = extensions.configure<BaseExtension> {
     buildTypes {
         BuildTypeEnum.values().forEach { buildType ->
             if (buildType.isInternal) {
                 getByName(buildType.toString()) {
-                    configBuildType(this@setBuildTypes, this@configure, buildType, isApplication)
+                    configBuildType(this@setBuildTypes, this@configure, buildType)
                 }
             } else {
                 create(buildType.toString()) {
-                    configBuildType(this@setBuildTypes, this@configure, buildType, isApplication)
+                    configBuildType(this@setBuildTypes, this@configure, buildType)
                 }
             }
         }
@@ -28,11 +29,10 @@ private fun BuildType.configBuildType(
     project: Project,
     baseExtension: BaseExtension,
     buildType: BuildTypeEnum,
-    isApplication: Boolean
 ) = with(baseExtension) {
     isDefault = buildType.isDefault
     isDebuggable = buildType.isDebuggable
-    if (isApplication) {
+    if (project.isApplication) {
         setSigning(this, buildType)
         setBuildConfigFields(project, buildType)
     }

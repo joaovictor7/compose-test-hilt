@@ -1,7 +1,5 @@
 package appconfig
 
-import org.gradle.api.JavaVersion
-
 internal object AppConfig {
     const val COMPILE_SDK_VERSION = 36
     const val MIN_SDK_VERSION = 26
@@ -9,6 +7,6 @@ internal object AppConfig {
     const val CODE_VERSION = 1
     const val NAME_VERSION = "1.0.0"
     const val APP_NAME = "Compose Test"
-    const val KOTLIN_JVM_TARGET = 22
-    val javaVersion = JavaVersion.VERSION_22
+    const val PROJECT_NAME = "ComposeTest"
+    const val JDK_TARGET = 22
 }

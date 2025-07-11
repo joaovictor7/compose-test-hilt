@@ -4,6 +4,8 @@ import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.kotlin.dsl.getByType
 
+internal val Project.isApplication get() = plugins.hasPlugin("com.android.application")
+
 internal fun Project.getLibrary(id: String) = libs.findLibrary(id).get()
 
 internal fun Project.findVersion(id: String) = libs.findVersion(id).get().toString()

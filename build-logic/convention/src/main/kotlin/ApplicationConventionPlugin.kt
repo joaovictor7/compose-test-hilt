@@ -7,8 +7,6 @@ import extension.implementation
 import file.LoadPropertiesFile
 import file.PropertiesFile
 import modularization.configureAndroid
-import modularization.setBuildTypes
-import modularization.setFlavors
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -20,7 +18,6 @@ internal class ApplicationConventionPlugin : Plugin<Project> {
         with(target) {
             with(pluginManager) {
                 apply("com.android.application")
-                apply("com.google.dagger.hilt.android")
                 apply("com.google.gms.google-services")
                 apply("com.google.firebase.crashlytics")
             }
@@ -47,8 +44,6 @@ internal class ApplicationConventionPlugin : Plugin<Project> {
                         excludes += "/META-INF/{AL2.0,LGPL2.1}"
                     }
                 }
-                setBuildTypes(true)
-                setFlavors(true)
             }
             dependencies {
                 implementation(getLibrary("firebase.analytics"))
