@@ -1,6 +1,6 @@
 package com.composetest.feature.root.domain.enums
 
-import com.composetest.common.remoteconfig.RemoteConfig
+import com.composetest.core.domain.interfaces.RemoteConfig
 
 internal enum class Feature(val remoteConfig: RemoteConfig) {
     HOME(FeatureRemoteConfig.HOME),

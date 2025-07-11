@@ -1,6 +1,6 @@
 package com.composetest.core.domain.repository
 
-import com.composetest.common.remoteconfig.RemoteConfig
+import com.composetest.core.domain.interfaces.RemoteConfig
 
 interface RemoteConfigRepository {
     fun getString(remoteConfig: RemoteConfig): String

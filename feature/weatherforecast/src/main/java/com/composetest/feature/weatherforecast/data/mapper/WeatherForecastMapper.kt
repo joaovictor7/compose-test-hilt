@@ -1,6 +1,6 @@
 package com.composetest.feature.weatherforecast.data.mapper
 
-import com.composetest.common.extension.convertedFromUnix
+import com.composetest.core.domain.extension.convertedFromUnix
 import com.composetest.feature.weatherforecast.domain.model.ForecastTemperatureModel
 import com.composetest.feature.weatherforecast.domain.model.WeatherForecastLocationModel
 import com.composetest.feature.weatherforecast.domain.model.WeatherForecastModel

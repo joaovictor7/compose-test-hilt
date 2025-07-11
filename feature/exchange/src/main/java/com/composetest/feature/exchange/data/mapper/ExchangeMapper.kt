@@ -1,6 +1,6 @@
 package com.composetest.feature.exchange.data.mapper
 
-import com.composetest.common.extension.convertFromString
+import com.composetest.core.domain.extension.convertFromString
 import com.composetest.feature.exchange.domain.model.ExchangeModel
 import com.composetest.feature.exchange.network.response.ExchangeResponse
 import javax.inject.Inject

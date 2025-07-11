@@ -1,4 +1,4 @@
-package com.composetest.common.extension
+package com.composetest.core.domain.extension
 
 val String.digits get() = filter { it.isDigit() }
 

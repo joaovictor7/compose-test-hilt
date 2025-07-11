@@ -1,6 +1,6 @@
 package com.composetest.core.data.repository
 
-import com.composetest.common.remoteconfig.RemoteConfig
+import com.composetest.core.domain.interfaces.RemoteConfig
 import com.composetest.core.data.datasource.remote.RemoteConfigDataSource
 import com.composetest.core.domain.repository.RemoteConfigRepository
 import javax.inject.Inject
