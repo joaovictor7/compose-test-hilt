@@ -32,7 +32,6 @@ location = "21.3.0"
 screenshot = "0.0.1-alpha10"
 kover = "0.9.1"
 jacoco = "0.8.13"
-jetbrainsKotlinJvm = "2.2.0"
 
 [libraries]
 # Kotlin
@@ -128,6 +127,6 @@ googleServices = { id = "com.google.gms.google-services", version.ref = "googleS
 firebaseCrashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlytics" }
 composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
-screenshot = { id = "com.android.compose.screenshot", version.ref = "screenshot" }
+screenshoot = { id = "com.android.compose.screenshot", version.ref = "screenshot" }
 kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
+kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }

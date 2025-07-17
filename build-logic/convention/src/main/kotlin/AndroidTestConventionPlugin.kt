@@ -11,7 +11,7 @@ internal class AndroidTestConventionPlugin : Plugin<Project> {
                 apply("com.composetest.test")
             }
             dependencies {
-                testImplementation(project(":core:teste1:android"))
+                testImplementation(project(":core:test:android"))
             }
         }
     }

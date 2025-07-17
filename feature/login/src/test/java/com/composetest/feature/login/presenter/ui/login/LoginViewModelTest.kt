@@ -18,7 +18,7 @@ import com.composetest.core.router.model.NavigationModel
 import com.composetest.core.security.provider.BiometricProvider
 import com.composetest.core.security.provider.CipherProvider
 import com.composetest.core.test.android.BaseTest
-import com.composetest.core.teste1.kotlin.extension.runFlowTest
+import com.composetest.core.test.kotlin.extension.runFlowTest
 import com.composetest.core.ui.util.AsyncTaskUtils
 import com.composetest.feature.login.analytic.event.LoginEventAnalytic
 import com.composetest.feature.login.analytic.screen.LoginScreenAnalytic
