@@ -1,7 +1,3 @@
 plugins {
-    alias(libs.plugins.composeTest.library)
-}
-
-android {
-    namespace = "com.composetest.common"
+    alias(libs.plugins.composeTest.kotlin)
 }

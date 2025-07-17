@@ -1,9 +1,5 @@
 plugins {
-    alias(libs.plugins.composeTest.library)
-}
-
-android {
-    namespace = "com.composetest.core.network"
+    alias(libs.plugins.composeTest.kotlin)
 }
 
 dependencies {

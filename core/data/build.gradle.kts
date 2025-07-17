@@ -1,6 +1,5 @@
 plugins {
     alias(libs.plugins.composeTest.library)
-    alias(libs.plugins.kotlinSerialization)
 }
 
 android {
