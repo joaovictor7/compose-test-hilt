@@ -5,25 +5,25 @@ kotlinJsonSerialization = "1.9.0"
 kotlinCoroutine = "1.10.2"
 junit5 = "5.13.3"
 junitLauncher = "1.13.3"
-lifecycleRuntime = "2.9.1"
+lifecycleRuntime = "2.9.2"
 activityCompose = "1.10.1"
 androidDataStore = "1.1.7"
-androidHilt = "2.56.2"
+androidHilt = "2.57"
 androidXHilt = "1.2.0"
 androidXAppCompat = "1.7.1"
 androidXBiometric = "1.4.0-alpha04"
-composeBom = "2025.06.01"
-composeNavigation = "2.9.1"
+composeBom = "2025.07.00"
+composeNavigation = "2.9.2"
 googleServices = "4.4.3"
 firebaseBom = "33.16.0"
 firebaseCrashlytics = "3.0.4"
-mockK = "1.14.4"
+mockK = "1.14.5"
 ksp = "2.2.0-2.0.2"
 room = "2.7.2"
 sqlCipher = "4.9.0"
 sqLite = "2.5.2"
 workManager = "2.10.2"
-ktor = "3.2.1"
+ktor = "3.2.2"
 slf4j = "2.0.17"
 splashScreen = "1.0.1"
 coil = "3.2.0"
@@ -41,6 +41,7 @@ kotlin-compose-gradle-plugin = { group = "org.jetbrains.kotlin", name = "compose
 kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", version.ref = "kotlin" }
 kotlin-json-serializable = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinJsonSerialization" }
 kotlin-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinCoroutine" }
+kotlin-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinCoroutine" }
 kotlin-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinCoroutine" }
 kotlin-kover = { group = "org.jetbrains.kotlinx", name = "kover-gradle-plugin", version.ref = "kover" }
 
@@ -69,7 +70,7 @@ sqlite = { group = "androidx.sqlite", name = "sqlite-ktx", version.ref = "sqLite
 # Hilt
 android-hilt = { group = "com.google.dagger", name = "hilt-android", version.ref = "androidHilt" }
 android-hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "androidHilt" }
-androidx-hilt-compiler = { group = "androidx.hilt", name = "hilt-compiler", version.ref = "androidXHilt" }
+android-hilt-core = { group = "com.google.dagger", name = "hilt-core", version.ref = "androidHilt" }
 androidx-hilt-work = { group = "androidx.hilt", name = "hilt-work", version.ref = "androidXHilt" }
 androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "androidXHilt" }
 
@@ -116,6 +117,7 @@ composeTest-application = { id = "com.composetest.application" }
 composeTest-library = { id = "com.composetest.library" }
 composeTest-compose = { id = "com.composetest.compose" }
 composeTest-test = { id = "com.composetest.test" }
+composeTest-androidTest = { id = "com.composetest.androidTest" }
 composeTest-kover = { id = "com.composetest.kover" }
 composeTest-kotlin = { id = "com.composetest.kotlin" }
 

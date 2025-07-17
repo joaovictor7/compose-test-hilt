@@ -1,9 +1,11 @@
 import appconfig.AppConfig
+import extension.getLibrary
+import extension.implementation
 import modularization.commonConfigurations
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.dependencies
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 
 internal class KotlinConventionPlugin : Plugin<Project> {
@@ -14,9 +16,13 @@ internal class KotlinConventionPlugin : Plugin<Project> {
                 apply("org.jetbrains.kotlin.jvm")
             }
             extensions.configure<KotlinJvmProjectExtension> {
-                jvmToolchain(AppConfig.KOTLIN_JVM_TARGET)
+                jvmToolchain(AppConfig.JDK_TARGET)
             }
             commonConfigurations()
+            dependencies {
+                implementation(getLibrary("kotlin.coroutines.core"))
+                implementation(getLibrary("android.hilt.core"))
+            }
         }
     }
 }

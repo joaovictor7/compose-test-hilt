@@ -1,6 +1,7 @@
-package com.composetest.core.test
+package com.composetest.core.test.android
 
 import android.util.Log
+import com.composetest.core.teste1.kotlin.CoroutinesTest
 import io.mockk.every
 import io.mockk.mockkStatic
 import org.junit.jupiter.api.BeforeAll

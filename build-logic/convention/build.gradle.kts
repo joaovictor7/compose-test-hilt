@@ -1,6 +1,5 @@
 plugins {
     `kotlin-dsl`
-    alias(libs.plugins.jetbrains.kotlin.jvm)
 }
 
 dependencies {
@@ -20,27 +19,31 @@ gradlePlugin {
         }
         registerPlugin(
             id = "application",
-            className = "ApplicationConventionPlugin"
+            className = "ApplicationConventionPlugin",
         )
         registerPlugin(
             id = "library",
-            className = "LibraryConventionPlugin"
+            className = "LibraryConventionPlugin",
         )
         registerPlugin(
             id = "compose",
-            className = "ComposeConventionPlugin"
+            className = "ComposeConventionPlugin",
         )
         registerPlugin(
             id = "test",
-            className = "TestConventionPlugin"
+            className = "TestConventionPlugin",
+        )
+        registerPlugin(
+            id = "androidTest",
+            className = "AndroidTestConventionPlugin",
         )
         registerPlugin(
             id = "kover",
-            className = "KoverConventionPlugin"
+            className = "KoverConventionPlugin",
         )
         registerPlugin(
             id = "kotlin",
-            className = "KotlinConventionPlugin"
+            className = "KotlinConventionPlugin",
         )
     }
 }

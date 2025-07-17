@@ -6,6 +6,9 @@ import org.gradle.kotlin.dsl.getByType
 
 internal val Project.isApplication get() = plugins.hasPlugin("com.android.application")
 
+internal val Project.isKotlin
+    get() = !plugins.hasPlugin("com.android.application") && !plugins.hasPlugin("com.android.library")
+
 internal fun Project.getLibrary(id: String) = libs.findLibrary(id).get()
 
 internal fun Project.findVersion(id: String) = libs.findVersion(id).get().toString()

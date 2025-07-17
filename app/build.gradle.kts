@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.composeTest.application)
     alias(libs.plugins.composeTest.compose)
-    alias(libs.plugins.composeTest.test)
+    alias(libs.plugins.composeTest.androidTest)
 }
 
 android {
