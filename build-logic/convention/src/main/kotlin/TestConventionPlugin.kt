@@ -21,7 +21,7 @@ internal class TestConventionPlugin : Plugin<Project> {
                 jvmArgs("-XX:+EnableDynamicAgentLoading")
             }
             dependencies {
-                testImplementation(project(":core:test:kotlin"))
+                testImplementation(project(":core:test:api"))
                 testImplementation(getLibrary("junit5"))
                 testImplementation(getLibrary("mockk"))
                 testImplementation(getLibrary("kotlin.coroutines.test"))

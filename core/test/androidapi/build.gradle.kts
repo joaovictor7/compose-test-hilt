@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace = "com.composetest.core.test.android"
+    namespace = "com.composetest.core.test.androidapi"
 }
 
 dependencies {
-    implementation(projects.core.test.kotlin)
+    implementation(projects.core.test.api)
     implementation(libs.junit5)
     implementation(libs.kotlin.coroutines.test)
     implementation(libs.mockk)
