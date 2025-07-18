@@ -1,7 +1,7 @@
 package com.composetest.feature.weatherforecast.data.datasource.local
 
-import com.composetest.core.data.extension.readJsonAs
-import com.composetest.core.data.provider.AssetsProvider
+import com.composetest.core.data.api.extension.readJsonAs
+import com.composetest.core.data.api.provider.AssetsProvider
 import com.composetest.core.network.util.ApiCallUtils
 import com.composetest.feature.weatherforecast.data.datasource.OpenWeatherDataSource
 import com.composetest.feature.weatherforecast.network.request.WeatherForecastRequest

@@ -12,7 +12,7 @@ dependencies {
     implementation(projects.core.ui)
     implementation(projects.core.designsystem)
     implementation(projects.core.database)
-    implementation(projects.core.data)
+    implementation(projects.core.data.api)
     implementation(projects.core.domain)
     implementation(projects.core.router)
     implementation(projects.core.analytic)

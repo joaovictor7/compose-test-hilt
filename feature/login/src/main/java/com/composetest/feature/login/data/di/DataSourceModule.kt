@@ -1,8 +1,8 @@
 package com.composetest.feature.login.data.di
 
 import com.composetest.common.provider.DateTimeProvider
-import com.composetest.core.data.provider.AssetsProvider
-import com.composetest.core.data.provider.EnvironmentInstanceProvider
+import com.composetest.core.data.api.provider.AssetsProvider
+import com.composetest.core.data.api.provider.EnvironmentInstanceProvider
 import com.composetest.core.network.util.ApiCallUtils
 import com.composetest.feature.login.data.datasource.AuthenticationDataSource
 import com.composetest.feature.login.data.datasource.local.AuthenticationFakeDataSourceImpl

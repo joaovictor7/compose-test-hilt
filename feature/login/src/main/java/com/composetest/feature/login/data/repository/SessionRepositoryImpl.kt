@@ -1,6 +1,6 @@
 package com.composetest.feature.login.data.repository
 
-import com.composetest.core.data.workmanager.WorkManager
+import com.composetest.core.data.androidapi.workmanager.WorkManager
 import com.composetest.core.domain.model.SessionModel
 import com.composetest.core.domain.model.UserModel
 import com.composetest.core.domain.repository.SessionRepository

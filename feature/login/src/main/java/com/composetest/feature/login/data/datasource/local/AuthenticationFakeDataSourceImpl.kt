@@ -1,8 +1,8 @@
 package com.composetest.feature.login.data.datasource.local
 
 import com.composetest.common.provider.DateTimeProvider
-import com.composetest.core.data.extension.readJsonAs
-import com.composetest.core.data.provider.AssetsProvider
+import com.composetest.core.data.api.extension.readJsonAs
+import com.composetest.core.data.api.provider.AssetsProvider
 import com.composetest.core.network.util.ApiCallUtils
 import com.composetest.feature.login.data.datasource.AuthenticationDataSource
 import com.composetest.feature.login.network.response.AuthenticationResponse

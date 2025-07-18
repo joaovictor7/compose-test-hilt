@@ -1,7 +1,7 @@
 package com.composetest.core.database.data.repository
 
-import com.composetest.core.data.datasource.PreferenceDataSource
-import com.composetest.core.data.datastore.PreferencesDataKeys
+import com.composetest.core.data.androidapi.datasource.PreferenceDataSource
+import com.composetest.core.data.androidapi.datastore.PreferencesDataKeys
 import kotlinx.coroutines.flow.firstOrNull
 import javax.inject.Inject
 

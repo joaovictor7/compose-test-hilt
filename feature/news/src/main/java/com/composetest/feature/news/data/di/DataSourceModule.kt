@@ -1,7 +1,7 @@
 package com.composetest.feature.news.data.di
 
-import com.composetest.core.data.provider.AssetsProvider
-import com.composetest.core.data.provider.EnvironmentInstanceProvider
+import com.composetest.core.data.api.provider.AssetsProvider
+import com.composetest.core.data.api.provider.EnvironmentInstanceProvider
 import com.composetest.core.network.di.qualifier.ApiQualifier
 import com.composetest.core.network.util.ApiCallUtils
 import com.composetest.feature.news.data.datasource.NewsApiDataSource
