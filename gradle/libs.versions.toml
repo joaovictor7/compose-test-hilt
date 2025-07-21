@@ -29,7 +29,7 @@ splashScreen = "1.0.1"
 coil = "3.2.0"
 permissions = "0.37.3"
 location = "21.3.0"
-screenshot = "0.0.1-alpha10"
+screenshoot = "0.0.1-alpha10"
 kover = "0.9.1"
 jacoco = "0.8.13"
 
@@ -46,7 +46,7 @@ kotlin-kover = { group = "org.jetbrains.kotlinx", name = "kover-gradle-plugin", 
 
 # Android
 android-tools-build-gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
-android-screenshot-validation = { group = "com.android.tools.screenshot", name = "screenshot-validation-api", version.ref = "screenshot" }
+android-screenshot-validation = { group = "com.android.tools.screenshot", name = "screenshot-validation-api", version.ref = "screenshoot" }
 android-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "permissions" }
 android-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "location" }
 
@@ -82,7 +82,6 @@ firebase-auth = { group = "com.google.firebase", name = "firebase-auth" }
 
 # Junit 5
 junit5 = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "junit5" }
-junit5-engine = { group = "org.junit.jupiter", name = "junit-jupiter-engine", version.ref = "junit5" }
 junit-launcher = { group = "org.junit.platform", name = "junit-platform-launcher", version.ref = "junitLauncher" }
 
 # Compose
@@ -127,6 +126,6 @@ googleServices = { id = "com.google.gms.google-services", version.ref = "googleS
 firebaseCrashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlytics" }
 composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
-screenshoot = { id = "com.android.compose.screenshot", version.ref = "screenshot" }
+screenshoot = { id = "com.android.compose.screenshot", version.ref = "screenshoot" }
 kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
