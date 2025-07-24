@@ -1,6 +1,6 @@
 plugins {
-    alias(libs.plugins.composeTest.kotlin)
-    alias(libs.plugins.composeTest.test)
+    alias(libs.plugins.composetest.kotlin)
+    alias(libs.plugins.composetest.test)
 }
 
 dependencies {

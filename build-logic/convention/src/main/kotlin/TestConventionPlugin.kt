@@ -17,12 +17,11 @@ internal class TestConventionPlugin : Plugin<Project> {
             tasks.withType<Test> {
                 ignoreFailures = true
                 useJUnitPlatform()
-                jvmArgs("-Xshare:off")
-                jvmArgs("-XX:+EnableDynamicAgentLoading")
+                jvmArgs("-Xshare:off", "-XX:+EnableDynamicAgentLoading")
             }
             dependencies {
                 testImplementation(project(":core:test:api"))
-                testImplementation(getLibrary("junit5"))
+                testImplementation(getLibrary("junit-jupiter"))
                 testImplementation(getLibrary("mockk"))
                 testImplementation(getLibrary("kotlin.coroutines.test"))
                 testImplementation(getLibrary("slf4j.simple"))

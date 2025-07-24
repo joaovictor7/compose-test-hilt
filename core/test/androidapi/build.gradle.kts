@@ -1,5 +1,5 @@
 plugins {
-    alias(libs.plugins.composeTest.library)
+    alias(libs.plugins.composetest.library)
 }
 
 android {
@@ -8,7 +8,7 @@ android {
 
 dependencies {
     implementation(projects.core.test.api)
-    implementation(libs.junit5)
+    implementation(libs.junit.jupiter)
     implementation(libs.kotlin.coroutines.test)
     implementation(libs.mockk)
 }

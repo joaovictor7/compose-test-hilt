@@ -3,6 +3,7 @@ package com.composetest.feature.login.presenter.ui.login
 import android.util.Log
 import com.composetest.core.analytic.api.event.CommonAnalyticEvent
 import com.composetest.core.analytic.api.sender.AnalyticSender
+import com.composetest.core.designsystem.extension.dialogErrorNavigation
 import com.composetest.core.domain.enums.BuildType
 import com.composetest.core.domain.enums.Flavor
 import com.composetest.core.domain.model.buildconfig.BuildConfigFieldsModel
@@ -15,8 +16,8 @@ import com.composetest.core.router.destination.login.LoginDestination
 import com.composetest.core.router.destination.root.RootDestination
 import com.composetest.core.router.enums.NavigationMode
 import com.composetest.core.router.model.NavigationModel
-import com.composetest.core.security.provider.BiometricProvider
-import com.composetest.core.security.provider.CipherProvider
+import com.composetest.core.security.api.provider.BiometricProvider
+import com.composetest.core.security.api.provider.CipherProvider
 import com.composetest.core.test.android.BaseTest
 import com.composetest.core.test.kotlin.extension.runFlowTest
 import com.composetest.core.ui.util.AsyncTaskUtils
@@ -129,22 +130,23 @@ internal class LoginViewModelTest : BaseTest() {
         }
     }
 
-//    @Test
-//    fun `error network`() = runFlowTest(
-//        viewModel.uiState,
-//        viewModel.uiEvent
-//    ) { onCancelJob, firstStates, secondStates ->
-//        coEvery { authenticationUseCase(any(), any()) } throws ApiError.Network()
-//
-//        viewModel.executeIntent(LoginIntent.WriteData("teste@teste.com", "password"))
-//        viewModel.executeIntent(LoginIntent.Login(false))
-//        onCancelJob()
-//
-//        assertEquals(
-//            LoginUiEvent.NavigateTo(NavigationModel(NetworkErrorDialog)),
-//            secondStates[0]
-//        )
-//    }
+    @Test
+    fun `error network`() = runFlowTest(
+        viewModel.uiState,
+        viewModel.uiEvent
+    ) { onCancelJob, firstStates, secondStates ->
+        val expectedNetworkError = ApiError.Network()
+        coEvery { authenticationUseCase(any(), any()) } throws expectedNetworkError
+
+        viewModel.executeIntent(LoginIntent.WriteData("teste@teste.com", "password"))
+        viewModel.executeIntent(LoginIntent.Login(false))
+        onCancelJob()
+
+        assertEquals(
+            LoginUiEvent.NavigateTo(expectedNetworkError.dialogErrorNavigation()),
+            secondStates[0]
+        )
+    }
 
     private fun initViewModel() = LoginViewModel(
         buildConfigProvider = buildConfigProvider,

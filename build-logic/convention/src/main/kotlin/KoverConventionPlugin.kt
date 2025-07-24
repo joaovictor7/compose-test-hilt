@@ -42,6 +42,8 @@ internal class KoverConventionPlugin : Plugin<Project> {
                             androidGeneratedClasses()
                         }
                         includes {
+                            classes("com.composetest.*Provider")
+                            classes("com.composetest.*Utils")
                             classes("com.composetest.*Extensions")
                             classes("com.composetest.*ViewModel")
                             classes("com.composetest.*UseCase")

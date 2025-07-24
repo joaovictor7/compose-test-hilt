@@ -1,9 +1,9 @@
 plugins {
-    alias(libs.plugins.composeTest.kotlin)
+    alias(libs.plugins.composetest.kotlin)
 }
 
 dependencies {
-    implementation(libs.junit5)
+    implementation(libs.junit.jupiter)
     implementation(libs.kotlin.coroutines.test)
     implementation(libs.mockk)
 }
