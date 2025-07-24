@@ -14,6 +14,6 @@ import dagger.hilt.components.SingletonComponent
 internal abstract class RootNavGraphModule {
 
     @Binds
-    @NavGraphQualifier(ModuleNavGraph.HOME_ROOT_NAV_GRAPH)
+    @NavGraphQualifier(ModuleNavGraph.HOME_ROOT_FEATURE)
     abstract fun navGraph(rootNavGraphImpl: RootNavGraphImpl): NavGraph
 }

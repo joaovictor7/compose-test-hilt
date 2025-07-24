@@ -1,8 +1,8 @@
 package com.composetest.feature.configuration.presenter.ui.theme
 
 import androidx.lifecycle.viewModelScope
-import com.composetest.core.analytic.event.CommonAnalyticEvent
-import com.composetest.core.analytic.sender.AnalyticSender
+import com.composetest.core.analytic.api.event.CommonAnalyticEvent
+import com.composetest.core.analytic.api.sender.AnalyticSender
 import com.composetest.core.domain.enums.Theme
 import com.composetest.core.domain.extension.orFalse
 import com.composetest.core.domain.model.ThemeConfigurationModel

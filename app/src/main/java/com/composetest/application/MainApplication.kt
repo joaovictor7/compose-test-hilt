@@ -5,8 +5,8 @@ import android.util.Log
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
 import com.composetest.common.application.ApplicationRunner
-import com.composetest.core.analytic.event.ErrorAnalyticEvent
-import com.composetest.core.analytic.sender.AnalyticSender
+import com.composetest.core.analytic.api.event.ErrorAnalyticEvent
+import com.composetest.core.analytic.api.sender.AnalyticSender
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

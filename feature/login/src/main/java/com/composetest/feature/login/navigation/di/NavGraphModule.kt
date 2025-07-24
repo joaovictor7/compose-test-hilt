@@ -14,6 +14,6 @@ import dagger.hilt.components.SingletonComponent
 internal abstract class NavGraphModule {
 
     @Binds
-    @NavGraphQualifier(ModuleNavGraph.LOGIN_NAV_GRAPH)
+    @NavGraphQualifier(ModuleNavGraph.LOGIN_FEATURE)
     abstract fun navGraph(navGraphImpl: NavGraphImpl): NavGraph
 }

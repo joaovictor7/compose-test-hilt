@@ -18,8 +18,8 @@ internal object NavGraphListModule {
     @Provides
     @NavGraphListQualifier(ROOT_NAV_GRAPH_LIST)
     fun navGraphList(
-        @NavGraphQualifier(ModuleNavGraph.HOME_ROOT_NAV_GRAPH) rootHomeNavGraph: NavGraph,
-        @NavGraphQualifier(ModuleNavGraph.CONFIGURATION_ROOT_NAV_GRAPH) rootConfigurationNavGraph: NavGraph,
+        @NavGraphQualifier(ModuleNavGraph.HOME_ROOT_FEATURE) rootHomeNavGraph: NavGraph,
+        @NavGraphQualifier(ModuleNavGraph.CONFIGURATION_ROOT_FEATURE) rootConfigurationNavGraph: NavGraph,
     ): Array<NavGraph> = arrayOf(
         rootHomeNavGraph,
         rootConfigurationNavGraph,

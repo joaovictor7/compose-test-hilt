@@ -1,8 +1,8 @@
 package com.composetest.feature.login.presenter.ui.login
 
 import android.util.Log
-import com.composetest.core.analytic.event.CommonAnalyticEvent
-import com.composetest.core.analytic.sender.AnalyticSender
+import com.composetest.core.analytic.api.event.CommonAnalyticEvent
+import com.composetest.core.analytic.api.sender.AnalyticSender
 import com.composetest.core.domain.enums.BuildType
 import com.composetest.core.domain.enums.Flavor
 import com.composetest.core.domain.model.buildconfig.BuildConfigFieldsModel

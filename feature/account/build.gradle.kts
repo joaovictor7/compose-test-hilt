@@ -15,6 +15,6 @@ dependencies {
     implementation(projects.core.data.api)
     implementation(projects.core.domain)
     implementation(projects.core.router)
-    implementation(projects.core.analytic)
+    implementation(projects.core.analytic.api)
     implementation(projects.core.security)
 }

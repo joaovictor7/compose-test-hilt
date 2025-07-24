@@ -14,6 +14,6 @@ import dagger.hilt.components.SingletonComponent
 internal abstract class NavGraphModule {
 
     @Binds
-    @NavGraphQualifier(ModuleNavGraph.WEATHER_FORECAST_NAV_GRAPH)
+    @NavGraphQualifier(ModuleNavGraph.WEATHER_FORECAST_FEATURE)
     abstract fun navGraph(navGraphImpl: NavGraphImpl): NavGraph
 }

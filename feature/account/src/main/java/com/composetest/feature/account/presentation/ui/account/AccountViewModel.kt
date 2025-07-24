@@ -2,8 +2,8 @@ package com.composetest.feature.account.presentation.ui.account
 
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.lifecycle.viewModelScope
-import com.composetest.core.analytic.event.CommonAnalyticEvent
-import com.composetest.core.analytic.sender.AnalyticSender
+import com.composetest.core.analytic.api.event.CommonAnalyticEvent
+import com.composetest.core.analytic.api.sender.AnalyticSender
 import com.composetest.core.designsystem.enums.button.LoadingButtonState
 import com.composetest.core.designsystem.extension.dialogErrorNavigation
 import com.composetest.core.domain.model.UserModel

@@ -9,7 +9,7 @@ android {
 
 dependencies {
     implementation(projects.common)
-    implementation(projects.core.analytic)
+    implementation(projects.core.analytic.api)
     implementation(projects.core.router)
     implementation(libs.android.location)
     api(libs.android.permissions)

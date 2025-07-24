@@ -9,8 +9,8 @@ import androidx.work.ExistingWorkPolicy
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkerParameters
-import com.composetest.core.analytic.event.ErrorAnalyticEvent
-import com.composetest.core.analytic.sender.AnalyticSender
+import com.composetest.core.analytic.api.event.ErrorAnalyticEvent
+import com.composetest.core.analytic.api.sender.AnalyticSender
 import com.composetest.core.data.androidapi.enums.Worker
 import com.composetest.core.data.androidapi.workmanager.WorkManagerRequest
 import com.composetest.core.domain.usecase.session.CheckSessionIsValidUseCase

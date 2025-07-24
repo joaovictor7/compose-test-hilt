@@ -1,7 +1,7 @@
 package com.composetest.feature.exchange.presenter.di
 
 import androidx.lifecycle.SavedStateHandle
-import com.composetest.core.analytic.sender.AnalyticSender
+import com.composetest.core.analytic.api.sender.AnalyticSender
 import com.composetest.core.router.extension.getDestination
 import com.composetest.core.ui.di.qualifier.AsyncTaskUtilsQualifier
 import com.composetest.core.ui.util.AsyncTaskUtils

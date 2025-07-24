@@ -1,7 +1,7 @@
 package com.composetest.feature.root.analytic.event
 
-import com.composetest.core.analytic.event.AnalyticEvent
-import com.composetest.core.analytic.screen.ScreenAnalytic
+import com.composetest.core.analytic.api.event.AnalyticEvent
+import com.composetest.core.analytic.api.screen.ScreenAnalytic
 import com.composetest.feature.root.analytic.screen.RootScreenAnalytic
 
 internal sealed class RootEventAnalytic : AnalyticEvent, ScreenAnalytic by RootScreenAnalytic {

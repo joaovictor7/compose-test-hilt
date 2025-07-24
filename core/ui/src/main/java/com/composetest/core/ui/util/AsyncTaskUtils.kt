@@ -1,9 +1,9 @@
 package com.composetest.core.ui.util
 
 import android.util.Log
-import com.composetest.core.analytic.event.ErrorAnalyticEvent
-import com.composetest.core.analytic.screen.ScreenAnalytic
-import com.composetest.core.analytic.sender.AnalyticSender
+import com.composetest.core.analytic.api.event.ErrorAnalyticEvent
+import com.composetest.core.analytic.api.screen.ScreenAnalytic
+import com.composetest.core.analytic.api.sender.AnalyticSender
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch

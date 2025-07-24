@@ -1,7 +1,7 @@
 package com.composetest.feature.login.presenter.di
 
 import androidx.lifecycle.SavedStateHandle
-import com.composetest.core.analytic.sender.AnalyticSender
+import com.composetest.core.analytic.api.sender.AnalyticSender
 import com.composetest.core.router.destination.login.LoginDestination
 import com.composetest.core.router.extension.getDestination
 import com.composetest.core.ui.di.qualifier.AsyncTaskUtilsQualifier
