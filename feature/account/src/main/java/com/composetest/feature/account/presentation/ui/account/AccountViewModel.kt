@@ -9,7 +9,7 @@ import com.composetest.core.designsystem.extension.dialogErrorNavigation
 import com.composetest.core.domain.model.UserModel
 import com.composetest.core.domain.usecase.user.GetCurrentUserUseCase
 import com.composetest.core.router.result.account.AccountUpdateResult
-import com.composetest.core.security.provider.CipherProvider
+import com.composetest.core.security.api.provider.CipherProvider
 import com.composetest.core.ui.base.BaseViewModel
 import com.composetest.core.ui.di.qualifier.AsyncTaskUtilsQualifier
 import com.composetest.core.ui.extension.uiStateValue

@@ -32,6 +32,7 @@ dependencies {
     implementation(projects.core.domain)
     implementation(projects.core.analytic.impl)
     implementation(projects.core.analytic.api)
+    implementation(projects.core.security.impl)
     implementation(platform(libs.firebase.bom))
     implementation(libs.androidx.hilt.work)
     implementation(libs.androidx.splash.screen)

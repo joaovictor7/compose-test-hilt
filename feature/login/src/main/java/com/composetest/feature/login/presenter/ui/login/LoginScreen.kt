@@ -36,7 +36,7 @@ import com.composetest.core.designsystem.extension.screenMarginWithoutBar
 import com.composetest.core.designsystem.extension.verticalTopBackgroundBrush
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.router.extension.navigateTo
-import com.composetest.core.security.util.showBiometricPrompt
+import com.composetest.core.security.androidapi.util.showBiometricPrompt
 import com.composetest.core.ui.interfaces.Intent
 import com.composetest.core.ui.util.UiEventsObserver
 import com.composetest.feature.login.R

@@ -14,11 +14,11 @@ import com.composetest.core.router.destination.login.LoginDestination
 import com.composetest.core.router.destination.root.RootDestination
 import com.composetest.core.router.enums.NavigationMode
 import com.composetest.core.router.model.NavigationModel
-import com.composetest.core.security.enums.BiometricError
-import com.composetest.core.security.enums.BiometricError.Companion.biometricIsLockout
-import com.composetest.core.security.enums.BiometricError.Companion.userClosedPrompt
-import com.composetest.core.security.provider.BiometricProvider
-import com.composetest.core.security.provider.CipherProvider
+import com.composetest.core.security.androidapi.enums.BiometricError
+import com.composetest.core.security.androidapi.enums.BiometricError.Companion.biometricIsLockout
+import com.composetest.core.security.androidapi.enums.BiometricError.Companion.userClosedPrompt
+import com.composetest.core.security.api.provider.BiometricProvider
+import com.composetest.core.security.api.provider.CipherProvider
 import com.composetest.core.ui.base.BaseViewModel
 import com.composetest.core.ui.di.qualifier.AsyncTaskUtilsQualifier
 import com.composetest.core.ui.extension.uiStateValue

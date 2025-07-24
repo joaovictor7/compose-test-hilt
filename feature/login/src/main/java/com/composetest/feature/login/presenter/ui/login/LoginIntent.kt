@@ -1,7 +1,7 @@
 package com.composetest.feature.login.presenter.ui.login
 
 import com.composetest.core.domain.enums.Theme
-import com.composetest.core.security.enums.BiometricError
+import com.composetest.core.security.androidapi.enums.BiometricError
 import com.composetest.core.ui.interfaces.Intent
 
 internal sealed interface LoginIntent : Intent<LoginIntentReceiver> {

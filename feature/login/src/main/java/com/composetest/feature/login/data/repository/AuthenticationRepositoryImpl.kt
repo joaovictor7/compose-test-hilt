@@ -3,7 +3,7 @@ package com.composetest.feature.login.data.repository
 import com.composetest.core.domain.repository.AuthenticationRepository
 import com.composetest.core.network.model.ApiError
 import com.composetest.core.network.util.apiErrorHandler
-import com.composetest.core.security.provider.CipherProvider
+import com.composetest.core.security.api.provider.CipherProvider
 import com.composetest.feature.login.data.datasource.AuthenticationDataSource
 import com.composetest.feature.login.data.mapper.AuthenticationMapper
 import com.google.firebase.FirebaseNetworkException

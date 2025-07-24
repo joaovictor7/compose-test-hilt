@@ -15,7 +15,7 @@ dependencies {
     implementation(projects.core.database)
     implementation(projects.core.data.androidapi)
     implementation(projects.core.domain)
-    implementation(projects.core.security)
+    implementation(projects.core.security.api)
     implementation(projects.core.router)
     implementation(projects.core.analytic.api)
 }

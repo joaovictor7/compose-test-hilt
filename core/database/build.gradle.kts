@@ -7,7 +7,7 @@ android {
 }
 
 dependencies {
-    implementation(projects.core.security)
+    implementation(projects.core.security.api)
     implementation(projects.core.domain)
     implementation(projects.core.data.androidapi)
     implementation(projects.common)

@@ -2,9 +2,9 @@ package com.composetest.core.database.domain.usecase
 
 import com.composetest.core.database.data.repository.DatabaseRepository
 import com.composetest.core.domain.provider.BuildConfigProvider
-import com.composetest.core.security.provider.CipherProvider
-import com.composetest.core.security.util.addPBKDF2
-import com.composetest.core.security.util.generateSecureKey
+import com.composetest.core.security.api.provider.CipherProvider
+import com.composetest.core.security.api.utils.addPBKDF2
+import com.composetest.core.security.api.utils.generateSecureKey
 import javax.inject.Inject
 
 internal class GetDatabaseKeyUseCase @Inject constructor(
