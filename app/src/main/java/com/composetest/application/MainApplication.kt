@@ -42,9 +42,9 @@ internal class MainApplication :
     private fun executeApplicationModules() = applicationRunners.forEach {
         runCatching {
             it.onCreate()
-        }.onFailure {
-            Log.e("Application Modules", it.message, it)
-            launch { analyticSender.sendErrorEvent(ErrorAnalyticEvent(it)) }
+        }.onFailure { error ->
+            Log.e("Application Modules", error.message, error)
+            launch { analyticSender.sendErrorEvent(ErrorAnalyticEvent(error)) }
         }
     }
 }

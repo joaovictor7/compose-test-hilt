@@ -92,11 +92,11 @@ private fun loadingButtonHandler(loadingState: LoadingButtonState): LoadingButto
 @PreviewLightDark
 private fun Preview() {
     ComposeTestTheme {
-        var isLoading by remember { mutableStateOf(false) }
-        LoadingButton(text = "Test") {
-            isLoading = true
+        var isLoading by remember { mutableStateOf(LoadingButtonState.IDLE) }
+        LoadingButton(text = "Test", loadingState = isLoading) {
+            isLoading = LoadingButtonState.LOADING
             Thread.sleep(2000L)
-            isLoading = false
+            isLoading = LoadingButtonState.SUCCESS
         }
     }
 }
