@@ -1,6 +1,6 @@
 package com.composetest.feature.configuration.data.mapper
 
-import com.composetest.core.database.data.entity.configuration.ConfigurationEntity
+import com.composetest.core.database.androidapi.data.entity.configuration.ConfigurationEntity
 import com.composetest.feature.configuration.domain.model.ConfigurationModel
 import javax.inject.Inject
 

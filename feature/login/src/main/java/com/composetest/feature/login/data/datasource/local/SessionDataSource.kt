@@ -1,7 +1,7 @@
 package com.composetest.feature.login.data.datasource.local
 
-import com.composetest.core.database.data.dao.SessionEntityDao
-import com.composetest.core.database.data.entity.SessionEntity
+import com.composetest.core.database.androidapi.dao.SessionEntityDao
+import com.composetest.core.database.androidapi.data.entity.SessionEntity
 import javax.inject.Inject
 
 internal class SessionDataSource @Inject constructor(

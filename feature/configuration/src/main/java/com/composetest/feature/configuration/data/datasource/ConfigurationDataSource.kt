@@ -1,8 +1,8 @@
 package com.composetest.feature.configuration.data.datasource
 
-import com.composetest.core.database.data.dao.ConfigurationEntityDao
-import com.composetest.core.database.data.dao.partialupdate.SecurityConfigurationUpdate
-import com.composetest.core.database.data.entity.configuration.ConfigurationEntity
+import com.composetest.core.database.androidapi.dao.ConfigurationEntityDao
+import com.composetest.core.database.androidapi.dao.partialupdate.SecurityConfigurationUpdate
+import com.composetest.core.database.androidapi.data.entity.configuration.ConfigurationEntity
 import javax.inject.Inject
 
 internal class ConfigurationDataSource @Inject constructor(

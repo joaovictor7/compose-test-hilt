@@ -1,6 +1,6 @@
 package com.composetest.feature.login.data.mapper
 
-import com.composetest.core.database.data.entity.SessionEntity
+import com.composetest.core.database.androidapi.data.entity.SessionEntity
 import com.composetest.core.domain.model.SessionModel
 import com.composetest.core.domain.model.UserModel
 import javax.inject.Inject

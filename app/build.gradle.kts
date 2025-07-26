@@ -29,6 +29,7 @@ dependencies {
     implementation(projects.core.ui)
     implementation(projects.core.router)
     implementation(projects.core.data.impl)
+    implementation(projects.core.database.impl)
     implementation(projects.core.domain)
     implementation(projects.core.analytic.impl)
     implementation(projects.core.analytic.api)

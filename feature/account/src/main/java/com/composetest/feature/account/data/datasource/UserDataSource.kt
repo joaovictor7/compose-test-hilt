@@ -1,7 +1,7 @@
 package com.composetest.feature.account.data.datasource
 
-import com.composetest.core.database.data.dao.UserEntityDao
-import com.composetest.core.database.data.entity.UserEntity
+import com.composetest.core.database.androidapi.dao.UserEntityDao
+import com.composetest.core.database.androidapi.data.entity.UserEntity
 import javax.inject.Inject
 
 internal class UserDataSource @Inject constructor(

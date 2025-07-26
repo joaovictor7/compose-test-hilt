@@ -1,0 +1,45 @@
+package com.composetest.core.database.impl.di
+
+import android.content.Context
+import androidx.room.Room
+import com.composetest.core.database.impl.data.converter.LocalDateTimeConverter
+import com.composetest.core.database.impl.data.extension.addLogs
+import com.composetest.core.database.impl.database.Database
+import com.composetest.core.database.impl.domain.usecase.GetDatabaseKeyUseCase
+import com.composetest.core.domain.provider.BuildConfigProvider
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.runBlocking
+import net.zetetic.database.sqlcipher.SupportOpenHelperFactory
+import javax.inject.Singleton
+
+@Module
+@InstallIn(SingletonComponent::class)
+internal object DatabaseModule {
+
+    private const val DATABASE_NAME = "composetest_database"
+
+    @Provides
+    @Singleton
+    fun appDatabase(
+        @ApplicationContext context: Context,
+        localDateTimeConverter: LocalDateTimeConverter,
+        buildConfigProvider: BuildConfigProvider,
+        getDatabaseKeyUseCase: GetDatabaseKeyUseCase,
+    ): Database = Room.databaseBuilder(
+        context,
+        Database::class.java,
+        DATABASE_NAME
+    )
+        .openHelperFactory(getHelperFactory(getDatabaseKeyUseCase))
+        .addTypeConverter(localDateTimeConverter)
+        .addLogs(buildConfigProvider.buildConfig)
+        .build()
+
+    private fun getHelperFactory(getDatabaseKeyUseCase: GetDatabaseKeyUseCase) = runBlocking {
+        getDatabaseKeyUseCase()?.let { SupportOpenHelperFactory(it) }
+    }
+}

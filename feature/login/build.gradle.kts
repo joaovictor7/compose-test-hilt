@@ -12,7 +12,7 @@ dependencies {
     implementation(projects.common)
     implementation(projects.core.router)
     implementation(projects.core.network)
-    implementation(projects.core.database)
+    implementation(projects.core.database.androidapi)
     implementation(projects.core.data.api)
     implementation(projects.core.data.androidapi)
     implementation(projects.core.domain)
