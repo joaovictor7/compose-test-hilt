@@ -66,83 +66,90 @@ internal class LoginViewModelTest : BaseTest() {
     }
 
     @Test
-    fun `initial uiState`() = runFlowTest(viewModel.uiState) { onCancelJob, states ->
-        onCancelJob()
-        assertEquals(LoginUiState(versionName = "1.0.0 - 0"), states[0])
-        coVerifySequence {
-            analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(LoginScreenAnalytic))
-        }
-    }
+    fun `initial uiState`() = runFlowTest(
+        flow = viewModel.uiState,
+        onVerify = { uiStates ->
+            assertEquals(LoginUiState(versionName = "1.0.0 - 0"), uiStates[0])
+            coVerifySequence {
+                analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(LoginScreenAnalytic))
+            }
+        },
+    )
 
     @Test
-    fun `misleading credentials login`() =
-        runFlowTest(viewModel.uiState) { onCancelJob, states ->
+    fun `misleading credentials login`() = runFlowTest(
+        flow = viewModel.uiState,
+        onSetup = {
             coEvery { authenticationUseCase(any(), any()) } throws ApiError.Unauthorized()
-
+        },
+        onTrigger = {
             viewModel.executeIntent(LoginIntent.WriteData("teste@teste.com", "password"))
             viewModel.executeIntent(LoginIntent.Login(false))
-            onCancelJob()
-
-            assertTrue(states[1].loginButtonIsEnabled)
+        },
+        onVerify = { uiStates ->
+            assertTrue(uiStates[1].loginButtonIsEnabled)
             assertEquals(
                 LoginFormModel("teste@teste.com", "password"),
-                states[1].loginFormModel
+                uiStates[1].loginFormModel
             )
-            assertTrue(states[2].isLoading)
-            assertTrue(states[3].invalidCredentials)
-            assertFalse(states[3].isLoading)
+            assertTrue(uiStates[2].isLoading)
+            assertTrue(uiStates[3].invalidCredentials)
+            assertFalse(uiStates[3].isLoading)
             coVerify {
                 analyticSender.sendEvent(LoginEventAnalytic.LoginSuccessful(false))
             }
-        }
+        },
+    )
 
     @Test
     fun `success login`() = runFlowTest(
-        viewModel.uiState,
-        viewModel.uiEvent
-    ) { onCancelJob, firstStates, secondStates ->
-        viewModel.executeIntent(
-            LoginIntent.WriteData(email = "teste@teste.com", password = "password")
-        )
-        viewModel.executeIntent(LoginIntent.Login(false))
-        onCancelJob()
-
-        assertTrue(firstStates[1].loginButtonIsEnabled)
-        assertEquals(
-            LoginFormModel("teste@teste.com", "password"),
-            firstStates[1].loginFormModel
-        )
-        assertTrue(firstStates[2].isLoading)
-        assertFalse(firstStates[3].isLoading)
-        assertEquals(
-            LoginUiEvent.NavigateTo(
-                NavigationModel(RootDestination, NavigationMode.REMOVE_ALL_SCREENS_STACK)
-            ),
-            secondStates[0]
-        )
-        coVerifyOrder {
-            authenticationUseCase("teste@teste.com", "encryptedData")
-            analyticSender.sendEvent(LoginEventAnalytic.LoginSuccessful(true))
-        }
-    }
+        firstFlow = viewModel.uiState,
+        secondFlow = viewModel.uiEvent,
+        onSetup = {
+            viewModel.executeIntent(
+                LoginIntent.WriteData(email = "teste@teste.com", password = "password")
+            )
+            viewModel.executeIntent(LoginIntent.Login(false))
+        },
+        onVerify = { uiStates, uiEvents ->
+            assertTrue(uiStates[1].loginButtonIsEnabled)
+            assertEquals(
+                LoginFormModel("teste@teste.com", "password"),
+                uiStates[1].loginFormModel
+            )
+            assertTrue(uiStates[2].isLoading)
+            assertFalse(uiStates[3].isLoading)
+            assertEquals(
+                LoginUiEvent.NavigateTo(
+                    NavigationModel(RootDestination, NavigationMode.REMOVE_ALL_SCREENS_STACK)
+                ),
+                uiEvents[0]
+            )
+            coVerifyOrder {
+                authenticationUseCase("teste@teste.com", "encryptedData")
+                analyticSender.sendEvent(LoginEventAnalytic.LoginSuccessful(true))
+            }
+        },
+    )
 
     @Test
     fun `error network`() = runFlowTest(
-        viewModel.uiState,
-        viewModel.uiEvent
-    ) { onCancelJob, firstStates, secondStates ->
-        val expectedNetworkError = ApiError.Network()
-        coEvery { authenticationUseCase(any(), any()) } throws expectedNetworkError
-
-        viewModel.executeIntent(LoginIntent.WriteData("teste@teste.com", "password"))
-        viewModel.executeIntent(LoginIntent.Login(false))
-        onCancelJob()
-
-        assertEquals(
-            LoginUiEvent.NavigateTo(expectedNetworkError.dialogErrorNavigation()),
-            secondStates[0]
-        )
-    }
+        flow = viewModel.uiEvent,
+        onSetup = {
+            coEvery { authenticationUseCase(any(), any()) } throws ApiError.Network()
+        },
+        onTrigger = {
+            viewModel.executeIntent(LoginIntent.WriteData("teste@teste.com", "password"))
+            viewModel.executeIntent(LoginIntent.Login(false))
+        },
+        onVerify = { uiEvents ->
+            val expectedNetworkError = ApiError.Network()
+            assertEquals(
+                LoginUiEvent.NavigateTo(expectedNetworkError.dialogErrorNavigation()),
+                uiEvents[0]
+            )
+        },
+    )
 
     private fun initViewModel() = LoginViewModel(
         buildConfigProvider = buildConfigProvider,

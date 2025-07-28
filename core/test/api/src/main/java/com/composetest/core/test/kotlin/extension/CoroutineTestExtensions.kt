@@ -10,23 +10,31 @@ import kotlinx.coroutines.test.runTest
 
 fun <T> CoroutinesTest.runFlowTest(
     flow: Flow<T>,
-    onRunTest: suspend (onCancelJob: () -> Unit, states: List<T>) -> Unit,
+    onSetup: (suspend () -> Unit)? = null,
+    onTrigger: (suspend () -> Unit)? = null,
+    onVerify: suspend (states: List<T>) -> Unit,
 ) = runTest(testDispatcher) {
     val collectedFlows = collectFlow(flow)
-    onRunTest({ collectedFlows.first.cancel() }, collectedFlows.second)
+    onSetup?.invoke()
+    onTrigger?.invoke()
+    collectedFlows.first.cancel()
+    onVerify(collectedFlows.second)
 }
 
 fun <T, Y> CoroutinesTest.runFlowTest(
     firstFlow: Flow<T>,
     secondFlow: Flow<Y>,
-    onRunTest: suspend (onCancelJob: () -> Unit, firstStates: List<T>, secondState: List<Y>) -> Unit,
+    onSetup: (suspend () -> Unit)? = null,
+    onTrigger: (suspend () -> Unit)? = null,
+    onVerify: suspend (states: List<T>, secondStates: List<Y>) -> Unit,
 ) = runTest(testDispatcher) {
     val firstCollectedFlows = collectFlow(firstFlow)
     val secondCollectedFlows = collectFlow(secondFlow)
-    onRunTest({
-        firstCollectedFlows.first.cancel()
-        secondCollectedFlows.first.cancel()
-    }, firstCollectedFlows.second, secondCollectedFlows.second)
+    onSetup?.invoke()
+    onTrigger?.invoke()
+    firstCollectedFlows.first.cancel()
+    secondCollectedFlows.first.cancel()
+    onVerify(firstCollectedFlows.second, secondCollectedFlows.second)
 }
 
 private fun <T> TestScope.collectFlow(flow: Flow<T>): Pair<Job, List<T>> {
