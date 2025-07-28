@@ -1,4 +1,4 @@
-package com.composetest.feature.weatherforecast.presenter.ui
+package com.composetest.feature.weatherforecast.presenter.ui.viewmodel
 
 import com.composetest.core.ui.interfaces.IntentReceiver
 

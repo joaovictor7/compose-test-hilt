@@ -1,7 +1,7 @@
 package com.composetest.feature.exchange.presenter.mapper
 
-import com.composetest.core.domain.extension.convertFromString
-import com.composetest.core.domain.extension.convertToString
+import com.composetest.common.extension.convertFromString
+import com.composetest.common.extension.convertToString
 import com.composetest.core.ui.provider.StringResourceProvider
 import com.composetest.feature.exchange.R
 import com.composetest.feature.exchange.domain.model.ExchangeModel

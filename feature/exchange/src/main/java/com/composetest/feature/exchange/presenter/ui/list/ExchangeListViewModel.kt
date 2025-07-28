@@ -4,7 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.composetest.core.analytic.api.event.CommonAnalyticEvent
 import com.composetest.core.analytic.api.sender.AnalyticSender
 import com.composetest.core.designsystem.extension.dialogErrorNavigation
-import com.composetest.core.domain.extension.orFalse
+import com.composetest.common.extension.orFalse
 import com.composetest.core.router.model.NavigationModel
 import com.composetest.core.ui.base.BaseViewModel
 import com.composetest.core.ui.di.qualifier.AsyncTaskUtilsQualifier

@@ -1,7 +1,7 @@
 package com.composetest.core.domain.usecase.remoteconfig
 
-import com.composetest.core.domain.extension.digits
-import com.composetest.core.domain.extension.toIntOrZero
+import com.composetest.common.extension.digits
+import com.composetest.common.extension.toIntOrZero
 import com.composetest.core.domain.interfaces.RemoteConfig
 import com.composetest.core.domain.provider.BuildConfigProvider
 import com.composetest.core.domain.repository.RemoteConfigRepository

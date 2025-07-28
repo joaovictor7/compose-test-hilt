@@ -2,18 +2,16 @@ package com.composetest.core.ui.provider
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.location.LocationManager
 import com.composetest.common.error.LocationError
-import com.google.android.gms.location.LocationRequest
+import com.composetest.common.extension.orFalse
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.location.LocationSettingsRequest
 import com.google.android.gms.location.Priority
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.suspendCancellableCoroutine
 import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
-import kotlin.coroutines.suspendCoroutine
-import kotlin.time.Duration.Companion.seconds
 
 internal class LocationProviderImpl @Inject constructor(
     @param:ApplicationContext private val context: Context
@@ -21,14 +19,6 @@ internal class LocationProviderImpl @Inject constructor(
 
     private val fusedLocationClient by lazy {
         LocationServices.getFusedLocationProviderClient(context)
-    }
-    private val client by lazy { LocationServices.getSettingsClient(context) }
-    private val builder by lazy {
-        LocationSettingsRequest.Builder()
-            .addLocationRequest(
-                LocationRequest.Builder(ACCURACY, locationRequestDelay.inWholeSeconds).build()
-            )
-            .build()
     }
 
     @SuppressLint("MissingPermission")
@@ -45,17 +35,12 @@ internal class LocationProviderImpl @Inject constructor(
             }
     }
 
-    override suspend fun isLocationEnabled() = suspendCoroutine { coroutine ->
-        client.checkLocationSettings(builder)
-            .addOnSuccessListener {
-                coroutine.resume(true)
-            }.addOnFailureListener {
-                coroutine.resume(false)
-            }
+    override suspend fun isLocationEnabled(): Boolean {
+        val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as? LocationManager
+        return locationManager?.isLocationEnabled.orFalse
     }
 
     private companion object {
         const val ACCURACY = Priority.PRIORITY_HIGH_ACCURACY
-        val locationRequestDelay = 10.seconds
     }
 }

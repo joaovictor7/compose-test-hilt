@@ -1,4 +1,4 @@
-package com.composetest.feature.weatherforecast.presenter.ui
+package com.composetest.feature.weatherforecast.presenter.ui.viewmodel
 
 import com.composetest.core.designsystem.enums.topbar.TopBarAction
 import com.composetest.feature.weatherforecast.domain.model.TodayWeatherForecastModel
@@ -27,11 +27,10 @@ internal data class WeatherForecastUiState(
         get() = if (!showFullScreenMsg && !isLoading) listOf(TopBarAction.REFRESH) else null
 
     val showFullScreenMsg
-        get() = !isLoading && screenStatus in listOf(
-            WeatherForecastScreenStatus.TRY_AGAIN,
-            WeatherForecastScreenStatus.PERMISSION_NOT_GRANTED,
+        get() = screenStatus in listOf(
             WeatherForecastScreenStatus.NEEDS_LOCATION,
-        )
+            WeatherForecastScreenStatus.PERMISSION_NOT_GRANTED,
+        ) || (!isLoading && screenStatus == WeatherForecastScreenStatus.TRY_AGAIN)
 
     val screenStatusIsPermissionNotGranted get() = screenStatus == WeatherForecastScreenStatus.PERMISSION_NOT_GRANTED
 

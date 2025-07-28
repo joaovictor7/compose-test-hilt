@@ -1,4 +1,4 @@
-package com.composetest.core.domain.extension
+package com.composetest.common.extension
 
 import java.time.Instant
 import java.time.LocalDateTime

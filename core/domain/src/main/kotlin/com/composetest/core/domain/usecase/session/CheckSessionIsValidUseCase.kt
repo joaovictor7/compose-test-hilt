@@ -1,6 +1,6 @@
 package com.composetest.core.domain.usecase.session
 
-import com.composetest.core.domain.extension.orFalse
+import com.composetest.common.extension.orFalse
 import com.composetest.core.domain.repository.SessionRepository
 import javax.inject.Inject
 

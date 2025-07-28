@@ -1,7 +1,7 @@
 package com.composetest.feature.login.data.mapper
 
 import com.composetest.common.provider.DateTimeProvider
-import com.composetest.core.domain.extension.convertedFromSeconds
+import com.composetest.common.extension.convertedFromSeconds
 import com.composetest.feature.login.domain.model.AuthenticationModel
 import com.composetest.feature.login.network.response.AuthenticationResponse
 import com.google.firebase.auth.FirebaseUser

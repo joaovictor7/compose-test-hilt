@@ -10,7 +10,7 @@ import com.composetest.core.router.destination.weatherforecast.WeatherForecastDe
 import com.composetest.core.router.interfaces.NavGraph
 import com.composetest.core.ui.util.transformDeepLinks
 import com.composetest.feature.weatherforecast.presenter.ui.WeatherForecastScreen
-import com.composetest.feature.weatherforecast.presenter.ui.WeatherForecastViewModel
+import com.composetest.feature.weatherforecast.presenter.ui.viewmodel.WeatherForecastViewModel
 import javax.inject.Inject
 
 private const val WEATHER_FORECAST_URI = "composetest://weatherforecast"
