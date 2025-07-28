@@ -29,7 +29,7 @@ splashScreen = "1.0.1"
 coil = "3.3.0"
 permissions = "0.37.3"
 location = "21.3.0"
-screenshoot = "0.0.1-alpha10"
+screenshot = "0.0.1-alpha10"
 kover = "0.9.1"
 jacoco = "0.8.13"
 
@@ -46,7 +46,7 @@ kotlin-kover = { group = "org.jetbrains.kotlinx", name = "kover-gradle-plugin", 
 
 # Android
 android-tools-build-gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
-android-screenshot-validation = { group = "com.android.tools.screenshot", name = "screenshot-validation-api", version.ref = "screenshoot" }
+android-screenshot-validation = { group = "com.android.tools.screenshot", name = "screenshot-validation-api", version.ref = "screenshot" }
 android-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "permissions" }
 android-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "location" }
 
@@ -126,6 +126,6 @@ google-services = { id = "com.google.gms.google-services", version.ref = "google
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlytics" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
-screenshoot = { id = "com.android.compose.screenshot", version.ref = "screenshoot" }
+screenshot = { id = "com.android.compose.screenshot", version.ref = "screenshot" }
 kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }

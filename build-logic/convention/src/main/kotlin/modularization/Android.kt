@@ -31,7 +31,7 @@ internal fun Project.configureAndroid(
             excludes += "/META-INF/LICENSE*"
         }
     }
-//    experimentalProperties["android.experimental.enableScreenshotTest"] = true //~> revert after update
+    experimentalProperties["android.experimental.enableScreenshotTest"] = true
     commonConfigurations()
     setBuildTypes()
     setFlavors()

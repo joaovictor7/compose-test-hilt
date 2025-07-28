@@ -1,6 +1,5 @@
 package com.composetest.feature.login.presenter.ui.login
 
-import android.util.Log
 import com.composetest.core.analytic.api.event.CommonAnalyticEvent
 import com.composetest.core.analytic.api.sender.AnalyticSender
 import com.composetest.core.designsystem.extension.dialogErrorNavigation
@@ -31,14 +30,11 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.coVerifyOrder
 import io.mockk.coVerifySequence
-import io.mockk.every
 import io.mockk.mockk
-import io.mockk.mockkStatic
 import kotlinx.coroutines.test.TestDispatcher
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
-import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -177,12 +173,5 @@ internal class LoginViewModelTest : BaseTest() {
             openWeatherApiHost = "123",
             openWeatherIconHost = "123",
         )
-
-        @BeforeAll
-        @JvmStatic
-        fun setupStaticMocks() {
-            mockkStatic(Log::class)
-            every { Log.e(any(), any(), any()) } returns 0
-        }
     }
 }
