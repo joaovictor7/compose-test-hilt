@@ -41,6 +41,10 @@ import com.composetest.core.ui.interfaces.Intent
 import com.composetest.core.ui.util.UiEventsObserver
 import com.composetest.feature.login.R
 import com.composetest.feature.login.presenter.model.BiometricModel
+import com.composetest.feature.login.presenter.ui.login.viewmodel.LoginIntent
+import com.composetest.feature.login.presenter.ui.login.viewmodel.LoginIntentReceiver
+import com.composetest.feature.login.presenter.ui.login.viewmodel.LoginUiEvent
+import com.composetest.feature.login.presenter.ui.login.viewmodel.LoginUiState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import com.composetest.core.designsystem.R as DesignSystemResources

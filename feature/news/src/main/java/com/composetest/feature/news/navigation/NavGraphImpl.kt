@@ -11,9 +11,9 @@ import com.composetest.core.router.interfaces.NavGraph
 import com.composetest.core.ui.util.transformDeepLinks
 import com.composetest.feature.news.navigation.destination.FullNewsDestination
 import com.composetest.feature.news.presenter.ui.news.full.FullNewsScreen
-import com.composetest.feature.news.presenter.ui.news.full.FullNewsViewModel
+import com.composetest.feature.news.presenter.ui.news.full.viewmodel.FullNewsViewModel
 import com.composetest.feature.news.presenter.ui.news.list.NewsListScreen
-import com.composetest.feature.news.presenter.ui.news.list.NewsListViewModel
+import com.composetest.feature.news.presenter.ui.news.list.viewmodel.NewsListViewModel
 import javax.inject.Inject
 
 private const val NEWS_URI = "composetest://news"

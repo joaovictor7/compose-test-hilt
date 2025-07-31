@@ -42,6 +42,10 @@ import com.composetest.core.router.extension.navigateTo
 import com.composetest.core.ui.interfaces.Intent
 import com.composetest.core.ui.util.UiEventsObserver
 import com.composetest.feature.news.domain.model.ArticleModel
+import com.composetest.feature.news.presenter.ui.news.list.viewmodel.NewsListIntent
+import com.composetest.feature.news.presenter.ui.news.list.viewmodel.NewsListIntentReceiver
+import com.composetest.feature.news.presenter.ui.news.list.viewmodel.NewsListUiEvent
+import com.composetest.feature.news.presenter.ui.news.list.viewmodel.NewsListUiState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import java.time.LocalDateTime
@@ -160,8 +164,6 @@ private fun Preview() {
     ComposeTestTheme {
         NewsListScreen(
             uiState = NewsListUiState(
-                showRetryButton = true,
-                isLoading = true,
                 articles = listOf(
                     ArticleModel(
                         provider = "Teste",

@@ -64,6 +64,10 @@ import com.composetest.core.ui.util.UiEventsObserver
 import com.composetest.feature.root.R
 import com.composetest.feature.root.presentation.enums.NavigationFeature
 import com.composetest.feature.root.presentation.model.BottomFeatureNavigationModel
+import com.composetest.feature.root.presentation.ui.root.viewmodel.RootIntent
+import com.composetest.feature.root.presentation.ui.root.viewmodel.RootIntentReceiver
+import com.composetest.feature.root.presentation.ui.root.viewmodel.RootUiEvent
+import com.composetest.feature.root.presentation.ui.root.viewmodel.RootUiState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.launch

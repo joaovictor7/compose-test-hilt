@@ -31,6 +31,10 @@ import com.composetest.core.router.extension.navigateTo
 import com.composetest.core.ui.interfaces.Intent
 import com.composetest.core.ui.util.UiEventsObserver
 import com.composetest.feature.configuration.presenter.enums.Configuration
+import com.composetest.feature.configuration.presenter.ui.configuration.viewmodel.ConfigurationIntent
+import com.composetest.feature.configuration.presenter.ui.configuration.viewmodel.ConfigurationIntentReceiver
+import com.composetest.feature.configuration.presenter.ui.configuration.viewmodel.ConfigurationUiEvent
+import com.composetest.feature.configuration.presenter.ui.configuration.viewmodel.ConfigurationUiState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 

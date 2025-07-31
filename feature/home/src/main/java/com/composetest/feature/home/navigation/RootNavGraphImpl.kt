@@ -7,7 +7,7 @@ import androidx.navigation.compose.composable
 import com.composetest.core.router.destination.home.HomeDestination
 import com.composetest.core.router.interfaces.NavGraph
 import com.composetest.feature.home.presenter.ui.home.HomeScreen
-import com.composetest.feature.home.presenter.ui.home.HomeViewModel
+import com.composetest.feature.home.presenter.ui.home.viewmodel.HomeViewModel
 import javax.inject.Inject
 
 internal class RootNavGraphImpl @Inject constructor() : NavGraph {

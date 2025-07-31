@@ -16,6 +16,9 @@ import com.composetest.core.designsystem.extension.toSpanStyle
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.ui.interfaces.Intent
 import com.composetest.feature.configuration.R
+import com.composetest.feature.configuration.presenter.ui.security.viewmodel.SecurityConfigurationIntent
+import com.composetest.feature.configuration.presenter.ui.security.viewmodel.SecurityConfigurationIntentReceiver
+import com.composetest.feature.configuration.presenter.ui.security.viewmodel.SecurityConfigurationUiState
 
 @Composable
 internal fun SecurityConfigurationScreen(

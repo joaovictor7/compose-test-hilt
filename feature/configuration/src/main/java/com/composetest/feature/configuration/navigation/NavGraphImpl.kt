@@ -10,9 +10,9 @@ import com.composetest.core.router.interfaces.NavGraph
 import com.composetest.feature.configuration.navigation.destinaition.SecurityConfigurationDestination
 import com.composetest.feature.configuration.navigation.destinaition.ThemeConfigurationDestination
 import com.composetest.feature.configuration.presenter.ui.security.SecurityConfigurationScreen
-import com.composetest.feature.configuration.presenter.ui.security.SecurityConfigurationViewModel
+import com.composetest.feature.configuration.presenter.ui.security.viewmodel.SecurityConfigurationViewModel
 import com.composetest.feature.configuration.presenter.ui.theme.ThemeConfigurationScreen
-import com.composetest.feature.configuration.presenter.ui.theme.ThemeConfigurationViewModel
+import com.composetest.feature.configuration.presenter.ui.theme.viewmodel.ThemeConfigurationViewModel
 import javax.inject.Inject
 
 internal class NavGraphImpl @Inject constructor() : NavGraph {

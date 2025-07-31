@@ -20,6 +20,7 @@ import com.composetest.core.designsystem.component.topbar.TopBarWithoutTitle
 import com.composetest.core.designsystem.dimension.Spacing
 import com.composetest.core.designsystem.dimension.screenMargin
 import com.composetest.core.designsystem.theme.ComposeTestTheme
+import com.composetest.feature.news.presenter.ui.news.full.viewmodel.FullNewsUiState
 
 @Composable
 internal fun FullNewsScreen(uiState: FullNewsUiState) {

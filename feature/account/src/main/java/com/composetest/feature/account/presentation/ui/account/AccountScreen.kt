@@ -26,6 +26,10 @@ import com.composetest.core.ui.interfaces.Intent
 import com.composetest.core.ui.util.UiEventsObserver
 import com.composetest.feature.account.presentation.enums.AccountDataRow
 import com.composetest.feature.account.presentation.model.AccountScreenModel
+import com.composetest.feature.account.presentation.ui.account.viewmodel.AccountIntent
+import com.composetest.feature.account.presentation.ui.account.viewmodel.AccountIntentReceiver
+import com.composetest.feature.account.presentation.ui.account.viewmodel.AccountUiEvent
+import com.composetest.feature.account.presentation.ui.account.viewmodel.AccountUiState
 import com.composetest.feature.profile.R
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow

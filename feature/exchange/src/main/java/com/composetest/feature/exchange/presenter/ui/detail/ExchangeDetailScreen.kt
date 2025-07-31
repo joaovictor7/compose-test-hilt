@@ -32,6 +32,7 @@ import com.composetest.core.designsystem.extension.horizontalScreenMargin
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.feature.exchange.R
 import com.composetest.feature.exchange.presenter.model.ExchangeDetailRowScreenModel
+import com.composetest.feature.exchange.presenter.ui.detail.viewmodel.ExchangeDetailUiState
 
 @Composable
 internal fun ExchangeDetailScreen(uiState: ExchangeDetailUiState) {

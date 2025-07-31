@@ -32,6 +32,9 @@ import com.composetest.core.designsystem.extension.screenMargin
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.ui.interfaces.Intent
 import com.composetest.feature.configuration.presenter.enums.ThemeConfiguration
+import com.composetest.feature.configuration.presenter.ui.theme.viewmodel.ThemeConfigurationIntent
+import com.composetest.feature.configuration.presenter.ui.theme.viewmodel.ThemeConfigurationIntentReceiver
+import com.composetest.feature.configuration.presenter.ui.theme.viewmodel.ThemeConfigurationUiState
 import com.composetest.feature.configuration.R as ConfigurationResources
 
 @Composable

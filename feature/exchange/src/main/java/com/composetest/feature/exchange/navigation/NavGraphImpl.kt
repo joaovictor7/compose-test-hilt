@@ -14,9 +14,9 @@ import com.composetest.core.ui.util.transformDeepLinks
 import com.composetest.feature.exchange.navigation.destination.ExchangeDetailDestination
 import com.composetest.feature.exchange.presenter.mapper.ExchangeDeepLinkParamMapper
 import com.composetest.feature.exchange.presenter.ui.detail.ExchangeDetailScreen
-import com.composetest.feature.exchange.presenter.ui.detail.ExchangeDetailViewModel
+import com.composetest.feature.exchange.presenter.ui.detail.viewmodel.ExchangeDetailViewModel
 import com.composetest.feature.exchange.presenter.ui.list.ExchangeListScreen
-import com.composetest.feature.exchange.presenter.ui.list.ExchangeListViewModel
+import com.composetest.feature.exchange.presenter.ui.list.viewmodel.ExchangeListViewModel
 import javax.inject.Inject
 
 private const val EXCHANGES_URI = "composetest://exchange?filter={filter}"
@@ -26,8 +26,10 @@ internal class NavGraphImpl @Inject constructor() : NavGraph {
         composable<ExchangeListDestination>(
             deepLinks = transformDeepLinks(EXCHANGES_URI)
         ) {
-            val deepLinkParam =
-                rememberDeepLinkParam(navController, ExchangeDeepLinkParamMapper::mapperToParam)
+            val deepLinkParam = rememberDeepLinkParam(
+                navController,
+                ExchangeDeepLinkParamMapper::mapperToParam
+            )
             val viewModel: ExchangeListViewModel = hiltViewModelWithParam(deepLinkParam)
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
             ExchangeListScreen(

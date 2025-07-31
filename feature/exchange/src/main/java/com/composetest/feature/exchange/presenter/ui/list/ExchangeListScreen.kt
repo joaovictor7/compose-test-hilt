@@ -46,6 +46,10 @@ import com.composetest.core.ui.util.UiEventsObserver
 import com.composetest.feature.exchange.R
 import com.composetest.feature.exchange.presenter.model.ExchangeListRowScreenModel
 import com.composetest.feature.exchange.presenter.model.ExchangeScreenModel
+import com.composetest.feature.exchange.presenter.ui.list.viewmodel.ExchangeListIntent
+import com.composetest.feature.exchange.presenter.ui.list.viewmodel.ExchangeListIntentReceiver
+import com.composetest.feature.exchange.presenter.ui.list.viewmodel.ExchangeListUiEvent
+import com.composetest.feature.exchange.presenter.ui.list.viewmodel.ExchangeListUiState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 

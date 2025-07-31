@@ -9,7 +9,7 @@ import androidx.navigation.compose.composable
 import com.composetest.core.router.destination.root.RootDestination
 import com.composetest.core.router.interfaces.NavGraph
 import com.composetest.feature.root.presentation.ui.root.RootScreen
-import com.composetest.feature.root.presentation.ui.root.RootViewModel
+import com.composetest.feature.root.presentation.ui.root.viewmodel.RootViewModel
 import javax.inject.Inject
 
 internal class NavGraphImpl @Inject constructor() : NavGraph {

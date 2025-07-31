@@ -30,6 +30,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -390,12 +391,12 @@ private fun LifecycleEventHandler(
 // endregion
 
 @Composable
-@Preview
+@PreviewLightDark
 private fun Preview() {
     ComposeTestTheme {
         WeatherForecastScreen(
             uiState = WeatherForecastUiState(
-                screenStatus = WeatherForecastScreenStatus.TRY_AGAIN,
+                screenStatus = WeatherForecastScreenStatus.READY,
                 weatherNowStatus = WeatherForecastStatus.READY,
                 weatherForecastsStatus = WeatherForecastStatus.READY,
                 weatherNow = WeatherNowScreenModel(
