@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="product_title">Product</string>
+    <string name="product_filter">Filter</string>
+
+    <string name="product_detail_price">Price</string>
+    <string name="product_detail_discount_percentage">Discount percentage</string>
+    <string name="product_detail_stock">Stock</string>
+    <string name="product_detail_rating">Rating</string>
+</resources>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="product_title">Início</string>
+    <string name="product_filter">Fitorar</string>
+
+    <string name="product_detail_price">Preço</string>
+    <string name="product_detail_discount_percentage">Porcentagem de desconto</string>
+    <string name="product_detail_stock">Estoque</string>
+    <string name="product_detail_rating">Avaliação</string>
+</resources>
