@@ -4,5 +4,6 @@
     <!-- Global Words-->
     <string name="close">Fechar</string>
     <string name="try_again">Tente novamente</string>
+    <string name="cancel">Cancelar</string>
 
 </resources>

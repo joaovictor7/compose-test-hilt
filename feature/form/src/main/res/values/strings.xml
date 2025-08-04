@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="form_name_label">Name</string>
+    <string name="form_email_label">Email</string>
+    <string name="form_number_label">Phone number</string>
+    <string name="form_delivery_date_label">Delivery date</string>
+    <string name="form_promotional_code_label">Promotional code</string>
+    <string name="form_classification_label">Classification</string>
+    <string name="form_email_error">This isn\'t email address</string>
+    <string name="form_promotional_code_error">The minium code length is 3</string>
+    <string name="form_bad_classification">Bad</string>
+    <string name="form_satisfactory_classification">Satisfactory</string>
+    <string name="form_good_classification">Good</string>
+    <string name="form_very_good_classification">Very good</string>
+    <string name="form_excellent_classification">Excellent</string>
+    <string name="form_submit_button">Submeter</string>
+    <string name="form_submit_success_title">Alright</string>
+    <string name="form_submit_success_subtitle">The form was correctly filled</string>
+</resources>

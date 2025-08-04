@@ -1,6 +1,6 @@
 package com.composetest.feature.exchange.data.mapper
 
-import com.composetest.common.extension.convertFromString
+import com.composetest.common.extension.fromStringToDateTime
 import com.composetest.feature.exchange.domain.model.ExchangeModel
 import com.composetest.feature.exchange.network.response.ExchangeResponse
 import javax.inject.Inject
@@ -11,12 +11,12 @@ internal class ExchangeMapper @Inject constructor() {
             id = it.id,
             website = it.website,
             name = it.name,
-            dateTimeQuoteStart = it.dateTimeQuoteStart?.convertFromString(DATE_TIME_FORMAT),
-            dateTimeQuoteEnd = it.dateTimeQuoteEnd?.convertFromString(DATE_TIME_FORMAT),
-            dateTimeOrderBookStart = it.dateTimeOrderBookStart?.convertFromString(DATE_TIME_FORMAT),
-            dateTimeOrderBookEnd = it.dateTimeOrderBookStart?.convertFromString(DATE_TIME_FORMAT),
-            dateTimeOrderTradeStart = it.dateTimeOrderTradeStart?.convertFromString(DATE_TIME_FORMAT),
-            dateTimeOrderTradeEnd = it.dateTimeOrderTradeEnd?.convertFromString(DATE_TIME_FORMAT),
+            dateTimeQuoteStart = it.dateTimeQuoteStart?.fromStringToDateTime(DATE_TIME_FORMAT),
+            dateTimeQuoteEnd = it.dateTimeQuoteEnd?.fromStringToDateTime(DATE_TIME_FORMAT),
+            dateTimeOrderBookStart = it.dateTimeOrderBookStart?.fromStringToDateTime(DATE_TIME_FORMAT),
+            dateTimeOrderBookEnd = it.dateTimeOrderBookStart?.fromStringToDateTime(DATE_TIME_FORMAT),
+            dateTimeOrderTradeStart = it.dateTimeOrderTradeStart?.fromStringToDateTime(DATE_TIME_FORMAT),
+            dateTimeOrderTradeEnd = it.dateTimeOrderTradeEnd?.fromStringToDateTime(DATE_TIME_FORMAT),
             symbolsCount = it.symbolsCount,
             volume1hrsUsd = it.volume1hrsUsd,
             volume1DayUsd = it.volume1DayUsd,

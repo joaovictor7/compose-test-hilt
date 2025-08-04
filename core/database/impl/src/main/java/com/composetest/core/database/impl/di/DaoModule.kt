@@ -1,6 +1,7 @@
 package com.composetest.core.database.impl.di
 
 import com.composetest.core.database.androidapi.dao.ConfigurationEntityDao
+import com.composetest.core.database.androidapi.dao.ProductEntityDao
 import com.composetest.core.database.androidapi.dao.SessionEntityDao
 import com.composetest.core.database.androidapi.dao.UserEntityDao
 import com.composetest.core.database.impl.database.Database
@@ -24,4 +25,9 @@ internal object DaoModule {
     fun configurationEntityDao(
         database: Database
     ): ConfigurationEntityDao = database.configurationEntityDao()
+
+    @Provides
+    fun productEntityDao(
+        database: Database
+    ): ProductEntityDao = database.productEntityDao()
 }

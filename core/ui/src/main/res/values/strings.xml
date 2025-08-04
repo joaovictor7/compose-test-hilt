@@ -4,5 +4,7 @@
     <!-- Global Words -->
     <string name="close">Close</string>
     <string name="try_again">Try again</string>
+    <string name="ok" translatable="false">Try again</string>
+    <string name="cancel">Cancel</string>
 
 </resources>

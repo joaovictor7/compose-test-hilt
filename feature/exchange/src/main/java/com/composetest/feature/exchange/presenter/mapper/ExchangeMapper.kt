@@ -1,7 +1,7 @@
 package com.composetest.feature.exchange.presenter.mapper
 
-import com.composetest.common.extension.convertFromString
-import com.composetest.common.extension.convertToString
+import com.composetest.common.extension.fromStringToDateTime
+import com.composetest.common.extension.fromDateTimeToString
 import com.composetest.core.ui.provider.StringResourceProvider
 import com.composetest.feature.exchange.R
 import com.composetest.feature.exchange.domain.model.ExchangeModel
@@ -80,12 +80,12 @@ internal class ExchangeMapper @Inject constructor(
             id = it.id,
             website = it.website,
             name = it.name,
-            dateTimeQuoteStart = it.dateTimeQuoteStart?.convertToString(DATE_TIME_FORMAT),
-            dateTimeQuoteEnd = it.dateTimeQuoteEnd?.convertToString(DATE_TIME_FORMAT),
-            dateTimeOrderTradeStart = it.dateTimeOrderTradeStart?.convertToString(DATE_TIME_FORMAT),
-            dateTimeOrderTradeEnd = it.dateTimeOrderTradeEnd?.convertToString(DATE_TIME_FORMAT),
-            dateTimeOrderBookStart = it.dateTimeOrderBookStart?.convertToString(DATE_TIME_FORMAT),
-            dateTimeOrderBookEnd = it.dateTimeOrderBookEnd?.convertToString(DATE_TIME_FORMAT),
+            dateTimeQuoteStart = it.dateTimeQuoteStart?.fromDateTimeToString(DATE_TIME_FORMAT),
+            dateTimeQuoteEnd = it.dateTimeQuoteEnd?.fromDateTimeToString(DATE_TIME_FORMAT),
+            dateTimeOrderTradeStart = it.dateTimeOrderTradeStart?.fromDateTimeToString(DATE_TIME_FORMAT),
+            dateTimeOrderTradeEnd = it.dateTimeOrderTradeEnd?.fromDateTimeToString(DATE_TIME_FORMAT),
+            dateTimeOrderBookStart = it.dateTimeOrderBookStart?.fromDateTimeToString(DATE_TIME_FORMAT),
+            dateTimeOrderBookEnd = it.dateTimeOrderBookEnd?.fromDateTimeToString(DATE_TIME_FORMAT),
             symbolsCount = it.symbolsCount,
             volume1hrsUsd = it.volume1hrsUsd,
             volume1DayUsd = it.volume1DayUsd,
@@ -169,11 +169,11 @@ internal class ExchangeMapper @Inject constructor(
     )?.removeSuffix("/")
 
     private fun String?.dateTimeFormat(): String? {
-        val dateTime = this?.convertFromString(DATE_TIME_FORMAT)
+        val dateTime = this?.fromStringToDateTime(DATE_TIME_FORMAT)
         return if (dateTime?.hour == 0 && dateTime.minute == 0) {
-            dateTime.convertToString(OUT_DATE_TIME_FORMAT3)
+            dateTime.fromDateTimeToString(OUT_DATE_TIME_FORMAT3)
         } else {
-            dateTime?.convertToString(OUT_DATE_TIME_FORMAT2)
+            dateTime?.fromDateTimeToString(OUT_DATE_TIME_FORMAT2)
         }
     }
 

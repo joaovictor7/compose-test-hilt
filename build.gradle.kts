@@ -15,4 +15,5 @@ plugins {
     alias(libs.plugins.screenshot) apply false
     alias(libs.plugins.kover) apply false
     alias(libs.plugins.kotlin.jvm) apply false
+    alias(libs.plugins.room) apply false
 }
