@@ -1,4 +1,4 @@
-package com.composetest.core.designsystem.util
+package com.composetest.core.designsystem.component.textfield.util
 
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.res.painterResource
 import com.composetest.core.designsystem.R
-import com.composetest.core.designsystem.enums.textfield.TextFieldIcon
+import com.composetest.core.designsystem.component.textfield.enums.TextFieldIcon
 
 internal fun getTextFieldTrailingIcon(
     trailingIcon: TextFieldIcon?,

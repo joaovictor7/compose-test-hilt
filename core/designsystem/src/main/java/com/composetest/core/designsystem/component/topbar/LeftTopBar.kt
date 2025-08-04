@@ -7,10 +7,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.composetest.core.designsystem.R
-import com.composetest.core.designsystem.enums.topbar.TopBarAction
+import com.composetest.core.designsystem.component.topbar.enums.TopBarAction
 import com.composetest.core.designsystem.theme.ComposeTestTheme
-import com.composetest.core.designsystem.util.getTopBarActions
-import com.composetest.core.designsystem.util.getTopBarTitle
+import com.composetest.core.designsystem.component.topbar.util.getTopBarActions
+import com.composetest.core.designsystem.component.topbar.util.getTopBarTitle
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)

@@ -22,7 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.composetest.core.designsystem.R
-import com.composetest.core.designsystem.enums.button.LoadingButtonState
+import com.composetest.core.designsystem.component.button.enums.LoadingButtonState
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import kotlinx.coroutines.delay
 import kotlin.time.Duration.Companion.seconds

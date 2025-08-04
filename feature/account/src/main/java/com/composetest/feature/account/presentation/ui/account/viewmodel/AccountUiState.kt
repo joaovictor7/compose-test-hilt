@@ -1,6 +1,6 @@
 package com.composetest.feature.account.presentation.ui.account.viewmodel
 
-import com.composetest.core.designsystem.enums.button.LoadingButtonState
+import com.composetest.core.designsystem.component.button.enums.LoadingButtonState
 import com.composetest.feature.account.presentation.model.AccountScreenModel
 
 internal data class AccountUiState(

@@ -129,7 +129,7 @@ fun SimpleScatterPlotGraphic(
                     yPosition,
                     Paint().apply {
                         color = labelTextColor.toArgb()
-                        textSize = FontSize.fourteen.toPx()
+                        textSize = FontSize.medium.toPx()
                         style = Paint.Style.FILL_AND_STROKE
                     }
                 )

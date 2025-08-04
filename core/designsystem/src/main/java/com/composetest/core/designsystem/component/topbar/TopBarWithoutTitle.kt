@@ -4,9 +4,9 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.PreviewLightDark
-import com.composetest.core.designsystem.enums.topbar.TopBarAction
+import com.composetest.core.designsystem.component.topbar.enums.TopBarAction
 import com.composetest.core.designsystem.theme.ComposeTestTheme
-import com.composetest.core.designsystem.util.getTopBarActions
+import com.composetest.core.designsystem.component.topbar.util.getTopBarActions
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)

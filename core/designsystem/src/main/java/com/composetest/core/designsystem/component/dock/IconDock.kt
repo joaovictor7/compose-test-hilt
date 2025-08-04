@@ -36,7 +36,7 @@ import androidx.compose.ui.unit.dp
 import com.composetest.core.designsystem.R
 import com.composetest.core.designsystem.dimension.Spacing
 import com.composetest.core.designsystem.extension.opacity
-import com.composetest.core.designsystem.param.dock.IconDockParam
+import com.composetest.core.designsystem.component.dock.param.IconDockParam
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 
 /**

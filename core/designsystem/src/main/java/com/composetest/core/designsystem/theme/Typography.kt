@@ -7,72 +7,72 @@ import com.composetest.core.designsystem.dimension.FontSize
 
 internal val typography = Typography(
     titleLarge = TextStyle(
-        fontSize = FontSize.twentyTwo,
+        fontSize = FontSize.extraLarge,
         lineHeight = 28.sp
     ),
     titleMedium = TextStyle(
-        fontSize = FontSize.sixteen,
+        fontSize = FontSize.large,
         lineHeight = 24.sp,
         letterSpacing = 0.15.sp
     ),
     titleSmall = TextStyle(
-        fontSize = FontSize.fourteen,
+        fontSize = FontSize.medium,
         lineHeight = 20.sp,
         letterSpacing = 0.1.sp
     ),
     bodyLarge = TextStyle(
-        fontSize = FontSize.sixteen,
+        fontSize = FontSize.large,
         lineHeight = 24.sp,
         letterSpacing = 0.5.sp
     ),
     bodyMedium = TextStyle(
-        fontSize = FontSize.fourteen,
+        fontSize = FontSize.medium,
         lineHeight = 20.sp,
         letterSpacing = 0.25.sp
     ),
     bodySmall = TextStyle(
-        fontSize = FontSize.twelve,
+        fontSize = FontSize.small,
         lineHeight = 16.sp,
         letterSpacing = 0.4.sp
     ),
     headlineLarge = TextStyle(
-        fontSize = FontSize.thirtyTwo,
+        fontSize = FontSize.huge,
         lineHeight = 40.sp
     ),
     headlineMedium = TextStyle(
-        fontSize = FontSize.twentyEight,
+        fontSize = FontSize.xxxLarge,
         lineHeight = 36.sp
     ),
     headlineSmall = TextStyle(
-        fontSize = FontSize.twentyFour,
+        fontSize = FontSize.xxLarge,
         lineHeight = 32.sp
     ),
     labelLarge = TextStyle(
-        fontSize = FontSize.fourteen,
+        fontSize = FontSize.medium,
         lineHeight = 20.sp,
         letterSpacing = 0.1.sp
     ),
     labelMedium = TextStyle(
-        fontSize = FontSize.twelve,
+        fontSize = FontSize.small,
         lineHeight = 16.sp,
         letterSpacing = 0.5.sp
     ),
     labelSmall = TextStyle(
-        fontSize = FontSize.eleven,
+        fontSize = FontSize.extraSmall,
         lineHeight = 16.sp,
         letterSpacing = 0.5.sp
     ),
     displayLarge = TextStyle(
-        fontSize = FontSize.fiftySeven,
+        fontSize = FontSize.xxxHuge,
         lineHeight = 64.sp,
         letterSpacing = (-0.25).sp
     ),
     displayMedium = TextStyle(
-        fontSize = FontSize.fortyFive,
+        fontSize = FontSize.xxHuge,
         lineHeight = 52.sp
     ),
     displaySmall = TextStyle(
-        fontSize = FontSize.thirtySix,
+        fontSize = FontSize.extraHuge,
         lineHeight = 44.sp
     )
 )

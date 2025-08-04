@@ -23,10 +23,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.composetest.core.designsystem.component.scaffold.ScreenScaffold
-import com.composetest.core.designsystem.component.switch.ThumbSwitch
+import com.composetest.core.designsystem.component.switches.ThumbSwitch
 import com.composetest.core.designsystem.component.topbar.LeftTopBar
 import com.composetest.core.designsystem.dimension.Spacing
-import com.composetest.core.designsystem.enums.switchs.SwitchType
+import com.composetest.core.designsystem.component.switches.enums.SwitchType
 import com.composetest.core.designsystem.extension.opacity
 import com.composetest.core.designsystem.extension.screenMargin
 import com.composetest.core.designsystem.theme.ComposeTestTheme

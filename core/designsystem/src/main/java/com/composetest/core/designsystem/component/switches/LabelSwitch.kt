@@ -1,4 +1,4 @@
-package com.composetest.core.designsystem.component.switch
+package com.composetest.core.designsystem.component.switches
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
-import com.composetest.core.designsystem.enums.switchs.SwitchType
+import com.composetest.core.designsystem.component.switches.enums.SwitchType
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 
 @Composable

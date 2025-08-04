@@ -1,4 +1,4 @@
-package com.composetest.core.designsystem.util
+package com.composetest.core.designsystem.component.topbar.util
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material3.Icon
@@ -7,7 +7,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.painterResource
-import com.composetest.core.designsystem.enums.topbar.TopBarAction
+import com.composetest.core.designsystem.component.topbar.enums.TopBarAction
 
 internal fun getTopBarTitle(title: String): @Composable () -> Unit = {
     Text(

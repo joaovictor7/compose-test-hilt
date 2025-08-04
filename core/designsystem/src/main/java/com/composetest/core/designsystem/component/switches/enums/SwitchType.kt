@@ -1,4 +1,4 @@
-package com.composetest.core.designsystem.enums.switchs
+package com.composetest.core.designsystem.component.switches.enums
 
 import androidx.annotation.DrawableRes
 import com.composetest.core.designsystem.R

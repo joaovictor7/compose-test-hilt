@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.composetest.core.designsystem.component.button.BackButton
-import com.composetest.core.designsystem.enums.topbar.TopBarAction
+import com.composetest.core.designsystem.component.topbar.enums.TopBarAction
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 
 @Composable

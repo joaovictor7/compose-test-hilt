@@ -1,4 +1,4 @@
-package com.composetest.core.designsystem.param.dock
+package com.composetest.core.designsystem.component.dock.param
 
 import androidx.annotation.DrawableRes
 

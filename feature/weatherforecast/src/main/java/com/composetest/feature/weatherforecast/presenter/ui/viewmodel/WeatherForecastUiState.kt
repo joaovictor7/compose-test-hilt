@@ -1,6 +1,6 @@
 package com.composetest.feature.weatherforecast.presenter.ui.viewmodel
 
-import com.composetest.core.designsystem.enums.topbar.TopBarAction
+import com.composetest.core.designsystem.component.topbar.enums.TopBarAction
 import com.composetest.feature.weatherforecast.domain.model.TodayWeatherForecastModel
 import com.composetest.feature.weatherforecast.presenter.enums.WeatherForecastScreenStatus
 import com.composetest.feature.weatherforecast.presenter.enums.WeatherForecastStatus
