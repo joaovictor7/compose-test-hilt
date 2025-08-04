@@ -11,6 +11,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.composetest.core.ui.extension.uiStateValue
+import com.composetest.presentation.ui.main.viewmodel.MainIntent
+import com.composetest.presentation.ui.main.viewmodel.MainUiState
+import com.composetest.presentation.ui.main.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 

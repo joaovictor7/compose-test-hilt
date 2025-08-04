@@ -7,6 +7,10 @@ android {
     namespace = "com.composetest.core.database.impl"
 }
 
+room {
+    schemaDirectory("$projectDir/schemas")
+}
+
 dependencies {
     implementation(projects.core.database.androidapi)
     implementation(projects.core.security.api)

@@ -1,4 +1,4 @@
-package com.composetest.presentation.ui.main
+package com.composetest.presentation.ui.main.viewmodel
 
 import android.os.Build
 import com.composetest.core.designsystem.extension.systemBarStyles

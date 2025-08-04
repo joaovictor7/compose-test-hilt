@@ -1,4 +1,4 @@
-package com.composetest.presentation.ui.main
+package com.composetest.presentation.ui.main.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import com.composetest.analytic.screen.MainScreenAnalytic

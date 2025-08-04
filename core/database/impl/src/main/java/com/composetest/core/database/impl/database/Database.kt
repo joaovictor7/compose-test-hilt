@@ -14,13 +14,10 @@ import com.composetest.core.database.androidapi.data.entity.UserEntity
 import com.composetest.core.database.androidapi.data.entity.configuration.ConfigurationEntity
 import com.composetest.core.database.impl.data.converter.LocalDateTimeConverter
 
-private const val DATABASE_VERSION = 2
+private const val DATABASE_VERSION = 1
 
 @Database(
     version = DATABASE_VERSION,
-    autoMigrations = [
-        AutoMigration(from = 1, to = 2)
-    ],
     entities = [
         SessionEntity::class,
         UserEntity::class,

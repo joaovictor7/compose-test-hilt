@@ -11,6 +11,10 @@ import com.composetest.core.router.extension.currentRoute
 import com.composetest.core.router.extension.navigateTo
 import com.composetest.core.ui.interfaces.Intent
 import com.composetest.core.ui.util.UiEventsObserver
+import com.composetest.presentation.ui.main.viewmodel.MainIntent
+import com.composetest.presentation.ui.main.viewmodel.MainIntentReceiver
+import com.composetest.presentation.ui.main.viewmodel.MainUiEvent
+import com.composetest.presentation.ui.main.viewmodel.MainUiState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 

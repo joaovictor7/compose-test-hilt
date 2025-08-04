@@ -1,4 +1,4 @@
-package com.composetest.presentation.ui.main
+package com.composetest.presentation.ui.main.viewmodel
 
 import com.composetest.core.router.model.NavigationModel
 
