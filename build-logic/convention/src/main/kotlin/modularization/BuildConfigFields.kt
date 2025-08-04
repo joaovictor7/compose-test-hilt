@@ -30,4 +30,5 @@ internal fun ApplicationProductFlavor.setBuildConfigFields(
         "OPEN_WEATHER_ICON_HOST",
         properties.getProperty("host.open-weather-icon")
     )
+    buildConfigField("String", "DUMMY_JSON_API_HOST", properties.getProperty("host.dummy-json"))
 }

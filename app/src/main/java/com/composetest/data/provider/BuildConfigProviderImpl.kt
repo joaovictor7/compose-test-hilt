@@ -25,5 +25,6 @@ internal class BuildConfigProviderImpl @Inject constructor() : BuildConfigProvid
         newsApiHost = BuildConfig.NEWS_API_HOST,
         openWeatherApiHost = BuildConfig.OPEN_WEATHER_API_HOST,
         openWeatherIconHost = BuildConfig.OPEN_WEATHER_ICON_HOST,
+        dummyJsonHost = BuildConfig.DUMMY_JSON_API_HOST,
     )
 }

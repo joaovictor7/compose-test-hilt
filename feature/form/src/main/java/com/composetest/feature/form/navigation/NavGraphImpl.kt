@@ -6,17 +6,16 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
-import com.composetest.core.router.interfaces.NavGraph
 import com.composetest.core.router.destination.form.FormDestination
+import com.composetest.core.router.interfaces.NavGraph
 import com.composetest.feature.form.presenter.ui.form.FormScreen
 import com.composetest.feature.form.presenter.ui.form.FormViewModel
+import javax.inject.Inject
 
-object FormNavGraph : NavGraph {
-    override fun NavGraphBuilder.register(
-        navController: NavHostController
-    ) {
+internal class NavGraphImpl @Inject constructor() : NavGraph {
+    override fun NavGraphBuilder.register(navController: NavHostController) {
         composable<FormDestination> {
-            val viewModel = hiltViewModel<FormViewModel>()
+            val viewModel: FormViewModel = hiltViewModel()
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
             FormScreen(
                 uiState = uiState,

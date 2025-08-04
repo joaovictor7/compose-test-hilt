@@ -193,7 +193,8 @@ private fun Modifier.formTextFieldFocusManager(
 private object PastOrPresentSelectableDates : SelectableDates {
     override fun isSelectableDate(utcTimeMillis: Long): Boolean {
         val date = utcTimeMillis.fromUnixToDateTime
-        val isPastOrPresent = !date.isAfter(LocalDate.now(ZoneOffset.UTC))
+        val todayAtStartOfDayUTC = LocalDate.now(ZoneOffset.UTC).atStartOfDay()
+        val isPastOrPresent = !date.isAfter(todayAtStartOfDayUTC)
         val isNotMonday = date.dayOfWeek != DayOfWeek.MONDAY
         return isPastOrPresent && isNotMonday
     }

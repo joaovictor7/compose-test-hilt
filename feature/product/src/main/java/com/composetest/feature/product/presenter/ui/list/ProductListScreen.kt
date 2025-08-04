@@ -29,14 +29,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.composetest.core.designsystem.component.dialog.SimpleDialog
 import com.composetest.core.designsystem.component.pulltorefresh.PullToRefresh
 import com.composetest.core.designsystem.component.rating.Rating
 import com.composetest.core.designsystem.component.shimmer.Shimmer
 import com.composetest.core.designsystem.component.textfield.TextField
+import com.composetest.core.designsystem.component.textfield.enums.TextFieldIcon
 import com.composetest.core.designsystem.dimension.Spacing
 import com.composetest.core.designsystem.dimension.screenMargin
-import com.composetest.core.designsystem.enums.textfield.TextFieldIcon
 import com.composetest.core.designsystem.extension.horizontalScreenMargin
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.designsystem.util.getSharedShimmerOffset
@@ -61,7 +60,7 @@ internal fun ProductListScreen(
 ) {
     val shimmerOffset by getSharedShimmerOffset()
     UiEventsHandler(uiEvent = uiEvent, navController = navController)
-    DialogHandler(uiState = uiState, onExecuteIntent = onExecuteIntent)
+//    DialogHandler(uiState = uiState, onExecuteIntent = onExecuteIntent)
     Column(modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars)) {
         Column(modifier = Modifier.horizontalScreenMargin()) {
             ProductListFilter(uiState = uiState, onExecuteIntent = onExecuteIntent)
@@ -164,15 +163,15 @@ private fun ExchangeItemShimmer(shimmerOffset: Float) {
     )
 }
 
-@Composable
-private fun DialogHandler(
-    uiState: ProductListUiState,
-    onExecuteIntent: (Intent<ProductListIntentReceiver>) -> Unit
-) = uiState.simpleDialogParam?.let {
-    SimpleDialog(it) {
-        onExecuteIntent(ProductListIntent.DismissSimpleDialog)
-    }
-}
+//@Composable
+//private fun DialogHandler(
+//    uiState: ProductListUiState,
+//    onExecuteIntent: (Intent<ProductListIntentReceiver>) -> Unit
+//) = uiState.simpleDialogParam?.let {
+//    SimpleDialog(it) {
+//        onExecuteIntent(ProductListIntent.DismissSimpleDialog)
+//    }
+//}
 
 @Composable
 private fun UiEventsHandler(

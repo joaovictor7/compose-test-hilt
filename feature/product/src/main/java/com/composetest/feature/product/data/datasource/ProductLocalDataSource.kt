@@ -1,5 +1,7 @@
 package com.composetest.feature.product.data.datasource
 
+import com.composetest.core.database.androidapi.dao.ProductEntityDao
+import com.composetest.core.database.androidapi.data.entity.ProductEntity
 import javax.inject.Inject
 
 internal class ProductLocalDataSource @Inject constructor(

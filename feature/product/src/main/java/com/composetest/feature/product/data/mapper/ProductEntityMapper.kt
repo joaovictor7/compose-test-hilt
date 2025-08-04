@@ -1,6 +1,6 @@
 package com.composetest.feature.product.data.mapper
 
-import com.composetest.core.database.data.entity.product.ProductEntity
+import com.composetest.core.database.androidapi.data.entity.ProductEntity
 import com.composetest.feature.product.domain.model.ProductModel
 import javax.inject.Inject
 

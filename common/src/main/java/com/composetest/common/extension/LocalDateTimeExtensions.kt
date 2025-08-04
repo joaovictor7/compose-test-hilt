@@ -14,11 +14,6 @@ val Long.fromSecondsToDateTime: LocalDateTime
         ZoneId.systemDefault()
     )
 
-fun String.convertToDateTime(format: String): LocalDateTime {
-    val formatter = DateTimeFormatter.ofPattern(format)
-    return LocalDateTime.parse(this, formatter)
-}
-
 fun String.fromStringToDateTime(format: String): LocalDateTime {
     val formatter = DateTimeFormatter.ofPattern(format)
     return LocalDateTime.parse(this, formatter)

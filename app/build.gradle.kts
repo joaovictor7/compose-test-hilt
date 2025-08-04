@@ -20,7 +20,9 @@ private val features = listOf(
     projects.feature.configuration,
     projects.feature.weatherforecast,
     projects.feature.news,
-    projects.feature.exchange
+    projects.feature.exchange,
+    projects.feature.form,
+    projects.feature.product,
 )
 
 dependencies {

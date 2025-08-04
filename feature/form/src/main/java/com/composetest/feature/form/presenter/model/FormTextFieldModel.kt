@@ -2,7 +2,7 @@ package com.composetest.feature.form.presenter.model
 
 import androidx.annotation.StringRes
 import androidx.compose.ui.text.input.KeyboardType
-import com.composetest.core.designsystem.enums.textfield.TextFieldIcon
+import com.composetest.core.designsystem.component.textfield.enums.TextFieldIcon
 import com.composetest.feature.form.presenter.enums.FormFieldType
 
 internal data class FormTextFieldModel(

@@ -22,6 +22,8 @@ internal object NavGraphListModule {
         @NavGraphQualifier(ModuleNavGraph.ACCOUNT_FEATURE) accountNavGraph: NavGraph,
         @NavGraphQualifier(ModuleNavGraph.WEATHER_FORECAST_FEATURE) weatherForecastNavGraph: NavGraph,
         @NavGraphQualifier(ModuleNavGraph.CONFIGURATION_FEATURE) configurationNavGraph: NavGraph,
+        @NavGraphQualifier(ModuleNavGraph.FORM_FEATURE) formNavGraph: NavGraph,
+        @NavGraphQualifier(ModuleNavGraph.PRODUCT_FEATURE) productNavGraph: NavGraph,
     ): Array<NavGraph> = arrayOf(
         designSystemNavGraph,
         loginNavGraph,
@@ -31,5 +33,7 @@ internal object NavGraphListModule {
         accountNavGraph,
         weatherForecastNavGraph,
         configurationNavGraph,
+        formNavGraph,
+        productNavGraph,
     )
 }

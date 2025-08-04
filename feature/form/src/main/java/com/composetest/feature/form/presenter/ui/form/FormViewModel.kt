@@ -1,12 +1,12 @@
 package com.composetest.feature.form.presenter.ui.form
 
 import androidx.core.text.isDigitsOnly
+import androidx.core.util.PatternsCompat
 import androidx.lifecycle.viewModelScope
-import com.composetest.common.extension.fromDateTimeToString
-import com.composetest.common.extension.isEmailAddress
+import com.composetest.common.extension.fromDateToString
 import com.composetest.common.extension.orFalse
-import com.composetest.core.analytic.event.CommonAnalyticEvent
-import com.composetest.core.analytic.sender.AnalyticSender
+import com.composetest.core.analytic.api.event.CommonAnalyticEvent
+import com.composetest.core.analytic.api.sender.AnalyticSender
 import com.composetest.core.ui.base.BaseViewModel
 import com.composetest.core.ui.di.qualifier.AsyncTaskUtilsQualifier
 import com.composetest.core.ui.extension.uiStateValue
@@ -17,13 +17,14 @@ import com.composetest.feature.form.analytic.screen.FormScreenAnalytic
 import com.composetest.feature.form.domain.emuns.FormClassification
 import com.composetest.feature.form.presenter.enums.FormFieldType
 import com.composetest.feature.form.presenter.model.FormTextFieldModel
-import com.composetest.feature.form.presenter.ui.dialog.FormSimpleDialogParam
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import java.time.LocalDate
 import javax.inject.Inject
+
+private val String.isEmailAddress get() = PatternsCompat.EMAIL_ADDRESS.matcher(this).matches()
 
 @HiltViewModel
 internal class FormViewModel @Inject constructor(
@@ -52,7 +53,11 @@ internal class FormViewModel @Inject constructor(
             FormFieldType.PROMOTIONAL_CODE -> setPromotionalCodeFormTextField(
                 index, newValue, formTextField
             )
-            FormFieldType.PHONE_NUMBER -> setPhoneNumberFormTextField(index, newValue, formTextField)
+            FormFieldType.PHONE_NUMBER -> setPhoneNumberFormTextField(
+                index,
+                newValue,
+                formTextField
+            )
             FormFieldType.EMAIL -> setEmailFormTextField(index, newValue, formTextField)
             else -> updateFormTextFields(index, formTextField.copy(value = newValue))
         }
@@ -74,7 +79,7 @@ internal class FormViewModel @Inject constructor(
     }
 
     override fun selectedDate(selectedDate: LocalDate) {
-        val dateString = selectedDate.fromDateTimeToString("dd/MM/yyyy")
+        val dateString = selectedDate.fromDateToString("dd/MM/yyyy")
         val index = uiStateValue.fields.indexOfFirst {
             it.type == FormFieldType.DELIVERY_DATE
         }.takeIf { it != -1 } ?: return
@@ -87,11 +92,11 @@ internal class FormViewModel @Inject constructor(
     }
 
     override fun submitForm() {
-        _uiState.update { it.copy(simpleDialogParam = FormSimpleDialogParam.Success) }
+//        _uiState.update { it.copy(simpleDialogParam = FormSimpleDialogParam.Success) }
     }
 
     override fun dismissSimpleDialog() {
-        _uiState.update { it.copy(simpleDialogParam = null) }
+//        _uiState.update { it.copy(simpleDialogParam = null) }
     }
 
     private fun setEmailFormTextField(

@@ -5,4 +5,5 @@ data class BuildConfigFieldsModel(
     val newsApiHost: String,
     val openWeatherApiHost: String,
     val openWeatherIconHost: String,
+    val dummyJsonHost: String,
 )

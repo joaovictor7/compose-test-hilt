@@ -88,7 +88,7 @@ internal class ProductListViewModel @Inject constructor(
     }
 
     override fun dismissSimpleDialog() {
-        _uiState.update { it.setSimpleDialogParam(null) }
+//        _uiState.update { it.setSimpleDialogParam(null) }
     }
 
     private fun getAllProducts() {
@@ -104,6 +104,6 @@ internal class ProductListViewModel @Inject constructor(
     }
 
     private fun errorHandler(error: Throwable) {
-        _uiEvent.emitEvent(ProductListUiEvent.NavigateTo(error.dialogErrorDestination()))
+//        _uiEvent.emitEvent(ProductListUiEvent.NavigateTo(error.dialogErrorDestination()))
     }
 }
