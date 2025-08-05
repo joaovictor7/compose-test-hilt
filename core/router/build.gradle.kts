@@ -8,7 +8,7 @@ android {
 }
 
 dependencies {
-    implementation(projects.common)
+    implementation(projects.common.api)
     implementation(projects.core.network)
     implementation(libs.kotlin.reflect)
     implementation(libs.kotlin.json.serializable)

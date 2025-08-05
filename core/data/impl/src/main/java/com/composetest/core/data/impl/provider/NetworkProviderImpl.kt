@@ -3,7 +3,7 @@ package com.composetest.core.data.impl.provider
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import com.composetest.common.provider.NetworkProvider
+import com.composetest.common.api.provider.NetworkProvider
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 

@@ -1,6 +1,6 @@
 package com.composetest.feature.weatherforecast.domain.usescase
 
-import com.composetest.common.provider.DateTimeProvider
+import com.composetest.common.api.provider.DateTimeProvider
 import com.composetest.feature.weatherforecast.domain.model.TodayWeatherForecastModel
 import com.composetest.feature.weatherforecast.domain.model.WeatherForecastModel
 import javax.inject.Inject

@@ -1,6 +1,6 @@
 package com.composetest.feature.login.data.di
 
-import com.composetest.common.provider.DateTimeProvider
+import com.composetest.common.api.provider.DateTimeProvider
 import com.composetest.core.data.api.provider.AssetsProvider
 import com.composetest.core.data.api.provider.EnvironmentInstanceProvider
 import com.composetest.core.network.util.ApiCallUtils

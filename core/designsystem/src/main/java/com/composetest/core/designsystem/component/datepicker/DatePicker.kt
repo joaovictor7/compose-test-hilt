@@ -15,7 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import com.composetest.common.extension.fromUnixToDate
+import com.composetest.common.api.extension.fromUnixToDate
 import com.composetest.core.designsystem.extension.stringResource
 import com.composetest.core.ui.R
 import java.time.LocalDate

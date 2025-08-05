@@ -1,6 +1,6 @@
 package com.composetest.core.database.impl.application
 
-import com.composetest.common.application.ApplicationRunner
+import com.composetest.common.api.application.ApplicationRunner
 import javax.inject.Inject
 
 internal class ApplicationRunnerImpl @Inject constructor() : ApplicationRunner {

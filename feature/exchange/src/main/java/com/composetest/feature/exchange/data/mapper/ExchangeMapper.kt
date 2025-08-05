@@ -1,6 +1,6 @@
 package com.composetest.feature.exchange.data.mapper
 
-import com.composetest.common.extension.fromStringToDateTime
+import com.composetest.common.api.extension.fromStringToDateTime
 import com.composetest.feature.exchange.domain.model.ExchangeModel
 import com.composetest.feature.exchange.network.response.ExchangeResponse
 import javax.inject.Inject

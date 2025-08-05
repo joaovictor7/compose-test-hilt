@@ -1,6 +1,6 @@
 package com.composetest.feature.login.domain.usecase
 
-import com.composetest.common.extension.orFalse
+import com.composetest.common.api.extension.orFalse
 import com.composetest.core.domain.repository.ConfigurationRepository
 import javax.inject.Inject
 

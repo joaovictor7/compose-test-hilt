@@ -1,9 +1,9 @@
 package com.composetest.core.data.impl.di
 
-import com.composetest.common.provider.DateTimeProvider
-import com.composetest.common.provider.DispatcherProvider
-import com.composetest.common.provider.LocaleProvider
-import com.composetest.common.provider.NetworkProvider
+import com.composetest.common.api.provider.DateTimeProvider
+import com.composetest.common.api.provider.DispatcherProvider
+import com.composetest.common.api.provider.LocaleProvider
+import com.composetest.common.api.provider.NetworkProvider
 import com.composetest.core.data.api.provider.AssetsProvider
 import com.composetest.core.data.api.provider.EnvironmentInstanceProvider
 import com.composetest.core.data.impl.provider.AssetsProviderImpl

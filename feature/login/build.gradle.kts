@@ -9,7 +9,7 @@ android {
 }
 
 dependencies {
-    implementation(projects.common)
+    implementation(projects.common.api)
     implementation(projects.core.router)
     implementation(projects.core.network)
     implementation(projects.core.database.androidapi)

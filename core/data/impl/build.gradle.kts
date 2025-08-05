@@ -9,10 +9,10 @@ android {
 
 dependencies {
     implementation(projects.core.domain)
-    implementation(projects.common)
+    implementation(projects.common.api)
     implementation(projects.core.data.api)
     implementation(projects.core.data.androidapi)
-    implementation(projects.common)
+    implementation(projects.common.api)
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.config)
     implementation(libs.androidx.work.manager)

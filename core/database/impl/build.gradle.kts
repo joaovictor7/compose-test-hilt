@@ -16,7 +16,7 @@ dependencies {
     implementation(projects.core.security.api)
     implementation(projects.core.domain)
     implementation(projects.core.data.androidapi)
-    implementation(projects.common)
+    implementation(projects.common.api)
     implementation(libs.room.runtime)
     implementation(libs.room.kotlin)
     implementation(libs.sql.cipher)

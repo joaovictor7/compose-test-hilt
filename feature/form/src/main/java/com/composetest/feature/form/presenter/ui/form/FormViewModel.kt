@@ -1,10 +1,10 @@
 package com.composetest.feature.form.presenter.ui.form
 
 import androidx.core.text.isDigitsOnly
-import androidx.core.util.PatternsCompat
 import androidx.lifecycle.viewModelScope
-import com.composetest.common.extension.fromDateToString
-import com.composetest.common.extension.orFalse
+import com.composetest.common.androidapi.extension.isEmailAddress
+import com.composetest.common.api.extension.fromDateToString
+import com.composetest.common.api.extension.orFalse
 import com.composetest.core.analytic.api.event.CommonAnalyticEvent
 import com.composetest.core.analytic.api.sender.AnalyticSender
 import com.composetest.core.ui.base.BaseViewModel
@@ -23,8 +23,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import java.time.LocalDate
 import javax.inject.Inject
-
-private val String.isEmailAddress get() = PatternsCompat.EMAIL_ADDRESS.matcher(this).matches()
 
 @HiltViewModel
 internal class FormViewModel @Inject constructor(

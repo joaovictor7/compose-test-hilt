@@ -4,7 +4,7 @@ import android.app.Application
 import android.util.Log
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
-import com.composetest.common.application.ApplicationRunner
+import com.composetest.common.api.application.ApplicationRunner
 import com.composetest.core.analytic.api.event.ErrorAnalyticEvent
 import com.composetest.core.analytic.api.sender.AnalyticSender
 import dagger.hilt.android.HiltAndroidApp

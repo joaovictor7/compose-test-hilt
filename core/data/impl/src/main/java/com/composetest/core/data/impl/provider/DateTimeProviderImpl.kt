@@ -1,6 +1,6 @@
 package com.composetest.core.data.impl.provider
 
-import com.composetest.common.provider.DateTimeProvider
+import com.composetest.common.api.provider.DateTimeProvider
 import java.time.LocalDate
 import java.time.LocalDateTime
 import javax.inject.Inject

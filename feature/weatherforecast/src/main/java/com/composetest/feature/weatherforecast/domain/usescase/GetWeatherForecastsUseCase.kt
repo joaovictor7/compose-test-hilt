@@ -1,6 +1,6 @@
 package com.composetest.feature.weatherforecast.domain.usescase
 
-import com.composetest.common.provider.LocaleProvider
+import com.composetest.common.api.provider.LocaleProvider
 import com.composetest.feature.weatherforecast.data.repository.WeatherForecastRepository
 import com.composetest.feature.weatherforecast.domain.model.WeatherForecastLocationModel
 import javax.inject.Inject

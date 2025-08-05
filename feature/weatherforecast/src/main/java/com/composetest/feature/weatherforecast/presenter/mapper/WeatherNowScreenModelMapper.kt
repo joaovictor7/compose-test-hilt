@@ -1,6 +1,6 @@
 package com.composetest.feature.weatherforecast.presenter.mapper
 
-import com.composetest.common.provider.LocaleProvider
+import com.composetest.common.api.provider.LocaleProvider
 import com.composetest.core.domain.provider.BuildConfigProvider
 import com.composetest.feature.weatherforecast.domain.model.WeatherNowModel
 import com.composetest.feature.weatherforecast.presenter.model.WeatherNowScreenModel

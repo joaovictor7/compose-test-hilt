@@ -1,6 +1,6 @@
 package com.composetest.core.network.util
 
-import com.composetest.common.provider.DispatcherProvider
+import com.composetest.common.api.provider.DispatcherProvider
 import com.composetest.core.domain.enums.Flavor
 import com.composetest.core.domain.provider.BuildConfigProvider
 import kotlinx.coroutines.delay

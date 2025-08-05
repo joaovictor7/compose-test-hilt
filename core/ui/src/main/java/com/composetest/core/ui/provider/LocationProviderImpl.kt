@@ -3,8 +3,8 @@ package com.composetest.core.ui.provider
 import android.annotation.SuppressLint
 import android.content.Context
 import android.location.LocationManager
-import com.composetest.common.error.LocationError
-import com.composetest.common.extension.orFalse
+import com.composetest.common.api.error.LocationError
+import com.composetest.common.api.extension.orFalse
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import dagger.hilt.android.qualifiers.ApplicationContext

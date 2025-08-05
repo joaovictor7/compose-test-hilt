@@ -1,13 +1,13 @@
 package com.composetest.core.database.impl.di
 
-import com.composetest.common.application.ApplicationRunner
-import com.composetest.common.application.di.qualifier.ApplicationRunnerQualifier
-import com.composetest.common.application.enums.ApplicationModule
+import com.composetest.common.api.application.ApplicationRunner
+import com.composetest.common.api.di.qualifier.ApplicationRunnerQualifier
 import com.composetest.core.database.impl.application.ApplicationRunnerImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import com.composetest.common.api.enums.ApplicationModule
 
 @Module
 @InstallIn(SingletonComponent::class)

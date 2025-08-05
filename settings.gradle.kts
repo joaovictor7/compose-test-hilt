@@ -23,7 +23,8 @@ dependencyResolutionManagement {
 rootProject.name = "ComposeTest"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 include(":app")
-include(":common")
+include(":common:androidapi")
+include(":common:api")
 include(":core:test:androidapi")
 include(":core:test:api")
 include(":core:router")
