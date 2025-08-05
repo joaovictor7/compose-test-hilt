@@ -9,8 +9,8 @@ import com.composetest.core.ui.util.AsyncTaskUtils
 import com.composetest.feature.form.R
 import com.composetest.feature.form.analytic.screen.FormScreenAnalytic
 import com.composetest.feature.form.domain.emuns.FormClassification
-import com.composetest.feature.form.presenter.ui.form.FormIntent
-import com.composetest.feature.form.presenter.ui.form.FormViewModel
+import com.composetest.feature.form.presenter.ui.form.viewmodel.FormIntent
+import com.composetest.feature.form.presenter.ui.form.viewmodel.FormViewModel
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk

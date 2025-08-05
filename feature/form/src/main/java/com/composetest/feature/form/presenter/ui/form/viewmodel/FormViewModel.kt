@@ -1,4 +1,4 @@
-package com.composetest.feature.form.presenter.ui.form
+package com.composetest.feature.form.presenter.ui.form.viewmodel
 
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.viewModelScope

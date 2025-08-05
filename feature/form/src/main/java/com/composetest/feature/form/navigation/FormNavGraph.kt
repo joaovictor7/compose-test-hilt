@@ -9,7 +9,7 @@ import androidx.navigation.compose.composable
 import com.composetest.core.router.interfaces.NavGraph
 import com.composetest.core.router.destination.form.FormDestination
 import com.composetest.feature.form.presenter.ui.form.FormScreen
-import com.composetest.feature.form.presenter.ui.form.FormViewModel
+import com.composetest.feature.form.presenter.ui.form.viewmodel.FormViewModel
 
 object FormNavGraph : NavGraph {
     override fun NavGraphBuilder.register(

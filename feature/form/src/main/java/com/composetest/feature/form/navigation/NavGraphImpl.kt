@@ -9,7 +9,7 @@ import androidx.navigation.compose.composable
 import com.composetest.core.router.destination.form.FormDestination
 import com.composetest.core.router.interfaces.NavGraph
 import com.composetest.feature.form.presenter.ui.form.FormScreen
-import com.composetest.feature.form.presenter.ui.form.FormViewModel
+import com.composetest.feature.form.presenter.ui.form.viewmodel.FormViewModel
 import javax.inject.Inject
 
 internal class NavGraphImpl @Inject constructor() : NavGraph {

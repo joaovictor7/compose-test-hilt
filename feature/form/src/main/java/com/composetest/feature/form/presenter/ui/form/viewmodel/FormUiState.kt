@@ -1,4 +1,4 @@
-package com.composetest.feature.form.presenter.ui.form
+package com.composetest.feature.form.presenter.ui.form.viewmodel
 
 import androidx.compose.ui.text.input.KeyboardType
 import com.composetest.core.designsystem.component.textfield.enums.TextFieldIcon

@@ -8,7 +8,7 @@ import com.composetest.feature.form.domain.emuns.FormClassification
 import com.composetest.feature.form.presenter.enums.FormFieldType
 import com.composetest.feature.form.presenter.model.FormTextFieldModel
 import com.composetest.feature.form.presenter.ui.form.FormScreen
-import com.composetest.feature.form.presenter.ui.form.FormUiState
+import com.composetest.feature.form.presenter.ui.form.viewmodel.FormUiState
 
 internal class FormScreenTest {
     @Preview
