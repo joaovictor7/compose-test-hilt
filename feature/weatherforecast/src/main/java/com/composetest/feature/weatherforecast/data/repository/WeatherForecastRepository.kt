@@ -1,6 +1,6 @@
 package com.composetest.feature.weatherforecast.data.repository
 
-import com.composetest.core.network.util.apiErrorHandler
+import com.composetest.core.network.util.ApiHandlerUtils
 import com.composetest.feature.weatherforecast.data.datasource.OpenWeatherDataSource
 import com.composetest.feature.weatherforecast.data.mapper.WeatherForecastMapper
 import com.composetest.feature.weatherforecast.domain.model.WeatherForecastLocationModel
@@ -9,6 +9,7 @@ import com.composetest.feature.weatherforecast.domain.model.WeatherNowModel
 import javax.inject.Inject
 
 internal class WeatherForecastRepository @Inject constructor(
+    private val apiHandlerUtils: ApiHandlerUtils,
     private val openWeatherDataSource: OpenWeatherDataSource,
     private val weatherForecastMapper: WeatherForecastMapper,
 ) {
@@ -17,7 +18,7 @@ internal class WeatherForecastRepository @Inject constructor(
         weatherForecastLocation: WeatherForecastLocationModel
     ): WeatherNowModel {
         val request = weatherForecastMapper.mapperToRequest(weatherForecastLocation)
-        val response = apiErrorHandler { openWeatherDataSource.getWeatherNow(request) }
+        val response = apiHandlerUtils.errorHandler { openWeatherDataSource.getWeatherNow(request) }
         return weatherForecastMapper.mapperToModel(response)
     }
 
@@ -25,7 +26,7 @@ internal class WeatherForecastRepository @Inject constructor(
         weatherForecastLocation: WeatherForecastLocationModel
     ): List<WeatherForecastModel> {
         val request = weatherForecastMapper.mapperToRequest(weatherForecastLocation)
-        val response = apiErrorHandler {
+        val response = apiHandlerUtils.errorHandler {
             openWeatherDataSource.getWeatherForecasts(request)
         }
         return weatherForecastMapper.mapperToModels(response)

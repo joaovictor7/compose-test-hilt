@@ -9,9 +9,9 @@ import com.composetest.core.ui.R as UiRes
 fun Throwable.dialogErrorNavigation(): NavigationModel {
     val destination = when (this) {
         is ApiError.Network -> SimpleDialogDestination(
-            iconId = R.drawable.ic_error_big,
-            titleId = R.string.error_alert_dialog_generic_title,
-            textId = R.string.error_alert_dialog_generic_text,
+            iconId = R.drawable.ic_wifi_off,
+            titleId = R.string.error_alert_dialog_network_title,
+            textId = R.string.error_alert_dialog_network_text,
             dismissButtonTextId = UiRes.string.close,
         )
         else -> SimpleDialogDestination(
