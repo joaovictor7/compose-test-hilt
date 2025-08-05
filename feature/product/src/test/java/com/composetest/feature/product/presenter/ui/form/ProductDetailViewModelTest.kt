@@ -1,9 +1,9 @@
 package com.composetest.feature.product.presenter.ui.form
 
-import com.composetest.core.analytic.event.CommonAnalyticEvent
-import com.composetest.core.analytic.sender.AnalyticSender
-import com.composetest.core.test.BaseTest
-import com.composetest.core.test.extension.runFlowTest
+import com.composetest.core.analytic.api.event.CommonAnalyticEvent
+import com.composetest.core.analytic.api.sender.AnalyticSender
+import com.composetest.core.test.android.BaseTest
+import com.composetest.core.test.kotlin.extension.runFlowTest
 import com.composetest.core.ui.util.AsyncTaskUtils
 import com.composetest.feature.product.R
 import com.composetest.feature.product.analytic.screen.ProductDetailScreenAnalytic
@@ -48,10 +48,10 @@ internal class ProductDetailViewModelTest : BaseTest() {
     }
 
     @Test
-    fun `init Should update uiState with product details and send analytics`() =
-        runFlowTest(viewModel.uiState) { onCancelJob, states ->
-            onCancelJob()
-            val state = states.last()
+    fun `init Should update uiState with product details and send analytics`() = runFlowTest(
+        flow = viewModel.uiState,
+        onVerify = {
+            val state = it.last()
             assertEquals(destinationMock.title, state.title)
             assertEquals(destinationMock.thumbnail, state.thumbnail)
             assertEquals(destinationMock.description, state.description)
@@ -64,6 +64,7 @@ internal class ProductDetailViewModelTest : BaseTest() {
                 )
             }
         }
+    )
 
     private fun initViewModel() = ProductDetailViewModel(
         destination = destinationMock,

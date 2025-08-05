@@ -1,11 +1,11 @@
 package com.composetest.feature.product.presenter.ui.list
 
 import RatingStatus
+import com.composetest.core.analytic.api.event.CommonAnalyticEvent
 import com.composetest.core.analytic.api.sender.AnalyticSender
-import com.composetest.core.analytic.event.CommonAnalyticEvent
 import com.composetest.core.router.model.NavigationModel
 import com.composetest.core.test.android.BaseTest
-import com.composetest.core.test.extension.runFlowTest
+import com.composetest.core.test.kotlin.extension.runFlowTest
 import com.composetest.core.ui.util.AsyncTaskUtils
 import com.composetest.feature.product.analytic.screen.ProductListScreenAnalytic
 import com.composetest.feature.product.domain.model.ProductModel
@@ -70,33 +70,43 @@ internal class ProductListViewModelTest : BaseTest() {
 
     @Test
     fun `initial uiState Should load product list and send analytic When initialized`() =
-        runFlowTest(viewModel.uiState) { onCancelJob, states ->
-            onCancelJob()
-            assertEquals(1, states.last().productItemList.size)
-            coVerifySequence {
-                analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(ProductListScreenAnalytic))
-                getAllProductsUseCase()
+        runFlowTest(
+            flow = viewModel.uiState,
+            onVerify = {
+                assertEquals(1, it.last().productItemList.size)
+                coVerifySequence {
+                    analyticSender.sendEvent(
+                        CommonAnalyticEvent.OpenScreen(
+                            ProductListScreenAnalytic
+                        )
+                    )
+                    getAllProductsUseCase()
+                }
             }
-        }
+        )
 
     @Test
-    fun `resyncProducts Should update product list When invoked`() =
-        runFlowTest(viewModel.uiState) { onCancelJob, states ->
+    fun `resyncProducts Should update product list When invoked`() = runFlowTest(
+        flow = viewModel.uiState,
+        onSetup = {
             coEvery { resyncProductsUseCase() } returns listOf(fakeProduct)
-
+        },
+        onTrigger = {
             viewModel.executeIntent(ProductListIntent.ResyncProducts)
-            onCancelJob()
-
-            assertTrue(states.last().productItemList.isNotEmpty())
+        },
+        onVerify = {
+            assertTrue(it.last().productItemList.isNotEmpty())
             coVerifyOrder {
                 resyncProductsUseCase()
                 productItemListMapper.mapperTo(any())
             }
         }
+    )
 
     @Test
-    fun `navigateToDetail Should emit navigation event When product is found`() =
-        runFlowTest(viewModel.uiEvent) { onCancelJob, events ->
+    fun `navigateToDetail Should emit navigation event When product is found`() = runFlowTest(
+        flow = viewModel.uiEvent,
+        onSetup = {
             coEvery { productDestinationlMapper.mapperToDestination(any()) } returns ProductDetailDestination(
                 title = "Test Product",
                 description = "Test Description",
@@ -106,8 +116,11 @@ internal class ProductListViewModelTest : BaseTest() {
                 stock = 100,
                 thumbnail = "Test Thumbnail",
             )
+        },
+        onTrigger = {
             viewModel.executeIntent(ProductListIntent.NavigateToDetail(1))
-            onCancelJob()
+        },
+        onVerify = {
             assertEquals(
                 ProductListUiEvent.NavigateTo(
                     NavigationModel(
@@ -122,13 +135,15 @@ internal class ProductListViewModelTest : BaseTest() {
                         )
                     )
                 ),
-                events.first()
+                it.first()
             )
         }
+    )
 
     @Test
-    fun `productFilter Should update UI with filtered list When filter is applied`() =
-        runFlowTest(viewModel.uiState) { onCancelJob, states ->
+    fun `productFilter Should update UI with filtered list When filter is applied`() = runFlowTest(
+        flow = viewModel.uiState,
+        onSetup = {
             val filtered = listOf(fakeProduct.copy(title = "Filtered"))
             coEvery { filterProductsUseCase(any(), "filter") } returns filtered
             coEvery { productItemListMapper.mapperTo(filtered) } returns listOf(
@@ -139,12 +154,14 @@ internal class ProductListViewModelTest : BaseTest() {
                     ratingStatus = RatingStatus.LIKE,
                 ),
             )
-
+        },
+        onTrigger = {
             viewModel.executeIntent(ProductListIntent.ProductFilter("filter"))
-            onCancelJob()
-
-            assertEquals("Test Product", states.last().productItemList.first().title)
+        },
+        onVerify = {
+            assertEquals("Test Product", it.last().productItemList.first().title)
         }
+    )
 
     private fun initViewModel(): ProductListViewModel {
         return ProductListViewModel(
