@@ -177,6 +177,7 @@ internal class LoginViewModelTest : BaseTest() {
             newsApiHost = "123",
             openWeatherApiHost = "123",
             openWeatherIconHost = "123",
+            dummyJsonHost = "url"
         )
     }
 }
