@@ -125,14 +125,14 @@ internal class FormViewModelTest : BaseTest() {
 
     @Test
     fun `setClassification Should update classification field`() = runFlowTest(
-            flow = viewModel.uiState,
-            onTrigger = {
-                viewModel.executeIntent(FormIntent.SetClassification(FormClassification.EXCELLENT))
-            },
-            onVerify = {
-                assertEquals(FormClassification.EXCELLENT, it.last().classification)
-            }
-        )
+        flow = viewModel.uiState,
+        onTrigger = {
+            viewModel.executeIntent(FormIntent.SetClassification(FormClassification.EXCELLENT))
+        },
+        onVerify = {
+            assertEquals(FormClassification.EXCELLENT, it.last().classification)
+        }
+    )
 
 //    @Test
 //    fun `submitForm Should emit success dialog`() = runFlowTest(

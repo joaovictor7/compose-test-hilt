@@ -9,8 +9,8 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
 import com.composetest.core.designsystem.component.scaffold.ScreenScaffold
 import com.composetest.core.designsystem.component.switches.LabelSwitch
-import com.composetest.core.designsystem.component.topbar.LeftTopBar
 import com.composetest.core.designsystem.component.switches.enums.SwitchType
+import com.composetest.core.designsystem.component.topbar.LeftTopBar
 import com.composetest.core.designsystem.extension.screenMargin
 import com.composetest.core.designsystem.extension.toSpanStyle
 import com.composetest.core.designsystem.theme.ComposeTestTheme

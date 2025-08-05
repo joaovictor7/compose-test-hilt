@@ -33,10 +33,10 @@ import androidx.navigation.compose.rememberNavController
 import com.composetest.core.designsystem.component.pulltorefresh.PullToRefresh
 import com.composetest.core.designsystem.component.shimmer.Shimmer
 import com.composetest.core.designsystem.component.textfield.TextField
+import com.composetest.core.designsystem.component.textfield.enums.TextFieldIcon
 import com.composetest.core.designsystem.component.topbar.LeftTopBar
 import com.composetest.core.designsystem.dimension.Spacing
 import com.composetest.core.designsystem.dimension.screenMargin
-import com.composetest.core.designsystem.component.textfield.enums.TextFieldIcon
 import com.composetest.core.designsystem.extension.horizontalScreenMargin
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.designsystem.util.getSharedShimmerOffset

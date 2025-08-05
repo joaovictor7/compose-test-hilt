@@ -8,9 +8,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.composetest.core.designsystem.R
 import com.composetest.core.designsystem.component.topbar.enums.TopBarAction
-import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.designsystem.component.topbar.util.getTopBarActions
 import com.composetest.core.designsystem.component.topbar.util.getTopBarTitle
+import com.composetest.core.designsystem.theme.ComposeTestTheme
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)

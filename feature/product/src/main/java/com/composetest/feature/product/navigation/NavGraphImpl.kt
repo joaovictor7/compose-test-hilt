@@ -6,9 +6,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
+import com.composetest.core.router.destination.product.ProductListDestination
 import com.composetest.core.router.interfaces.NavGraph
 import com.composetest.feature.product.navigation.destination.ProductDetailDestination
-import com.composetest.core.router.destination.product.ProductListDestination
 import com.composetest.feature.product.presenter.ui.form.ProductDetailScreen
 import com.composetest.feature.product.presenter.ui.form.viewmodel.ProductDetailViewModel
 import com.composetest.feature.product.presenter.ui.list.ProductListScreen

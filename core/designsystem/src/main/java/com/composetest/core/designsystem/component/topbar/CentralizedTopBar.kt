@@ -11,9 +11,9 @@ import com.composetest.core.designsystem.R
 import com.composetest.core.designsystem.component.topbar.enums.TopBarAction
 import com.composetest.core.designsystem.component.topbar.enums.TopBarColor
 import com.composetest.core.designsystem.component.topbar.enums.TopBarColor.Companion.getColor
-import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.designsystem.component.topbar.util.getTopBarActions
 import com.composetest.core.designsystem.component.topbar.util.getTopBarTitle
+import com.composetest.core.designsystem.theme.ComposeTestTheme
 
 @Composable
 fun CentralizedTopBar(

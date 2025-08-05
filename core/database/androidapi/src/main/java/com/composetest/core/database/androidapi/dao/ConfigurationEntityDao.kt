@@ -4,8 +4,8 @@ import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Update
 import androidx.room.Upsert
-import com.composetest.core.database.androidapi.data.entity.configuration.ConfigurationEntity
 import com.composetest.core.database.androidapi.dao.partialupdate.SecurityConfigurationUpdate
+import com.composetest.core.database.androidapi.data.entity.configuration.ConfigurationEntity
 
 @Dao
 interface ConfigurationEntityDao {
