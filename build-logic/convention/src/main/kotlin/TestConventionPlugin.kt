@@ -16,6 +16,7 @@ internal class TestConventionPlugin : Plugin<Project> {
             }
             tasks.withType<Test> {
                 ignoreFailures = true
+                failOnNoDiscoveredTests.set(false)
                 useJUnitPlatform()
                 jvmArgs("-Xshare:off", "-XX:+EnableDynamicAgentLoading")
             }

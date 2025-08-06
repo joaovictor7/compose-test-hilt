@@ -5,8 +5,10 @@ import com.android.build.api.dsl.CommonExtension
 import extension.getLibrary
 import extension.implementation
 import org.gradle.api.Project
+import org.gradle.api.tasks.testing.Test
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
+import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension
 
 internal fun Project.configureAndroid(
@@ -25,6 +27,9 @@ internal fun Project.configureAndroid(
     }
     extensions.configure<KotlinAndroidProjectExtension> {
         jvmToolchain(AppConfig.JDK_TARGET)
+    }
+    tasks.withType<Test> {
+        failOnNoDiscoveredTests.set(false)
     }
     packaging {
         resources {
