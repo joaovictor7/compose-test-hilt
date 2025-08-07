@@ -39,7 +39,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.composetest.common.api.extension.fromUnixToDateTime
 import com.composetest.core.designsystem.component.button.Button
 import com.composetest.core.designsystem.component.datepicker.DatePicker
+import com.composetest.core.designsystem.component.scaffold.ScreenScaffold
 import com.composetest.core.designsystem.component.textfield.TextField
+import com.composetest.core.designsystem.component.topbar.TopBarWithoutTitle
 import com.composetest.core.designsystem.dimension.Spacing
 import com.composetest.core.designsystem.extension.horizontalScreenMargin
 import com.composetest.core.designsystem.extension.opacity
@@ -55,6 +57,7 @@ import com.composetest.feature.form.presenter.ui.form.viewmodel.FormIntent
 import com.composetest.feature.form.presenter.ui.form.viewmodel.FormIntentReceiver
 import com.composetest.feature.form.presenter.ui.form.viewmodel.FormUiState
 import java.time.DayOfWeek
+import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneOffset
 import com.composetest.core.designsystem.R as DesignSystemRes
@@ -66,44 +69,45 @@ internal fun FormScreen(
 ) {
     val showDatePicker = remember { mutableStateOf(false) }
     FormDatePicker(onExecuteIntent = onExecuteIntent, showDatePicker = showDatePicker)
-    Column(
-        modifier = Modifier
-            .windowInsetsPadding(WindowInsets.statusBars)
-            .horizontalScreenMargin()
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .imePadding(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-    ) {
-        Column(verticalArrangement = Arrangement.spacedBy(Spacing.tiny)) {
-            uiState.fields.forEachIndexed { index, field ->
-                TextField(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .formTextFieldFocusManager(onExecuteIntent, index),
-                    labelText = stringResource(field.type.labelId),
-                    textValue = field.value,
-                    leadingIcon = field.leadingIcon,
-                    supportingText = stringResource(field.errorMsgId),
-                    trailingIcon = field.trailingIcon,
-                    keyboardInput = field.keyboardType,
-                    readOnly = field.isDeliveryDate,
-                    onClick = if (field.isDeliveryDate) {
-                        { showDatePicker.value = true }
-                    } else null
-                ) { onExecuteIntent(FormIntent.SetFormTextField(index, it)) }
+    ScreenScaffold(topBar = { TopBarWithoutTitle() }) {
+        Column(
+            modifier = Modifier
+                .horizontalScreenMargin()
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .imePadding(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+        ) {
+            Column(verticalArrangement = Arrangement.spacedBy(Spacing.tiny)) {
+                uiState.fields.forEachIndexed { index, field ->
+                    TextField(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .formTextFieldFocusManager(onExecuteIntent, index),
+                        labelText = stringResource(field.type.labelId),
+                        textValue = field.value,
+                        leadingIcon = field.leadingIcon,
+                        supportingText = stringResource(field.errorMsgId),
+                        trailingIcon = field.trailingIcon,
+                        keyboardInput = field.keyboardType,
+                        readOnly = field.isDeliveryDate,
+                        onClick = if (field.isDeliveryDate) {
+                            { showDatePicker.value = true }
+                        } else null
+                    ) { onExecuteIntent(FormIntent.SetFormTextField(index, it)) }
+                }
+                ClassificationField(
+                    onExecuteIntent = onExecuteIntent,
+                    classification = uiState.classification
+                )
+                Spacer(Modifier.height(Spacing.xxLarge))
+                Button(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = stringResource(R.string.form_submit_button),
+                    enabled = uiState.buttonEnabled,
+                ) { onExecuteIntent(FormIntent.SubmitForm) }
             }
-            ClassificationField(
-                onExecuteIntent = onExecuteIntent,
-                classification = uiState.classification
-            )
-            Spacer(Modifier.height(Spacing.xxLarge))
-            Button(
-                modifier = Modifier.fillMaxWidth(),
-                text = stringResource(R.string.form_submit_button),
-                enabled = uiState.buttonEnabled,
-            ) { onExecuteIntent(FormIntent.SubmitForm) }
         }
     }
 }
@@ -195,9 +199,10 @@ private fun Modifier.formTextFieldFocusManager(
 
 private object PastOrPresentSelectableDates : SelectableDates {
     override fun isSelectableDate(utcTimeMillis: Long): Boolean {
-        val date = utcTimeMillis.fromUnixToDateTime
-        val todayAtStartOfDayUTC = LocalDate.now(ZoneOffset.UTC).atStartOfDay()
-        val isPastOrPresent = !date.isAfter(todayAtStartOfDayUTC)
+        val date = Instant.ofEpochMilli(utcTimeMillis)
+            .atZone(ZoneOffset.UTC)
+            .toLocalDate()
+        val isPastOrPresent = !date.isAfter(LocalDate.now(ZoneOffset.UTC))
         val isNotMonday = date.dayOfWeek != DayOfWeek.MONDAY
         return isPastOrPresent && isNotMonday
     }
