@@ -87,14 +87,14 @@ internal fun RootScreen(
     ) {
         ScreenScaffold(
             topBar = getTopBar(drawerState),
-            bottomBar = getBottomBar(uiState, onExecuteIntent)
+            bottomBar = getBottomBar(uiState, onExecuteIntent),
         ) {
             Navigation(
                 drawerState = drawerState,
                 uiState = uiState,
                 uiEvent = uiEvent,
                 navController = navController,
-                onExecuteIntent = onExecuteIntent
+                onExecuteIntent = onExecuteIntent,
             )
         }
     }

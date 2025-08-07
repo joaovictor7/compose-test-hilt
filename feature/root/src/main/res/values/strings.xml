@@ -7,4 +7,6 @@
     <string name="feature_weather_forecast_title">Weather Forecast</string>
     <string name="feature_exchange_title">Exchange</string>
     <string name="feature_news_title">News</string>
+    <string name="feature_form_title">Form</string>
+    <string name="feature_product_title">Product</string>
 </resources>

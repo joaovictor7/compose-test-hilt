@@ -1,5 +1,6 @@
 package com.composetest.core.designsystem.component.textfield
 
+import androidx.compose.foundation.interaction.InteractionSource
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.text.KeyboardOptions
@@ -47,11 +48,7 @@ fun TextField(
     val interactionSource = remember { MutableInteractionSource() }
     val passwordHidden = rememberSaveable { mutableStateOf(true) }
     val password = keyboardInput == KeyboardType.Password
-    LaunchedEffect(interactionSource) {
-        interactionSource.interactions.collect {
-            if (it is PressInteraction.Release) onClick?.invoke()
-        }
-    }
+    HandleComponentActions(onClick = onClick, interactionSource = interactionSource)
     TextField(
         value = textValue,
         enabled = enabled,
@@ -80,6 +77,7 @@ fun TextField(
         ),
         visualTransformation = if (password && passwordHidden.value)
             PasswordVisualTransformation() else VisualTransformation.None,
+        interactionSource = interactionSource,
         keyboardOptions = KeyboardOptions(
             keyboardType = keyboardInput,
             imeAction = imeAction
@@ -91,6 +89,17 @@ fun TextField(
             disabledContainerColor = MaterialTheme.colorScheme.onSurface.opacity(0.04f)
         )
     )
+}
+
+@Composable
+private fun HandleComponentActions(onClick: (() -> Unit)?, interactionSource: InteractionSource) {
+    onClick?.let {
+        LaunchedEffect(interactionSource) {
+            interactionSource.interactions.collect {
+                if (it is PressInteraction.Release) it()
+            }
+        }
+    }
 }
 
 @Composable

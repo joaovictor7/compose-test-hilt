@@ -4,8 +4,10 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.composetest.core.router.destination.configuration.ConfigurationDestination
 import com.composetest.core.router.destination.exchange.ExchangeListDestination
+import com.composetest.core.router.destination.form.FormDestination
 import com.composetest.core.router.destination.home.HomeDestination
 import com.composetest.core.router.destination.news.NewsListDestination
+import com.composetest.core.router.destination.product.ProductListDestination
 import com.composetest.core.router.destination.profile.ProfileDestination
 import com.composetest.core.router.destination.weatherforecast.WeatherForecastDestination
 import com.composetest.core.router.interfaces.Destination
@@ -60,6 +62,20 @@ internal enum class NavigationFeature(
         NavigationLocal.MODAL_DRAWER,
         DesignSystemRes.drawable.ic_exchange_medium,
         R.string.feature_exchange_title,
+    ),
+    PRODUCT(
+        Feature.PRODUCT,
+        ProductListDestination,
+        NavigationLocal.MODAL_DRAWER,
+        DesignSystemRes.drawable.ic_exchange_medium,
+        R.string.feature_product_title,
+    ),
+    FORM(
+        Feature.FORM,
+        FormDestination,
+        NavigationLocal.MODAL_DRAWER,
+        DesignSystemRes.drawable.ic_exchange_medium,
+        R.string.feature_form_title,
     );
 
     val noText get() = textId == null

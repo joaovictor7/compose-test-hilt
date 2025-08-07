@@ -9,4 +9,6 @@ internal enum class Feature(val remoteConfig: RemoteConfig) {
     PROFILE(FeatureRemoteConfig.PROFILE),
     CONFIGURATION(FeatureRemoteConfig.CONFIGURATION),
     EXCHANGE(FeatureRemoteConfig.EXCHANGE),
+    PRODUCT(FeatureRemoteConfig.PRODUCT),
+    FORM(FeatureRemoteConfig.FORM),
 }

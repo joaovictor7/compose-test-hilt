@@ -7,4 +7,6 @@
     <string name="feature_weather_forecast_title">Previsão do Tempo</string>
     <string name="feature_exchange_title">Criptos</string>
     <string name="feature_news_title">Notícias</string>
+    <string name="feature_form_title">Formulário</string>
+    <string name="feature_product_title">Produtos</string>
 </resources>

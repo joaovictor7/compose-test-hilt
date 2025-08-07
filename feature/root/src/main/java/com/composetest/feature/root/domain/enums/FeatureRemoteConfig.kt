@@ -9,4 +9,6 @@ internal enum class FeatureRemoteConfig(override val key: String) : RemoteConfig
     PROFILE("feature_profile"),
     CONFIGURATION("feature_configuration"),
     EXCHANGE("feature_exchange"),
+    PRODUCT("feature_product"),
+    FORM("feature_form"),
 }
