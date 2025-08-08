@@ -17,6 +17,7 @@ private const val DATABASE_VERSION = 1
 
 @Database(
     version = DATABASE_VERSION,
+    autoMigrations = [],
     entities = [
         SessionEntity::class,
         UserEntity::class,
