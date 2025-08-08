@@ -67,14 +67,14 @@ internal enum class NavigationFeature(
         Feature.PRODUCT,
         ProductListDestination,
         NavigationLocal.MODAL_DRAWER,
-        DesignSystemRes.drawable.ic_exchange_medium,
+        DesignSystemRes.drawable.ic_grocery_store,
         R.string.feature_product_title,
     ),
     FORM(
         Feature.FORM,
         FormDestination,
         NavigationLocal.MODAL_DRAWER,
-        DesignSystemRes.drawable.ic_exchange_medium,
+        DesignSystemRes.drawable.ic_doc,
         R.string.feature_form_title,
     );
 
