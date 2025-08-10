@@ -1,4 +1,4 @@
-package com.composetest.feature.login.presenter.di
+package com.composetest.feature.login.presentation.di
 
 import androidx.lifecycle.SavedStateHandle
 import com.composetest.core.analytic.api.sender.AnalyticSender
