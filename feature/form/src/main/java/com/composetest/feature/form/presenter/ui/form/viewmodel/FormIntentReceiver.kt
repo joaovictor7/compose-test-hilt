@@ -11,5 +11,4 @@ internal interface FormIntentReceiver : IntentReceiver<FormIntentReceiver> {
     fun selectedDate(selectedDate: LocalDate)
     fun setClassification(classification: FormClassification)
     fun submitForm()
-    fun dismissSimpleDialog()
 }

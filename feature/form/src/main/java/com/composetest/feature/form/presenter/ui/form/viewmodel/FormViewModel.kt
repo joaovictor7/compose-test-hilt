@@ -7,9 +7,12 @@ import com.composetest.common.api.extension.fromDateToString
 import com.composetest.common.api.extension.orFalse
 import com.composetest.core.analytic.api.event.CommonAnalyticEvent
 import com.composetest.core.analytic.api.sender.AnalyticSender
+import com.composetest.core.router.destination.dialog.SimpleDialogDestination
+import com.composetest.core.router.model.NavigationModel
 import com.composetest.core.ui.base.BaseViewModel
 import com.composetest.core.ui.di.qualifier.AsyncTaskUtilsQualifier
 import com.composetest.core.ui.extension.uiStateValue
+import com.composetest.core.ui.interfaces.UiEvent
 import com.composetest.core.ui.interfaces.UiState
 import com.composetest.core.ui.util.AsyncTaskUtils
 import com.composetest.feature.form.R
@@ -18,22 +21,29 @@ import com.composetest.feature.form.domain.emuns.FormClassification
 import com.composetest.feature.form.presenter.enums.FormFieldType
 import com.composetest.feature.form.presenter.model.FormTextFieldModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import java.time.LocalDate
 import javax.inject.Inject
+import com.composetest.core.designsystem.R as DesignSystemRes
+import com.composetest.core.ui.R as UiRes
 
 @HiltViewModel
 internal class FormViewModel @Inject constructor(
     private val analyticSender: AnalyticSender,
     @param:AsyncTaskUtilsQualifier(FormScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
-) : BaseViewModel(), UiState<FormUiState>, FormIntentReceiver {
+) : BaseViewModel(), UiState<FormUiState>, UiEvent<FormUiEvent>, FormIntentReceiver {
 
     override val intentReceiver = this
 
     private val _uiState = MutableStateFlow(FormUiState())
     override val uiState = _uiState.asStateFlow()
+
+    private val _uiEvent = MutableSharedFlow<FormUiEvent>()
+    override val uiEvent = _uiEvent.asSharedFlow()
 
     init {
         sendOpenScreenAnalytic()
@@ -52,9 +62,7 @@ internal class FormViewModel @Inject constructor(
                 index, newValue, formTextField
             )
             FormFieldType.PHONE_NUMBER -> setPhoneNumberFormTextField(
-                index,
-                newValue,
-                formTextField
+                index, newValue, formTextField
             )
             FormFieldType.EMAIL -> setEmailFormTextField(index, newValue, formTextField)
             else -> updateFormTextFields(index, formTextField.copy(value = newValue))
@@ -90,11 +98,13 @@ internal class FormViewModel @Inject constructor(
     }
 
     override fun submitForm() {
-//        _uiState.update { it.copy(simpleDialogParam = FormSimpleDialogParam.Success) }
-    }
-
-    override fun dismissSimpleDialog() {
-//        _uiState.update { it.copy(simpleDialogParam = null) }
+        val destination = SimpleDialogDestination(
+            iconId = DesignSystemRes.drawable.ic_check,
+            titleId = R.string.form_submit_success_title,
+            textId = R.string.form_submit_success_subtitle,
+            dismissButtonTextId = UiRes.string.close,
+        )
+        _uiEvent.emitEvent(FormUiEvent.NavigateTo(NavigationModel(destination)))
     }
 
     private fun setEmailFormTextField(

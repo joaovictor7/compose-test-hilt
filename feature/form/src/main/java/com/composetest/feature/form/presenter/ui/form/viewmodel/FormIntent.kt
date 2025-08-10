@@ -47,10 +47,4 @@ internal sealed interface FormIntent : Intent<FormIntentReceiver> {
             intentReceiver.submitForm()
         }
     }
-
-    data object DismissSimpleDialog : FormIntent {
-        override fun execute(intentReceiver: FormIntentReceiver) {
-            intentReceiver.dismissSimpleDialog()
-        }
-    }
 }

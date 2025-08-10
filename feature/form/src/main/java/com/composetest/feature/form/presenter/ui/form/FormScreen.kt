@@ -9,14 +9,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.DropdownMenu
@@ -36,7 +33,8 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
-import com.composetest.common.api.extension.fromUnixToDateTime
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.composetest.core.designsystem.component.button.Button
 import com.composetest.core.designsystem.component.datepicker.DatePicker
 import com.composetest.core.designsystem.component.scaffold.ScreenScaffold
@@ -47,7 +45,9 @@ import com.composetest.core.designsystem.extension.horizontalScreenMargin
 import com.composetest.core.designsystem.extension.opacity
 import com.composetest.core.designsystem.extension.stringResource
 import com.composetest.core.designsystem.theme.ComposeTestTheme
+import com.composetest.core.router.extension.navigateTo
 import com.composetest.core.ui.interfaces.Intent
+import com.composetest.core.ui.util.UiEventsObserver
 import com.composetest.feature.form.R
 import com.composetest.feature.form.domain.emuns.FormClassification
 import com.composetest.feature.form.presenter.enums.FormFieldType
@@ -55,7 +55,10 @@ import com.composetest.feature.form.presenter.extension.textId
 import com.composetest.feature.form.presenter.model.FormTextFieldModel
 import com.composetest.feature.form.presenter.ui.form.viewmodel.FormIntent
 import com.composetest.feature.form.presenter.ui.form.viewmodel.FormIntentReceiver
+import com.composetest.feature.form.presenter.ui.form.viewmodel.FormUiEvent
 import com.composetest.feature.form.presenter.ui.form.viewmodel.FormUiState
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 import java.time.DayOfWeek
 import java.time.Instant
 import java.time.LocalDate
@@ -65,9 +68,12 @@ import com.composetest.core.designsystem.R as DesignSystemRes
 @Composable
 internal fun FormScreen(
     uiState: FormUiState,
+    uiEvent: Flow<FormUiEvent> = emptyFlow(),
     onExecuteIntent: (Intent<FormIntentReceiver>) -> Unit = {},
+    navController: NavHostController = rememberNavController()
 ) {
     val showDatePicker = remember { mutableStateOf(false) }
+    UiEventsHandler(uiEvent = uiEvent, navController = navController)
     FormDatePicker(onExecuteIntent = onExecuteIntent, showDatePicker = showDatePicker)
     ScreenScaffold(topBar = { TopBarWithoutTitle() }) {
         Column(
@@ -178,6 +184,20 @@ private fun ClassificationField(
                         onExecuteIntent(FormIntent.SetClassification(it))
                     }
                 )
+            }
+        }
+    }
+}
+
+@Composable
+private fun UiEventsHandler(
+    uiEvent: Flow<FormUiEvent>,
+    navController: NavHostController,
+) {
+    UiEventsObserver(uiEvent) {
+        when (it) {
+            is FormUiEvent.NavigateTo -> {
+                navController.navigateTo(it.navigationModel)
             }
         }
     }

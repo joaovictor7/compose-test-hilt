@@ -19,7 +19,9 @@ internal class NavGraphImpl @Inject constructor() : NavGraph {
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
             FormScreen(
                 uiState = uiState,
+                uiEvent = viewModel.uiEvent,
                 onExecuteIntent = viewModel::executeIntent,
+                navController = navController,
             )
         }
     }
