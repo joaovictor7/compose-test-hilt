@@ -29,7 +29,7 @@ splashScreen = "1.0.1"
 coil = "3.3.0"
 permissions = "0.37.3"
 location = "21.3.0"
-screenshot = "0.0.1-alpha10"
+screenshot = "0.0.1-alpha11"
 kover = "0.9.1"
 jacoco = "0.8.13"
 
