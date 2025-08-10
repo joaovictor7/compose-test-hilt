@@ -6,6 +6,6 @@ internal enum class FlavorDimension(val flavors: List<Flavor>) {
     override fun toString() = name.lowercase()
 
     companion object {
-        val allDimensions get() = values().map { it.toString() }
+        val allDimensions get() = entries.map { it.toString() }
     }
 }

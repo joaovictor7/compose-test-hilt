@@ -11,7 +11,7 @@ import enums.BuildType as BuildTypeEnum
 
 internal fun Project.setBuildTypes() = extensions.configure<BaseExtension> {
     buildTypes {
-        BuildTypeEnum.values().forEach { buildType ->
+        BuildTypeEnum.entries.forEach { buildType ->
             if (buildType.isInternal) {
                 getByName(buildType.toString()) {
                     configBuildType(this@setBuildTypes, this@configure, buildType)

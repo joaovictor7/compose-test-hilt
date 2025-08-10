@@ -22,7 +22,6 @@ internal class ApplicationConventionPlugin : Plugin<Project> {
                 apply("com.google.firebase.crashlytics")
             }
             extensions.configure<ApplicationExtension> {
-                configureAndroid(this)
                 defaultConfig {
                     versionCode = AppConfig.CODE_VERSION
                     versionName = AppConfig.NAME_VERSION
@@ -44,6 +43,7 @@ internal class ApplicationConventionPlugin : Plugin<Project> {
                         excludes += "/META-INF/{AL2.0,LGPL2.1}"
                     }
                 }
+                configureAndroid(this)
             }
             dependencies {
                 implementation(getLibrary("firebase.analytics"))
@@ -55,7 +55,7 @@ internal class ApplicationConventionPlugin : Plugin<Project> {
     private fun Project.createSignings(
         apkSigningConfig: NamedDomainObjectContainer<out ApkSigningConfig>
     ) = with(apkSigningConfig) {
-        Signing.values().forEach { signing ->
+        Signing.entries.forEach { signing ->
             val propertiesFile = PropertiesFile.SigningKey(rootDir, signing)
             val properties = LoadPropertiesFile(this@createSignings, propertiesFile)
             create(signing.toString()) {

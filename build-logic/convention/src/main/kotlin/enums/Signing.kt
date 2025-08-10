@@ -8,7 +8,7 @@ internal enum class Signing(
     override fun toString() = name.lowercase()
 
     companion object {
-        fun getAssociatedBuildType(buildType: BuildType) = values().find {
+        fun getAssociatedBuildType(buildType: BuildType) = entries.find {
             buildType in it.buildTypes
         }
     }

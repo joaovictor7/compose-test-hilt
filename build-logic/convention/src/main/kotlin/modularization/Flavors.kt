@@ -12,7 +12,7 @@ import org.gradle.kotlin.dsl.configure
 internal fun Project.setFlavors() = extensions.configure<BaseExtension> {
     flavorDimensions(*FlavorDimension.allDimensions.toTypedArray())
     productFlavors {
-        FlavorDimension.values().forEach { dimension ->
+        FlavorDimension.entries.forEach { dimension ->
             dimension.flavors.forEach { flavor ->
                 create(flavor.toString()) {
                     this.dimension = dimension.toString()
