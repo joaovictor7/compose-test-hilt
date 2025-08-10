@@ -1,4 +1,4 @@
-package com.composetest.feature.login.presenter.ui.login.viewmodel
+package com.composetest.feature.login.presentation.ui.login.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import com.composetest.core.analytic.api.event.CommonAnalyticEvent
@@ -32,8 +32,8 @@ import com.composetest.feature.login.domain.enums.LoginRemoteConfig
 import com.composetest.feature.login.domain.usecase.AuthenticationByBiometricUseCase
 import com.composetest.feature.login.domain.usecase.AuthenticationUseCase
 import com.composetest.feature.login.domain.usecase.BiometricIsEnableUseCase
-import com.composetest.feature.login.presenter.extension.autoShowBiometricPrompt
-import com.composetest.feature.login.presenter.model.BiometricModel
+import com.composetest.feature.login.presentation.extension.autoShowBiometricPrompt
+import com.composetest.feature.login.presentation.model.BiometricModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

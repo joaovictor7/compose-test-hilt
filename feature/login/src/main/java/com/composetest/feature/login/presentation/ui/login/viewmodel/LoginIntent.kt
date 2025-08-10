@@ -1,4 +1,4 @@
-package com.composetest.feature.login.presenter.ui.login.viewmodel
+package com.composetest.feature.login.presentation.ui.login.viewmodel
 
 import com.composetest.core.domain.enums.Theme
 import com.composetest.core.security.androidapi.enums.BiometricError

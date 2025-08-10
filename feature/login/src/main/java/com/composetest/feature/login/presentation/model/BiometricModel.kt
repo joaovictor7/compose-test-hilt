@@ -1,4 +1,4 @@
-package com.composetest.feature.login.presenter.model
+package com.composetest.feature.login.presentation.model
 
 import androidx.annotation.StringRes
 

@@ -1,4 +1,4 @@
-package com.composetest.feature.login.presenter.extension
+package com.composetest.feature.login.presentation.extension
 
 import com.composetest.core.router.destination.login.LoginDestination
 

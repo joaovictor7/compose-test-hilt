@@ -1,9 +1,9 @@
-package com.composetest.feature.login.presenter.ui.login.viewmodel
+package com.composetest.feature.login.presentation.ui.login.viewmodel
 
 import com.composetest.core.designsystem.component.textfield.enums.TextFieldIcon
 import com.composetest.feature.login.R
-import com.composetest.feature.login.presenter.model.BiometricModel
-import com.composetest.feature.login.presenter.model.LoginFormModel
+import com.composetest.feature.login.presentation.model.BiometricModel
+import com.composetest.feature.login.presentation.model.LoginFormModel
 
 internal data class LoginUiState(
     val loginFormModel: LoginFormModel = LoginFormModel(),

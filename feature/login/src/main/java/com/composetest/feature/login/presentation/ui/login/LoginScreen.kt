@@ -1,4 +1,4 @@
-package com.composetest.feature.login.presenter.ui.login
+package com.composetest.feature.login.presentation.ui.login
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -40,11 +40,11 @@ import com.composetest.core.security.androidapi.util.showBiometricPrompt
 import com.composetest.core.ui.interfaces.Intent
 import com.composetest.core.ui.util.UiEventsObserver
 import com.composetest.feature.login.R
-import com.composetest.feature.login.presenter.model.BiometricModel
-import com.composetest.feature.login.presenter.ui.login.viewmodel.LoginIntent
-import com.composetest.feature.login.presenter.ui.login.viewmodel.LoginIntentReceiver
-import com.composetest.feature.login.presenter.ui.login.viewmodel.LoginUiEvent
-import com.composetest.feature.login.presenter.ui.login.viewmodel.LoginUiState
+import com.composetest.feature.login.presentation.model.BiometricModel
+import com.composetest.feature.login.presentation.ui.login.viewmodel.LoginIntent
+import com.composetest.feature.login.presentation.ui.login.viewmodel.LoginIntentReceiver
+import com.composetest.feature.login.presentation.ui.login.viewmodel.LoginUiEvent
+import com.composetest.feature.login.presentation.ui.login.viewmodel.LoginUiState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import com.composetest.core.designsystem.R as DesignSystemResources
