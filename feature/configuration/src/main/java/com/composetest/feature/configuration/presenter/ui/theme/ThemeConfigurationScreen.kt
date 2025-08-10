@@ -27,6 +27,7 @@ import com.composetest.core.designsystem.component.switches.ThumbSwitch
 import com.composetest.core.designsystem.component.switches.enums.SwitchType
 import com.composetest.core.designsystem.component.topbar.LeftTopBar
 import com.composetest.core.designsystem.dimension.Spacing
+import com.composetest.core.designsystem.extension.applyIf
 import com.composetest.core.designsystem.extension.opacity
 import com.composetest.core.designsystem.extension.screenMargin
 import com.composetest.core.designsystem.theme.ComposeTestTheme
@@ -85,7 +86,9 @@ private fun Theme(
                 modifier = Modifier
                     .padding(horizontal = Spacing.tiny)
                     .clip(MaterialTheme.shapes.medium)
-                    .setSelectedBackgroundColor(selectedTheme = theme == uiState.selectedTheme)
+                    .applyIf(theme == uiState.selectedTheme) {
+                        background(color = MaterialTheme.colorScheme.primary.opacity(0.12f))
+                    }
                     .size(100.dp)
                     .clickable {
                         onExecuteIntent(ThemeConfigurationIntent.ChangeThemeConfiguration(theme))
@@ -121,13 +124,6 @@ private fun DynamicColor(
             type = SwitchType.CHECK,
             onCheckedChange = { onExecuteIntent(ThemeConfigurationIntent.ChangeDynamicColor(it)) }
         )
-    }
-}
-
-@Composable
-private fun Modifier.setSelectedBackgroundColor(selectedTheme: Boolean) = also {
-    if (selectedTheme) {
-        return background(color = MaterialTheme.colorScheme.primary.opacity(0.12f))
     }
 }
 

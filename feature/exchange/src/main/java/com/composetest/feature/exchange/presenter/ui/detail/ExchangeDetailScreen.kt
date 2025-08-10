@@ -29,6 +29,7 @@ import com.composetest.core.designsystem.component.scaffold.ScreenScaffold
 import com.composetest.core.designsystem.component.topbar.LeftTopBar
 import com.composetest.core.designsystem.dimension.Spacing
 import com.composetest.core.designsystem.extension.horizontalScreenMargin
+import com.composetest.core.designsystem.extension.applyIf
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.feature.exchange.R
 import com.composetest.feature.exchange.presenter.model.ExchangeDetailRowScreenModel
@@ -82,18 +83,20 @@ private fun GridDataRow(
     Column {
         LabelTextDataRow(labelId = labelId)
         Spacer(Modifier.height(Spacing.small))
-        gridValues.forEach {
+        gridValues.forEach { values ->
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(IntrinsicSize.Max),
             ) {
-                it.forEach {
+                values.forEach {
                     Row(
                         modifier = Modifier
                             .weight(1f)
                             .fillMaxHeight()
-                            .setBackgroundGrid(it.second)
+                            .applyIf(it.second) {
+                                background(color = MaterialTheme.colorScheme.surfaceContainerHigh)
+                            }
                             .border(width = 1.dp, color = MaterialTheme.colorScheme.outline),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.Center
@@ -118,11 +121,6 @@ private fun LabelTextDataRow(@StringRes labelId: Int) {
         text = stringResource(labelId).plus(":"),
         style = MaterialTheme.typography.bodyMedium,
     )
-}
-
-@Composable
-private fun Modifier.setBackgroundGrid(isSet: Boolean) = also {
-    if (isSet) return background(color = MaterialTheme.colorScheme.surfaceContainerHigh)
 }
 
 @Composable

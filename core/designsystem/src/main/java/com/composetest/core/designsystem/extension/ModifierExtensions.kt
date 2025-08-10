@@ -17,14 +17,12 @@ import com.composetest.core.designsystem.dimension.screenMargin
 fun Modifier.visibility(isVisible: Boolean) = alpha(if (isVisible) 1f else 0f)
 
 @Composable
-fun Modifier.verticalTopBackgroundBrush() = also {
-    if (!LocalTheme.current.isDarkMode) {
-        val colorStops = arrayOf(
-            0.1f to MaterialTheme.colorScheme.primary,
-            0.99f to MaterialTheme.colorScheme.surface,
-        )
-        return background(brush = Brush.verticalGradient(colorStops = colorStops))
-    }
+fun Modifier.verticalTopBackgroundBrush() = applyIf(!LocalTheme.current.isDarkMode) {
+    val colorStops = arrayOf(
+        0.1f to MaterialTheme.colorScheme.surface,
+        0.99f to MaterialTheme.colorScheme.primary,
+    )
+    background(brush = Brush.verticalGradient(colorStops = colorStops))
 }
 
 @Composable
@@ -40,3 +38,11 @@ fun Modifier.screenMarginWithoutBar() = windowInsetsPadding(WindowInsets.systemB
 
 @Composable
 fun Modifier.screenMargin() = topScreenMargin().horizontalScreenMargin()
+
+@Composable
+fun Modifier.applyIf(
+    isAble: Boolean,
+    onModifier: @Composable Modifier.() -> Modifier
+) = also {
+    if (isAble) return onModifier()
+}

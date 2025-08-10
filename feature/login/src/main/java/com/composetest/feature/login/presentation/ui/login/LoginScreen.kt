@@ -31,6 +31,7 @@ import com.composetest.core.designsystem.component.textfield.OutlinedTextField
 import com.composetest.core.designsystem.composition.LocalTheme
 import com.composetest.core.designsystem.dimension.Spacing
 import com.composetest.core.designsystem.dimension.screenMargin
+import com.composetest.core.designsystem.extension.applyIf
 import com.composetest.core.designsystem.extension.opacity
 import com.composetest.core.designsystem.extension.screenMarginWithoutBar
 import com.composetest.core.designsystem.extension.verticalTopBackgroundBrush
@@ -157,8 +158,8 @@ private fun BiometricButton(
     VibratingIcon(
         modifier = Modifier
             .clip(MaterialTheme.shapes.large)
-            .setBiometricButtonClick(biometric.isAvailable) {
-                onExecuteIntent(LoginIntent.ShowBiometricPrompt)
+            .applyIf(biometric.isAvailable) {
+                clickable { onExecuteIntent(LoginIntent.ShowBiometricPrompt) }
             }
             .padding(Spacing.tiny),
         iconId = DesignSystemResources.drawable.ic_fingerprint_extra_large,
@@ -195,13 +196,6 @@ private fun BoxScope.VersionName(uiState: LoginUiState) {
             text = uiState.versionName,
             style = MaterialTheme.typography.bodyMedium
         )
-    }
-}
-
-@Composable
-private fun Modifier.setBiometricButtonClick(isAvailable: Boolean, onClick: () -> Unit) = also {
-    if (isAvailable) {
-        return clickable(onClick = onClick)
     }
 }
 
