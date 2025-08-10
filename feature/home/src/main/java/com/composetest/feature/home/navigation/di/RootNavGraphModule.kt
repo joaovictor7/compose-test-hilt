@@ -8,12 +8,14 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import dagger.multibindings.IntoSet
 
 @Module
 @InstallIn(SingletonComponent::class)
 internal abstract class RootNavGraphModule {
 
     @Binds
-    @NavGraphQualifier(ModuleNavGraph.HOME_ROOT_FEATURE)
+    @IntoSet
+    @NavGraphQualifier(ModuleNavGraph.ROOT_FEATURE)
     abstract fun navGraph(rootNavGraphImpl: RootNavGraphImpl): NavGraph
 }

@@ -1,7 +1,5 @@
 package com.composetest.feature.root.navigation.di
 
-import com.composetest.core.router.di.quailifier.NavGraphQualifier
-import com.composetest.core.router.enums.ModuleNavGraph
 import com.composetest.core.router.interfaces.NavGraph
 import com.composetest.feature.root.navigation.NavGraphImpl
 import dagger.Binds
