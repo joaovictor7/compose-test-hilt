@@ -1,6 +1,7 @@
-package com.composetest.feature.product.presenter.ui.form
+package com.composetest.feature.form.presenter.ui.form.viewmodel
 
 import android.text.TextUtils
+import androidx.core.text.isDigitsOnly
 import com.composetest.core.analytic.api.event.CommonAnalyticEvent
 import com.composetest.core.analytic.api.sender.AnalyticSender
 import com.composetest.core.test.android.BaseTest
@@ -9,8 +10,6 @@ import com.composetest.core.ui.util.AsyncTaskUtils
 import com.composetest.feature.form.R
 import com.composetest.feature.form.analytic.screen.FormScreenAnalytic
 import com.composetest.feature.form.domain.emuns.FormClassification
-import com.composetest.feature.form.presenter.ui.form.viewmodel.FormIntent
-import com.composetest.feature.form.presenter.ui.form.viewmodel.FormViewModel
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
@@ -57,11 +56,12 @@ internal class FormViewModelTest : BaseTest() {
         }
     )
 
+    @Test
     fun `setFormTextField Should update phone field When input is numeric`() = runFlowTest(
         flow = viewModel.uiState,
         onSetup = {
             mockkStatic(TextUtils::class)
-            every { TextUtils.isDigitsOnly(any()) } returns true
+            every { any<String>().isDigitsOnly() } returns true
         },
         onTrigger = {
             viewModel.executeIntent(FormIntent.SetFormTextField(2, "999999999"))

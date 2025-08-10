@@ -1,4 +1,4 @@
-package com.composetest.feature.product.presenter.ui.form
+package com.composetest.feature.product.presenter.ui.form.viewmodel
 
 import com.composetest.core.analytic.api.event.CommonAnalyticEvent
 import com.composetest.core.analytic.api.sender.AnalyticSender
@@ -10,7 +10,6 @@ import com.composetest.feature.product.analytic.screen.ProductDetailScreenAnalyt
 import com.composetest.feature.product.navigation.destination.ProductDetailDestination
 import com.composetest.feature.product.presenter.mapper.ProductDetailMapper
 import com.composetest.feature.product.presenter.model.ProductDetailRow
-import com.composetest.feature.product.presenter.ui.form.viewmodel.ProductDetailViewModel
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk

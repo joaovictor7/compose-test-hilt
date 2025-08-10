@@ -1,4 +1,4 @@
-package com.composetest.feature.product.presenter.ui.list
+package com.composetest.feature.product.presenter.ui.list.viewmodel
 
 import RatingStatus
 import com.composetest.core.analytic.api.event.CommonAnalyticEvent
@@ -16,9 +16,6 @@ import com.composetest.feature.product.navigation.destination.ProductDetailDesti
 import com.composetest.feature.product.presenter.mapper.ProductDestinationlMapper
 import com.composetest.feature.product.presenter.mapper.ProductItemListMapper
 import com.composetest.feature.product.presenter.model.ProductItemListModel
-import com.composetest.feature.product.presenter.ui.list.viewmodel.ProductListIntent
-import com.composetest.feature.product.presenter.ui.list.viewmodel.ProductListUiEvent
-import com.composetest.feature.product.presenter.ui.list.viewmodel.ProductListViewModel
 import io.mockk.coEvery
 import io.mockk.coVerifyOrder
 import io.mockk.coVerifySequence
@@ -36,7 +33,7 @@ internal class ProductListViewModelTest : BaseTest() {
     private val resyncProductsUseCase: ResyncProductsUseCase = mockk()
     private val filterProductsUseCase: FilterProductsUseCase = mockk()
     private val productItemListMapper: ProductItemListMapper = mockk()
-    private val productDestinationlMapper: ProductDestinationlMapper = mockk()
+    private val productDestinationMapper: ProductDestinationlMapper = mockk()
     private lateinit var viewModel: ProductListViewModel
 
     override lateinit var testDispatcher: TestDispatcher
@@ -107,7 +104,7 @@ internal class ProductListViewModelTest : BaseTest() {
     fun `navigateToDetail Should emit navigation event When product is found`() = runFlowTest(
         flow = viewModel.uiEvent,
         onSetup = {
-            coEvery { productDestinationlMapper.mapperToDestination(any()) } returns ProductDetailDestination(
+            coEvery { productDestinationMapper.mapperToDestination(any()) } returns ProductDetailDestination(
                 title = "Test Product",
                 description = "Test Description",
                 price = 10.0,
@@ -170,7 +167,7 @@ internal class ProductListViewModelTest : BaseTest() {
             resyncProductsUseCase = resyncProductsUseCase,
             filterProductsUseCase = filterProductsUseCase,
             productItemListMapper = productItemListMapper,
-            productDestinationlMapper = productDestinationlMapper,
+            productDestinationlMapper = productDestinationMapper,
             asyncTaskUtils = asyncTaskUtils
         )
     }
