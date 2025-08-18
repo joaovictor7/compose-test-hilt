@@ -14,9 +14,12 @@ internal sealed interface LoginIntent : Intent<LoginIntentReceiver> {
         }
     }
 
-    data class SetStatusBarsTheme(private val currentAppTheme: Theme) : LoginIntent {
+    data class SetStatusBarsTheme(
+        private val currentAppTheme: Theme,
+        private val systemIsDarkMode: Boolean,
+    ) : LoginIntent {
         override fun execute(intentReceiver: LoginIntentReceiver) {
-            intentReceiver.setStatusBarsTheme(currentAppTheme)
+            intentReceiver.setStatusBarsTheme(currentAppTheme, systemIsDarkMode)
         }
     }
 

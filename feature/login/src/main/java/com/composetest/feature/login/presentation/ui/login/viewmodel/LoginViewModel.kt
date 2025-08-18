@@ -123,8 +123,8 @@ internal class LoginViewModel @Inject constructor(
         }
     }
 
-    override fun setStatusBarsTheme(currentAppTheme: Theme) {
-        if (currentAppTheme != Theme.DARK) {
+    override fun setStatusBarsTheme(currentAppTheme: Theme, systemIsDarkMode: Boolean) {
+        if (currentAppTheme == Theme.AUTO && systemIsDarkMode) {
             setSystemBarsStyleUseCase(Theme.DARK)
         }
     }

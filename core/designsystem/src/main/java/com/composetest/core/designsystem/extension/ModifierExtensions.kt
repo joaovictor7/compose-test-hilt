@@ -10,14 +10,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Brush
-import com.composetest.core.designsystem.composition.LocalTheme
+import com.composetest.core.designsystem.composition.LocalAppTheme
 import com.composetest.core.designsystem.dimension.screenMargin
 
 @Composable
 fun Modifier.visibility(isVisible: Boolean) = alpha(if (isVisible) 1f else 0f)
 
 @Composable
-fun Modifier.verticalTopBackgroundBrush() = applyIf(!LocalTheme.current.isDarkMode) {
+fun Modifier.verticalTopBackgroundBrush() = applyIf(!LocalAppTheme.current.isDarkMode) {
     val colorStops = arrayOf(
         0.1f to MaterialTheme.colorScheme.surface,
         0.99f to MaterialTheme.colorScheme.primary,

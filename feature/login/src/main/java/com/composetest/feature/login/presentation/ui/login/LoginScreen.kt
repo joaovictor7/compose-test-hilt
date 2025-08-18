@@ -1,6 +1,7 @@
 package com.composetest.feature.login.presentation.ui.login
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -28,7 +29,7 @@ import androidx.navigation.compose.rememberNavController
 import com.composetest.core.designsystem.component.button.Button
 import com.composetest.core.designsystem.component.icon.VibratingIcon
 import com.composetest.core.designsystem.component.textfield.OutlinedTextField
-import com.composetest.core.designsystem.composition.LocalTheme
+import com.composetest.core.designsystem.composition.LocalAppTheme
 import com.composetest.core.designsystem.dimension.Spacing
 import com.composetest.core.designsystem.dimension.screenMargin
 import com.composetest.core.designsystem.extension.applyIf
@@ -224,9 +225,10 @@ private fun UiEventHandler(
 
 @Composable
 private fun LifecycleEventHandler(onExecuteIntent: (Intent<LoginIntentReceiver>) -> Unit) {
-    val currentAppTheme = LocalTheme.current
+    val currentAppTheme = LocalAppTheme.current
+    val isDarkMode = isSystemInDarkTheme()
     LaunchedEffect(Unit) {
-        onExecuteIntent(LoginIntent.SetStatusBarsTheme(currentAppTheme))
+        onExecuteIntent(LoginIntent.SetStatusBarsTheme(currentAppTheme, isDarkMode))
     }
 }
 
