@@ -5,8 +5,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.android.tools.screenshot.PreviewTest
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.feature.login.R
-import com.composetest.feature.login.presenter.model.BiometricModel
-import com.composetest.feature.login.presenter.ui.login.viewmodel.LoginUiState
+import com.composetest.feature.login.presentation.model.BiometricModel
+import com.composetest.feature.login.presentation.ui.login.LoginScreen
+import com.composetest.feature.login.presentation.ui.login.viewmodel.LoginUiState
 
 @PreviewTest
 @Preview(showBackground = true)

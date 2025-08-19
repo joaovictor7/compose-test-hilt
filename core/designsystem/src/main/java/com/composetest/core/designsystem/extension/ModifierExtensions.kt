@@ -19,8 +19,8 @@ fun Modifier.visibility(isVisible: Boolean) = alpha(if (isVisible) 1f else 0f)
 @Composable
 fun Modifier.verticalTopBackgroundBrush() = applyIf(!LocalAppTheme.current.isDarkMode) {
     val colorStops = arrayOf(
-        0.1f to MaterialTheme.colorScheme.surface,
-        0.99f to MaterialTheme.colorScheme.primary,
+        0.1f to MaterialTheme.colorScheme.primary,
+        0.99f to MaterialTheme.colorScheme.surface,
     )
     background(brush = Brush.verticalGradient(colorStops = colorStops))
 }

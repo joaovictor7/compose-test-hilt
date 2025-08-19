@@ -25,7 +25,11 @@ import com.composetest.feature.login.analytic.screen.LoginScreenAnalytic
 import com.composetest.feature.login.domain.usecase.AuthenticationByBiometricUseCase
 import com.composetest.feature.login.domain.usecase.AuthenticationUseCase
 import com.composetest.feature.login.domain.usecase.BiometricIsEnableUseCase
-import com.composetest.feature.login.presenter.model.LoginFormModel
+import com.composetest.feature.login.presentation.model.LoginFormModel
+import com.composetest.feature.login.presentation.ui.login.viewmodel.LoginIntent
+import com.composetest.feature.login.presentation.ui.login.viewmodel.LoginUiEvent
+import com.composetest.feature.login.presentation.ui.login.viewmodel.LoginUiState
+import com.composetest.feature.login.presentation.ui.login.viewmodel.LoginViewModel
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.coVerifyOrder
