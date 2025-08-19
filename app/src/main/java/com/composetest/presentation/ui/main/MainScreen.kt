@@ -26,7 +26,7 @@ internal fun MainScreen(
 ) {
     ComposeTestTheme(
         dynamicColor = uiState.appTheme.dynamicColor,
-        theme = uiState.appTheme.theme
+        theme = uiState.appTheme.theme,
     ) {
         Navigation(
             uiState = uiState,
