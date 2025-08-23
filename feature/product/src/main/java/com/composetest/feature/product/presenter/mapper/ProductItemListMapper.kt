@@ -1,6 +1,6 @@
 package com.composetest.feature.product.presenter.mapper
 
-import RatingStatus
+import com.composetest.core.designsystem.component.rating.enums.RatingStatus
 import com.composetest.feature.product.domain.model.ProductModel
 import com.composetest.feature.product.presenter.model.ProductItemListModel
 import javax.inject.Inject

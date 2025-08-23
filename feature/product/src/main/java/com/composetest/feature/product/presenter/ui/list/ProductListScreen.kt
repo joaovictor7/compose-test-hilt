@@ -1,6 +1,6 @@
 package com.composetest.feature.product.presenter.ui.list
 
-import RatingStatus
+import com.composetest.core.designsystem.component.rating.enums.RatingStatus
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues

@@ -1,3 +1,5 @@
+package com.composetest.core.designsystem.component.rating.enums
+
 import androidx.annotation.DrawableRes
 import androidx.compose.ui.graphics.Color
 import com.composetest.core.designsystem.R

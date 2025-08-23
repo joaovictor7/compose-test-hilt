@@ -1,6 +1,6 @@
 package com.composetest.feature.product.presenter.model
 
-import RatingStatus
+import com.composetest.core.designsystem.component.rating.enums.RatingStatus
 
 internal data class ProductItemListModel(
     val id: Int,

@@ -23,6 +23,7 @@ import com.composetest.feature.account.presentation.enums.AccountDataRow
 import com.composetest.feature.account.presentation.model.AccountScreenModel
 import com.composetest.feature.profile.R
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -87,6 +88,7 @@ internal class AccountViewModel @Inject constructor(
             onError = ::handleUpdateAccountError,
         ) {
             updateUserUseCase(userModel)
+            delay(500)
             _uiState.update { it.setLoadingState(LoadingButtonState.SUCCESS) }
         }
     }

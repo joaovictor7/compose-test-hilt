@@ -1,6 +1,6 @@
 package com.composetest.feature.product.presenter.ui.list.viewmodel
 
-import RatingStatus
+import com.composetest.core.designsystem.component.rating.enums.RatingStatus
 import com.composetest.core.analytic.api.event.CommonAnalyticEvent
 import com.composetest.core.analytic.api.sender.AnalyticSender
 import com.composetest.core.router.model.NavigationModel

@@ -1,6 +1,6 @@
 package com.composetest.core.designsystem.component.rating
 
-import RatingStatus
+import com.composetest.core.designsystem.component.rating.enums.RatingStatus
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -28,7 +28,7 @@ import com.composetest.core.designsystem.extension.toDp
 fun Rating(
     modifier: Modifier,
     ratingStatus: RatingStatus,
-    rating: String
+    rating: String,
 ) {
     var dividerHeight by remember { mutableStateOf(IntSize.Zero) }
     Row(
