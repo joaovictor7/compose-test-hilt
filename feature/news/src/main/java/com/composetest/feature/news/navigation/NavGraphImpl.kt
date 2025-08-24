@@ -8,7 +8,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import com.composetest.core.router.destination.news.NewsListDestination
 import com.composetest.core.router.interfaces.NavGraph
-import com.composetest.core.ui.util.transformDeepLinks
+import com.composetest.core.ui.util.provideDeepLinks
 import com.composetest.feature.news.navigation.destination.FullNewsDestination
 import com.composetest.feature.news.presenter.ui.news.full.FullNewsScreen
 import com.composetest.feature.news.presenter.ui.news.full.viewmodel.FullNewsViewModel
@@ -21,7 +21,7 @@ private const val NEWS_URI = "composetest://news"
 internal class NavGraphImpl @Inject constructor() : NavGraph {
     override fun NavGraphBuilder.register(navController: NavHostController) {
         composable<NewsListDestination>(
-            deepLinks = transformDeepLinks(NEWS_URI)
+            deepLinks = provideDeepLinks<NewsListDestination>(NEWS_URI)
         ) {
             val viewModel = hiltViewModel<NewsListViewModel>()
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()

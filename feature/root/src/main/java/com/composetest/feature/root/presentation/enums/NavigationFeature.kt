@@ -59,7 +59,7 @@ internal enum class NavigationFeature(
     ),
     EXCHANGE(
         Feature.EXCHANGE,
-        ExchangeListDestination,
+        ExchangeListDestination(),
         NavigationLocal.MODAL_DRAWER,
         DesignSystemRes.drawable.ic_exchange_medium,
         R.string.feature_exchange_title,

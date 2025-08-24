@@ -8,29 +8,22 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import com.composetest.core.router.destination.exchange.ExchangeListDestination
 import com.composetest.core.router.interfaces.NavGraph
-import com.composetest.core.ui.util.hiltViewModelWithParam
-import com.composetest.core.ui.util.rememberDeepLinkParam
-import com.composetest.core.ui.util.transformDeepLinks
+import com.composetest.core.ui.util.provideDeepLinks
 import com.composetest.feature.exchange.navigation.destination.ExchangeDetailDestination
-import com.composetest.feature.exchange.presenter.mapper.ExchangeDeepLinkParamMapper
 import com.composetest.feature.exchange.presenter.ui.detail.ExchangeDetailScreen
 import com.composetest.feature.exchange.presenter.ui.detail.viewmodel.ExchangeDetailViewModel
 import com.composetest.feature.exchange.presenter.ui.list.ExchangeListScreen
 import com.composetest.feature.exchange.presenter.ui.list.viewmodel.ExchangeListViewModel
 import javax.inject.Inject
 
-private const val EXCHANGES_URI = "composetest://exchange?filter={filter}"
+private const val EXCHANGES_URI = "composetest://exchange/{filter}"
 
 internal class NavGraphImpl @Inject constructor() : NavGraph {
     override fun NavGraphBuilder.register(navController: NavHostController) {
         composable<ExchangeListDestination>(
-            deepLinks = transformDeepLinks(EXCHANGES_URI)
+            deepLinks = provideDeepLinks<ExchangeListDestination>(EXCHANGES_URI)
         ) {
-            val deepLinkParam = rememberDeepLinkParam(
-                navController,
-                ExchangeDeepLinkParamMapper::mapperToParam
-            )
-            val viewModel: ExchangeListViewModel = hiltViewModelWithParam(deepLinkParam)
+            val viewModel: ExchangeListViewModel = hiltViewModel()
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
             ExchangeListScreen(
                 uiState = uiState,

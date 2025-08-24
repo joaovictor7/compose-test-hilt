@@ -1,19 +1,8 @@
 package com.composetest.core.ui.util
 
-import android.os.Bundle
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.navigation.NavHostController
 import androidx.navigation.navDeepLink
-import com.composetest.core.router.extension.backStackBundle
+import com.composetest.core.router.interfaces.Destination
 
-fun transformDeepLinks(vararg uri: String) = uri.map {
-    navDeepLink {
-        uriPattern = it
-    }
-}
-
-@Composable
-fun <T> rememberDeepLinkParam(navHost: NavHostController, onMapper: (Bundle?) -> T?) = remember {
-    onMapper(navHost.backStackBundle)
+inline fun <reified T : Destination> provideDeepLinks(vararg uri: String) = uri.map {
+    navDeepLink<T>(basePath = it)
 }

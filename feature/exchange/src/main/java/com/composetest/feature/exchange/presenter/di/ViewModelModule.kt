@@ -2,6 +2,7 @@ package com.composetest.feature.exchange.presenter.di
 
 import androidx.lifecycle.SavedStateHandle
 import com.composetest.core.analytic.api.sender.AnalyticSender
+import com.composetest.core.router.destination.exchange.ExchangeListDestination
 import com.composetest.core.router.extension.getDestination
 import com.composetest.core.ui.di.qualifier.AsyncTaskUtilsQualifier
 import com.composetest.core.ui.util.AsyncTaskUtils
@@ -18,7 +19,12 @@ import dagger.hilt.android.components.ViewModelComponent
 internal object ViewModelModule {
 
     @Provides
-    fun provideExchangeDetailDestination(
+    fun exchangeListDestination(
+        savedStateHandle: SavedStateHandle
+    ): ExchangeListDestination = savedStateHandle.getDestination()
+
+    @Provides
+    fun exchangeDetailDestination(
         savedStateHandle: SavedStateHandle
     ): ExchangeDetailDestination = savedStateHandle.getDestination()
 

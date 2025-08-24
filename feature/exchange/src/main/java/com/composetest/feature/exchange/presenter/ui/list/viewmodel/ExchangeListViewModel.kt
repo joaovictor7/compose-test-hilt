@@ -5,34 +5,31 @@ import com.composetest.common.api.extension.orFalse
 import com.composetest.core.analytic.api.event.CommonAnalyticEvent
 import com.composetest.core.analytic.api.sender.AnalyticSender
 import com.composetest.core.designsystem.extension.dialogErrorNavigation
+import com.composetest.core.router.destination.exchange.ExchangeListDestination
 import com.composetest.core.router.model.NavigationModel
 import com.composetest.core.ui.base.BaseViewModel
 import com.composetest.core.ui.di.qualifier.AsyncTaskUtilsQualifier
 import com.composetest.core.ui.interfaces.UiEvent
 import com.composetest.core.ui.interfaces.UiState
-import com.composetest.core.ui.interfaces.ViewModelParamFactory
 import com.composetest.core.ui.util.AsyncTaskUtils
 import com.composetest.feature.exchange.analytic.screen.ExchangeListScreenAnalytic
 import com.composetest.feature.exchange.domain.model.ExchangeModel
 import com.composetest.feature.exchange.domain.usecase.GetAllExchangesUseCase
-import com.composetest.feature.exchange.navigation.param.ExchangeListDeepLinkParam
 import com.composetest.feature.exchange.presenter.mapper.ExchangeMapper
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import javax.inject.Inject
 
-@HiltViewModel(assistedFactory = ExchangeListViewModel.Factory::class)
-internal class ExchangeListViewModel @AssistedInject constructor(
+@HiltViewModel
+internal class ExchangeListViewModel @Inject constructor(
     private val getAllExchangesUseCase: GetAllExchangesUseCase,
     private val exchangeMapper: ExchangeMapper,
     private val analyticSender: AnalyticSender,
-    @Assisted private val deepLinkParam: ExchangeListDeepLinkParam?,
+    private val exchangeListDestination: ExchangeListDestination,
     @param:AsyncTaskUtilsQualifier(ExchangeListScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
 ) : BaseViewModel(),
     UiState<ExchangeListUiState>,
@@ -69,7 +66,7 @@ internal class ExchangeListViewModel @AssistedInject constructor(
         ) {
             exchangeList = getAllExchangesUseCase()
             _uiState.update { it.setExchangeScreenList(exchangeMapper.mapperToModels(exchangeList)) }
-            deepLinkParam?.let { exchangeFilter(it.filter) }
+            exchangeListDestination.filter?.let { exchangeFilter(it) }
         }
     }
 
@@ -95,7 +92,4 @@ internal class ExchangeListViewModel @AssistedInject constructor(
     private fun errorHandler(error: Throwable) {
         _uiEvent.emitEvent(ExchangeListUiEvent.NavigateTo(error.dialogErrorNavigation()))
     }
-
-    @AssistedFactory
-    interface Factory : ViewModelParamFactory<ExchangeListDeepLinkParam, ExchangeListViewModel>
 }

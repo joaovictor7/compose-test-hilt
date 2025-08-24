@@ -4,4 +4,6 @@ import com.composetest.core.router.interfaces.Destination
 import kotlinx.serialization.Serializable
 
 @Serializable
-object ExchangeListDestination : Destination
+data class ExchangeListDestination(
+    val filter: String? = null,
+) : Destination
