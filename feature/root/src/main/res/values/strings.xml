@@ -9,4 +9,5 @@
     <string name="feature_news_title">News</string>
     <string name="feature_form_title">Form</string>
     <string name="feature_product_title">Product</string>
+    <string name="feature_find_route_title">Find Route</string>
 </resources>

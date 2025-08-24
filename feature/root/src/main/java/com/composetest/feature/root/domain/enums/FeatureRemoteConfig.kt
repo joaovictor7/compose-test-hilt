@@ -11,4 +11,5 @@ internal enum class FeatureRemoteConfig(override val key: String) : RemoteConfig
     EXCHANGE("feature_exchange"),
     PRODUCT("feature_product"),
     FORM("feature_form"),
+    FIND_ROUTE("feature_find_route"),
 }

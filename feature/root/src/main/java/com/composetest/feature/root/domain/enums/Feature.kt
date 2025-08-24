@@ -11,4 +11,5 @@ internal enum class Feature(val remoteConfig: RemoteConfig) {
     EXCHANGE(FeatureRemoteConfig.EXCHANGE),
     PRODUCT(FeatureRemoteConfig.PRODUCT),
     FORM(FeatureRemoteConfig.FORM),
+    FIND_ROUTE(FeatureRemoteConfig.FIND_ROUTE),
 }

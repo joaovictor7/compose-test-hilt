@@ -4,6 +4,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.composetest.core.router.destination.configuration.ConfigurationDestination
 import com.composetest.core.router.destination.exchange.ExchangeListDestination
+import com.composetest.core.router.destination.findroute.FindRouteDestination
 import com.composetest.core.router.destination.form.FormDestination
 import com.composetest.core.router.destination.home.HomeDestination
 import com.composetest.core.router.destination.news.NewsListDestination
@@ -76,6 +77,13 @@ internal enum class NavigationFeature(
         NavigationLocal.MODAL_DRAWER,
         DesignSystemRes.drawable.ic_doc,
         R.string.feature_form_title,
+    ),
+    FIND_ROUTE(
+        Feature.FIND_ROUTE,
+        FindRouteDestination,
+        NavigationLocal.MODAL_DRAWER,
+        DesignSystemRes.drawable.ic_doc,
+        R.string.feature_find_route_title,
     );
 
     val noText get() = textId == null

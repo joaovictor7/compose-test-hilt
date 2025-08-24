@@ -9,4 +9,5 @@
     <string name="feature_news_title">Notícias</string>
     <string name="feature_form_title">Formulário</string>
     <string name="feature_product_title">Produtos</string>
+    <string name="feature_find_route_title">Buscar Rota</string>
 </resources>
