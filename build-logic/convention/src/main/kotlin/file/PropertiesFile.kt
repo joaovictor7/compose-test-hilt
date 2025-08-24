@@ -5,7 +5,7 @@ import enums.Signing
 import java.io.File
 
 internal sealed class PropertiesFile {
-    abstract val path: String
+    abstract val path: String?
     abstract val file: String
     val fullPath get() = "$path/$file"
 
@@ -18,8 +18,8 @@ internal sealed class PropertiesFile {
         val keyPath = "$rootDir/signing-keys/$path/key"
     }
 
-    data class App(private val flavor: Flavor) : PropertiesFile() {
+    data class App(private val flavor: Flavor? = null) : PropertiesFile() {
         override val file = "app.properties"
-        override val path = flavor.toString()
+        override val path = flavor?.toString()
     }
 }

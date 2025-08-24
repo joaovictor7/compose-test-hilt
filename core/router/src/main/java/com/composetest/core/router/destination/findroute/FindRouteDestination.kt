@@ -4,4 +4,6 @@ import com.composetest.core.router.interfaces.Destination
 import kotlinx.serialization.Serializable
 
 @Serializable
-object FindRouteDestination : Destination
+data class FindRouteDestination(
+    val filter: String? = null,
+) : Destination

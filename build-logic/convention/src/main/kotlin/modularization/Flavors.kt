@@ -29,7 +29,7 @@ internal fun Project.setFlavors() = extensions.configure<BaseExtension> {
 
 private fun ApplicationProductFlavor.setNonProductionFields(
     dimension: FlavorDimension,
-    flavor: Flavor
+    flavor: Flavor,
 ) {
     if (dimension == FlavorDimension.ENVIRONMENT && flavor != Flavor.PRODUCTION) {
         setApplicationIdSuffix(flavor)

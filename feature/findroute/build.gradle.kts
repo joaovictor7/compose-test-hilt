@@ -17,4 +17,6 @@ dependencies {
     implementation(projects.core.domain)
     implementation(projects.core.ui)
     implementation(projects.core.analytic.api)
+    implementation(libs.android.maps)
+    implementation(libs.compose.maps)
 }

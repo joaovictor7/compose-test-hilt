@@ -29,6 +29,7 @@ splashScreen = "1.0.1"
 coil = "3.3.0"
 permissions = "0.37.3"
 location = "21.3.0"
+maps = "19.2.0"
 screenshot = "0.0.1-alpha11"
 kover = "0.9.1"
 jacoco = "0.8.13"
@@ -49,6 +50,7 @@ android-tools-build-gradle = { group = "com.android.tools.build", name = "gradle
 android-screenshot-validation = { group = "com.android.tools.screenshot", name = "screenshot-validation-api", version.ref = "screenshot" }
 android-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "permissions" }
 android-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "location" }
+android-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "maps" }
 
 # AndroidX
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle" }
@@ -91,6 +93,7 @@ compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 compose-material3 = { group = "androidx.compose.material3", name = "material3" }
 compose-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "composeNavigation" }
+compose-maps = { group = "com.google.maps.android", name = "maps-compose", version = "6.7.2" }
 
 # MockK
 mockk = { group = "io.mockk", name = "mockk", version.ref = "mockK" }

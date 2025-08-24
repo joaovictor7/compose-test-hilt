@@ -80,7 +80,7 @@ internal enum class NavigationFeature(
     ),
     FIND_ROUTE(
         Feature.FIND_ROUTE,
-        FindRouteDestination,
+        FindRouteDestination(),
         NavigationLocal.MODAL_DRAWER,
         DesignSystemRes.drawable.ic_doc,
         R.string.feature_find_route_title,

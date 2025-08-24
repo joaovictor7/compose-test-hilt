@@ -10,6 +10,7 @@ internal class LoadPropertiesFile(
 ) {
 
     constructor(project: Project, flavor: Flavor) : this(project, PropertiesFile.App(flavor))
+    constructor(project: Project) : this(project, PropertiesFile.App())
 
     fun getProperty(key: String) = getProperties(propertiesFile.fullPath)?.getProperty(key)
         ?: getProperties(propertiesFile.file)?.getProperty(key)

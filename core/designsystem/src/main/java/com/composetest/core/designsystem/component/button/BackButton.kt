@@ -16,9 +16,8 @@ import com.composetest.core.designsystem.util.rememberDebouncedClick
 fun BackButton(modifier: Modifier = Modifier) {
     val backDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
     val onBackPress = rememberDebouncedClick { backDispatcher?.onBackPressed() }
-    IconButton(onClick = onBackPress) {
+    IconButton(modifier = modifier, onClick = onBackPress) {
         Icon(
-            modifier = modifier,
             painter = painterResource(R.drawable.ic_back),
             contentDescription = stringResource(R.string.toolbar_back_button_content_description)
         )
