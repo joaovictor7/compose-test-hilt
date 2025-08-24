@@ -23,6 +23,7 @@ private val features = listOf(
     projects.feature.exchange,
     projects.feature.form,
     projects.feature.product,
+    projects.feature.findroute,
 )
 
 dependencies {
