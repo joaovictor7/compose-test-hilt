@@ -23,7 +23,7 @@ gradlePlugin {
         )
         registerPlugin(
             id = "library",
-            className = "LibraryConventionPlugin",
+            className = "AndroidLibraryConventionPlugin",
         )
         registerPlugin(
             id = "compose",
@@ -43,7 +43,7 @@ gradlePlugin {
         )
         registerPlugin(
             id = "kotlin",
-            className = "KotlinConventionPlugin",
+            className = "KotlinLibraryConventionPlugin",
         )
     }
 }

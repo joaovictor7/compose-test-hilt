@@ -112,12 +112,12 @@ coil-network = { group = "io.coil-kt.coil3", name = "coil-network-ktor3", versio
 [plugins]
 # Convention plugins
 composetest-application = { id = "com.composetest.application" }
-composetest-library = { id = "com.composetest.library" }
+composetest-android-library = { id = "com.composetest.library" }
 composetest-compose = { id = "com.composetest.compose" }
 composetest-test = { id = "com.composetest.test" }
 composetest-android-test = { id = "com.composetest.androidTest" }
 composetest-kover = { id = "com.composetest.kover" }
-composetest-kotlin = { id = "com.composetest.kotlin" }
+composetest-kotlin-library = { id = "com.composetest.kotlin" }
 
 # Another plugins
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
