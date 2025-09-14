@@ -1,4 +1,4 @@
-package com.composetest.feature.account.navigation
+package com.composetest.feature.findroute.navigation
 
 import androidx.compose.runtime.getValue
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -6,18 +6,23 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
-import com.composetest.core.router.destination.profile.ProfileDestination
+import com.composetest.core.router.destination.findroute.FindRouteDestination
 import com.composetest.core.router.interfaces.NavGraph
-import com.composetest.feature.account.presentation.ui.account.AccountScreen
-import com.composetest.feature.account.presentation.ui.account.viewmodel.AccountViewModel
+import com.composetest.core.ui.util.provideDeepLinks
+import com.composetest.feature.findroute.presenter.ui.findroute.NewsListScreen
+import com.composetest.feature.findroute.presenter.ui.findroute.viewmodel.FindRouteViewModel
 import javax.inject.Inject
+
+private const val FIND_ROUTE_URI = "composetest://findroute"
 
 internal class NavGraphImpl @Inject constructor() : NavGraph {
     override fun NavGraphBuilder.register(navController: NavHostController) {
-        composable<ProfileDestination> {
-            val viewModel = hiltViewModel<AccountViewModel>()
+        composable<FindRouteDestination>(
+            deepLinks = provideDeepLinks<FindRouteDestination>(FIND_ROUTE_URI)
+        ) {
+            val viewModel = hiltViewModel<FindRouteViewModel>()
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-            AccountScreen(
+            NewsListScreen(
                 uiState = uiState,
                 uiEvent = viewModel.uiEvent,
                 onExecuteIntent = viewModel::executeIntent,
