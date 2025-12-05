@@ -17,17 +17,17 @@ internal class CoroutinesExtension :
 
     private val testDispatcher = UnconfinedTestDispatcher()
 
-    override fun postProcessTestInstance(testInstance: Any?, context: ExtensionContext?) {
+    override fun postProcessTestInstance(testInstance: Any, context: ExtensionContext) {
         (testInstance as? CoroutinesTest)?.let { coroutineTest ->
             coroutineTest.testDispatcher = testDispatcher
         }
     }
 
-    override fun beforeEach(context: ExtensionContext?) {
+    override fun beforeEach(context: ExtensionContext) {
         Dispatchers.setMain(testDispatcher)
     }
 
-    override fun afterEach(context: ExtensionContext?) {
+    override fun afterEach(context: ExtensionContext) {
         Dispatchers.resetMain()
     }
 }
