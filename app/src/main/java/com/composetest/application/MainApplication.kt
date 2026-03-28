@@ -29,10 +29,9 @@ internal class MainApplication :
     @Inject
     lateinit var applicationRunners: Array<ApplicationRunner>
 
-    override val workManagerConfiguration
-        get() = Configuration.Builder()
-            .setWorkerFactory(workerFactory)
-            .build()
+    override fun getWorkManagerConfiguration(): Configuration = Configuration.Builder()
+        .setWorkerFactory(workerFactory)
+        .build()
 
     override fun onCreate() {
         super.onCreate()

@@ -1,4 +1,4 @@
-import com.android.build.gradle.BaseExtension
+import com.android.build.api.dsl.CommonExtension
 import extension.debugImplementation
 import extension.getLibrary
 import extension.implementation
@@ -16,7 +16,7 @@ internal class ComposeConventionPlugin : Plugin<Project> {
                 apply("org.jetbrains.kotlin.plugin.compose")
                 apply("com.android.compose.screenshot")
             }
-            extensions.configure<BaseExtension> {
+            extensions.configure<CommonExtension> {
                 buildFeatures.compose = true
             }
             dependencies {

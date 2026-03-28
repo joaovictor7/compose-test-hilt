@@ -7,6 +7,8 @@ import extension.implementation
 import file.LoadPropertiesFile
 import file.PropertiesFile
 import modularization.configureAndroid
+import modularization.setAppBuildTypes
+import modularization.setAppFlavors
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -23,9 +25,11 @@ internal class ApplicationConventionPlugin : Plugin<Project> {
             }
             extensions.configure<ApplicationExtension> {
                 defaultConfig {
+                    minSdk = AppConfig.MIN_SDK_VERSION
                     versionCode = AppConfig.CODE_VERSION
                     versionName = AppConfig.NAME_VERSION
                     targetSdk = AppConfig.TARGET_SDK_VERSION
+                    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
                     vectorDrawables {
                         useSupportLibrary = true
                     }
@@ -41,8 +45,11 @@ internal class ApplicationConventionPlugin : Plugin<Project> {
                 packaging {
                     resources {
                         excludes += "/META-INF/{AL2.0,LGPL2.1}"
+                        excludes += "/META-INF/LICENSE*"
                     }
                 }
+                setAppBuildTypes(this)
+                setAppFlavors(this)
                 configureAndroid(this)
             }
             dependencies {

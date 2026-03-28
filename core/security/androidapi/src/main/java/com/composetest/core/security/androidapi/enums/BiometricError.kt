@@ -9,7 +9,7 @@ enum class BiometricError(val code: Int) {
     NO_SPACE(BiometricPrompt.ERROR_NO_SPACE),
     CANCELED(BiometricPrompt.ERROR_CANCELED),
     LOCKOUT(BiometricPrompt.ERROR_LOCKOUT),
-    VENDOR(BiometricPrompt.ERROR_LOCKOUT),
+    VENDOR(BiometricPrompt.ERROR_VENDOR),
     LOCKOUT_PERMANENT(BiometricPrompt.ERROR_LOCKOUT_PERMANENT),
     USER_CANCELED(BiometricPrompt.ERROR_USER_CANCELED),
     NO_BIOMETRICS(BiometricPrompt.ERROR_NO_BIOMETRICS),
@@ -17,7 +17,6 @@ enum class BiometricError(val code: Int) {
     NEGATIVE_BUTTON(BiometricPrompt.ERROR_NEGATIVE_BUTTON),
     NO_DEVICE_CREDENTIAL(BiometricPrompt.ERROR_NO_DEVICE_CREDENTIAL),
     SECURITY_UPDATE_REQUIRED(BiometricPrompt.ERROR_SECURITY_UPDATE_REQUIRED),
-    CONTENT_VIEW_MORE_OPTIONS_BUTTON(BiometricPrompt.ERROR_CONTENT_VIEW_MORE_OPTIONS_BUTTON),
     UNKNOWN(-1);
 
     companion object {

@@ -1,55 +1,69 @@
 package modularization
 
 import com.android.build.api.dsl.ApplicationBuildType
-import com.android.build.gradle.BaseExtension
-import com.android.build.gradle.internal.dsl.BuildType
+import com.android.build.api.dsl.ApplicationExtension
+import com.android.build.api.dsl.LibraryExtension
 import enums.Signing
-import extension.isApplication
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.configure
 import enums.BuildType as BuildTypeEnum
 
-internal fun Project.setBuildTypes() = extensions.configure<BaseExtension> {
-    buildTypes {
+internal fun Project.setAppBuildTypes(appExtension: ApplicationExtension) {
+    appExtension.buildTypes {
         BuildTypeEnum.entries.forEach { buildType ->
             if (buildType.isInternal) {
                 getByName(buildType.toString()) {
-                    configBuildType(this@setBuildTypes, this@configure, buildType)
+                    configAppBuildType(this@setAppBuildTypes, appExtension, buildType)
                 }
             } else {
                 create(buildType.toString()) {
-                    configBuildType(this@setBuildTypes, this@configure, buildType)
+                    configAppBuildType(this@setAppBuildTypes, appExtension, buildType)
                 }
             }
         }
     }
 }
 
-private fun BuildType.configBuildType(
+internal fun Project.setLibraryBuildTypes(libraryExtension: LibraryExtension) {
+    libraryExtension.buildTypes {
+        BuildTypeEnum.entries.forEach { buildType ->
+            if (buildType.isInternal) {
+                getByName(buildType.toString()) {
+                    isDefault = buildType.isDefault
+                    if (buildType == BuildTypeEnum.RELEASE) {
+                        isMinifyEnabled = false
+                    }
+                }
+            } else {
+                create(buildType.toString()) {
+                    isDefault = buildType.isDefault
+                    if (buildType == BuildTypeEnum.RELEASE) {
+                        isMinifyEnabled = false
+                    }
+                }
+            }
+        }
+    }
+}
+
+private fun ApplicationBuildType.configAppBuildType(
     project: Project,
-    baseExtension: BaseExtension,
-    buildType: BuildTypeEnum,
-) = with(baseExtension) {
+    appExtension: ApplicationExtension,
+    buildType: BuildTypeEnum
+) {
     isDefault = buildType.isDefault
     isDebuggable = buildType.isDebuggable
-    if (project.isApplication) {
-        setSigning(this, buildType)
-        setBuildConfigFields(project, buildType)
-    }
+    setSigning(appExtension, buildType)
+    setBuildConfigFields(project, buildType)
     if (buildType == BuildTypeEnum.RELEASE) {
         isMinifyEnabled = false
-        proguardFiles(
-            getDefaultProguardFile("proguard-android-optimize.txt"),
-            "proguard-rules.pro"
-        )
     }
 }
 
 private fun ApplicationBuildType.setSigning(
-    baseExtension: BaseExtension,
+    appExtension: ApplicationExtension,
     buildType: BuildTypeEnum
-) = with(baseExtension) {
-    val signing = Signing.getAssociatedBuildType(buildType) ?: return@with
-    val signingConfig = signingConfigs.find { it.name == signing.toString() } ?: return@with
-    this@setSigning.signingConfig = signingConfig
+) {
+    val signing = Signing.getAssociatedBuildType(buildType) ?: return
+    val signingConfig = appExtension.signingConfigs.find { it.name == signing.toString() } ?: return
+    this.signingConfig = signingConfig
 }
