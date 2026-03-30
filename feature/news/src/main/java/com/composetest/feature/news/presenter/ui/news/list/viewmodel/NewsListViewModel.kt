@@ -23,13 +23,11 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.coroutines.CoroutineContext
 
 @HiltViewModel
 internal class NewsListViewModel @Inject constructor(
     private val getTopHeadlinesUseCase: GetTopHeadlinesUseCase,
     private val analyticSender: AnalyticSender,
-    private val coroutineContext: CoroutineContext,
     @param:AsyncTaskUtilsQualifier(NewsListScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
 ) : BaseViewModel(), UiState<NewsListUiState>, UiEvent<NewsListUiEvent>, NewsListIntentReceiver {
 
@@ -47,7 +45,7 @@ internal class NewsListViewModel @Inject constructor(
     }
 
     override fun sendOpenScreenAnalytic() {
-        viewModelScope.launch(coroutineContext) {
+        viewModelScope.launch {
             asyncTaskUtils.runAsyncTask {
                 analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(FullNewsScreenAnalytic))
             }
@@ -75,7 +73,7 @@ internal class NewsListViewModel @Inject constructor(
 
     private fun getArticles() {
         _uiState.update { it.setIsLoading(true) }
-        viewModelScope.launch(coroutineContext) {
+        viewModelScope.launch {
             asyncTaskUtils.runAsyncTask(
                 onCompletion = { _uiState.update { it.setIsLoading(false) } },
                 onError = ::requestErrorHandler

@@ -31,7 +31,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.coroutines.CoroutineContext
 
 @HiltViewModel
 internal class WeatherForecastViewModel @Inject constructor(
@@ -44,7 +43,6 @@ internal class WeatherForecastViewModel @Inject constructor(
     private val locationProvider: LocationProvider,
     private val permissionProvider: PermissionProvider,
     private val analyticSender: AnalyticSender,
-    private val coroutineContext: CoroutineContext,
     @param:AsyncTaskUtilsQualifier(WeatherForecastScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
 ) : BaseViewModel(), UiState<WeatherForecastUiState>, UiEvent<WeatherForecastUiEvent>,
     WeatherForecastIntentReceiver {
@@ -66,7 +64,7 @@ internal class WeatherForecastViewModel @Inject constructor(
     }
 
     override fun sendOpenScreenAnalytic() {
-        viewModelScope.launch(coroutineContext) {
+        viewModelScope.launch {
             asyncTaskUtils.runAsyncTask {
                 analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(WeatherForecastScreenAnalytic))
             }
@@ -79,7 +77,7 @@ internal class WeatherForecastViewModel @Inject constructor(
 
     override fun getLocationAndWeatherForecastsData() {
         _uiState.update { it.setScreenLoading() }
-        viewModelScope.launch(coroutineContext) {
+        viewModelScope.launch {
             asyncTaskUtils.runAsyncTask(
                 onError = ::handleLocationError
             ) {
@@ -107,7 +105,7 @@ internal class WeatherForecastViewModel @Inject constructor(
     }
 
     private fun getWeatherNow(location: Location) {
-        viewModelScope.launch(coroutineContext) {
+        viewModelScope.launch {
             asyncTaskUtils.runAsyncTask(
                 onError = ::handleWeatherForecastNowError
             ) {
@@ -121,7 +119,7 @@ internal class WeatherForecastViewModel @Inject constructor(
     }
 
     private fun getWeatherForecastsNow(location: Location) {
-        viewModelScope.launch(coroutineContext) {
+        viewModelScope.launch {
             asyncTaskUtils.runAsyncTask(
                 onError = ::handleWeatherForecastsError
             ) {
@@ -172,7 +170,7 @@ internal class WeatherForecastViewModel @Inject constructor(
                 WeatherForecastScreenStatus.TRY_AGAIN
             )
         ) return
-        viewModelScope.launch(coroutineContext) {
+        viewModelScope.launch {
             asyncTaskUtils.runAsyncTask {
                 if (locationProvider.isLocationEnabled()) {
                     checkPermissions()

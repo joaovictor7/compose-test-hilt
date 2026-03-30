@@ -25,7 +25,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.coroutines.CoroutineContext
 
 @HiltViewModel
 internal class MainViewModel @Inject constructor(
@@ -34,7 +33,6 @@ internal class MainViewModel @Inject constructor(
     private val getAppThemeUseCase: GetAppThemeUseCase,
     private val fetchRemoteConfigUseCase: FetchRemoteConfigUseCase,
     private val navGraphs: Array<NavGraph>,
-    private val coroutineContext: CoroutineContext,
     @param:AsyncTaskUtilsQualifier(MainScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
 ) : BaseViewModel(), UiState<MainUiState>, UiEvent<MainUiEvent>, MainIntentReceiver {
 
@@ -52,7 +50,7 @@ internal class MainViewModel @Inject constructor(
     }
 
     override fun verifySession(currentRoute: NavKey?) {
-        viewModelScope.launch(coroutineContext) {
+        viewModelScope.launch {
             asyncTaskUtils.runAsyncTask {
                 val validSession = checkSessionIsValidUseCase()
                 val loginNavKey = LoginNavKey(expiredSession = true)
@@ -72,7 +70,7 @@ internal class MainViewModel @Inject constructor(
     }
 
     private fun initUiState() {
-        viewModelScope.launch(coroutineContext) {
+        viewModelScope.launch {
             asyncTaskUtils.runAsyncTask {
                 val firstNavKey = if (checkNeedsLoginUseCase()) {
                     LoginNavKey()
@@ -85,7 +83,7 @@ internal class MainViewModel @Inject constructor(
     }
 
     private fun appThemeObservable() {
-        viewModelScope.launch(coroutineContext) {
+        viewModelScope.launch {
             asyncTaskUtils.runFlowTask(
                 flow = getAppThemeUseCase()
             ) { appTheme ->

@@ -27,14 +27,12 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlin.coroutines.CoroutineContext
 
 @HiltViewModel(assistedFactory = ExchangeListViewModel.Factory::class)
 internal class ExchangeListViewModel @AssistedInject constructor(
     private val getAllExchangesUseCase: GetAllExchangesUseCase,
     private val exchangeMapper: ExchangeMapper,
     private val analyticSender: AnalyticSender,
-    private val coroutineContext: CoroutineContext,
     @Assisted private val deepLinkParam: ExchangeListDeepLinkParam?,
     @param:AsyncTaskUtilsQualifier(ExchangeListScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
 ) : BaseViewModel(),
@@ -58,14 +56,14 @@ internal class ExchangeListViewModel @AssistedInject constructor(
     }
 
     override fun sendOpenScreenAnalytic() {
-        viewModelScope.launch(coroutineContext) {
+        viewModelScope.launch {
             analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(ExchangeListScreenAnalytic))
         }
     }
 
     override fun getAllExchanges() {
         _uiState.update { it.setIsLoading(true) }
-        viewModelScope.launch(coroutineContext) {
+        viewModelScope.launch {
             asyncTaskUtils.runAsyncTask(
                 onError = { errorHandler(it) },
                 onCompletion = { _uiState.update { it.setIsLoading(false) } }

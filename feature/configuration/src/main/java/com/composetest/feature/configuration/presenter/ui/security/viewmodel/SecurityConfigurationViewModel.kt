@@ -18,7 +18,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.coroutines.CoroutineContext
 
 @HiltViewModel
 internal class SecurityConfigurationViewModel @Inject constructor(
@@ -26,7 +25,6 @@ internal class SecurityConfigurationViewModel @Inject constructor(
     private val updateSecurityConfigurationUseCase: UpdateSecurityConfigurationUseCase,
     private val biometricProvider: BiometricProvider,
     private val analyticSender: AnalyticSender,
-    private val coroutineContext: CoroutineContext,
     @param:AsyncTaskUtilsQualifier(SecurityConfigurationScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
 ) : BaseViewModel(), UiState<SecurityConfigurationUiState>, SecurityConfigurationIntentReceiver {
 
@@ -43,7 +41,7 @@ internal class SecurityConfigurationViewModel @Inject constructor(
     }
 
     override fun sendOpenScreenAnalytic() {
-        viewModelScope.launch(coroutineContext) {
+        viewModelScope.launch {
             asyncTaskUtils.runAsyncTask {
                 analyticSender.sendEvent(
                     CommonAnalyticEvent.OpenScreen(SecurityConfigurationScreenAnalytic)
@@ -53,7 +51,7 @@ internal class SecurityConfigurationViewModel @Inject constructor(
     }
 
     override fun changeSwitchBiometric(checked: Boolean) {
-        viewModelScope.launch(coroutineContext) {
+        viewModelScope.launch {
             asyncTaskUtils.runAsyncTask {
                 updateSecurityConfigurationUseCase(securityConfiguration?.apply {
                     biometricLogin = checked
@@ -65,7 +63,7 @@ internal class SecurityConfigurationViewModel @Inject constructor(
 
     private fun initUiState() {
         val biometricIsAvailable = biometricProvider.biometricIsAvailable
-        viewModelScope.launch(coroutineContext) {
+        viewModelScope.launch {
             asyncTaskUtils.runAsyncTask {
                 securityConfiguration = getSecurityConfigurationUseCase()
                 _uiState.update {

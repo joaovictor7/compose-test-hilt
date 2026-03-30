@@ -10,12 +10,10 @@ import com.composetest.feature.home.analytic.screen.HomeScreenAnalytic
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.coroutines.CoroutineContext
 
 @HiltViewModel
 internal class HomeViewModel @Inject constructor(
     private val analyticSender: AnalyticSender,
-    private val coroutineContext: CoroutineContext,
     @param:AsyncTaskUtilsQualifier(HomeScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
 ) : BaseViewModel() {
 
@@ -24,7 +22,7 @@ internal class HomeViewModel @Inject constructor(
     }
 
     override fun sendOpenScreenAnalytic() {
-        viewModelScope.launch(coroutineContext) {
+        viewModelScope.launch {
             asyncTaskUtils.runAsyncTask {
                 analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(HomeScreenAnalytic))
             }

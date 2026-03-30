@@ -16,14 +16,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.coroutines.CoroutineContext
 
 @HiltViewModel
 internal class ExchangeDetailViewModel @Inject constructor(
     private val navKey: ExchangeDetailNavKey,
     private val exchangeMapper: ExchangeMapper,
     private val analyticSender: AnalyticSender,
-    private val coroutineContext: CoroutineContext,
     @param:AsyncTaskUtilsQualifier(ExchangeDetailScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
 ) : BaseViewModel(), UiState<ExchangeDetailUiState> {
 
@@ -36,7 +34,7 @@ internal class ExchangeDetailViewModel @Inject constructor(
     }
 
     override fun sendOpenScreenAnalytic() {
-        viewModelScope.launch(coroutineContext) {
+        viewModelScope.launch {
             asyncTaskUtils.runAsyncTask {
                 analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(ExchangeDetailScreenAnalytic))
             }

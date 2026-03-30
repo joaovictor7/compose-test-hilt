@@ -16,14 +16,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.coroutines.CoroutineContext
 
 @HiltViewModel
 internal class ProductDetailViewModel @Inject constructor(
     private val navKey: ProductDetailNavKey,
     private val productDetailMapper: ProductDetailMapper,
     private val analyticSender: AnalyticSender,
-    private val coroutineContext: CoroutineContext,
     @param:AsyncTaskUtilsQualifier(ProductDetailScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
 ) : BaseViewModel(), UiState<ProductDetailUiState> {
 
@@ -36,7 +34,7 @@ internal class ProductDetailViewModel @Inject constructor(
     }
 
     override fun sendOpenScreenAnalytic() {
-        viewModelScope.launch(coroutineContext) {
+        viewModelScope.launch {
             analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(ProductDetailScreenAnalytic))
         }
     }

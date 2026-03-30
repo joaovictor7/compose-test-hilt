@@ -32,7 +32,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.coroutines.CoroutineContext
 
 @HiltViewModel
 internal class AccountViewModel @Inject constructor(
@@ -42,7 +41,6 @@ internal class AccountViewModel @Inject constructor(
     private val cipherProvider: CipherProvider,
     private val analyticSender: AnalyticSender,
     private val setNavResultUseCase: SetNavResultUseCase,
-    private val coroutineContext: CoroutineContext,
     @param:AsyncTaskUtilsQualifier(AccountScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
 ) : BaseViewModel(), UiState<AccountUiState>, UiEvent<AccountUiEvent>, AccountIntentReceiver {
 
@@ -62,7 +60,7 @@ internal class AccountViewModel @Inject constructor(
     }
 
     override fun sendOpenScreenAnalytic() {
-        viewModelScope.launch(coroutineContext) {
+        viewModelScope.launch {
             asyncTaskUtils.runAsyncTask {
                 analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(AccountScreenAnalytic))
             }
@@ -90,7 +88,7 @@ internal class AccountViewModel @Inject constructor(
                 ?: originalUser?.encryptedPassword.orEmpty()
         )
         _uiState.update { it.setLoadingState(LoadingButtonState.LOADING) }
-        viewModelScope.launch(coroutineContext) {
+        viewModelScope.launch {
             asyncTaskUtils.runAsyncTask(
                 onError = ::handleUpdateAccountError,
             ) {
@@ -102,7 +100,7 @@ internal class AccountViewModel @Inject constructor(
     }
 
     override fun backHandler() {
-        viewModelScope.launch(coroutineContext) {
+        viewModelScope.launch {
             asyncTaskUtils.runAsyncTask {
                 setNavResultUseCase(AccountUpdateResult)
             }
@@ -111,7 +109,7 @@ internal class AccountViewModel @Inject constructor(
     }
 
     private fun initUiState() {
-        viewModelScope.launch(coroutineContext) {
+        viewModelScope.launch {
             asyncTaskUtils.runAsyncTask {
                 originalUser = getCurrentUserUseCase()
                 originalUser?.let { userModel ->

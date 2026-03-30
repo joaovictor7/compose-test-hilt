@@ -22,14 +22,12 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.coroutines.CoroutineContext
 
 @HiltViewModel
 internal class ThemeConfigurationViewModel @Inject constructor(
     private val getThemeConfigurationUseCase: GetThemeConfigurationUseCase,
     private val updateThemeConfigurationUseCase: UpdateThemeConfigurationUseCase,
     private val analyticSender: AnalyticSender,
-    private val coroutineContext: CoroutineContext,
     @param:AsyncTaskUtilsQualifier(ThemeConfigurationScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
 ) : BaseViewModel(), UiState<ThemeConfigurationUiState>, ThemeConfigurationIntentReceiver {
 
@@ -46,7 +44,7 @@ internal class ThemeConfigurationViewModel @Inject constructor(
     }
 
     override fun sendOpenScreenAnalytic() {
-        viewModelScope.launch(coroutineContext) {
+        viewModelScope.launch {
             asyncTaskUtils.runAsyncTask {
                 analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(ThemeConfigurationScreenAnalytic))
             }
@@ -55,7 +53,7 @@ internal class ThemeConfigurationViewModel @Inject constructor(
 
     override fun changeTheme(selectedTheme: ThemeConfiguration) {
         _uiState.update { it.setSelectedTheme(selectedTheme) }
-        viewModelScope.launch(coroutineContext) {
+        viewModelScope.launch {
             asyncTaskUtils.runAsyncTask {
                 sendChangeThemeAnalytic(theme = selectedTheme.theme)
                 updateThemeConfigurationUseCase(themeConfiguration?.apply {
@@ -67,7 +65,7 @@ internal class ThemeConfigurationViewModel @Inject constructor(
 
     override fun changeDynamicColor(active: Boolean) {
         _uiState.update { it.setDynamicColors(active) }
-        viewModelScope.launch(coroutineContext) {
+        viewModelScope.launch {
             asyncTaskUtils.runAsyncTask {
                 sendChangeThemeAnalytic(dynamicColor = active)
                 updateThemeConfigurationUseCase(themeConfiguration?.apply {
@@ -78,7 +76,7 @@ internal class ThemeConfigurationViewModel @Inject constructor(
     }
 
     private fun initUiState() {
-        viewModelScope.launch(coroutineContext) {
+        viewModelScope.launch {
             asyncTaskUtils.runAsyncTask {
                 themeConfiguration = getThemeConfigurationUseCase().first()
                 _uiState.update {

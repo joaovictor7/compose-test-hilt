@@ -24,7 +24,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.coroutines.CoroutineContext
 
 @HiltViewModel
 internal class ProductListViewModel @Inject constructor(
@@ -34,7 +33,6 @@ internal class ProductListViewModel @Inject constructor(
     private val filterProductsUseCase: FilterProductsUseCase,
     private val productItemListMapper: ProductItemListMapper,
     private val productNavKeyMapper: ProductNavKeyMapper,
-    private val coroutineContext: CoroutineContext,
     @param:AsyncTaskUtilsQualifier(ProductListScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
 ) : BaseViewModel(),
     UiState<ProductListUiState>,
@@ -57,7 +55,7 @@ internal class ProductListViewModel @Inject constructor(
     }
 
     override fun sendOpenScreenAnalytic() {
-        viewModelScope.launch(coroutineContext) {
+        viewModelScope.launch {
             asyncTaskUtils.runAsyncTask {
                 analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(ProductListScreenAnalytic))
             }
@@ -66,7 +64,7 @@ internal class ProductListViewModel @Inject constructor(
 
     override fun resyncProducts() {
         _uiState.update { it.setIsLoading(true) }
-        viewModelScope.launch(coroutineContext) {
+        viewModelScope.launch {
             asyncTaskUtils.runAsyncTask(
                 onError = { errorHandler(it) },
                 onCompletion = { _uiState.update { it.setIsLoading(false) } }
@@ -99,7 +97,7 @@ internal class ProductListViewModel @Inject constructor(
 
     private fun getAllProducts() {
         _uiState.update { it.setIsLoading(true) }
-        viewModelScope.launch(coroutineContext) {
+        viewModelScope.launch {
             asyncTaskUtils.runAsyncTask(
                 onError = ::errorHandler,
                 onCompletion = { _uiState.update { it.setIsLoading(false) } }

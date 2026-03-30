@@ -29,14 +29,12 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
-import kotlin.coroutines.CoroutineContext
 import com.composetest.core.designsystem.R as DesignSystemRes
 import com.composetest.core.ui.R as UiRes
 
 @HiltViewModel
 internal class FormViewModel @Inject constructor(
     private val analyticSender: AnalyticSender,
-    private val coroutineContext: CoroutineContext,
     @param:AsyncTaskUtilsQualifier(FormScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
 ) : BaseViewModel(), UiState<FormUiState>, UiEvent<FormUiEvent>, FormIntentReceiver {
 
@@ -53,7 +51,7 @@ internal class FormViewModel @Inject constructor(
     }
 
     override fun sendOpenScreenAnalytic() {
-        viewModelScope.launch(coroutineContext) {
+        viewModelScope.launch {
             asyncTaskUtils.runAsyncTask {
                 analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(FormScreenAnalytic))
             }

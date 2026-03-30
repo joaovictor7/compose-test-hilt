@@ -33,7 +33,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.coroutines.CoroutineContext
 
 @HiltViewModel
 internal class RootViewModel @Inject constructor(
@@ -42,7 +41,6 @@ internal class RootViewModel @Inject constructor(
     private val userModalDrawerMapper: UserModalDrawerMapper,
     private val analyticSender: AnalyticSender,
     private val observeNavResultUseCase: ObserveNavResultUseCase,
-    private val coroutineContext: CoroutineContext,
     @param:NavGraphListQualifier(ROOT_NAV_GRAPH_LIST) private val navGraphs: Array<NavGraph>,
     @param:AsyncTaskUtilsQualifier(RootScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
     getAvailableFeaturesUseCase: GetAvailableFeaturesUseCase,
@@ -62,7 +60,7 @@ internal class RootViewModel @Inject constructor(
 
     init {
         iniUiState()
-        viewModelScope.launch(coroutineContext) {
+        viewModelScope.launch {
             asyncTaskUtils.runAsyncTask {
                 observeNavResultUseCase(AccountUpdateResult::class).collect {
                     updateUserData()
@@ -99,7 +97,7 @@ internal class RootViewModel @Inject constructor(
     }
 
     override fun logout() {
-        viewModelScope.launch(coroutineContext) {
+        viewModelScope.launch {
             asyncTaskUtils.runAsyncTask {
                 finishSessionUseCase()
                 _uiEvent.emitEvent(
@@ -115,7 +113,7 @@ internal class RootViewModel @Inject constructor(
     }
 
     override fun updateUserData() {
-        viewModelScope.launch(coroutineContext) {
+        viewModelScope.launch {
             asyncTaskUtils.runAsyncTask {
                 val user = getCurrentUserUseCase()
                 _uiState.update {
@@ -136,7 +134,7 @@ internal class RootViewModel @Inject constructor(
     private fun iniUiState() {
         val modalDrawerNavigationFeatures = getModalDrawerNavigationFeatures()
         val bottomNavigationFeatures = getBottomNavigationFeatures()
-        viewModelScope.launch(coroutineContext) {
+        viewModelScope.launch {
             asyncTaskUtils.runAsyncTask {
                 val user = getCurrentUserUseCase()
                 _uiState.update {
@@ -187,7 +185,7 @@ internal class RootViewModel @Inject constructor(
     }
 
     private fun sendNavigateToFeatureAnalytic(navigationFeature: NavigationFeature) {
-        viewModelScope.launch(coroutineContext) {
+        viewModelScope.launch {
             asyncTaskUtils.runAsyncTask {
                 analyticSender.sendEvent(RootEventAnalytic.NavigateToFeature(navigationFeature.feature.name))
             }

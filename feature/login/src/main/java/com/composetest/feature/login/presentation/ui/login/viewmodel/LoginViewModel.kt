@@ -42,7 +42,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.coroutines.CoroutineContext
 import com.composetest.core.designsystem.R as DesignSystemRes
 import com.composetest.core.ui.R as UiRes
 
@@ -58,7 +57,6 @@ internal class LoginViewModel @Inject constructor(
     private val getBooleanRemoteConfigUseCase: GetBooleanRemoteConfigUseCase,
     private val loginNavKey: LoginNavKey,
     private val analyticSender: AnalyticSender,
-    private val coroutineContext: CoroutineContext,
     @param:AsyncTaskUtilsQualifier(LoginScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
 ) : BaseViewModel(), UiState<LoginUiState>, UiEvent<LoginUiEvent>, LoginIntentReceiver {
 
@@ -84,7 +82,7 @@ internal class LoginViewModel @Inject constructor(
     }
 
     override fun sendOpenScreenAnalytic() {
-        viewModelScope.launch(coroutineContext) {
+        viewModelScope.launch {
             asyncTaskUtils.runAsyncTask {
                 analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(LoginScreenAnalytic))
             }
@@ -101,7 +99,7 @@ internal class LoginViewModel @Inject constructor(
 
     override fun login(byBiometric: Boolean) {
         _uiState.update { it.setLoading(true) }
-        viewModelScope.launch(coroutineContext) {
+        viewModelScope.launch {
             asyncTaskUtils.runAsyncTask(
                 onError = ::handleLoginError,
                 onCompletion = { _uiState.update { it.setLoading(false) } }
@@ -161,7 +159,7 @@ internal class LoginViewModel @Inject constructor(
 
     private fun initUiState() {
         val biometricIsAvailable = biometricProvider.biometricIsAvailable
-        viewModelScope.launch(coroutineContext) {
+        viewModelScope.launch {
             asyncTaskUtils.runAsyncTask {
                 val biometricIsEnable = biometricIsEnableUseCase()
                 autoShowBiometricPrompt(biometricIsEnable, biometricIsAvailable)
