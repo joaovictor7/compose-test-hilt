@@ -1,6 +1,5 @@
 package com.composetest.feature.product.presenter.ui.list
 
-import com.composetest.core.designsystem.component.rating.enums.RatingStatus
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -27,10 +26,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.rememberNavBackStack
 import com.composetest.core.designsystem.component.pulltorefresh.PullToRefresh
 import com.composetest.core.designsystem.component.rating.Rating
+import com.composetest.core.designsystem.component.rating.enums.RatingStatus
 import com.composetest.core.designsystem.component.shimmer.Shimmer
 import com.composetest.core.designsystem.component.textfield.TextField
 import com.composetest.core.designsystem.component.textfield.enums.TextFieldIcon
@@ -56,10 +57,10 @@ internal fun ProductListScreen(
     uiState: ProductListUiState,
     uiEvent: Flow<ProductListUiEvent> = emptyFlow(),
     onExecuteIntent: (Intent<ProductListIntentReceiver>) -> Unit = {},
-    navController: NavHostController = rememberNavController(),
+    navBackStack: NavBackStack<NavKey> = rememberNavBackStack(),
 ) {
     val shimmerOffset by getSharedShimmerOffset()
-    UiEventsHandler(uiEvent = uiEvent, navController = navController)
+    UiEventsHandler(uiEvent = uiEvent, navBackStack = navBackStack)
 //    DialogHandler(uiState = uiState, onExecuteIntent = onExecuteIntent)
     Column(modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars)) {
         Column(modifier = Modifier.horizontalScreenMargin()) {
@@ -176,11 +177,11 @@ private fun ExchangeItemShimmer(shimmerOffset: Float) {
 @Composable
 private fun UiEventsHandler(
     uiEvent: Flow<ProductListUiEvent>,
-    navController: NavHostController,
+    navBackStack: NavBackStack<NavKey>,
 ) {
     UiEventsObserver(uiEvent) {
         when (it) {
-            is ProductListUiEvent.NavigateTo -> navController.navigateTo(it.navigationModel)
+            is ProductListUiEvent.NavigateTo -> navBackStack.navigateTo(it.navigationModel)
         }
     }
 }

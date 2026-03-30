@@ -56,7 +56,7 @@ fun CentralizedTopBar(
                 onClickNavigationAction = onClickNavigationAction
             )
         },
-        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = color.getColor()),
+        colors = TopAppBarDefaults.topAppBarColors(containerColor = color.getColor()),
         actions = getTopBarActions(actionIcons, onClickAction),
         title = getTopBarTitle(title)
     )

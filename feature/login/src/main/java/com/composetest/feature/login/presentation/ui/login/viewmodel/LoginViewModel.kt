@@ -9,11 +9,11 @@ import com.composetest.core.domain.provider.BuildConfigProvider
 import com.composetest.core.domain.usecase.configuration.SetSystemBarsStyleUseCase
 import com.composetest.core.domain.usecase.remoteconfig.GetBooleanRemoteConfigUseCase
 import com.composetest.core.network.model.ApiError
-import com.composetest.core.router.destination.dialog.SimpleDialogDestination
-import com.composetest.core.router.destination.login.LoginDestination
-import com.composetest.core.router.destination.root.RootDestination
 import com.composetest.core.router.enums.NavigationMode
 import com.composetest.core.router.model.NavigationModel
+import com.composetest.core.router.navkey.dialog.SimpleDialogNavKey
+import com.composetest.core.router.navkey.login.LoginNavKey
+import com.composetest.core.router.navkey.root.RootNavKey
 import com.composetest.core.security.androidapi.enums.BiometricError
 import com.composetest.core.security.androidapi.enums.BiometricError.Companion.biometricIsLockout
 import com.composetest.core.security.androidapi.enums.BiometricError.Companion.userClosedPrompt
@@ -54,7 +54,7 @@ internal class LoginViewModel @Inject constructor(
     private val biometricIsEnableUseCase: BiometricIsEnableUseCase,
     private val setSystemBarsStyleUseCase: SetSystemBarsStyleUseCase,
     private val getBooleanRemoteConfigUseCase: GetBooleanRemoteConfigUseCase,
-    private val loginDestination: LoginDestination,
+    private val loginNavKey: LoginNavKey,
     private val analyticSender: AnalyticSender,
     @param:AsyncTaskUtilsQualifier(LoginScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
 ) : BaseViewModel(), UiState<LoginUiState>, UiEvent<LoginUiEvent>, LoginIntentReceiver {
@@ -192,27 +192,27 @@ internal class LoginViewModel @Inject constructor(
     private fun navigateToRoot() {
         _uiEvent.emitEvent(
             LoginUiEvent.NavigateTo(
-                NavigationModel(RootDestination, NavigationMode.REMOVE_ALL_SCREENS_STACK)
+                NavigationModel(RootNavKey, NavigationMode.REMOVE_ALL_SCREENS_STACK)
             )
         )
     }
 
     private fun showDialogExpiredSession() {
-        if (loginDestination.expiredSession) {
-            val sessionExpiredDialogDestination = SimpleDialogDestination(
+        if (loginNavKey.expiredSession) {
+            val sessionExpiredDialogNavKey = SimpleDialogNavKey(
                 iconId = DesignSystemRes.drawable.ic_person_off,
                 titleId = R.string.alert_dialog_session_invalid_title,
                 textId = R.string.alert_dialog_session_invalid_text,
                 dismissButtonTextId = UiRes.string.close,
             )
             _uiEvent.emitEvent(
-                LoginUiEvent.NavigateTo(NavigationModel(sessionExpiredDialogDestination))
+                LoginUiEvent.NavigateTo(NavigationModel(sessionExpiredDialogNavKey))
             )
         }
     }
 
     private fun autoShowBiometricPrompt(biometricIsEnable: Boolean, biometricIsAvailable: Boolean) {
-        if (loginDestination.autoShowBiometricPrompt && biometricIsEnable && biometricIsAvailable) {
+        if (loginNavKey.autoShowBiometricPrompt && biometricIsEnable && biometricIsAvailable) {
             showBiometricPrompt()
         }
     }

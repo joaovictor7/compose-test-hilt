@@ -1,5 +1,6 @@
 package com.composetest.feature.root.presentation.ui.root.viewmodel
 
+import androidx.navigation3.runtime.NavKey
 import com.composetest.core.ui.interfaces.Intent
 import com.composetest.feature.root.presentation.enums.NavigationFeature
 
@@ -10,7 +11,7 @@ internal sealed interface RootIntent : Intent<RootIntentReceiver> {
         }
     }
 
-    data class CurrentScreenObservable(private val currentScreen: String?) : RootIntent {
+    data class CurrentScreenObservable(private val currentScreen: NavKey?) : RootIntent {
         override fun execute(intentReceiver: RootIntentReceiver) {
             intentReceiver.currentScreenObservable(currentScreen)
         }

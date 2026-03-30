@@ -26,8 +26,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.rememberNavBackStack
 import com.composetest.core.designsystem.component.asyncimage.AsyncImage
 import com.composetest.core.designsystem.component.button.TryAgainButton
 import com.composetest.core.designsystem.component.pulltorefresh.PullToRefresh
@@ -55,10 +56,10 @@ internal fun NewsListScreen(
     uiState: NewsListUiState,
     uiEvent: Flow<NewsListUiEvent> = emptyFlow(),
     onExecuteIntent: (Intent<NewsListIntentReceiver>) -> Unit = {},
-    navController: NavHostController = rememberNavController(),
+    navBackStack: NavBackStack<NavKey> = rememberNavBackStack(),
 ) {
     val shimmerOffset by getSharedShimmerOffset()
-    UiEventsHandler(uiEvent = uiEvent, navController = navController)
+    UiEventsHandler(uiEvent = uiEvent, navBackStack = navBackStack)
     PullToRefresh(
         isRefreshing = uiState.isLoading,
         onRefresh = { onExecuteIntent(NewsListIntent.Refresh) }
@@ -149,11 +150,11 @@ private fun ListItemShimmer(shimmerOffset: Float) {
 @Composable
 private fun UiEventsHandler(
     uiEvent: Flow<NewsListUiEvent>,
-    navController: NavHostController
+    navBackStack: NavBackStack<NavKey>,
 ) {
     UiEventsObserver(uiEvent) {
         when (it) {
-            is NewsListUiEvent.NavigateTo -> navController.navigateTo(it.navigationModel)
+            is NewsListUiEvent.NavigateTo -> navBackStack.navigateTo(it.navigationModel)
         }
     }
 }

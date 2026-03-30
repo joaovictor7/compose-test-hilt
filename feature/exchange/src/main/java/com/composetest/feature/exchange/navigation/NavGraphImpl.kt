@@ -3,43 +3,31 @@ package com.composetest.feature.exchange.navigation
 import androidx.compose.runtime.getValue
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.composable
-import com.composetest.core.router.destination.exchange.ExchangeListDestination
+import androidx.navigation3.runtime.EntryProviderScope
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
 import com.composetest.core.router.interfaces.NavGraph
-import com.composetest.core.ui.util.hiltViewModelWithParam
-import com.composetest.core.ui.util.rememberDeepLinkParam
-import com.composetest.core.ui.util.transformDeepLinks
-import com.composetest.feature.exchange.navigation.destination.ExchangeDetailDestination
-import com.composetest.feature.exchange.presenter.mapper.ExchangeDeepLinkParamMapper
+import com.composetest.core.router.navkey.exchange.ExchangeListNavKey
+import com.composetest.feature.exchange.navigation.navkey.ExchangeDetailNavKey
 import com.composetest.feature.exchange.presenter.ui.detail.ExchangeDetailScreen
 import com.composetest.feature.exchange.presenter.ui.detail.viewmodel.ExchangeDetailViewModel
 import com.composetest.feature.exchange.presenter.ui.list.ExchangeListScreen
 import com.composetest.feature.exchange.presenter.ui.list.viewmodel.ExchangeListViewModel
 import javax.inject.Inject
 
-private const val EXCHANGES_URI = "composetest://exchange?filter={filter}"
-
 internal class NavGraphImpl @Inject constructor() : NavGraph {
-    override fun NavGraphBuilder.register(navController: NavHostController) {
-        composable<ExchangeListDestination>(
-            deepLinks = transformDeepLinks(EXCHANGES_URI)
-        ) {
-            val deepLinkParam = rememberDeepLinkParam(
-                navController,
-                ExchangeDeepLinkParamMapper::mapperToParam
-            )
-            val viewModel: ExchangeListViewModel = hiltViewModelWithParam(deepLinkParam)
+    override fun EntryProviderScope<NavKey>.registerEntries(navBackStack: NavBackStack<NavKey>) {
+        entry<ExchangeListNavKey> { _ ->
+            val viewModel = hiltViewModel<ExchangeListViewModel>()
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
             ExchangeListScreen(
                 uiState = uiState,
                 uiEvent = viewModel.uiEvent,
                 onExecuteIntent = viewModel::executeIntent,
-                navController = navController
+                navBackStack = navBackStack,
             )
         }
-        composable<ExchangeDetailDestination> {
+        entry<ExchangeDetailNavKey> { _ ->
             val viewModel = hiltViewModel<ExchangeDetailViewModel>()
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
             ExchangeDetailScreen(uiState = uiState)

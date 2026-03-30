@@ -28,8 +28,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.rememberNavBackStack
 import com.composetest.core.designsystem.component.pulltorefresh.PullToRefresh
 import com.composetest.core.designsystem.component.shimmer.Shimmer
 import com.composetest.core.designsystem.component.textfield.TextField
@@ -58,10 +59,10 @@ internal fun ExchangeListScreen(
     uiState: ExchangeListUiState,
     uiEvent: Flow<ExchangeListUiEvent> = emptyFlow(),
     onExecuteIntent: (Intent<ExchangeListIntentReceiver>) -> Unit = {},
-    navController: NavHostController = rememberNavController(),
+    navBackStack: NavBackStack<NavKey> = rememberNavBackStack(),
 ) {
     val shimmerOffset by getSharedShimmerOffset()
-    UiEventsHandler(uiEvent = uiEvent, navController = navController)
+    UiEventsHandler(uiEvent = uiEvent, navBackStack = navBackStack)
     Column(modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars)) {
         LeftTopBar(R.string.exchange_title)
         Column(modifier = Modifier.horizontalScreenMargin()) {
@@ -167,11 +168,11 @@ private fun ExchangeItemShimmer(shimmerOffset: Float) {
 @Composable
 private fun UiEventsHandler(
     uiEvent: Flow<ExchangeListUiEvent>,
-    navController: NavHostController,
+    navBackStack: NavBackStack<NavKey>,
 ) {
     UiEventsObserver(uiEvent) {
         when (it) {
-            is ExchangeListUiEvent.NavigateTo -> navController.navigateTo(it.navigationModel)
+            is ExchangeListUiEvent.NavigateTo -> navBackStack.navigateTo(it.navigationModel)
         }
     }
 }

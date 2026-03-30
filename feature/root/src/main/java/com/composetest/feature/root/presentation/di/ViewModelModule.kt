@@ -1,6 +1,9 @@
 package com.composetest.feature.root.presentation.di
 
+import androidx.lifecycle.SavedStateHandle
 import com.composetest.core.analytic.api.sender.AnalyticSender
+import com.composetest.core.router.extension.getNavKey
+import com.composetest.core.router.navkey.root.RootNavKey
 import com.composetest.core.ui.di.qualifier.AsyncTaskUtilsQualifier
 import com.composetest.core.ui.util.AsyncTaskUtils
 import com.composetest.feature.root.analytic.screen.RootScreenAnalytic
@@ -18,4 +21,9 @@ internal object ViewModelModule {
     fun rootAsyncTaskUtils(
         analyticSender: AnalyticSender
     ): AsyncTaskUtils = AsyncTaskUtils(analyticSender, RootScreenAnalytic)
+
+    @Provides
+    fun rootNavKey(
+        savedStateHandle: SavedStateHandle,
+    ): RootNavKey = savedStateHandle.getNavKey()
 }

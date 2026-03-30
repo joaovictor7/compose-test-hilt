@@ -1,9 +1,9 @@
 package com.composetest.core.router.model
 
+import androidx.navigation3.runtime.NavKey
 import com.composetest.core.router.enums.NavigationMode
-import com.composetest.core.router.interfaces.Destination
 
 data class NavigationModel(
-    val destination: Destination,
+    val navKey: NavKey,
     val navigationMode: NavigationMode? = null
 )

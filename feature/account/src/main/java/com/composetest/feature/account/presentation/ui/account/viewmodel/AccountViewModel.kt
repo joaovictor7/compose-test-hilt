@@ -7,6 +7,7 @@ import com.composetest.core.analytic.api.sender.AnalyticSender
 import com.composetest.core.designsystem.component.button.enums.LoadingButtonState
 import com.composetest.core.designsystem.extension.dialogErrorNavigation
 import com.composetest.core.domain.model.UserModel
+import com.composetest.core.domain.usecase.navigation.SetNavResultUseCase
 import com.composetest.core.domain.usecase.user.GetCurrentUserUseCase
 import com.composetest.core.router.result.account.AccountUpdateResult
 import com.composetest.core.security.api.provider.CipherProvider
@@ -38,6 +39,7 @@ internal class AccountViewModel @Inject constructor(
     private val stringResourceProvider: StringResourceProvider,
     private val cipherProvider: CipherProvider,
     private val analyticSender: AnalyticSender,
+    private val setNavResultUseCase: SetNavResultUseCase,
     @param:AsyncTaskUtilsQualifier(AccountScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
 ) : BaseViewModel(), UiState<AccountUiState>, UiEvent<AccountUiEvent>, AccountIntentReceiver {
 
@@ -94,7 +96,10 @@ internal class AccountViewModel @Inject constructor(
     }
 
     override fun backHandler() {
-        _uiEvent.emitEvent(AccountUiEvent.NavigateBack(AccountUpdateResult))
+        asyncTaskUtils.runAsyncTask(viewModelScope) {
+            setNavResultUseCase(AccountUpdateResult)
+        }
+        _uiEvent.emitEvent(AccountUiEvent.NavigateBack)
     }
 
     private fun initUiState() {

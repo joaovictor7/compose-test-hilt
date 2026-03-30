@@ -5,7 +5,7 @@ import com.composetest.common.api.extension.fromStringToDateTime
 import com.composetest.core.ui.provider.StringResourceProvider
 import com.composetest.feature.exchange.R
 import com.composetest.feature.exchange.domain.model.ExchangeModel
-import com.composetest.feature.exchange.navigation.destination.ExchangeDetailDestination
+import com.composetest.feature.exchange.navigation.navkey.ExchangeDetailNavKey
 import com.composetest.feature.exchange.presenter.model.ExchangeDetailRowScreenModel
 import com.composetest.feature.exchange.presenter.model.ExchangeListRowScreenModel
 import com.composetest.feature.exchange.presenter.model.ExchangeScreenModel
@@ -39,52 +39,56 @@ internal class ExchangeMapper @Inject constructor(
         )
     }
 
-    fun mapperToModels(destination: ExchangeDetailDestination) = listOf(
+    fun mapperToModels(navKey: ExchangeDetailNavKey) = listOf(
         ExchangeDetailRowScreenModel(
             labelId = R.string.exchange_detail_id_label,
-            value = destination.id
+            value = navKey.id
         ),
         ExchangeDetailRowScreenModel(
             labelId = R.string.exchange_detail_name_label,
-            value = destination.name
+            value = navKey.name
         ),
         ExchangeDetailRowScreenModel(
             labelId = R.string.exchange_detail_rank_label,
-            value = destination.rank.toString()
+            value = navKey.rank.toString()
         ),
         ExchangeDetailRowScreenModel(
             labelId = R.string.exchange_detail_website_label,
-            value = destination.website?.removeUrlSuffixes(),
-            url = destination.website
+            value = navKey.website?.removeUrlSuffixes(),
+            url = navKey.website
         ),
         ExchangeDetailRowScreenModel(
             labelId = R.string.exchange_detail_symbols_count_label,
-            value = destination.symbolsCount.toString()
+            value = navKey.symbolsCount.toString()
         ),
         ExchangeDetailRowScreenModel(
             labelId = R.string.exchange_detail_metric_id_label,
-            value = destination.metricId?.joinToString().takeIf { it?.isNotBlank() == true }
+            value = navKey.metricId?.joinToString().takeIf { it?.isNotBlank() == true }
         ),
         ExchangeDetailRowScreenModel(
             labelId = R.string.exchange_detail_dates_label,
-            gridValues = createDatesGridData(destination)
+            gridValues = createDatesGridData(navKey)
         ),
         ExchangeDetailRowScreenModel(
             labelId = R.string.exchange_detail_volumes_label,
-            gridValues = createVolumesGridData(destination)
+            gridValues = createVolumesGridData(navKey)
         ),
     )
 
-    fun mapperToDestination(exchange: ExchangeModel?) = exchange?.let {
-        ExchangeDetailDestination(
+    fun mapperToNavKey(exchange: ExchangeModel?) = exchange?.let {
+        ExchangeDetailNavKey(
             id = it.id,
             website = it.website,
             name = it.name,
             dateTimeQuoteStart = it.dateTimeQuoteStart?.fromDateTimeToString(DATE_TIME_FORMAT),
             dateTimeQuoteEnd = it.dateTimeQuoteEnd?.fromDateTimeToString(DATE_TIME_FORMAT),
-            dateTimeOrderTradeStart = it.dateTimeOrderTradeStart?.fromDateTimeToString(DATE_TIME_FORMAT),
+            dateTimeOrderTradeStart = it.dateTimeOrderTradeStart?.fromDateTimeToString(
+                DATE_TIME_FORMAT
+            ),
             dateTimeOrderTradeEnd = it.dateTimeOrderTradeEnd?.fromDateTimeToString(DATE_TIME_FORMAT),
-            dateTimeOrderBookStart = it.dateTimeOrderBookStart?.fromDateTimeToString(DATE_TIME_FORMAT),
+            dateTimeOrderBookStart = it.dateTimeOrderBookStart?.fromDateTimeToString(
+                DATE_TIME_FORMAT
+            ),
             dateTimeOrderBookEnd = it.dateTimeOrderBookEnd?.fromDateTimeToString(DATE_TIME_FORMAT),
             symbolsCount = it.symbolsCount,
             volume1hrsUsd = it.volume1hrsUsd,
@@ -95,7 +99,7 @@ internal class ExchangeMapper @Inject constructor(
         )
     }
 
-    private fun createDatesGridData(destination: ExchangeDetailDestination) = listOf(
+    private fun createDatesGridData(navKey: ExchangeDetailNavKey) = listOf(
         listOf(
             createCellGrid(
                 stringResourceProvider.getString(R.string.exchange_detail_types_header_dates_grid),
@@ -114,26 +118,26 @@ internal class ExchangeMapper @Inject constructor(
             createCellGrid(
                 stringResourceProvider.getString(R.string.exchange_detail_quotes_id_dates_grid),
             ),
-            createCellGrid(destination.dateTimeQuoteStart?.dateTimeFormat()),
-            createCellGrid(destination.dateTimeQuoteEnd?.dateTimeFormat()),
+            createCellGrid(navKey.dateTimeQuoteStart?.dateTimeFormat()),
+            createCellGrid(navKey.dateTimeQuoteEnd?.dateTimeFormat()),
         ),
         listOf(
             createCellGrid(
                 stringResourceProvider.getString(R.string.exchange_detail_order_book_id_dates_grid),
             ),
-            createCellGrid(destination.dateTimeOrderBookStart?.dateTimeFormat()),
-            createCellGrid(destination.dateTimeOrderBookEnd?.dateTimeFormat()),
+            createCellGrid(navKey.dateTimeOrderBookStart?.dateTimeFormat()),
+            createCellGrid(navKey.dateTimeOrderBookEnd?.dateTimeFormat()),
         ),
         listOf(
             createCellGrid(
                 stringResourceProvider.getString(R.string.exchange_detail_trade_id_dates_grid),
             ),
-            createCellGrid(destination.dateTimeOrderTradeStart?.dateTimeFormat()),
-            createCellGrid(destination.dateTimeOrderTradeEnd?.dateTimeFormat()),
+            createCellGrid(navKey.dateTimeOrderTradeStart?.dateTimeFormat()),
+            createCellGrid(navKey.dateTimeOrderTradeEnd?.dateTimeFormat()),
         )
     )
 
-    private fun createVolumesGridData(destination: ExchangeDetailDestination) = listOf(
+    private fun createVolumesGridData(navKey: ExchangeDetailNavKey) = listOf(
         listOf(
             createCellGrid(
                 stringResourceProvider.getString(R.string.exchange_detail_volume_header_volume_grid),
@@ -148,19 +152,19 @@ internal class ExchangeMapper @Inject constructor(
             createCellGrid(
                 stringResourceProvider.getString(R.string.exchange_detail_hour_id_volume_grid),
             ),
-            createCellGrid(decimalFormat.format(destination.volume1hrsUsd)),
+            createCellGrid(decimalFormat.format(navKey.volume1hrsUsd)),
         ),
         listOf(
             createCellGrid(
                 stringResourceProvider.getString(R.string.exchange_detail_day_id_volume_grid),
             ),
-            createCellGrid(decimalFormat.format(destination.volume1DayUsd)),
+            createCellGrid(decimalFormat.format(navKey.volume1DayUsd)),
         ),
         listOf(
             createCellGrid(
                 stringResourceProvider.getString(R.string.exchange_detail_month_id_volume_grid),
             ),
-            createCellGrid(decimalFormat.format(destination.volume1MthUsd)),
+            createCellGrid(decimalFormat.format(navKey.volume1MthUsd)),
         )
     )
 

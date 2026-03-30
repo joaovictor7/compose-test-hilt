@@ -1,13 +1,13 @@
 package com.composetest.presentation.ui.main.viewmodel
 
 import android.os.Build
+import androidx.navigation3.runtime.NavKey
 import com.composetest.core.designsystem.extension.systemBarStyles
 import com.composetest.core.domain.model.AppThemeModel
-import com.composetest.core.router.interfaces.Destination
 import com.composetest.core.router.interfaces.NavGraph
 
 internal data class MainUiState(
-    val firstDestination: Destination? = null,
+    val firstNavKey: NavKey? = null,
     val navGraphs: List<NavGraph> = emptyList(),
     val appTheme: AppThemeModel = AppThemeModel(),
     val showSplashScreen: Boolean = true,
@@ -16,10 +16,10 @@ internal data class MainUiState(
     val navigationBarStyle get() = appTheme.systemBarStyles.second
     val forceNavigationBarTransparency get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
 
-    fun setInitUiState(firstDestination: Destination, navGraphs: Array<NavGraph>) =
+    fun setInitUiState(firstNavKey: NavKey, navGraphs: Array<NavGraph>) =
         copy(
             showSplashScreen = false,
-            firstDestination = firstDestination,
+            firstNavKey = firstNavKey,
             navGraphs = navGraphs.toList()
         )
 

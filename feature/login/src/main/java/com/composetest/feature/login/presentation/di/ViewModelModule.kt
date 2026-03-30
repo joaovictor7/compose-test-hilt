@@ -2,8 +2,8 @@ package com.composetest.feature.login.presentation.di
 
 import androidx.lifecycle.SavedStateHandle
 import com.composetest.core.analytic.api.sender.AnalyticSender
-import com.composetest.core.router.destination.login.LoginDestination
-import com.composetest.core.router.extension.getDestination
+import com.composetest.core.router.extension.getNavKey
+import com.composetest.core.router.navkey.login.LoginNavKey
 import com.composetest.core.ui.di.qualifier.AsyncTaskUtilsQualifier
 import com.composetest.core.ui.util.AsyncTaskUtils
 import com.composetest.feature.login.analytic.screen.LoginScreenAnalytic
@@ -17,9 +17,9 @@ import dagger.hilt.android.components.ViewModelComponent
 internal object ViewModelModule {
 
     @Provides
-    fun loginDestination(
+    fun loginNavKey(
         savedStateHandle: SavedStateHandle
-    ): LoginDestination = savedStateHandle.getDestination()
+    ): LoginNavKey = savedStateHandle.getNavKey()
 
     @Provides
     @AsyncTaskUtilsQualifier(LoginScreenAnalytic.SCREEN)

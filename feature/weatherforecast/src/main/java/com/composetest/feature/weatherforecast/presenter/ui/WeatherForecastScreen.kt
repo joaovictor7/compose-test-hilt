@@ -31,8 +31,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.rememberNavBackStack
 import com.composetest.core.designsystem.component.asyncimage.AsyncImage
 import com.composetest.core.designsystem.component.button.Button
 import com.composetest.core.designsystem.component.button.TryAgainButton
@@ -71,13 +72,13 @@ internal fun WeatherForecastScreen(
     uiState: WeatherForecastUiState,
     uiEvent: Flow<WeatherForecastUiEvent> = emptyFlow(),
     onExecuteIntent: (Intent<WeatherForecastIntentReceiver>) -> Unit = {},
-    navController: NavHostController = rememberNavController(),
+    navBackStack: NavBackStack<NavKey> = rememberNavBackStack(),
 ) {
     val permissionState = getMultiplePermissionState(Permission.localization)
     val shimmerOffset by getSharedShimmerOffset()
     UiEventsHandler(
         uiEvent = uiEvent,
-        navController = navController,
+        navBackStack = navBackStack,
         permissionState = permissionState
     )
     LifecycleEventHandler(onExecuteIntent = onExecuteIntent)
@@ -364,7 +365,7 @@ private fun WeatherForecastsShimmer(shimmerOffset: Float) {
 @Composable
 private fun UiEventsHandler(
     uiEvent: Flow<WeatherForecastUiEvent>,
-    navController: NavHostController,
+    navBackStack: NavBackStack<NavKey>,
     permissionState: MultiplePermissionsState,
 ) {
     UiEventsObserver(uiEvent) {
@@ -372,9 +373,7 @@ private fun UiEventsHandler(
             is WeatherForecastUiEvent.LaunchPermissionRequest -> {
                 permissionState.launchMultiplePermissionRequest()
             }
-            is WeatherForecastUiEvent.NavigateTo -> {
-                navController.navigateTo(it.navigationModel)
-            }
+            is WeatherForecastUiEvent.NavigateTo -> navBackStack.navigateTo(it.navigationModel)
         }
     }
 }

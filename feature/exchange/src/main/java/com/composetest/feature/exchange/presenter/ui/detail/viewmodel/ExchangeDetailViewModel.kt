@@ -8,7 +8,7 @@ import com.composetest.core.ui.di.qualifier.AsyncTaskUtilsQualifier
 import com.composetest.core.ui.interfaces.UiState
 import com.composetest.core.ui.util.AsyncTaskUtils
 import com.composetest.feature.exchange.analytic.screen.ExchangeDetailScreenAnalytic
-import com.composetest.feature.exchange.navigation.destination.ExchangeDetailDestination
+import com.composetest.feature.exchange.navigation.navkey.ExchangeDetailNavKey
 import com.composetest.feature.exchange.presenter.mapper.ExchangeMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class ExchangeDetailViewModel @Inject constructor(
-    private val destination: ExchangeDetailDestination,
+    private val navKey: ExchangeDetailNavKey,
     private val exchangeMapper: ExchangeMapper,
     private val analyticSender: AnalyticSender,
     @param:AsyncTaskUtilsQualifier(ExchangeDetailScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
@@ -40,7 +40,7 @@ internal class ExchangeDetailViewModel @Inject constructor(
 
     private fun setDetails() {
         _uiState.update {
-            val exchangeDetailsRowScreens = exchangeMapper.mapperToModels(destination)
+            val exchangeDetailsRowScreens = exchangeMapper.mapperToModels(navKey)
             it.setExchangeDataRowsScreen(exchangeDetailsRowScreens)
         }
     }

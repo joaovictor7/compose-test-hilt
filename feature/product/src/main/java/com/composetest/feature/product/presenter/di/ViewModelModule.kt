@@ -7,7 +7,7 @@ import com.composetest.core.ui.di.qualifier.AsyncTaskUtilsQualifier
 import com.composetest.core.ui.util.AsyncTaskUtils
 import com.composetest.feature.product.analytic.screen.ProductDetailScreenAnalytic
 import com.composetest.feature.product.analytic.screen.ProductListScreenAnalytic
-import com.composetest.feature.product.navigation.destination.ProductDetailDestination
+import com.composetest.feature.product.navigation.navkey.ProductDetailNavKey
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -30,8 +30,8 @@ internal object ViewModelModule {
     ): AsyncTaskUtils = AsyncTaskUtils(analyticSender, ProductDetailScreenAnalytic)
 
     @Provides
-    fun productDetailDestination(
+    fun productDetailNavKey(
         savedStateHandle: SavedStateHandle,
-    ): ProductDetailDestination = savedStateHandle.toRoute()
+    ): ProductDetailNavKey = savedStateHandle.toRoute()
 
 }

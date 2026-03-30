@@ -1,6 +1,5 @@
 package com.composetest.feature.product.presenter.ui.form
 
-import com.composetest.core.designsystem.component.rating.enums.RatingStatus
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,6 +23,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.composetest.core.designsystem.component.asyncimage.AsyncImage
 import com.composetest.core.designsystem.component.rating.Rating
+import com.composetest.core.designsystem.component.rating.enums.RatingStatus
 import com.composetest.core.designsystem.component.scaffold.ScreenScaffold
 import com.composetest.core.designsystem.component.topbar.LeftTopBar
 import com.composetest.core.designsystem.dimension.Spacing

@@ -3,30 +3,25 @@ package com.composetest.feature.weatherforecast.navigation
 import androidx.compose.runtime.getValue
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.composable
-import com.composetest.core.router.destination.weatherforecast.WeatherForecastDestination
+import androidx.navigation3.runtime.EntryProviderScope
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
 import com.composetest.core.router.interfaces.NavGraph
-import com.composetest.core.ui.util.transformDeepLinks
+import com.composetest.core.router.navkey.weatherforecast.WeatherForecastNavKey
 import com.composetest.feature.weatherforecast.presenter.ui.WeatherForecastScreen
 import com.composetest.feature.weatherforecast.presenter.ui.viewmodel.WeatherForecastViewModel
 import javax.inject.Inject
 
-private const val WEATHER_FORECAST_URI = "composetest://weatherforecast"
-
 internal class NavGraphImpl @Inject constructor() : NavGraph {
-    override fun NavGraphBuilder.register(navController: NavHostController) {
-        composable<WeatherForecastDestination>(
-            deepLinks = transformDeepLinks(WEATHER_FORECAST_URI)
-        ) {
+    override fun EntryProviderScope<NavKey>.registerEntries(navBackStack: NavBackStack<NavKey>) {
+        entry<WeatherForecastNavKey> { _ ->
             val viewModel = hiltViewModel<WeatherForecastViewModel>()
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
             WeatherForecastScreen(
                 uiState = uiState,
                 uiEvent = viewModel.uiEvent,
                 onExecuteIntent = viewModel::executeIntent,
-                navController = navController,
+                navBackStack = navBackStack,
             )
         }
     }

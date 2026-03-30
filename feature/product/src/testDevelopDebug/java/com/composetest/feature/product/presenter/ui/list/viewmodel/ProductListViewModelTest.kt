@@ -1,8 +1,8 @@
 package com.composetest.feature.product.presenter.ui.list.viewmodel
 
-import com.composetest.core.designsystem.component.rating.enums.RatingStatus
 import com.composetest.core.analytic.api.event.CommonAnalyticEvent
 import com.composetest.core.analytic.api.sender.AnalyticSender
+import com.composetest.core.designsystem.component.rating.enums.RatingStatus
 import com.composetest.core.router.model.NavigationModel
 import com.composetest.core.test.android.BaseTest
 import com.composetest.core.test.kotlin.extension.runFlowTest
@@ -12,9 +12,9 @@ import com.composetest.feature.product.domain.model.ProductModel
 import com.composetest.feature.product.domain.usecase.FilterProductsUseCase
 import com.composetest.feature.product.domain.usecase.GetAllProductsUseCase
 import com.composetest.feature.product.domain.usecase.ResyncProductsUseCase
-import com.composetest.feature.product.navigation.destination.ProductDetailDestination
-import com.composetest.feature.product.presenter.mapper.ProductDestinationlMapper
+import com.composetest.feature.product.navigation.navkey.ProductDetailNavKey
 import com.composetest.feature.product.presenter.mapper.ProductItemListMapper
+import com.composetest.feature.product.presenter.mapper.ProductNavKeyMapper
 import com.composetest.feature.product.presenter.model.ProductItemListModel
 import io.mockk.coEvery
 import io.mockk.coVerifyOrder
@@ -33,7 +33,7 @@ internal class ProductListViewModelTest : BaseTest() {
     private val resyncProductsUseCase: ResyncProductsUseCase = mockk()
     private val filterProductsUseCase: FilterProductsUseCase = mockk()
     private val productItemListMapper: ProductItemListMapper = mockk()
-    private val productDestinationMapper: ProductDestinationlMapper = mockk()
+    private val productNavKeyMapper: ProductNavKeyMapper = mockk()
     private lateinit var viewModel: ProductListViewModel
 
     override lateinit var testDispatcher: TestDispatcher
@@ -104,7 +104,7 @@ internal class ProductListViewModelTest : BaseTest() {
     fun `navigateToDetail Should emit navigation event When product is found`() = runFlowTest(
         flow = viewModel.uiEvent,
         onSetup = {
-            coEvery { productDestinationMapper.mapperToDestination(any()) } returns ProductDetailDestination(
+            coEvery { productNavKeyMapper.mapperToNavKey(any()) } returns ProductDetailNavKey(
                 title = "Test Product",
                 description = "Test Description",
                 price = 10.0,
@@ -121,7 +121,7 @@ internal class ProductListViewModelTest : BaseTest() {
             assertEquals(
                 ProductListUiEvent.NavigateTo(
                     NavigationModel(
-                        ProductDetailDestination(
+                        ProductDetailNavKey(
                             title = "Test Product",
                             description = "Test Description",
                             price = 10.0,
@@ -167,7 +167,7 @@ internal class ProductListViewModelTest : BaseTest() {
             resyncProductsUseCase = resyncProductsUseCase,
             filterProductsUseCase = filterProductsUseCase,
             productItemListMapper = productItemListMapper,
-            productDestinationlMapper = productDestinationMapper,
+            productNavKeyMapper = productNavKeyMapper,
             asyncTaskUtils = asyncTaskUtils
         )
     }

@@ -44,9 +44,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.runtime.rememberNavBackStack
+import androidx.navigation3.ui.NavDisplay
 import com.composetest.core.designsystem.component.scaffold.ScreenScaffold
 import com.composetest.core.designsystem.component.topbar.TopBarWithoutTitle
 import com.composetest.core.designsystem.component.topbar.enums.TopBarAction
@@ -54,11 +56,8 @@ import com.composetest.core.designsystem.dimension.Spacing
 import com.composetest.core.designsystem.extension.horizontalScreenMargin
 import com.composetest.core.designsystem.extension.screenMargin
 import com.composetest.core.designsystem.theme.ComposeTestTheme
-import com.composetest.core.router.destination.home.HomeDestination
-import com.composetest.core.router.extension.currentRouteChangesFlow
-import com.composetest.core.router.extension.getResultFlow
 import com.composetest.core.router.extension.navigateTo
-import com.composetest.core.router.result.account.AccountUpdateResult
+import com.composetest.core.router.navkey.home.HomeNavKey
 import com.composetest.core.ui.interfaces.Intent
 import com.composetest.core.ui.util.UiEventsObserver
 import com.composetest.feature.root.R
@@ -78,7 +77,7 @@ internal fun RootScreen(
     uiState: RootUiState,
     uiEvent: Flow<RootUiEvent> = emptyFlow(),
     onExecuteIntent: (Intent<RootIntentReceiver>) -> Unit = {},
-    navController: NavHostController = rememberNavController(),
+    navBackStack: NavBackStack<NavKey> = rememberNavBackStack(),
 ) {
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     ModalNavigationDrawer(
@@ -93,7 +92,7 @@ internal fun RootScreen(
                 drawerState = drawerState,
                 uiState = uiState,
                 uiEvent = uiEvent,
-                navController = navController,
+                navBackStack = navBackStack,
                 onExecuteIntent = onExecuteIntent,
             )
         }
@@ -105,23 +104,27 @@ private fun Navigation(
     drawerState: DrawerState,
     uiState: RootUiState,
     uiEvent: Flow<RootUiEvent>,
-    navController: NavHostController,
+    navBackStack: NavBackStack<NavKey>,
     onExecuteIntent: (Intent<RootIntentReceiver>) -> Unit
 ) {
-    if (uiState.firstDestination == null) return
-    val rootNavController = rememberNavController()
-    NavHost(navController = rootNavController, startDestination = uiState.firstDestination) {
-        uiState.navGraphs.forEach { it.run { register(navController) } }
-    }
+    if (uiState.firstNavKey == null) return
+    val rootBackStack = rememberNavBackStack(uiState.firstNavKey)
+    NavDisplay(
+        backStack = rootBackStack,
+        entryProvider = entryProvider {
+            uiState.navGraphs.forEach { navGraph ->
+                navGraph.run { registerEntries(rootBackStack) }
+            }
+        }
+    )
     UiEventsHandler(
         uiEvent = uiEvent,
-        rootNavController = rootNavController,
-        navController = navController
+        navBackStack = navBackStack,
+        rootBackStack = rootBackStack,
     )
     LaunchedEffectHandler(
         onExecuteIntent = onExecuteIntent,
-        rootNavController = rootNavController,
-        navController = navController
+        rootBackStack = rootBackStack,
     )
     BackHandler(drawerState = drawerState, onExecuteIntent = onExecuteIntent)
 }
@@ -293,15 +296,15 @@ private fun getBottomBar(
 @Composable
 private fun UiEventsHandler(
     uiEvent: Flow<RootUiEvent>,
-    rootNavController: NavHostController,
-    navController: NavHostController,
+    navBackStack: NavBackStack<NavKey>,
+    rootBackStack: NavBackStack<NavKey>,
 ) {
     val activity = LocalActivity.current
     UiEventsObserver(uiEvent) {
         when (it) {
             is RootUiEvent.FinishApp -> activity?.finish()
-            is RootUiEvent.NavigateToFeature -> navController.navigateTo(it.navigationModel)
-            is RootUiEvent.NavigateToBottomFeature -> rootNavController.navigateTo(it.navigationModel)
+            is RootUiEvent.NavigateToFeature -> navBackStack.navigateTo(it.navigationModel)
+            is RootUiEvent.NavigateToBottomFeature -> rootBackStack.navigateTo(it.navigationModel)
         }
     }
 }
@@ -309,18 +312,10 @@ private fun UiEventsHandler(
 @Composable
 private fun LaunchedEffectHandler(
     onExecuteIntent: (Intent<RootIntentReceiver>) -> Unit,
-    rootNavController: NavHostController,
-    navController: NavHostController,
+    rootBackStack: NavBackStack<NavKey>,
 ) {
-    LaunchedEffect(Unit) {
-        navController.getResultFlow(AccountUpdateResult::class).collect {
-            onExecuteIntent(RootIntent.UpdateUserData)
-        }
-    }
-    LaunchedEffect(Unit) {
-        rootNavController.currentRouteChangesFlow.collect {
-            onExecuteIntent(RootIntent.CurrentScreenObservable(it))
-        }
+    LaunchedEffect(rootBackStack.lastOrNull()) {
+        onExecuteIntent(RootIntent.CurrentScreenObservable(rootBackStack.lastOrNull()))
     }
 }
 
@@ -345,12 +340,12 @@ private fun Preview() {
     ComposeTestTheme {
         RootScreen(
             uiState = RootUiState(
-                firstDestination = HomeDestination,
+                firstNavKey = HomeNavKey,
                 bottomNavigationFeatures = listOf(
                     BottomFeatureNavigationModel(NavigationFeature.HOME, true),
                     BottomFeatureNavigationModel(NavigationFeature.HOME)
                 )
-            ),
+            )
         )
     }
 }

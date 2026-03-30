@@ -11,10 +11,10 @@ import com.composetest.core.domain.provider.BuildConfigProvider
 import com.composetest.core.domain.usecase.configuration.SetSystemBarsStyleUseCase
 import com.composetest.core.domain.usecase.remoteconfig.GetBooleanRemoteConfigUseCase
 import com.composetest.core.network.model.ApiError
-import com.composetest.core.router.destination.login.LoginDestination
-import com.composetest.core.router.destination.root.RootDestination
 import com.composetest.core.router.enums.NavigationMode
 import com.composetest.core.router.model.NavigationModel
+import com.composetest.core.router.navkey.login.LoginNavKey
+import com.composetest.core.router.navkey.root.RootNavKey
 import com.composetest.core.security.api.provider.BiometricProvider
 import com.composetest.core.security.api.provider.CipherProvider
 import com.composetest.core.test.android.BaseTest
@@ -123,7 +123,7 @@ internal class LoginViewModelTest : BaseTest() {
             Assertions.assertFalse(uiStates[3].isLoading)
             Assertions.assertEquals(
                 LoginUiEvent.NavigateTo(
-                    NavigationModel(RootDestination, NavigationMode.REMOVE_ALL_SCREENS_STACK)
+                    NavigationModel(RootNavKey, NavigationMode.REMOVE_ALL_SCREENS_STACK)
                 ),
                 uiEvents[0]
             )
@@ -162,7 +162,7 @@ internal class LoginViewModelTest : BaseTest() {
         biometricIsEnableUseCase = biometricIsEnableUseCase,
         setSystemBarsStyleUseCase = setSystemBarsStyleUseCase,
         getBooleanRemoteConfigUseCase = getBooleanRemoteConfigUseCase,
-        loginDestination = LoginDestination(),
+        loginNavKey = LoginNavKey(),
         analyticSender = analyticSender,
         asyncTaskUtils = AsyncTaskUtils(analyticSender, LoginScreenAnalytic)
     )

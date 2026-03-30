@@ -33,8 +33,9 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.rememberNavBackStack
 import com.composetest.core.designsystem.component.button.Button
 import com.composetest.core.designsystem.component.datepicker.DatePicker
 import com.composetest.core.designsystem.component.scaffold.ScreenScaffold
@@ -70,10 +71,10 @@ internal fun FormScreen(
     uiState: FormUiState,
     uiEvent: Flow<FormUiEvent> = emptyFlow(),
     onExecuteIntent: (Intent<FormIntentReceiver>) -> Unit = {},
-    navController: NavHostController = rememberNavController()
+    navBackStack: NavBackStack<NavKey> = rememberNavBackStack(),
 ) {
     val showDatePicker = remember { mutableStateOf(false) }
-    UiEventsHandler(uiEvent = uiEvent, navController = navController)
+    UiEventsHandler(uiEvent = uiEvent, navBackStack = navBackStack)
     FormDatePicker(onExecuteIntent = onExecuteIntent, showDatePicker = showDatePicker)
     ScreenScaffold(topBar = { TopBarWithoutTitle() }) {
         Column(
@@ -192,13 +193,11 @@ private fun ClassificationField(
 @Composable
 private fun UiEventsHandler(
     uiEvent: Flow<FormUiEvent>,
-    navController: NavHostController,
+    navBackStack: NavBackStack<NavKey>,
 ) {
     UiEventsObserver(uiEvent) {
         when (it) {
-            is FormUiEvent.NavigateTo -> {
-                navController.navigateTo(it.navigationModel)
-            }
+            is FormUiEvent.NavigateTo -> navBackStack.navigateTo(it.navigationModel)
         }
     }
 }

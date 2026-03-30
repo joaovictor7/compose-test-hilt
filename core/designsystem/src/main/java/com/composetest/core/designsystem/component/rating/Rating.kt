@@ -1,6 +1,5 @@
 package com.composetest.core.designsystem.component.rating
 
-import com.composetest.core.designsystem.component.rating.enums.RatingStatus
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -21,6 +20,7 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
+import com.composetest.core.designsystem.component.rating.enums.RatingStatus
 import com.composetest.core.designsystem.dimension.Spacing
 import com.composetest.core.designsystem.extension.toDp
 

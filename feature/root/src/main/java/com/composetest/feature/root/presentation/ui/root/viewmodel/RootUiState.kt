@@ -1,13 +1,13 @@
 package com.composetest.feature.root.presentation.ui.root.viewmodel
 
-import com.composetest.core.router.interfaces.Destination
+import androidx.navigation3.runtime.NavKey
 import com.composetest.core.router.interfaces.NavGraph
 import com.composetest.feature.root.presentation.enums.NavigationFeature
 import com.composetest.feature.root.presentation.model.BottomFeatureNavigationModel
 import com.composetest.feature.root.presentation.model.UserModalDrawerModel
 
 internal data class RootUiState(
-    val firstDestination: Destination? = null,
+    val firstNavKey: NavKey? = null,
     val navGraphs: List<NavGraph> = emptyList(),
     val modalDrawerNavigationFeatures: List<NavigationFeature> = emptyList(),
     val bottomNavigationFeatures: List<BottomFeatureNavigationModel> = emptyList(),
@@ -18,13 +18,13 @@ internal data class RootUiState(
     val modalDrawerNavigationFeaturesToList get() = modalDrawerNavigationFeatures.filterNot { it.noText }
 
     fun initUiState(
-        firstDestination: Destination?,
+        firstNavKey: NavKey?,
         navGraphs: Array<NavGraph>,
         modalDrawerNavigationFeatures: List<NavigationFeature>,
         bottomNavigationFeatures: List<BottomFeatureNavigationModel>,
         userModalDrawerModel: UserModalDrawerModel
     ) = copy(
-        firstDestination = firstDestination,
+        firstNavKey = firstNavKey,
         navGraphs = navGraphs.toList(),
         modalDrawerNavigationFeatures = modalDrawerNavigationFeatures,
         bottomNavigationFeatures = bottomNavigationFeatures,

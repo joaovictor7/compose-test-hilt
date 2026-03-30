@@ -11,21 +11,21 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.composetest.core.designsystem.R
 import com.composetest.core.designsystem.component.button.Button
 import com.composetest.core.designsystem.theme.ComposeTestTheme
-import com.composetest.core.router.destination.dialog.SimpleDialogDestination
+import com.composetest.core.router.navkey.dialog.SimpleDialogNavKey
 
 @Composable
 fun SimpleDialog(
-    destination: SimpleDialogDestination,
+    navKey: SimpleDialogNavKey,
     onConfirm: (() -> Unit)? = null,
     onDismiss: (() -> Unit)? = null
 ) {
     AlertDialog(
         onDismissRequest = { onDismiss?.invoke() },
-        icon = { Icon(painter = painterResource(destination.iconId), contentDescription = null) },
+        icon = { Icon(painter = painterResource(navKey.iconId), contentDescription = null) },
         iconContentColor = MaterialTheme.colorScheme.error,
-        title = { Text(text = stringResource(destination.titleId)) },
-        text = { Text(text = stringResource(destination.textId)) },
-        dismissButton = destination.dismissButtonTextId?.let {
+        title = { Text(text = stringResource(navKey.titleId)) },
+        text = { Text(text = stringResource(navKey.textId)) },
+        dismissButton = navKey.dismissButtonTextId?.let {
             {
                 Button(
                     text = stringResource(it),
@@ -34,7 +34,7 @@ fun SimpleDialog(
             }
         },
         confirmButton = {
-            destination.confirmButtonTextId?.let {
+            navKey.confirmButtonTextId?.let {
                 Button(
                     text = stringResource(it),
                     onClick = { onConfirm?.invoke() }
@@ -49,7 +49,7 @@ fun SimpleDialog(
 private fun Preview() {
     ComposeTestTheme {
         SimpleDialog(
-            destination = SimpleDialogDestination(
+            navKey = SimpleDialogNavKey(
                 iconId = R.string.error_alert_dialog_generic_text,
                 titleId = R.string.error_alert_dialog_generic_title,
                 textId = R.string.error_alert_dialog_generic_title,

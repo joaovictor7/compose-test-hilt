@@ -43,6 +43,6 @@ fun Modifier.screenMargin() = topScreenMargin().horizontalScreenMargin()
 fun Modifier.applyIf(
     isAble: Boolean,
     onModifier: @Composable Modifier.() -> Modifier
-) = also {
+): Modifier = also {
     if (isAble) return onModifier()
 }

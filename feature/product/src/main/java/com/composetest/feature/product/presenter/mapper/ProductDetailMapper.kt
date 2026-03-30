@@ -1,7 +1,7 @@
 package com.composetest.feature.product.presenter.mapper
 
 import com.composetest.feature.product.R
-import com.composetest.feature.product.navigation.destination.ProductDetailDestination
+import com.composetest.feature.product.navigation.navkey.ProductDetailNavKey
 import com.composetest.feature.product.presenter.model.ProductDetailRow
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
@@ -14,13 +14,13 @@ internal class ProductDetailMapper @Inject constructor() {
     }
     private val decimalFormat = DecimalFormat("$#,##0.00", decimalFormatSymbols)
 
-    fun mapperToModel(destination: ProductDetailDestination) = listOf(
-        ProductDetailRow(R.string.product_detail_rating, destination.rating.toString(), true),
-        ProductDetailRow(R.string.product_detail_price, decimalFormat.format(destination.price)),
+    fun mapperToModel(navKey: ProductDetailNavKey) = listOf(
+        ProductDetailRow(R.string.product_detail_rating, navKey.rating.toString(), true),
+        ProductDetailRow(R.string.product_detail_price, decimalFormat.format(navKey.price)),
         ProductDetailRow(
             R.string.product_detail_discount_percentage,
-            "${destination.discountPercentage}%"
+            "${navKey.discountPercentage}%"
         ),
-        ProductDetailRow(R.string.product_detail_stock, destination.stock.toString()),
+        ProductDetailRow(R.string.product_detail_stock, navKey.stock.toString()),
     )
 }

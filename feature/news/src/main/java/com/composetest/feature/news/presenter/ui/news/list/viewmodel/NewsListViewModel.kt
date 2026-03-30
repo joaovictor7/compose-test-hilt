@@ -14,7 +14,7 @@ import com.composetest.feature.news.analytic.screen.FullNewsScreenAnalytic
 import com.composetest.feature.news.analytic.screen.NewsListScreenAnalytic
 import com.composetest.feature.news.domain.model.ArticleModel
 import com.composetest.feature.news.domain.usecase.GetTopHeadlinesUseCase
-import com.composetest.feature.news.navigation.destination.FullNewsDestination
+import com.composetest.feature.news.navigation.navkey.FullNewsNavKey
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -53,7 +53,7 @@ internal class NewsListViewModel @Inject constructor(
         _uiEvent.emitEvent(
             NewsListUiEvent.NavigateTo(
                 NavigationModel(
-                    FullNewsDestination(
+                    FullNewsNavKey(
                         imageUrl = article.urlToImage,
                         title = article.title,
                         description = article.description,

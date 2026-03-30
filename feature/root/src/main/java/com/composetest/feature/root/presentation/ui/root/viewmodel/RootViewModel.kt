@@ -1,14 +1,17 @@
 package com.composetest.feature.root.presentation.ui.root.viewmodel
 
 import androidx.lifecycle.viewModelScope
+import androidx.navigation3.runtime.NavKey
 import com.composetest.core.analytic.api.sender.AnalyticSender
+import com.composetest.core.domain.usecase.navigation.ObserveNavResultUseCase
 import com.composetest.core.domain.usecase.session.FinishSessionUseCase
 import com.composetest.core.domain.usecase.user.GetCurrentUserUseCase
-import com.composetest.core.router.destination.login.LoginDestination
 import com.composetest.core.router.di.quailifier.NavGraphListQualifier
 import com.composetest.core.router.enums.NavigationMode
 import com.composetest.core.router.interfaces.NavGraph
 import com.composetest.core.router.model.NavigationModel
+import com.composetest.core.router.navkey.login.LoginNavKey
+import com.composetest.core.router.result.account.AccountUpdateResult
 import com.composetest.core.ui.base.BaseViewModel
 import com.composetest.core.ui.di.qualifier.AsyncTaskUtilsQualifier
 import com.composetest.core.ui.interfaces.UiEvent
@@ -36,6 +39,7 @@ internal class RootViewModel @Inject constructor(
     private val getCurrentUserUseCase: GetCurrentUserUseCase,
     private val userModalDrawerMapper: UserModalDrawerMapper,
     private val analyticSender: AnalyticSender,
+    private val observeNavResultUseCase: ObserveNavResultUseCase,
     @param:NavGraphListQualifier(ROOT_NAV_GRAPH_LIST) private val navGraphs: Array<NavGraph>,
     @param:AsyncTaskUtilsQualifier(RootScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
     getAvailableFeaturesUseCase: GetAvailableFeaturesUseCase,
@@ -55,6 +59,11 @@ internal class RootViewModel @Inject constructor(
 
     init {
         iniUiState()
+        asyncTaskUtils.runAsyncTask(viewModelScope) {
+            observeNavResultUseCase(AccountUpdateResult::class).collect {
+                updateUserData()
+            }
+        }
     }
 
     override fun backHandler() {
@@ -68,7 +77,7 @@ internal class RootViewModel @Inject constructor(
         _uiEvent.emitEvent(
             RootUiEvent.NavigateToBottomFeature(
                 NavigationModel(
-                    navigationBottomFeature.destination,
+                    navigationBottomFeature.navKey,
                     NavigationMode.SAVE_SCREEN_STATE
                 )
             )
@@ -90,7 +99,7 @@ internal class RootViewModel @Inject constructor(
             _uiEvent.emitEvent(
                 RootUiEvent.NavigateToFeature(
                     NavigationModel(
-                        destination = LoginDestination(true),
+                        navKey = LoginNavKey(true),
                         navigationMode = NavigationMode.REMOVE_ALL_SCREENS_STACK
                     ),
                 )
@@ -107,9 +116,9 @@ internal class RootViewModel @Inject constructor(
         }
     }
 
-    override fun currentScreenObservable(currentRoute: String?) {
+    override fun currentScreenObservable(currentRoute: NavKey?) {
         val bottomNavigationFeature = NavigationFeature.bottomNavigationFeatures
-            .firstOrNull { currentRoute == it.destination.asRoute }
+            .firstOrNull { currentRoute == it.navKey }
         bottomNavigationFeature?.let {
             _uiState.update { it.setSelectedBottomNavigationFeature(bottomNavigationFeature) }
         }
@@ -122,7 +131,7 @@ internal class RootViewModel @Inject constructor(
             val user = getCurrentUserUseCase()
             _uiState.update {
                 it.initUiState(
-                    firstBottomNavigationFeature?.destination,
+                    firstBottomNavigationFeature?.navKey,
                     navGraphs,
                     modalDrawerNavigationFeatures,
                     bottomNavigationFeatures,
@@ -141,13 +150,13 @@ internal class RootViewModel @Inject constructor(
         bottomNavigationFeaturesOrder.add(navigationFeature)
         _uiEvent.emitEvent(
             RootUiEvent.NavigateToBottomFeature(
-                NavigationModel(navigationFeature.destination, NavigationMode.SAVE_SCREEN_STATE)
+                NavigationModel(navigationFeature.navKey, NavigationMode.SAVE_SCREEN_STATE)
             )
         )
     }
 
     private fun navigateToModalDrawerFeature(feature: NavigationFeature) {
-        _uiEvent.emitEvent(RootUiEvent.NavigateToFeature(NavigationModel(destination = feature.destination)))
+        _uiEvent.emitEvent(RootUiEvent.NavigateToFeature(NavigationModel(navKey = feature.navKey)))
     }
 
     private fun getModalDrawerNavigationFeatures() = NavigationFeature.modalDrawerFeatures.filter {

@@ -21,8 +21,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.rememberNavBackStack
 import com.composetest.core.designsystem.dimension.Spacing
 import com.composetest.core.designsystem.dimension.screenMargin
 import com.composetest.core.designsystem.extension.horizontalScreenMargin
@@ -44,10 +45,10 @@ private const val LIMIT_CONFIGURATIONS_PER_LINE = 2
 internal fun ConfigurationScreen(
     uiState: ConfigurationUiState,
     uiEvent: Flow<ConfigurationUiEvent> = emptyFlow(),
-    navController: NavHostController = rememberNavController(),
+    navBackStack: NavBackStack<NavKey> = rememberNavBackStack(),
     onExecuteIntent: (Intent<ConfigurationIntentReceiver>) -> Unit = {}
 ) {
-    UiEventsHandler(uiEvent = uiEvent, mainNavController = navController)
+    UiEventsHandler(uiEvent = uiEvent, navBackStack = navBackStack)
     LazyVerticalStaggeredGrid(
         modifier = Modifier.horizontalScreenMargin(),
         columns = StaggeredGridCells.Fixed(LIMIT_CONFIGURATIONS_PER_LINE),
@@ -96,11 +97,11 @@ private fun ConfigurationCard(
 @Composable
 private fun UiEventsHandler(
     uiEvent: Flow<ConfigurationUiEvent>,
-    mainNavController: NavHostController
+    navBackStack: NavBackStack<NavKey>,
 ) {
     UiEventsObserver(uiEvent) {
         when (it) {
-            is ConfigurationUiEvent.NavigateTo -> mainNavController.navigateTo(it.navigateModel)
+            is ConfigurationUiEvent.NavigateTo -> navBackStack.navigateTo(it.navigateModel)
         }
     }
 }

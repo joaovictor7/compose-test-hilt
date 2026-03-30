@@ -1,12 +1,12 @@
 package com.composetest.feature.product.presenter.mapper
 
 import com.composetest.feature.product.domain.model.ProductModel
-import com.composetest.feature.product.navigation.destination.ProductDetailDestination
+import com.composetest.feature.product.navigation.navkey.ProductDetailNavKey
 import javax.inject.Inject
 
-internal class ProductDestinationlMapper @Inject constructor() {
+internal class ProductNavKeyMapper @Inject constructor() {
 
-    fun mapperToDestination(model: ProductModel) = ProductDetailDestination(
+    fun mapperToNavKey(model: ProductModel) = ProductDetailNavKey(
         title = model.title,
         price = model.price,
         description = model.description,

@@ -8,7 +8,7 @@ import com.composetest.core.ui.di.qualifier.AsyncTaskUtilsQualifier
 import com.composetest.core.ui.interfaces.UiState
 import com.composetest.core.ui.util.AsyncTaskUtils
 import com.composetest.feature.product.analytic.screen.ProductDetailScreenAnalytic
-import com.composetest.feature.product.navigation.destination.ProductDetailDestination
+import com.composetest.feature.product.navigation.navkey.ProductDetailNavKey
 import com.composetest.feature.product.presenter.mapper.ProductDetailMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class ProductDetailViewModel @Inject constructor(
-    private val destination: ProductDetailDestination,
+    private val navKey: ProductDetailNavKey,
     private val productDetailMapper: ProductDetailMapper,
     private val analyticSender: AnalyticSender,
     @param:AsyncTaskUtilsQualifier(ProductDetailScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
@@ -41,10 +41,10 @@ internal class ProductDetailViewModel @Inject constructor(
     private fun setDetails() {
         _uiState.update {
             it.setProductDetails(
-                destination.thumbnail,
-                destination.title,
-                destination.description,
-                productDetailMapper.mapperToModel(destination)
+                navKey.thumbnail,
+                navKey.title,
+                navKey.description,
+                productDetailMapper.mapperToModel(navKey)
             )
         }
     }

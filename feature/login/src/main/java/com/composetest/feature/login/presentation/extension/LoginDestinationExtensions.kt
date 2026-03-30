@@ -1,5 +1,5 @@
 package com.composetest.feature.login.presentation.extension
 
-import com.composetest.core.router.destination.login.LoginDestination
+import com.composetest.core.router.navkey.login.LoginNavKey
 
-internal val LoginDestination.autoShowBiometricPrompt get() = !isLogout && !expiredSession
+internal val LoginNavKey.autoShowBiometricPrompt get() = !isLogout && !expiredSession

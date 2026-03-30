@@ -75,7 +75,7 @@ internal class ExchangeListViewModel @AssistedInject constructor(
 
     override fun navigateToDetail(exchangeId: String) {
         val exchange = exchangeList.find { it.id == exchangeId }
-        exchangeMapper.mapperToDestination(exchange)?.let {
+        exchangeMapper.mapperToNavKey(exchange)?.let {
             _uiEvent.emitEvent(ExchangeListUiEvent.NavigateTo(NavigationModel(it)))
         }
     }

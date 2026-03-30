@@ -8,19 +8,26 @@ import com.composetest.core.ui.di.qualifier.AsyncTaskUtilsQualifier
 import com.composetest.core.ui.interfaces.UiState
 import com.composetest.core.ui.util.AsyncTaskUtils
 import com.composetest.feature.news.analytic.screen.FullNewsScreenAnalytic
-import com.composetest.feature.news.navigation.destination.FullNewsDestination
+import com.composetest.feature.news.navigation.navkey.FullNewsNavKey
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import javax.inject.Inject
 
-@HiltViewModel
-internal class FullNewsViewModel @Inject constructor(
-    private val destination: FullNewsDestination,
+@HiltViewModel(assistedFactory = FullNewsViewModel.Factory::class)
+internal class FullNewsViewModel @AssistedInject constructor(
+    @Assisted private val navKey: FullNewsNavKey,
     private val analyticSender: AnalyticSender,
     @param:AsyncTaskUtilsQualifier(FullNewsScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
 ) : BaseViewModel(), UiState<FullNewsUiState> {
+
+    @AssistedFactory
+    internal interface Factory {
+        fun create(navKey: FullNewsNavKey): FullNewsViewModel
+    }
 
     private val _uiState = MutableStateFlow(FullNewsUiState())
     override val uiState = _uiState.asStateFlow()
@@ -39,10 +46,10 @@ internal class FullNewsViewModel @Inject constructor(
     private fun initUiState() {
         _uiState.update {
             it.copy(
-                imageUrl = destination.imageUrl,
-                title = destination.title,
-                description = destination.description,
-                content = destination.content
+                imageUrl = navKey.imageUrl,
+                title = navKey.title,
+                description = navKey.description,
+                content = navKey.content
             )
         }
     }

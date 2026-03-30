@@ -4,4 +4,4 @@ import com.composetest.core.router.interfaces.ResultParam
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-object AccountUpdateResult : ResultParam
+data object AccountUpdateResult : ResultParam

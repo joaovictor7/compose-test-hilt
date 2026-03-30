@@ -28,8 +28,8 @@ import com.composetest.core.designsystem.component.linktext.LinkText
 import com.composetest.core.designsystem.component.scaffold.ScreenScaffold
 import com.composetest.core.designsystem.component.topbar.LeftTopBar
 import com.composetest.core.designsystem.dimension.Spacing
-import com.composetest.core.designsystem.extension.horizontalScreenMargin
 import com.composetest.core.designsystem.extension.applyIf
+import com.composetest.core.designsystem.extension.horizontalScreenMargin
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.feature.exchange.R
 import com.composetest.feature.exchange.presenter.model.ExchangeDetailRowScreenModel

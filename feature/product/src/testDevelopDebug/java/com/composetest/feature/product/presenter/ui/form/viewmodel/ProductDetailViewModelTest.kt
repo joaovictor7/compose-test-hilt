@@ -7,7 +7,7 @@ import com.composetest.core.test.kotlin.extension.runFlowTest
 import com.composetest.core.ui.util.AsyncTaskUtils
 import com.composetest.feature.product.R
 import com.composetest.feature.product.analytic.screen.ProductDetailScreenAnalytic
-import com.composetest.feature.product.navigation.destination.ProductDetailDestination
+import com.composetest.feature.product.navigation.navkey.ProductDetailNavKey
 import com.composetest.feature.product.presenter.mapper.ProductDetailMapper
 import com.composetest.feature.product.presenter.model.ProductDetailRow
 import io.mockk.coVerify
@@ -30,18 +30,18 @@ internal class ProductDetailViewModelTest : BaseTest() {
 
     @BeforeEach
     fun setUp() {
-        every { productDetailMapper.mapperToModel(destinationMock) } returns listOf(
+        every { productDetailMapper.mapperToModel(navKeyMock) } returns listOf(
             ProductDetailRow(
                 R.string.product_detail_rating,
-                destinationMock.rating.toString(),
+                navKeyMock.rating.toString(),
                 true
             ),
             ProductDetailRow(R.string.product_detail_price, "$199.99"),
             ProductDetailRow(
                 R.string.product_detail_discount_percentage,
-                "${destinationMock.discountPercentage}%"
+                "${navKeyMock.discountPercentage}%"
             ),
-            ProductDetailRow(R.string.product_detail_stock, destinationMock.stock.toString()),
+            ProductDetailRow(R.string.product_detail_stock, navKeyMock.stock.toString()),
         )
         viewModel = initViewModel()
     }
@@ -51,9 +51,9 @@ internal class ProductDetailViewModelTest : BaseTest() {
         flow = viewModel.uiState,
         onVerify = {
             val state = it.last()
-            assertEquals(destinationMock.title, state.title)
-            assertEquals(destinationMock.thumbnail, state.thumbnail)
-            assertEquals(destinationMock.description, state.description)
+            assertEquals(navKeyMock.title, state.title)
+            assertEquals(navKeyMock.thumbnail, state.thumbnail)
+            assertEquals(navKeyMock.description, state.description)
             assertEquals(detailModelMock, state.infoRows)
             coVerify {
                 analyticSender.sendEvent(
@@ -66,14 +66,14 @@ internal class ProductDetailViewModelTest : BaseTest() {
     )
 
     private fun initViewModel() = ProductDetailViewModel(
-        destination = destinationMock,
+        navKey = navKeyMock,
         productDetailMapper = productDetailMapper,
         analyticSender = analyticSender,
         asyncTaskUtils = asyncTaskUtils,
     )
 
     private companion object {
-        val destinationMock = ProductDetailDestination(
+        val navKeyMock = ProductDetailNavKey(
             title = "Product Title",
             thumbnail = "http://image.com/image.png",
             description = "Product Description",
@@ -86,15 +86,15 @@ internal class ProductDetailViewModelTest : BaseTest() {
         val detailModelMock = listOf(
             ProductDetailRow(
                 R.string.product_detail_rating,
-                destinationMock.rating.toString(),
+                navKeyMock.rating.toString(),
                 true
             ),
             ProductDetailRow(R.string.product_detail_price, "$199.99"),
             ProductDetailRow(
                 R.string.product_detail_discount_percentage,
-                "${destinationMock.discountPercentage}%"
+                "${navKeyMock.discountPercentage}%"
             ),
-            ProductDetailRow(R.string.product_detail_stock, destinationMock.stock.toString()),
+            ProductDetailRow(R.string.product_detail_stock, navKeyMock.stock.toString()),
         )
     }
 }

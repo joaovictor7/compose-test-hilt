@@ -7,8 +7,8 @@ import com.composetest.common.api.extension.fromDateToString
 import com.composetest.common.api.extension.orFalse
 import com.composetest.core.analytic.api.event.CommonAnalyticEvent
 import com.composetest.core.analytic.api.sender.AnalyticSender
-import com.composetest.core.router.destination.dialog.SimpleDialogDestination
 import com.composetest.core.router.model.NavigationModel
+import com.composetest.core.router.navkey.dialog.SimpleDialogNavKey
 import com.composetest.core.ui.base.BaseViewModel
 import com.composetest.core.ui.di.qualifier.AsyncTaskUtilsQualifier
 import com.composetest.core.ui.extension.uiStateValue
@@ -98,13 +98,13 @@ internal class FormViewModel @Inject constructor(
     }
 
     override fun submitForm() {
-        val destination = SimpleDialogDestination(
+        val navKey = SimpleDialogNavKey(
             iconId = DesignSystemRes.drawable.ic_check,
             titleId = R.string.form_submit_success_title,
             textId = R.string.form_submit_success_subtitle,
             dismissButtonTextId = UiRes.string.close,
         )
-        _uiEvent.emitEvent(FormUiEvent.NavigateTo(NavigationModel(destination)))
+        _uiEvent.emitEvent(FormUiEvent.NavigateTo(NavigationModel(navKey)))
     }
 
     private fun setEmailFormTextField(

@@ -2,13 +2,14 @@ package com.composetest.presentation.ui.main
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.runtime.rememberNavBackStack
+import androidx.navigation3.ui.NavDisplay
 import com.composetest.core.designsystem.component.lifecycle.LifecycleEvent
 import com.composetest.core.designsystem.theme.ComposeTestTheme
-import com.composetest.core.router.extension.currentRoute
-import com.composetest.core.router.extension.navigateTo
+import com.composetest.core.router.extension.currentNavKey
 import com.composetest.core.ui.interfaces.Intent
 import com.composetest.core.ui.util.UiEventsObserver
 import com.composetest.presentation.ui.main.viewmodel.MainIntent
@@ -42,33 +43,38 @@ private fun Navigation(
     uiEvent: Flow<MainUiEvent>,
     onExecuteIntent: (Intent<MainIntentReceiver>) -> Unit,
 ) {
-    if (uiState.firstDestination == null) return
-    val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = uiState.firstDestination) {
-        uiState.navGraphs.forEach { it.run { register(navController) } }
-    }
-    UiEventsHandler(uiEvent = uiEvent, navController = navController)
-    LifecycleHandler(onExecuteIntent = onExecuteIntent, navController = navController)
+    if (uiState.firstNavKey == null) return
+    val navBackStack = rememberNavBackStack(uiState.firstNavKey)
+    NavDisplay(
+        backStack = navBackStack,
+        entryProvider = entryProvider {
+            uiState.navGraphs.forEach { navGraph ->
+                navGraph.run { registerEntries(navBackStack) }
+            }
+        }
+    )
+    UiEventsHandler(uiEvent = uiEvent, navBackStack = navBackStack)
+    LifecycleHandler(onExecuteIntent = onExecuteIntent, backStack = navBackStack)
 }
 
 @Composable
 private fun LifecycleHandler(
     onExecuteIntent: (Intent<MainIntentReceiver>) -> Unit,
-    navController: NavHostController
+    backStack: NavBackStack<NavKey>,
 ) {
     LifecycleEvent(onResume = {
-        onExecuteIntent(MainIntent.VerifySession(navController.currentRoute))
+        onExecuteIntent(MainIntent.VerifySession(backStack.currentNavKey))
     })
 }
 
 @Composable
 private fun UiEventsHandler(
     uiEvent: Flow<MainUiEvent>,
-    navController: NavHostController,
+    navBackStack: NavBackStack<NavKey>,
 ) {
     UiEventsObserver(uiEvent) {
         when (it) {
-            is MainUiEvent.NavigateTo -> navController.navigateTo(it.navigationModel)
+            is MainUiEvent.NavigateTo -> navBackStack.plus(it.navigationModel)
         }
     }
 }

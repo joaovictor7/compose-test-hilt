@@ -14,8 +14,8 @@ import com.composetest.feature.product.domain.model.ProductModel
 import com.composetest.feature.product.domain.usecase.FilterProductsUseCase
 import com.composetest.feature.product.domain.usecase.GetAllProductsUseCase
 import com.composetest.feature.product.domain.usecase.ResyncProductsUseCase
-import com.composetest.feature.product.presenter.mapper.ProductDestinationlMapper
 import com.composetest.feature.product.presenter.mapper.ProductItemListMapper
+import com.composetest.feature.product.presenter.mapper.ProductNavKeyMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,7 +31,7 @@ internal class ProductListViewModel @Inject constructor(
     private val resyncProductsUseCase: ResyncProductsUseCase,
     private val filterProductsUseCase: FilterProductsUseCase,
     private val productItemListMapper: ProductItemListMapper,
-    private val productDestinationlMapper: ProductDestinationlMapper,
+    private val productNavKeyMapper: ProductNavKeyMapper,
     @param:AsyncTaskUtilsQualifier(ProductListScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
 ) : BaseViewModel(),
     UiState<ProductListUiState>,
@@ -73,8 +73,8 @@ internal class ProductListViewModel @Inject constructor(
 
     override fun navigateToDetail(id: Int) {
         val product = productList.find { it.id == id } ?: return
-        val destination = productDestinationlMapper.mapperToDestination(product)
-        _uiEvent.emitEvent(ProductListUiEvent.NavigateTo(NavigationModel(destination)))
+        val navKey = productNavKeyMapper.mapperToNavKey(product)
+        _uiEvent.emitEvent(ProductListUiEvent.NavigateTo(NavigationModel(navKey)))
     }
 
     override fun productFilter(filter: String) {

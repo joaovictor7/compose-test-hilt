@@ -46,7 +46,7 @@ internal class ConfigurationViewModel @Inject constructor(
     }
 
     override fun configurationClick(configuration: Configuration) {
-        _uiEvent.emitEvent(ConfigurationUiEvent.NavigateTo(NavigationModel(configuration.destination)))
+        _uiEvent.emitEvent(ConfigurationUiEvent.NavigateTo(NavigationModel(configuration.navKey)))
     }
 
     private fun initUiState() {

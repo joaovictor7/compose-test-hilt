@@ -10,8 +10,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.rememberNavBackStack
 import com.composetest.core.designsystem.component.button.LoadingButton
 import com.composetest.core.designsystem.component.scaffold.ScreenScaffold
 import com.composetest.core.designsystem.component.textfield.TextField
@@ -39,9 +40,9 @@ internal fun AccountScreen(
     uiState: AccountUiState,
     uiEvent: Flow<AccountUiEvent> = emptyFlow(),
     onExecuteIntent: (Intent<AccountIntentReceiver>) -> Unit = {},
-    navController: NavHostController = rememberNavController(),
+    navBackStack: NavBackStack<NavKey> = rememberNavBackStack(),
 ) {
-    UiEventHandler(uiEvent = uiEvent, navController = navController)
+    UiEventHandler(uiEvent = uiEvent, navBackStack = navBackStack)
     BackHandler { onExecuteIntent(AccountIntent.BackHandler) }
     ScreenScaffold(
         modifier = Modifier
@@ -80,16 +81,12 @@ internal fun AccountScreen(
 @Composable
 private fun UiEventHandler(
     uiEvent: Flow<AccountUiEvent>,
-    navController: NavHostController,
+    navBackStack: NavBackStack<NavKey>,
 ) {
     UiEventsObserver(uiEvent) {
         when (it) {
-            is AccountUiEvent.NavigateBack -> {
-                navController.navigateBack(it.result)
-            }
-            is AccountUiEvent.NavigateTo -> {
-                navController.navigateTo(it.navigationModel)
-            }
+            AccountUiEvent.NavigateBack -> navBackStack.navigateBack()
+            is AccountUiEvent.NavigateTo -> navBackStack.navigateTo(it.navigationModel)
         }
     }
 }

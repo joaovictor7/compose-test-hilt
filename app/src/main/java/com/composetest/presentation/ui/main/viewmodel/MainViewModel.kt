@@ -1,14 +1,15 @@
 package com.composetest.presentation.ui.main.viewmodel
 
 import androidx.lifecycle.viewModelScope
+import androidx.navigation3.runtime.NavKey
 import com.composetest.analytic.screen.MainScreenAnalytic
 import com.composetest.core.domain.usecase.remoteconfig.FetchRemoteConfigUseCase
 import com.composetest.core.domain.usecase.session.CheckSessionIsValidUseCase
-import com.composetest.core.router.destination.login.LoginDestination
-import com.composetest.core.router.destination.root.RootDestination
 import com.composetest.core.router.enums.NavigationMode
 import com.composetest.core.router.interfaces.NavGraph
 import com.composetest.core.router.model.NavigationModel
+import com.composetest.core.router.navkey.login.LoginNavKey
+import com.composetest.core.router.navkey.root.RootNavKey
 import com.composetest.core.ui.base.BaseViewModel
 import com.composetest.core.ui.di.qualifier.AsyncTaskUtilsQualifier
 import com.composetest.core.ui.interfaces.UiEvent
@@ -47,14 +48,14 @@ internal class MainViewModel @Inject constructor(
         initUiState()
     }
 
-    override fun verifySession(currentRoute: String?) {
+    override fun verifySession(currentRoute: NavKey?) {
         asyncTaskUtils.runAsyncTask(viewModelScope) {
             val validSession = checkSessionIsValidUseCase()
-            val loginDestination = LoginDestination(expiredSession = true)
-            if (!validSession && currentRoute != loginDestination.asRoute) {
+            val loginNavKey = LoginNavKey(expiredSession = true)
+            if (!validSession && currentRoute != loginNavKey) {
                 _uiEvent.emitEvent(
                     MainUiEvent.NavigateTo(
-                        NavigationModel(loginDestination, NavigationMode.REMOVE_ALL_SCREENS_STACK)
+                        NavigationModel(loginNavKey, NavigationMode.REMOVE_ALL_SCREENS_STACK)
                     )
                 )
             }
@@ -66,12 +67,12 @@ internal class MainViewModel @Inject constructor(
     }
 
     private fun initUiState() = asyncTaskUtils.runAsyncTask(viewModelScope) {
-        val firstDestination = if (checkNeedsLoginUseCase()) {
-            LoginDestination()
+        val firstNavKey = if (checkNeedsLoginUseCase()) {
+            LoginNavKey()
         } else {
-            RootDestination
+            RootNavKey
         }
-        _uiState.update { it.setInitUiState(firstDestination, navGraphs) }
+        _uiState.update { it.setInitUiState(firstNavKey, navGraphs) }
     }
 
     private fun appThemeObservable() {

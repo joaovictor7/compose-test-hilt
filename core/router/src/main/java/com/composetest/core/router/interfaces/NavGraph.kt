@@ -1,8 +1,9 @@
 package com.composetest.core.router.interfaces
 
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
+import androidx.navigation3.runtime.EntryProviderScope
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
 
 interface NavGraph {
-    fun NavGraphBuilder.register(navController: NavHostController)
+    fun EntryProviderScope<NavKey>.registerEntries(navBackStack: NavBackStack<NavKey>)
 }

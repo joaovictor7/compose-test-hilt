@@ -24,8 +24,9 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.rememberNavBackStack
 import com.composetest.core.designsystem.component.button.Button
 import com.composetest.core.designsystem.component.icon.VibratingIcon
 import com.composetest.core.designsystem.component.textfield.OutlinedTextField
@@ -60,12 +61,12 @@ internal fun LoginScreen(
     uiState: LoginUiState,
     uiEvent: Flow<LoginUiEvent> = emptyFlow(),
     onExecuteIntent: (Intent<LoginIntentReceiver>) -> Unit = {},
-    navController: NavHostController = rememberNavController()
+    navBackStack: NavBackStack<NavKey> = rememberNavBackStack(),
 ) {
     UiEventHandler(
         uiEvent = uiEvent,
         onExecuteIntent = onExecuteIntent,
-        navController = navController,
+        navBackStack = navBackStack,
     )
     LifecycleEventHandler(onExecuteIntent = onExecuteIntent)
     Box(
@@ -204,12 +205,12 @@ private fun BoxScope.VersionName(uiState: LoginUiState) {
 private fun UiEventHandler(
     uiEvent: Flow<LoginUiEvent>,
     onExecuteIntent: (Intent<LoginIntentReceiver>) -> Unit,
-    navController: NavHostController
+    navBackStack: NavBackStack<NavKey>,
 ) {
     val context = LocalContext.current
     UiEventsObserver(uiEvent) {
         when (it) {
-            is LoginUiEvent.NavigateTo -> navController.navigateTo(it.navigation)
+            is LoginUiEvent.NavigateTo -> navBackStack.navigateTo(it.navigation)
             is LoginUiEvent.ShowBiometricPrompt -> showBiometricPrompt(
                 context = context,
                 titleId = R.string.feature_login_biometric_title,
