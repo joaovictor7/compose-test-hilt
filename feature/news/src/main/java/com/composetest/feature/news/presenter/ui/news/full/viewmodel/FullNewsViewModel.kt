@@ -9,25 +9,19 @@ import com.composetest.core.ui.interfaces.UiState
 import com.composetest.core.ui.util.AsyncTaskUtils
 import com.composetest.feature.news.analytic.screen.FullNewsScreenAnalytic
 import com.composetest.feature.news.navigation.navkey.FullNewsNavKey
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-@HiltViewModel(assistedFactory = FullNewsViewModel.Factory::class)
-internal class FullNewsViewModel @AssistedInject constructor(
-    @Assisted private val navKey: FullNewsNavKey,
+@HiltViewModel
+internal class FullNewsViewModel @Inject constructor(
+    private val navKey: FullNewsNavKey,
     private val analyticSender: AnalyticSender,
     @param:AsyncTaskUtilsQualifier(FullNewsScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
 ) : BaseViewModel(), UiState<FullNewsUiState> {
-
-    @AssistedFactory
-    internal interface Factory {
-        fun create(navKey: FullNewsNavKey): FullNewsViewModel
-    }
 
     private val _uiState = MutableStateFlow(FullNewsUiState())
     override val uiState = _uiState.asStateFlow()
@@ -38,7 +32,7 @@ internal class FullNewsViewModel @AssistedInject constructor(
     }
 
     override fun sendOpenScreenAnalytic() {
-        asyncTaskUtils.runAsyncTask(viewModelScope) {
+        viewModelScope.launch {
             analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(FullNewsScreenAnalytic))
         }
     }

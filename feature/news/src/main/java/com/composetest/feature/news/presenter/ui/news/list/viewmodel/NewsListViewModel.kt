@@ -21,12 +21,15 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.coroutines.CoroutineContext
 
 @HiltViewModel
 internal class NewsListViewModel @Inject constructor(
     private val getTopHeadlinesUseCase: GetTopHeadlinesUseCase,
     private val analyticSender: AnalyticSender,
+    private val coroutineContext: CoroutineContext,
     @param:AsyncTaskUtilsQualifier(NewsListScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
 ) : BaseViewModel(), UiState<NewsListUiState>, UiEvent<NewsListUiEvent>, NewsListIntentReceiver {
 
@@ -44,8 +47,10 @@ internal class NewsListViewModel @Inject constructor(
     }
 
     override fun sendOpenScreenAnalytic() {
-        asyncTaskUtils.runAsyncTask(viewModelScope) {
-            analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(FullNewsScreenAnalytic))
+        viewModelScope.launch(coroutineContext) {
+            asyncTaskUtils.runAsyncTask {
+                analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(FullNewsScreenAnalytic))
+            }
         }
     }
 
@@ -70,13 +75,14 @@ internal class NewsListViewModel @Inject constructor(
 
     private fun getArticles() {
         _uiState.update { it.setIsLoading(true) }
-        asyncTaskUtils.runAsyncTask(
-            coroutineScope = viewModelScope,
-            onCompletion = { _uiState.update { it.setIsLoading(false) } },
-            onError = ::requestErrorHandler
-        ) {
-            val articles = getTopHeadlinesUseCase()
-            _uiState.update { it.setArticles(articles) }
+        viewModelScope.launch(coroutineContext) {
+            asyncTaskUtils.runAsyncTask(
+                onCompletion = { _uiState.update { it.setIsLoading(false) } },
+                onError = ::requestErrorHandler
+            ) {
+                val articles = getTopHeadlinesUseCase()
+                _uiState.update { it.setArticles(articles) }
+            }
         }
     }
 

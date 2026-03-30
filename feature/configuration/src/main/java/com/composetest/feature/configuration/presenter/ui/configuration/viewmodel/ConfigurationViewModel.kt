@@ -17,11 +17,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.coroutines.CoroutineContext
 
 @HiltViewModel
 internal class ConfigurationViewModel @Inject constructor(
     private val analyticSender: AnalyticSender,
+    private val coroutineContext: CoroutineContext,
     @param:AsyncTaskUtilsQualifier(ConfigurationScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
 ) : BaseViewModel(), UiState<ConfigurationUiState>, UiEvent<ConfigurationUiEvent>,
     ConfigurationIntentReceiver {
@@ -40,8 +43,10 @@ internal class ConfigurationViewModel @Inject constructor(
     }
 
     override fun sendOpenScreenAnalytic() {
-        asyncTaskUtils.runAsyncTask(viewModelScope) {
-            analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(ConfigurationScreenAnalytic))
+        viewModelScope.launch(coroutineContext) {
+            asyncTaskUtils.runAsyncTask {
+                analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(ConfigurationScreenAnalytic))
+            }
         }
     }
 

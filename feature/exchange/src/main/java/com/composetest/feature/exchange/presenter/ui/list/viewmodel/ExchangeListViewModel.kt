@@ -26,20 +26,21 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
 
 @HiltViewModel(assistedFactory = ExchangeListViewModel.Factory::class)
 internal class ExchangeListViewModel @AssistedInject constructor(
     private val getAllExchangesUseCase: GetAllExchangesUseCase,
     private val exchangeMapper: ExchangeMapper,
     private val analyticSender: AnalyticSender,
+    private val coroutineContext: CoroutineContext,
     @Assisted private val deepLinkParam: ExchangeListDeepLinkParam?,
     @param:AsyncTaskUtilsQualifier(ExchangeListScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
 ) : BaseViewModel(),
     UiState<ExchangeListUiState>,
     UiEvent<ExchangeListUiEvent>,
     ExchangeListIntentReceiver {
-
-    override val intentReceiver = this
 
     private var exchangeList = emptyList<ExchangeModel>()
 
@@ -49,27 +50,30 @@ internal class ExchangeListViewModel @AssistedInject constructor(
     private val _uiEvent = MutableSharedFlow<ExchangeListUiEvent>()
     override val uiEvent = _uiEvent.asSharedFlow()
 
+    override val intentReceiver = this
+
     init {
         sendOpenScreenAnalytic()
         getAllExchanges()
     }
 
     override fun sendOpenScreenAnalytic() {
-        asyncTaskUtils.runAsyncTask(viewModelScope) {
+        viewModelScope.launch(coroutineContext) {
             analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(ExchangeListScreenAnalytic))
         }
     }
 
     override fun getAllExchanges() {
         _uiState.update { it.setIsLoading(true) }
-        asyncTaskUtils.runAsyncTask(
-            coroutineScope = viewModelScope,
-            onError = { errorHandler(it) },
-            onCompletion = { _uiState.update { it.setIsLoading(false) } }
-        ) {
-            exchangeList = getAllExchangesUseCase()
-            _uiState.update { it.setExchangeScreenList(exchangeMapper.mapperToModels(exchangeList)) }
-            deepLinkParam?.let { exchangeFilter(it.filter) }
+        viewModelScope.launch(coroutineContext) {
+            asyncTaskUtils.runAsyncTask(
+                onError = { errorHandler(it) },
+                onCompletion = { _uiState.update { it.setIsLoading(false) } }
+            ) {
+                exchangeList = getAllExchangesUseCase()
+                _uiState.update { it.setExchangeScreenList(exchangeMapper.mapperToModels(exchangeList)) }
+                deepLinkParam?.let { exchangeFilter(it.filter) }
+            }
         }
     }
 

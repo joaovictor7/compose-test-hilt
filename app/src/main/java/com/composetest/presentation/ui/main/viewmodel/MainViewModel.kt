@@ -23,7 +23,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.coroutines.CoroutineContext
 
 @HiltViewModel
 internal class MainViewModel @Inject constructor(
@@ -32,6 +34,7 @@ internal class MainViewModel @Inject constructor(
     private val getAppThemeUseCase: GetAppThemeUseCase,
     private val fetchRemoteConfigUseCase: FetchRemoteConfigUseCase,
     private val navGraphs: Array<NavGraph>,
+    private val coroutineContext: CoroutineContext,
     @param:AsyncTaskUtilsQualifier(MainScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
 ) : BaseViewModel(), UiState<MainUiState>, UiEvent<MainUiEvent>, MainIntentReceiver {
 
@@ -49,15 +52,17 @@ internal class MainViewModel @Inject constructor(
     }
 
     override fun verifySession(currentRoute: NavKey?) {
-        asyncTaskUtils.runAsyncTask(viewModelScope) {
-            val validSession = checkSessionIsValidUseCase()
-            val loginNavKey = LoginNavKey(expiredSession = true)
-            if (!validSession && currentRoute != loginNavKey) {
-                _uiEvent.emitEvent(
-                    MainUiEvent.NavigateTo(
-                        NavigationModel(loginNavKey, NavigationMode.REMOVE_ALL_SCREENS_STACK)
+        viewModelScope.launch(coroutineContext) {
+            asyncTaskUtils.runAsyncTask {
+                val validSession = checkSessionIsValidUseCase()
+                val loginNavKey = LoginNavKey(expiredSession = true)
+                if (!validSession && currentRoute != loginNavKey) {
+                    _uiEvent.emitEvent(
+                        MainUiEvent.NavigateTo(
+                            NavigationModel(loginNavKey, NavigationMode.REMOVE_ALL_SCREENS_STACK)
+                        )
                     )
-                )
+                }
             }
         }
     }
@@ -66,21 +71,26 @@ internal class MainViewModel @Inject constructor(
         fetchRemoteConfigUseCase()
     }
 
-    private fun initUiState() = asyncTaskUtils.runAsyncTask(viewModelScope) {
-        val firstNavKey = if (checkNeedsLoginUseCase()) {
-            LoginNavKey()
-        } else {
-            RootNavKey
+    private fun initUiState() {
+        viewModelScope.launch(coroutineContext) {
+            asyncTaskUtils.runAsyncTask {
+                val firstNavKey = if (checkNeedsLoginUseCase()) {
+                    LoginNavKey()
+                } else {
+                    RootNavKey
+                }
+                _uiState.update { it.setInitUiState(firstNavKey, navGraphs) }
+            }
         }
-        _uiState.update { it.setInitUiState(firstNavKey, navGraphs) }
     }
 
     private fun appThemeObservable() {
-        asyncTaskUtils.runFlowTask(
-            coroutineScope = viewModelScope,
-            flow = getAppThemeUseCase()
-        ) { appTheme ->
-            _uiState.update { it.setAppTheme(appTheme) }
+        viewModelScope.launch(coroutineContext) {
+            asyncTaskUtils.runFlowTask(
+                flow = getAppThemeUseCase()
+            ) { appTheme ->
+                _uiState.update { it.setAppTheme(appTheme) }
+            }
         }
     }
 }

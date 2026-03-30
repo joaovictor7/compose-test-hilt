@@ -16,7 +16,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.coroutines.CoroutineContext
 
 @HiltViewModel
 internal class SecurityConfigurationViewModel @Inject constructor(
@@ -24,6 +26,7 @@ internal class SecurityConfigurationViewModel @Inject constructor(
     private val updateSecurityConfigurationUseCase: UpdateSecurityConfigurationUseCase,
     private val biometricProvider: BiometricProvider,
     private val analyticSender: AnalyticSender,
+    private val coroutineContext: CoroutineContext,
     @param:AsyncTaskUtilsQualifier(SecurityConfigurationScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
 ) : BaseViewModel(), UiState<SecurityConfigurationUiState>, SecurityConfigurationIntentReceiver {
 
@@ -40,28 +43,34 @@ internal class SecurityConfigurationViewModel @Inject constructor(
     }
 
     override fun sendOpenScreenAnalytic() {
-        asyncTaskUtils.runAsyncTask(viewModelScope) {
-            analyticSender.sendEvent(
-                CommonAnalyticEvent.OpenScreen(SecurityConfigurationScreenAnalytic)
-            )
+        viewModelScope.launch(coroutineContext) {
+            asyncTaskUtils.runAsyncTask {
+                analyticSender.sendEvent(
+                    CommonAnalyticEvent.OpenScreen(SecurityConfigurationScreenAnalytic)
+                )
+            }
         }
     }
 
     override fun changeSwitchBiometric(checked: Boolean) {
-        asyncTaskUtils.runAsyncTask(viewModelScope) {
-            updateSecurityConfigurationUseCase(securityConfiguration?.apply {
-                biometricLogin = checked
-            })
-            _uiState.update { it.copy(biometricIsEnabled = checked) }
+        viewModelScope.launch(coroutineContext) {
+            asyncTaskUtils.runAsyncTask {
+                updateSecurityConfigurationUseCase(securityConfiguration?.apply {
+                    biometricLogin = checked
+                })
+                _uiState.update { it.copy(biometricIsEnabled = checked) }
+            }
         }
     }
 
     private fun initUiState() {
         val biometricIsAvailable = biometricProvider.biometricIsAvailable
-        asyncTaskUtils.runAsyncTask(viewModelScope) {
-            securityConfiguration = getSecurityConfigurationUseCase()
-            _uiState.update {
-                it.initUiState(biometricIsAvailable, securityConfiguration?.biometricLogin)
+        viewModelScope.launch(coroutineContext) {
+            asyncTaskUtils.runAsyncTask {
+                securityConfiguration = getSecurityConfigurationUseCase()
+                _uiState.update {
+                    it.initUiState(biometricIsAvailable, securityConfiguration?.biometricLogin)
+                }
             }
         }
     }

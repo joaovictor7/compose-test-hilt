@@ -22,7 +22,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.coroutines.CoroutineContext
 
 @HiltViewModel
 internal class ProductListViewModel @Inject constructor(
@@ -32,6 +34,7 @@ internal class ProductListViewModel @Inject constructor(
     private val filterProductsUseCase: FilterProductsUseCase,
     private val productItemListMapper: ProductItemListMapper,
     private val productNavKeyMapper: ProductNavKeyMapper,
+    private val coroutineContext: CoroutineContext,
     @param:AsyncTaskUtilsQualifier(ProductListScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
 ) : BaseViewModel(),
     UiState<ProductListUiState>,
@@ -54,20 +57,23 @@ internal class ProductListViewModel @Inject constructor(
     }
 
     override fun sendOpenScreenAnalytic() {
-        asyncTaskUtils.runAsyncTask(viewModelScope) {
-            analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(ProductListScreenAnalytic))
+        viewModelScope.launch(coroutineContext) {
+            asyncTaskUtils.runAsyncTask {
+                analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(ProductListScreenAnalytic))
+            }
         }
     }
 
     override fun resyncProducts() {
         _uiState.update { it.setIsLoading(true) }
-        asyncTaskUtils.runAsyncTask(
-            coroutineScope = viewModelScope,
-            onError = { errorHandler(it) },
-            onCompletion = { _uiState.update { it.setIsLoading(false) } }
-        ) {
-            productList = resyncProductsUseCase()
-            _uiState.update { it.setProductScreenList(productItemListMapper.mapperTo(productList)) }
+        viewModelScope.launch(coroutineContext) {
+            asyncTaskUtils.runAsyncTask(
+                onError = { errorHandler(it) },
+                onCompletion = { _uiState.update { it.setIsLoading(false) } }
+            ) {
+                productList = resyncProductsUseCase()
+                _uiState.update { it.setProductScreenList(productItemListMapper.mapperTo(productList)) }
+            }
         }
     }
 
@@ -93,13 +99,14 @@ internal class ProductListViewModel @Inject constructor(
 
     private fun getAllProducts() {
         _uiState.update { it.setIsLoading(true) }
-        asyncTaskUtils.runAsyncTask(
-            coroutineScope = viewModelScope,
-            onError = ::errorHandler,
-            onCompletion = { _uiState.update { it.setIsLoading(false) } }
-        ) {
-            productList = getAllProductsUseCase()
-            _uiState.update { it.setProductScreenList(productItemListMapper.mapperTo(productList)) }
+        viewModelScope.launch(coroutineContext) {
+            asyncTaskUtils.runAsyncTask(
+                onError = ::errorHandler,
+                onCompletion = { _uiState.update { it.setIsLoading(false) } }
+            ) {
+                productList = getAllProductsUseCase()
+                _uiState.update { it.setProductScreenList(productItemListMapper.mapperTo(productList)) }
+            }
         }
     }
 

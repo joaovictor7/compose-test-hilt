@@ -14,7 +14,6 @@ import com.composetest.feature.news.presenter.ui.news.full.viewmodel.FullNewsVie
 import com.composetest.feature.news.presenter.ui.news.list.NewsListScreen
 import com.composetest.feature.news.presenter.ui.news.list.viewmodel.NewsListViewModel
 import javax.inject.Inject
-import com.composetest.feature.news.presenter.ui.news.full.viewmodel.FullNewsViewModel.Factory as FullNewsViewModelFactory
 
 internal class NavGraphImpl @Inject constructor() : NavGraph {
     override fun EntryProviderScope<NavKey>.registerEntries(navBackStack: NavBackStack<NavKey>) {
@@ -28,10 +27,8 @@ internal class NavGraphImpl @Inject constructor() : NavGraph {
                 navBackStack = navBackStack,
             )
         }
-        entry<FullNewsNavKey> { dest ->
-            val viewModel = hiltViewModel<FullNewsViewModel, FullNewsViewModelFactory> { factory ->
-                factory.create(dest)
-            }
+        entry<FullNewsNavKey> { _ ->
+            val viewModel = hiltViewModel<FullNewsViewModel>()
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
             FullNewsScreen(uiState = uiState)
         }

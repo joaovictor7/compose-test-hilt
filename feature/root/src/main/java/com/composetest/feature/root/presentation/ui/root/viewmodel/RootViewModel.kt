@@ -31,7 +31,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.coroutines.CoroutineContext
 
 @HiltViewModel
 internal class RootViewModel @Inject constructor(
@@ -40,6 +42,7 @@ internal class RootViewModel @Inject constructor(
     private val userModalDrawerMapper: UserModalDrawerMapper,
     private val analyticSender: AnalyticSender,
     private val observeNavResultUseCase: ObserveNavResultUseCase,
+    private val coroutineContext: CoroutineContext,
     @param:NavGraphListQualifier(ROOT_NAV_GRAPH_LIST) private val navGraphs: Array<NavGraph>,
     @param:AsyncTaskUtilsQualifier(RootScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
     getAvailableFeaturesUseCase: GetAvailableFeaturesUseCase,
@@ -59,9 +62,11 @@ internal class RootViewModel @Inject constructor(
 
     init {
         iniUiState()
-        asyncTaskUtils.runAsyncTask(viewModelScope) {
-            observeNavResultUseCase(AccountUpdateResult::class).collect {
-                updateUserData()
+        viewModelScope.launch(coroutineContext) {
+            asyncTaskUtils.runAsyncTask {
+                observeNavResultUseCase(AccountUpdateResult::class).collect {
+                    updateUserData()
+                }
             }
         }
     }
@@ -94,24 +99,28 @@ internal class RootViewModel @Inject constructor(
     }
 
     override fun logout() {
-        asyncTaskUtils.runAsyncTask(viewModelScope) {
-            finishSessionUseCase()
-            _uiEvent.emitEvent(
-                RootUiEvent.NavigateToFeature(
-                    NavigationModel(
-                        navKey = LoginNavKey(true),
-                        navigationMode = NavigationMode.REMOVE_ALL_SCREENS_STACK
-                    ),
+        viewModelScope.launch(coroutineContext) {
+            asyncTaskUtils.runAsyncTask {
+                finishSessionUseCase()
+                _uiEvent.emitEvent(
+                    RootUiEvent.NavigateToFeature(
+                        NavigationModel(
+                            navKey = LoginNavKey(true),
+                            navigationMode = NavigationMode.REMOVE_ALL_SCREENS_STACK
+                        ),
+                    )
                 )
-            )
+            }
         }
     }
 
     override fun updateUserData() {
-        asyncTaskUtils.runAsyncTask(viewModelScope) {
-            val user = getCurrentUserUseCase()
-            _uiState.update {
-                it.setUpdateUser(userModalDrawerMapper.mapperToModel(user))
+        viewModelScope.launch(coroutineContext) {
+            asyncTaskUtils.runAsyncTask {
+                val user = getCurrentUserUseCase()
+                _uiState.update {
+                    it.setUpdateUser(userModalDrawerMapper.mapperToModel(user))
+                }
             }
         }
     }
@@ -127,16 +136,18 @@ internal class RootViewModel @Inject constructor(
     private fun iniUiState() {
         val modalDrawerNavigationFeatures = getModalDrawerNavigationFeatures()
         val bottomNavigationFeatures = getBottomNavigationFeatures()
-        asyncTaskUtils.runAsyncTask(viewModelScope) {
-            val user = getCurrentUserUseCase()
-            _uiState.update {
-                it.initUiState(
-                    firstBottomNavigationFeature?.navKey,
-                    navGraphs,
-                    modalDrawerNavigationFeatures,
-                    bottomNavigationFeatures,
-                    userModalDrawerMapper.mapperToModel(user)
-                )
+        viewModelScope.launch(coroutineContext) {
+            asyncTaskUtils.runAsyncTask {
+                val user = getCurrentUserUseCase()
+                _uiState.update {
+                    it.initUiState(
+                        firstBottomNavigationFeature?.navKey,
+                        navGraphs,
+                        modalDrawerNavigationFeatures,
+                        bottomNavigationFeatures,
+                        userModalDrawerMapper.mapperToModel(user)
+                    )
+                }
             }
         }
     }
@@ -176,8 +187,10 @@ internal class RootViewModel @Inject constructor(
     }
 
     private fun sendNavigateToFeatureAnalytic(navigationFeature: NavigationFeature) {
-        asyncTaskUtils.runAsyncTask(viewModelScope) {
-            analyticSender.sendEvent(RootEventAnalytic.NavigateToFeature(navigationFeature.feature.name))
+        viewModelScope.launch(coroutineContext) {
+            asyncTaskUtils.runAsyncTask {
+                analyticSender.sendEvent(RootEventAnalytic.NavigateToFeature(navigationFeature.feature.name))
+            }
         }
     }
 }

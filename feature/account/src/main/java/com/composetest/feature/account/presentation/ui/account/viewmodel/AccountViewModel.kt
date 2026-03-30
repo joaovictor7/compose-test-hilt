@@ -30,7 +30,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.coroutines.CoroutineContext
 
 @HiltViewModel
 internal class AccountViewModel @Inject constructor(
@@ -40,6 +42,7 @@ internal class AccountViewModel @Inject constructor(
     private val cipherProvider: CipherProvider,
     private val analyticSender: AnalyticSender,
     private val setNavResultUseCase: SetNavResultUseCase,
+    private val coroutineContext: CoroutineContext,
     @param:AsyncTaskUtilsQualifier(AccountScreenAnalytic.SCREEN) private val asyncTaskUtils: AsyncTaskUtils,
 ) : BaseViewModel(), UiState<AccountUiState>, UiEvent<AccountUiEvent>, AccountIntentReceiver {
 
@@ -59,8 +62,10 @@ internal class AccountViewModel @Inject constructor(
     }
 
     override fun sendOpenScreenAnalytic() {
-        asyncTaskUtils.runAsyncTask(viewModelScope) {
-            analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(AccountScreenAnalytic))
+        viewModelScope.launch(coroutineContext) {
+            asyncTaskUtils.runAsyncTask {
+                analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(AccountScreenAnalytic))
+            }
         }
     }
 
@@ -85,29 +90,34 @@ internal class AccountViewModel @Inject constructor(
                 ?: originalUser?.encryptedPassword.orEmpty()
         )
         _uiState.update { it.setLoadingState(LoadingButtonState.LOADING) }
-        asyncTaskUtils.runAsyncTask(
-            coroutineScope = viewModelScope,
-            onError = ::handleUpdateAccountError,
-        ) {
-            updateUserUseCase(userModel)
-            delay(500)
-            _uiState.update { it.setLoadingState(LoadingButtonState.SUCCESS) }
+        viewModelScope.launch(coroutineContext) {
+            asyncTaskUtils.runAsyncTask(
+                onError = ::handleUpdateAccountError,
+            ) {
+                updateUserUseCase(userModel)
+                delay(500)
+                _uiState.update { it.setLoadingState(LoadingButtonState.SUCCESS) }
+            }
         }
     }
 
     override fun backHandler() {
-        asyncTaskUtils.runAsyncTask(viewModelScope) {
-            setNavResultUseCase(AccountUpdateResult)
+        viewModelScope.launch(coroutineContext) {
+            asyncTaskUtils.runAsyncTask {
+                setNavResultUseCase(AccountUpdateResult)
+            }
         }
         _uiEvent.emitEvent(AccountUiEvent.NavigateBack)
     }
 
     private fun initUiState() {
-        asyncTaskUtils.runAsyncTask(viewModelScope) {
-            originalUser = getCurrentUserUseCase()
-            originalUser?.let { userModel ->
-                val data = getModelsToScreen(userModel)
-                _uiState.update { it.setAccountScreenModels(data) }
+        viewModelScope.launch(coroutineContext) {
+            asyncTaskUtils.runAsyncTask {
+                originalUser = getCurrentUserUseCase()
+                originalUser?.let { userModel ->
+                    val data = getModelsToScreen(userModel)
+                    _uiState.update { it.setAccountScreenModels(data) }
+                }
             }
         }
     }
