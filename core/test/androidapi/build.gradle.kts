@@ -8,6 +8,7 @@ android {
 
 dependencies {
     implementation(projects.core.test.api)
+    implementation(projects.core.ui)
     implementation(libs.junit.jupiter)
     implementation(libs.kotlin.coroutines.test)
     implementation(libs.mockk)

@@ -5,5 +5,4 @@ plugins {
 dependencies {
     implementation(libs.junit.jupiter)
     implementation(libs.kotlin.coroutines.test)
-    implementation(libs.mockk)
 }

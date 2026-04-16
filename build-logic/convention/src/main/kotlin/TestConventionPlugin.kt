@@ -27,6 +27,7 @@ internal class TestConventionPlugin : Plugin<Project> {
                 testImplementation(getLibrary("kotlin.coroutines.test"))
                 testImplementation(getLibrary("slf4j.simple"))
                 testRuntimeOnly(getLibrary("junit.launcher"))
+                testRuntimeOnly(getLibrary("junit-engine"))
             }
         }
     }

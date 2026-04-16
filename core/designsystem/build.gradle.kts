@@ -13,7 +13,6 @@ dependencies {
     implementation(projects.core.domain)
     implementation(projects.core.ui)
     implementation(projects.core.router)
-    implementation(libs.androidx.appcompat)
     implementation(libs.coil)
     implementation(libs.coil.network)
 }

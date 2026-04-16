@@ -18,7 +18,7 @@ import com.composetest.core.router.navkey.root.RootNavKey
 import com.composetest.core.security.api.provider.BiometricProvider
 import com.composetest.core.security.api.provider.CipherProvider
 import com.composetest.core.test.android.BaseTest
-import com.composetest.core.test.kotlin.extension.runFlowTest
+import com.composetest.core.test.android.extension.runViewModelTest
 import com.composetest.core.ui.util.AsyncTaskUtils
 import com.composetest.feature.login.analytic.event.LoginEventAnalytic
 import com.composetest.feature.login.analytic.screen.LoginScreenAnalytic
@@ -33,10 +33,12 @@ import com.composetest.feature.login.presentation.ui.login.viewmodel.LoginViewMo
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.coVerifyOrder
-import io.mockk.coVerifySequence
 import io.mockk.mockk
 import kotlinx.coroutines.test.TestDispatcher
-import org.junit.jupiter.api.Assertions
+import kotlinx.coroutines.test.runTest
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -68,90 +70,68 @@ internal class LoginViewModelTest : BaseTest() {
     }
 
     @Test
-    fun `initial uiState`() = runFlowTest(
-        flow = viewModel.uiState,
-        onVerify = { uiStates ->
-            Assertions.assertEquals(LoginUiState(versionName = "1.0.0 - 0"), uiStates[0])
-            coVerifySequence {
+    fun `initial uiState`() = runTest {
+        runViewModelTest(viewModel) {
+            uiStateCheck(LoginUiState(versionName = "1.0.0 - 0"))
+            coVerify {
                 analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(LoginScreenAnalytic))
             }
-        },
-    )
+        }
+    }
 
     @Test
-    fun `misleading credentials login`() = runFlowTest(
-        flow = viewModel.uiState,
-        onSetup = {
-            coEvery { authenticationUseCase(any(), any()) } throws ApiError.Unauthorized()
-        },
-        onTrigger = {
-            viewModel.executeIntent(LoginIntent.WriteData("teste@teste.com", "password"))
-            viewModel.executeIntent(LoginIntent.Login(false))
-        },
-        onVerify = { uiStates ->
-            Assertions.assertTrue(uiStates[1].loginButtonIsEnabled)
-            Assertions.assertEquals(
-                LoginFormModel("teste@teste.com", "password"),
-                uiStates[1].loginFormModel
-            )
-            Assertions.assertTrue(uiStates[2].isLoading)
-            Assertions.assertTrue(uiStates[3].invalidCredentials)
-            Assertions.assertFalse(uiStates[3].isLoading)
+    fun `misleading credentials login`() = runTest {
+        coEvery { authenticationUseCase(any(), any()) } throws ApiError.Unauthorized()
+
+        viewModel.executeIntent(LoginIntent.WriteData("teste@teste.com", "password"))
+        viewModel.executeIntent(LoginIntent.Login(false))
+
+        runViewModelTest(viewModel) {
+            uiStateCheck { state ->
+                assertTrue(state.loginButtonIsEnabled)
+                assertEquals(LoginFormModel("teste@teste.com", "password"), state.loginFormModel)
+                assertTrue(state.invalidCredentials)
+                assertFalse(state.isLoading)
+            }
             coVerify {
                 analyticSender.sendEvent(LoginEventAnalytic.LoginSuccessful(false))
             }
-        },
-    )
+        }
+    }
 
     @Test
-    fun `success login`() = runFlowTest(
-        firstFlow = viewModel.uiState,
-        secondFlow = viewModel.uiEvent,
-        onSetup = {
-            viewModel.executeIntent(
-                LoginIntent.WriteData(email = "teste@teste.com", password = "password")
-            )
-            viewModel.executeIntent(LoginIntent.Login(false))
-        },
-        onVerify = { uiStates, uiEvents ->
-            Assertions.assertTrue(uiStates[1].loginButtonIsEnabled)
-            Assertions.assertEquals(
-                LoginFormModel("teste@teste.com", "password"),
-                uiStates[1].loginFormModel
-            )
-            Assertions.assertTrue(uiStates[2].isLoading)
-            Assertions.assertFalse(uiStates[3].isLoading)
-            Assertions.assertEquals(
-                LoginUiEvent.NavigateTo(
-                    NavigationModel(RootNavKey, NavigationMode.REMOVE_ALL_SCREENS_STACK)
-                ),
-                uiEvents[0]
+    fun `success login`() = runTest {
+        viewModel.executeIntent(LoginIntent.WriteData(email = "teste@teste.com", password = "password"))
+        viewModel.executeIntent(LoginIntent.Login(false))
+
+        runViewModelTest(viewModel) {
+            advanceUntilIdle()
+            uiStateCheck { state ->
+                assertTrue(state.loginButtonIsEnabled)
+                assertEquals(LoginFormModel("teste@teste.com", "password"), state.loginFormModel)
+                assertFalse(state.isLoading)
+            }
+            uiEventCheck(
+                LoginUiEvent.NavigateTo(NavigationModel(RootNavKey, NavigationMode.REMOVE_ALL_SCREENS_STACK))
             )
             coVerifyOrder {
                 authenticationUseCase("teste@teste.com", "encryptedData")
                 analyticSender.sendEvent(LoginEventAnalytic.LoginSuccessful(true))
             }
-        },
-    )
+        }
+    }
 
     @Test
-    fun `error network`() = runFlowTest(
-        flow = viewModel.uiEvent,
-        onSetup = {
-            coEvery { authenticationUseCase(any(), any()) } throws ApiError.Network()
-        },
-        onTrigger = {
-            viewModel.executeIntent(LoginIntent.WriteData("teste@teste.com", "password"))
-            viewModel.executeIntent(LoginIntent.Login(false))
-        },
-        onVerify = { uiEvents ->
-            val expectedNetworkError = ApiError.Network()
-            Assertions.assertEquals(
-                LoginUiEvent.NavigateTo(expectedNetworkError.dialogErrorNavigation()),
-                uiEvents[0]
-            )
-        },
-    )
+    fun `error network`() = runTest {
+        coEvery { authenticationUseCase(any(), any()) } throws ApiError.Network()
+
+        viewModel.executeIntent(LoginIntent.WriteData("teste@teste.com", "password"))
+        viewModel.executeIntent(LoginIntent.Login(false))
+
+        runViewModelTest(viewModel) {
+            uiEventCheck(LoginUiEvent.NavigateTo(ApiError.Network().dialogErrorNavigation()))
+        }
+    }
 
     private fun initViewModel() = LoginViewModel(
         buildConfigProvider = buildConfigProvider,
@@ -164,7 +144,7 @@ internal class LoginViewModelTest : BaseTest() {
         getBooleanRemoteConfigUseCase = getBooleanRemoteConfigUseCase,
         loginNavKey = LoginNavKey(),
         analyticSender = analyticSender,
-        asyncTaskUtils = AsyncTaskUtils(analyticSender, LoginScreenAnalytic)
+        asyncTaskUtils = AsyncTaskUtils(analyticSender, LoginScreenAnalytic),
     )
 
     private companion object {

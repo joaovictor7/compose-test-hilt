@@ -9,7 +9,6 @@ android {
 }
 
 dependencies {
-    implementation(projects.common.api)
     implementation(projects.core.network)
     implementation(projects.core.router)
     implementation(projects.core.designsystem)
