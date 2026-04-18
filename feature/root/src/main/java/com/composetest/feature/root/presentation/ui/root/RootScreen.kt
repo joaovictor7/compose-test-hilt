@@ -32,6 +32,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -56,6 +57,7 @@ import com.composetest.core.designsystem.dimension.Spacing
 import com.composetest.core.designsystem.extension.horizontalScreenMargin
 import com.composetest.core.designsystem.extension.screenMargin
 import com.composetest.core.designsystem.theme.ComposeTestTheme
+import com.composetest.feature.root.navigation.navstack.LocalRootNavBackStack
 import com.composetest.core.router.extension.navigateTo
 import com.composetest.core.router.navkey.home.HomeNavKey
 import com.composetest.core.ui.interfaces.Intent
@@ -77,7 +79,7 @@ internal fun RootScreen(
     uiState: RootUiState,
     uiEvent: Flow<RootUiEvent> = emptyFlow(),
     onExecuteIntent: (Intent<RootIntentReceiver>) -> Unit = {},
-    navBackStack: NavBackStack<NavKey> = rememberNavBackStack(),
+    mainNavBackStack: NavBackStack<NavKey> = rememberNavBackStack(),
 ) {
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     ModalNavigationDrawer(
@@ -92,7 +94,7 @@ internal fun RootScreen(
                 drawerState = drawerState,
                 uiState = uiState,
                 uiEvent = uiEvent,
-                navBackStack = navBackStack,
+                mainNavBackStack = mainNavBackStack,
                 onExecuteIntent = onExecuteIntent,
             )
         }
@@ -104,22 +106,24 @@ private fun Navigation(
     drawerState: DrawerState,
     uiState: RootUiState,
     uiEvent: Flow<RootUiEvent>,
-    navBackStack: NavBackStack<NavKey>,
+    mainNavBackStack: NavBackStack<NavKey>,
     onExecuteIntent: (Intent<RootIntentReceiver>) -> Unit
 ) {
     if (uiState.firstNavKey == null) return
     val rootBackStack = rememberNavBackStack(uiState.firstNavKey)
-    NavDisplay(
-        backStack = rootBackStack,
-        entryProvider = entryProvider {
-            uiState.navGraphs.forEach { navGraph ->
-                navGraph.run { registerEntries(rootBackStack) }
+    CompositionLocalProvider(LocalRootNavBackStack provides rootBackStack) {
+        NavDisplay(
+            backStack = rootBackStack,
+            entryProvider = entryProvider {
+                uiState.navGraphs.forEach { navGraph ->
+                    navGraph.run { registerEntries() }
+                }
             }
-        }
-    )
+        )
+    }
     UiEventsHandler(
         uiEvent = uiEvent,
-        navBackStack = navBackStack,
+        mainNavBackStack = mainNavBackStack,
         rootBackStack = rootBackStack,
     )
     LaunchedEffectHandler(
@@ -296,14 +300,14 @@ private fun getBottomBar(
 @Composable
 private fun UiEventsHandler(
     uiEvent: Flow<RootUiEvent>,
-    navBackStack: NavBackStack<NavKey>,
+    mainNavBackStack: NavBackStack<NavKey>,
     rootBackStack: NavBackStack<NavKey>,
 ) {
     val activity = LocalActivity.current
     UiEventsObserver(uiEvent) {
         when (it) {
             is RootUiEvent.FinishApp -> activity?.finish()
-            is RootUiEvent.NavigateToFeature -> navBackStack.navigateTo(it.navigationModel)
+            is RootUiEvent.NavigateToFeature -> mainNavBackStack.navigateTo(it.navigationModel)
             is RootUiEvent.NavigateToBottomFeature -> rootBackStack.navigateTo(it.navigationModel)
         }
     }

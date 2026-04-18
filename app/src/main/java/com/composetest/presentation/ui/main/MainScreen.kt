@@ -1,6 +1,7 @@
 package com.composetest.presentation.ui.main
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
@@ -10,6 +11,7 @@ import androidx.navigation3.ui.NavDisplay
 import com.composetest.core.designsystem.component.lifecycle.LifecycleEvent
 import com.composetest.core.designsystem.theme.ComposeTestTheme
 import com.composetest.core.router.extension.currentNavKey
+import com.composetest.core.router.navstack.LocalMainNavBackStack
 import com.composetest.core.ui.interfaces.Intent
 import com.composetest.core.ui.util.UiEventsObserver
 import com.composetest.presentation.ui.main.viewmodel.MainIntent
@@ -45,14 +47,16 @@ private fun Navigation(
 ) {
     if (uiState.firstNavKey == null) return
     val navBackStack = rememberNavBackStack(uiState.firstNavKey)
-    NavDisplay(
-        backStack = navBackStack,
-        entryProvider = entryProvider {
-            uiState.navGraphs.forEach { navGraph ->
-                navGraph.run { registerEntries(navBackStack) }
+    CompositionLocalProvider(LocalMainNavBackStack provides navBackStack) {
+        NavDisplay(
+            backStack = navBackStack,
+            entryProvider = entryProvider {
+                uiState.navGraphs.forEach { navGraph ->
+                    navGraph.run { registerEntries() }
+                }
             }
-        }
-    )
+        )
+    }
     UiEventsHandler(uiEvent = uiEvent, navBackStack = navBackStack)
     LifecycleHandler(onExecuteIntent = onExecuteIntent, backStack = navBackStack)
 }

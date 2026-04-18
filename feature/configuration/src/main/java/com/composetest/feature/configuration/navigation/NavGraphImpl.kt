@@ -4,7 +4,6 @@ import androidx.compose.runtime.getValue
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.EntryProviderScope
-import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import com.composetest.core.router.interfaces.NavGraph
 import com.composetest.feature.configuration.navigation.destinaition.SecurityConfigurationNavKey
@@ -16,7 +15,7 @@ import com.composetest.feature.configuration.presenter.ui.theme.viewmodel.ThemeC
 import javax.inject.Inject
 
 internal class NavGraphImpl @Inject constructor() : NavGraph {
-    override fun EntryProviderScope<NavKey>.registerEntries(navBackStack: NavBackStack<NavKey>) {
+    override fun EntryProviderScope<NavKey>.registerEntries() {
         entry<ThemeConfigurationNavKey> { _ ->
             val viewModel = hiltViewModel<ThemeConfigurationViewModel>()
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()

@@ -61,7 +61,7 @@ internal fun LoginScreen(
     uiState: LoginUiState,
     uiEvent: Flow<LoginUiEvent> = emptyFlow(),
     onExecuteIntent: (Intent<LoginIntentReceiver>) -> Unit = {},
-    navBackStack: NavBackStack<NavKey> = rememberNavBackStack(),
+    navBackStack: NavBackStack<NavKey> = rememberNavBackStack()
 ) {
     UiEventHandler(
         uiEvent = uiEvent,
