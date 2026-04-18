@@ -1,5 +1,6 @@
 package com.composetest.feature.login.presenter.ui.login.viewmodel
 
+import app.cash.turbine.test
 import com.composetest.core.analytic.api.event.CommonAnalyticEvent
 import com.composetest.core.analytic.api.sender.AnalyticSender
 import com.composetest.core.designsystem.extension.dialogErrorNavigation
@@ -18,7 +19,6 @@ import com.composetest.core.router.navkey.root.RootNavKey
 import com.composetest.core.security.api.provider.BiometricProvider
 import com.composetest.core.security.api.provider.CipherProvider
 import com.composetest.core.test.android.BaseTest
-import com.composetest.core.test.android.extension.runViewModelTest
 import com.composetest.core.ui.util.AsyncTaskUtils
 import com.composetest.feature.login.analytic.event.LoginEventAnalytic
 import com.composetest.feature.login.analytic.screen.LoginScreenAnalytic
@@ -34,7 +34,6 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.coVerifyOrder
 import io.mockk.mockk
-import kotlinx.coroutines.test.TestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
@@ -62,8 +61,6 @@ internal class LoginViewModelTest : BaseTest() {
 
     private lateinit var viewModel: LoginViewModel
 
-    override lateinit var testDispatcher: TestDispatcher
-
     @BeforeEach
     fun before() {
         viewModel = initViewModel()
@@ -71,65 +68,68 @@ internal class LoginViewModelTest : BaseTest() {
 
     @Test
     fun `initial uiState`() = runTest {
-        runViewModelTest(viewModel) {
-            uiStateCheck(LoginUiState(versionName = "1.0.0 - 0"))
-            coVerify {
-                analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(LoginScreenAnalytic))
-            }
+        viewModel.uiState.test {
+            assertEquals(LoginUiState(versionName = "1.0.0 - 0"), awaitItem())
+            cancelAndConsumeRemainingEvents()
+        }
+        coVerify {
+            analyticSender.sendEvent(CommonAnalyticEvent.OpenScreen(LoginScreenAnalytic))
         }
     }
 
     @Test
     fun `misleading credentials login`() = runTest {
         coEvery { authenticationUseCase(any(), any()) } throws ApiError.Unauthorized()
-
         viewModel.executeIntent(LoginIntent.WriteData("teste@teste.com", "password"))
         viewModel.executeIntent(LoginIntent.Login(false))
 
-        runViewModelTest(viewModel) {
-            uiStateCheck { state ->
-                assertTrue(state.loginButtonIsEnabled)
-                assertEquals(LoginFormModel("teste@teste.com", "password"), state.loginFormModel)
-                assertTrue(state.invalidCredentials)
-                assertFalse(state.isLoading)
-            }
-            coVerify {
-                analyticSender.sendEvent(LoginEventAnalytic.LoginSuccessful(false))
-            }
+        viewModel.uiState.test {
+            val uiState = awaitItem()
+            assertTrue(uiState.loginButtonIsEnabled)
+            assertEquals(LoginFormModel("teste@teste.com", "password"), uiState.loginFormModel)
+            assertTrue(uiState.invalidCredentials)
+            assertFalse(uiState.isLoading)
+            cancelAndConsumeRemainingEvents()
+        }
+        coVerify {
+            analyticSender.sendEvent(LoginEventAnalytic.LoginSuccessful(false))
         }
     }
 
     @Test
     fun `success login`() = runTest {
         viewModel.executeIntent(LoginIntent.WriteData(email = "teste@teste.com", password = "password"))
-        viewModel.executeIntent(LoginIntent.Login(false))
 
-        runViewModelTest(viewModel) {
-            advanceUntilIdle()
-            uiStateCheck { state ->
+        viewModel.uiEvent.test {
+            viewModel.executeIntent(LoginIntent.Login(false))
+            assertEquals(
+                LoginUiEvent.NavigateTo(NavigationModel(RootNavKey, NavigationMode.REMOVE_ALL_SCREENS_STACK)),
+                awaitItem()
+            )
+        }
+
+        viewModel.uiState.test {
+            awaitItem().let { state ->
                 assertTrue(state.loginButtonIsEnabled)
                 assertEquals(LoginFormModel("teste@teste.com", "password"), state.loginFormModel)
                 assertFalse(state.isLoading)
             }
-            uiEventCheck(
-                LoginUiEvent.NavigateTo(NavigationModel(RootNavKey, NavigationMode.REMOVE_ALL_SCREENS_STACK))
-            )
-            coVerifyOrder {
-                authenticationUseCase("teste@teste.com", "encryptedData")
-                analyticSender.sendEvent(LoginEventAnalytic.LoginSuccessful(true))
-            }
+            cancelAndConsumeRemainingEvents()
+        }
+        coVerifyOrder {
+            authenticationUseCase("teste@teste.com", "encryptedData")
+            analyticSender.sendEvent(LoginEventAnalytic.LoginSuccessful(true))
         }
     }
 
     @Test
     fun `error network`() = runTest {
         coEvery { authenticationUseCase(any(), any()) } throws ApiError.Network()
-
         viewModel.executeIntent(LoginIntent.WriteData("teste@teste.com", "password"))
-        viewModel.executeIntent(LoginIntent.Login(false))
 
-        runViewModelTest(viewModel) {
-            uiEventCheck(LoginUiEvent.NavigateTo(ApiError.Network().dialogErrorNavigation()))
+        viewModel.uiEvent.test {
+            viewModel.executeIntent(LoginIntent.Login(false))
+            assertEquals(LoginUiEvent.NavigateTo(ApiError.Network().dialogErrorNavigation()), awaitItem())
         }
     }
 
